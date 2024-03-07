@@ -1,0 +1,49 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.cer",
+          "storePassword": "0000001A09A4F63BB0911CB3FB90713148037BB7EFE391FBE2D1C2AED08CBBC859F0A06B421475B1264C",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A5A7676D8AF5EBD4CB00F268BCFBC5C08B37A5CFAFFAD14520CE8CA1AC42DEC01BF88DDB427AD",
+          "profile": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p12"
+        }
+      }
+    ],
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
