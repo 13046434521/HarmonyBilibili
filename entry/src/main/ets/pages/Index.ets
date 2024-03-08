@@ -24,11 +24,12 @@ struct Index {
   @State message: string = 'Hello World'
   @State tabs: Array<TabIcon> = [new TabIcon('首页', $r('app.media.ic_tab_bar_home')),
     new TabIcon('动态', $r('app.media.ic_tab_bar_moments')),
-    new TabIcon('新增', $r('app.media.ic_tab_bar_add')),
+    new TabIcon('', $r('app.media.ic_tab_bar_add')),
     new TabIcon('会员购', $r('app.media.ic_tab_bar_shopping')),
     new TabIcon('我的', $r('app.media.ic_tab_bar_mine'))]
 
   @State currentTab :TabIcon = null
+
 
   build() {
     Tabs(){
