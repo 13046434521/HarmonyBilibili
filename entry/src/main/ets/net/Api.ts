@@ -6,7 +6,7 @@ import { HomeSearchBean } from '../bean/HomeSearchBean';
 class Api {
   baseURL = 'https://api.bilibili.com/x/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=1&feed_version=undefined'
   searchURl = 'https://api.bilibili.com/x/web-interface/search/default'
-
+  hotSearchURL='https://app.bilibili.com/x/v2/search/trending/ranking'
   instance = axios.create({
     baseURL: 'https://api.bilibili.com/x/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=1&feed_version=undefined',
     timeout: 1000,
@@ -16,9 +16,9 @@ class Api {
     return this.instance
   }
 
-  getHomePages():Promise<HomeBean>{
+  getHomePages(page:number = 0):Promise<HomeBean>{
     return new Promise((resolve,reject)=>{
-      axios.get(this.baseURL).then(resp=>{
+      axios.get('https://api.bilibili.com/x/web-interface/index/top/feed/rcmd?ps=12&fresh_idx='+page+'&feed_version=undefined').then(resp=>{
         if (resp.status ==axios.HttpStatusCode.Ok) {
           resolve(resp.data.data)
         }else{

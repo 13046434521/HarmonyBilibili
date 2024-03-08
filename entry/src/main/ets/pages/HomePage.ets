@@ -9,6 +9,7 @@ export struct HomePage {
   @State message: string = 'Home'
   @State homeBeanData:Array<HomeBeanItem>=[]
   @State homeSearchBeanData:HomeSearchBean=new HomeSearchBean()
+  @State homePage: number = 0
   aboutToAppear(){
     Api.getHomePages().then(homebean=>{
       this.homeBeanData = homebean.item
@@ -22,19 +23,41 @@ export struct HomePage {
   aboutToDisappear(){
 
   }
-
+  @State isRefreshing: boolean = false
   build() {
     Row() {
       Column() {
         this.HomeHeader()
-        List(){
-          ForEach(this.homeBeanData,(item:HomeBeanItem)=>{
-            ListItem(){
-              this.HomeItem(item)
-            }.margin(3)
+        Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
+          List(){
+            ForEach(this.homeBeanData,(item:HomeBeanItem)=>{
+              ListItem(){
+                this.HomeItem(item)
+              }.margin(3)
+            })
+          }.lanes(2)
+          .onReachEnd(()=>{
+            Api.getHomePages(++this.homePage).then(homebean=>{
+              this.homeBeanData = this.homeBeanData.concat( homebean.item)
+              console.log('onReachEnd :'+homebean.item )
+            }).catch(err=>{
+              console.log('onReachEnd :'+err )
+            })
           })
-        }.lanes(2)
 
+        }.onStateChange(state=>{
+          console.log('onStateChange $' + state)
+        }).onRefreshing(()=>{
+          Api.getHomePages().then(homebean=>{
+            this.homeBeanData = homebean.item
+            this.isRefreshing = false
+          }).catch(err=>{
+            this.isRefreshing = false
+          }).finally(()=>{
+            this.homePage = 0
+          })
+          console.log('onRefreshing $' )
+        }).layoutWeight(1)
       }
       .width('100%')
     }
@@ -123,13 +146,6 @@ export struct HomePage {
         .width(24)
         .height(24)
       Row(){
-/*        Search({ placeholder: this.homeSearchBeanData.show_name})
-          .height(40)
-          .width(200)
-          .placeholderColor(Color.Grey)
-          .placeholderFont({ size: 14, weight: 400 })
-          .textFont({ size: 14, weight: 400 })
-          .focusable(true)*/
         SearchView({title:this.homeSearchBeanData.show_name})
           .height(40)
           .width(240)
@@ -151,7 +167,7 @@ export struct HomePage {
   }
 }
 
-@Styles function  testColor(){
+@Styles function testColor(){
   .backgroundColor('#36d')
 }
 
