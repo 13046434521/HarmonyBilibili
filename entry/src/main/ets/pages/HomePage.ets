@@ -121,11 +121,13 @@ export struct HomePage {
         .height(24)
       Row(){
         SearchView({title:this.homeSearchBeanData.show_name})
-          .height(40)
+          .height(30)
           .width(240)
 
       }.onClick(event=>{
-          router.pushUrl({url:'pages/SearchPage'})
+          router.pushUrl({url:'pages/SearchPage',params:{
+            title:this.homeSearchBeanData.show_name
+          }})
       })
 
       Image($r('app.media.test'))
@@ -137,6 +139,7 @@ export struct HomePage {
         .width(24)
         .height(24)
     }.width("100%")
+    .margin({top:20,bottom:20})
     .justifyContent(FlexAlign.SpaceEvenly)
   }
 

@@ -1,5 +1,6 @@
 
 @Component
+
 export struct ShoppingPage {
   @State message: string = '购物'
 

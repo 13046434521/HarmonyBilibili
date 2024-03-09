@@ -1,5 +1,5 @@
 @Component
-@Preview
+
 export struct SearchView{
   @Prop title:string
   build(){
@@ -13,6 +13,8 @@ export struct SearchView{
         .height(24)
         .layoutWeight(1)
         .fontSize(14)
+        .maxLines(1)
+        .textOverflow({overflow:TextOverflow.Ellipsis})
     }.height('100%')
     .width('100%')
     .backgroundColor(Color.White)

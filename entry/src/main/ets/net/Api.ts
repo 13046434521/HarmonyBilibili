@@ -3,6 +3,7 @@ import url from '@ohos.url';
 import HomeBean from '../bean/HomeBean';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { PlayVideoBean } from '../bean/PlayVideoBean';
+import { SearchHotBean } from '../bean/SearchHotBean';
 
 class Api {
   headers = new Map([
@@ -71,6 +72,22 @@ class Api {
     return new Promise((resolve, reject) => {
       //let url = `${this.playURL}?bvid=${bvid}&cid=${cid}&qn=112`
       this.instance.get(`/player/playurl?bvid=${bvid}&cid=${cid}`).then(resp => {
+        if (resp.status == axios.HttpStatusCode.Ok) {
+          resolve(resp.data.data)
+        } else {
+          reject("«Î«Û ß∞‹£∫" + resp.status)
+        }
+        console.log("jtl:getHomeSearch:" + resp.status + "---" + JSON.stringify(resp.data))
+      }).catch(error => {
+        console.log("jtl:" + error)
+        reject("«Î«Û ß∞‹£∫" + error)
+      })
+    })
+  }
+
+  getSearchHot(): Promise<SearchHotBean>{
+    return new Promise((resolve, reject) => {
+      this.instance.get('/v2/search/trending/ranking').then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
           resolve(resp.data.data)
         } else {
