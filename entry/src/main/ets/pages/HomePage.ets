@@ -10,6 +10,7 @@ export struct HomePage {
   @State homeBeanData:Array<HomeBeanItem>=[]
   @State homeSearchBeanData:HomeSearchBean=new HomeSearchBean()
   @State homePage: number = 0
+  @State isRefreshing: boolean = false
   aboutToAppear(){
     Api.getHomePages().then(homebean=>{
       this.homeBeanData = homebean.item
@@ -20,44 +21,11 @@ export struct HomePage {
     })
   }
 
-  aboutToDisappear(){
-
-  }
-  @State isRefreshing: boolean = false
   build() {
     Row() {
       Column() {
         this.HomeHeader()
-        Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
-          List(){
-            ForEach(this.homeBeanData,(item:HomeBeanItem)=>{
-              ListItem(){
-                this.HomeItem(item)
-              }.margin(3)
-            })
-          }.lanes(2)
-          .onReachEnd(()=>{
-            Api.getHomePages(++this.homePage).then(homebean=>{
-              this.homeBeanData = this.homeBeanData.concat( homebean.item)
-              console.log('onReachEnd :'+homebean.item )
-            }).catch(err=>{
-              console.log('onReachEnd :'+err )
-            })
-          })
-
-        }.onStateChange(state=>{
-          console.log('onStateChange $' + state)
-        }).onRefreshing(()=>{
-          Api.getHomePages().then(homebean=>{
-            this.homeBeanData = homebean.item
-            this.isRefreshing = false
-          }).catch(err=>{
-            this.isRefreshing = false
-          }).finally(()=>{
-            this.homePage = 0
-          })
-          console.log('onRefreshing $' )
-        }).layoutWeight(1)
+        this.Refresh()
       }
       .width('100%')
     }
@@ -137,6 +105,12 @@ export struct HomePage {
     }
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
     .backgroundColor(Color.White)
+    .onClick(event=>{
+      router.pushUrl({url:"pages/DetailPage",params:{
+        bvid:homeBeanItem.bvid,
+        cid:homeBeanItem.cid
+      }})
+    })
   }
 
   @Builder HomeHeader(){
@@ -165,10 +139,40 @@ export struct HomePage {
     }.width("100%")
     .justifyContent(FlexAlign.SpaceEvenly)
   }
-}
 
-@Styles function testColor(){
-  .backgroundColor('#36d')
+  @Builder Refresh(){
+    Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
+      List(){
+        ForEach(this.homeBeanData,(item:HomeBeanItem)=>{
+          ListItem(){
+            this.HomeItem(item)
+
+          }.margin(3)
+        })
+      }.lanes(2)
+      .onReachEnd(()=>{
+        Api.getHomePages(++this.homePage).then(homebean=>{
+          this.homeBeanData = this.homeBeanData.concat( homebean.item)
+          console.log('onReachEnd :'+homebean.item )
+        }).catch(err=>{
+          console.log('onReachEnd :'+err )
+        })
+      })
+
+    }.onStateChange(state=>{
+      console.log('onStateChange $' + state)
+    }).onRefreshing(()=>{
+      Api.getHomePages().then(homebean=>{
+        this.homeBeanData = homebean.item
+        this.isRefreshing = false
+      }).catch(err=>{
+        this.isRefreshing = false
+      }).finally(()=>{
+        this.homePage = 0
+      })
+      console.log('onRefreshing $' )
+    }).layoutWeight(1)
+  }
 }
 
 @Extend(Text) function  textSizeStyle(){
@@ -179,12 +183,10 @@ export struct HomePage {
 
 // 观看量数据转换处理
 function views(views:number):string{
-  console.log("views:"+views+"---"+(views/10000).toFixed(2)+"w")
-
+  //console.log("views:"+views+"---"+(views/10000).toFixed(2)+"w")
   if (views>10000) {
     return (views/10000).toFixed(2)+"w"
   }
-
   return views.toString()
 }
 
@@ -195,7 +197,6 @@ function duration(duration:number):string{
   if (second<10) {
     second = '0'+second
   }
-  
-  console.log("duration:"+duration+"---"+minute+'---'+second)
+  // console.log("duration:"+duration+"---"+minute+'---'+second)
   return duration>3600?Math.floor(duration / 3600)+":"+minute+":"+second:minute+":"+second
 }

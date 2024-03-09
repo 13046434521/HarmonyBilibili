@@ -50,7 +50,7 @@ struct Index {
       }.tabBar(new BottomTabBarStyle(this.tabs[4].path, this.tabs[4].text))
     }
     .barMode(BarMode.Fixed)
-    .scrollable(true)
+    .scrollable(false)
     .barPosition(BarPosition.End)
     .layoutWeight(1)
     .height('100%')
