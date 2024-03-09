@@ -125,7 +125,7 @@ export struct HomePage {
           .width(240)
 
       }.onClick(event=>{
-          router.pushUrl({url:'pages/SearchPage',params:{
+          router.pushUrl({url:'pages/SearchHotPage',params:{
             title:this.homeSearchBeanData.show_name
           }})
       })
