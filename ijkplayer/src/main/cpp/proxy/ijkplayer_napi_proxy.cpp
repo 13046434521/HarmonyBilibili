@@ -43,6 +43,7 @@ static void message_loop_n(IjkMediaPlayer *mp) {
             break;
         case FFP_MSG_ERROR:
             MPTRACE("FFP_MSG_ERROR: %d\n", msg.arg1);
+             LOGI("JTLijk:napi_proxy-->message_loop_n-->go-->msg:%d-->MEDIA_ERROR_IJK_PLAYER:%d", msg.what,MEDIA_ERROR_IJK_PLAYER);
             post_event(weak_thiz, MEDIA_ERROR, MEDIA_ERROR_IJK_PLAYER, msg.arg1, NULL);
             break;
         case FFP_MSG_PREPARED:

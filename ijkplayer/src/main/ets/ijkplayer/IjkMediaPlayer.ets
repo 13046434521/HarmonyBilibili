@@ -25,20 +25,20 @@ import { PropertiesType } from '../ijkplayer/common/PropertiesType';
 import { LogUtils } from "../ijkplayer/utils/LogUtils";
 import window from '@ohos.window';
 import { IjkPlayerNapi } from "./utils/IjkPlayerNapi";
-import { BusinessError } from '@ohos.base';
+
 
 export class IjkMediaPlayer {
-  private static instance: IjkMediaPlayer;
+  // private static instance: IjkMediaPlayer;
 
-  private constructor() {
+  constructor() {
   };
 
-  public static getInstance(): IjkMediaPlayer {
+/*  public static getInstance(): IjkMediaPlayer {
     if (!IjkMediaPlayer.instance) {
       IjkMediaPlayer.instance = new IjkMediaPlayer();
     }
     return IjkMediaPlayer.instance;
-  }
+  }*/
 
   public static OPT_CATEGORY_FORMAT: string = "1";
   public static OPT_CATEGORY_CODEC: string = "2";
@@ -138,7 +138,7 @@ export class IjkMediaPlayer {
   }
 
   setScreenOnWhilePlaying(on: boolean): void {
-    window.getLastWindow(getContext(this), (err: BusinessError, data: window.Window) => {
+    window.getLastWindow(getContext(this), (err: object, data: window.Window) => {
       data.setWindowKeepScreenOn(on);
     });
   }
