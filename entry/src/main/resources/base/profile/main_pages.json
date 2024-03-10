@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/SearchHotPage",
     "pages/DetailPage",
-    "pages/SearchPage"
+    "pages/SearchPage",
+    "pages/SearchCompletePage"
   ]
 }

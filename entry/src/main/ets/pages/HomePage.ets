@@ -40,7 +40,7 @@ export struct HomePage {
           .width('100%')
           .objectFit(ImageFit.Fill)
           .borderRadius({topLeft:5,topRight:5})
-          .height(120)
+          .aspectRatio(4/3)
         Row(){
           Image($r('app.media.ic_video_play_dack'))
             .width(20)
@@ -119,25 +119,29 @@ export struct HomePage {
         .objectFit(ImageFit.Auto)
         .width(24)
         .height(24)
+        .margin({left:10})
       Row(){
         SearchView({title:this.homeSearchBeanData.show_name})
           .height(30)
-          .width(240)
-
       }.onClick(event=>{
           router.pushUrl({url:'pages/SearchHotPage',params:{
             title:this.homeSearchBeanData.show_name
           }})
-      })
+      }).layoutWeight(1)
 
-      Image($r('app.media.test'))
+      .margin({left:10,right:10})
+      Image($r('app.media.ic_home_game_center'))
         .objectFit(ImageFit.Auto)
-        .width(24)
+        .interpolation(ImageInterpolation.High)
         .height(24)
-      Image($r('app.media.test'))
+        .aspectRatio(1)
+        .margin({left:10,right:10})
+      Image($r('app.media.ic_home_message'))
         .objectFit(ImageFit.Auto)
-        .width(24)
+        .interpolation(ImageInterpolation.High)
         .height(24)
+        .aspectRatio(1)
+        .margin({left:10,right:10})
     }.width("100%")
     .margin({top:20,bottom:20})
     .justifyContent(FlexAlign.SpaceEvenly)

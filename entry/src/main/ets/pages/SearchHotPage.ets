@@ -29,7 +29,10 @@ struct SearchHotPage {
      SearchHeader({title:this.title,search:this.search,clickEvent:()=>{
         router.pushUrl({url:"pages/SearchPage",params:{keyword:this.search}})
      }})
-      this.SearchHot()
+      this.SearchHot((content) => {
+        router.pushUrl({url:"pages/SearchCompletePage"})
+        console.log(content+"pages/SearchCompletePage")
+      })
       List() {
         ForEach(this.searchHotBean, (item: SearchHotBeanItem) => {
           this.SearchHotItem(item.show_name, item.icon)
@@ -42,7 +45,7 @@ struct SearchHotPage {
 
   // 热搜
   @Builder
-  SearchHot() {
+  SearchHot(clickEvent:(content:string)=>void) {
     Row() {
       Text('bilibili热搜')
         .fontWeight(FontWeight.Bold)
@@ -58,7 +61,9 @@ struct SearchHotPage {
           .interpolation(ImageInterpolation.High)
           .height('60%')
           .aspectRatio(1)
-      }
+      }.onClick(()=>{
+        clickEvent("完整榜单")
+      })
       .height('100%')
       .margin({ right: 5 })
     }

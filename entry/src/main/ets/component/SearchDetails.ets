@@ -17,20 +17,18 @@ export struct SearchDetails {
   }
   build() {
     Column(){
-      List(){
-        ForEach( this.searchDetailsItemBean,(item)=>{
-          ListItem(){
-            Text(item.title)
-          }
-        })
-      }.width('100%')
-      .layoutWeight(1)
-      .lanes(2)
-      if (!!this.isLoading) {
-
-        // Loading().layoutWeight(1)
+      if (!this.isLoading) {
+        Loading().layoutWeight(1)
       }else{
-
+        List(){
+          ForEach( this.searchDetailsItemBean,(item)=>{
+            ListItem(){
+              Text(item.title)
+            }
+          })
+        }.width('100%')
+        .layoutWeight(1)
+        .lanes(2)
       }
     }.width('100%')
     .height('100%')
