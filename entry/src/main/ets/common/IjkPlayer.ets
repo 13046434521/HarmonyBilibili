@@ -1,3 +1,4 @@
+/*
 import {
   IjkMediaPlayer,
   OnBufferingUpdateListener,
@@ -11,9 +12,11 @@ import {
 
 @Observed
 export class IjkPlayerConfig {
-  /*  id: 'xcomponentId',
+  */
+/*  id: 'xcomponentId',
     type: 'surface',
-    libraryname: 'ijkplayer_napi'*/
+    libraryname: 'ijkplayer_napi'*//*
+
   id: string = "ijkplayer"
   type: IjkPlayerConfigType = IjkPlayerConfigType.surface
   libraryName: string = "ijkplayer_napi"
@@ -30,11 +33,13 @@ export class IjkPlayerConfig {
                      libraryName?: string,
                      url?: string,
                      header?: Map<string, string>) {
+*/
 /*    this.id = id
     this.type = type
     this.libraryName = libraryName
     this.url = url
-    this.header = header*/
+    this.header = header*//*
+
   }
 }
 
@@ -119,4 +124,4 @@ export class IjkPlayer extends IjkMediaPlayer {
     this.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "addrinfo_timeout", "10000000");
     this.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_timeout", "10000000");
   }
-}
+}*/

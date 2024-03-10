@@ -1,6 +1,6 @@
 import { SearchHeader } from '../component/SearchHeader'
 import router from '@ohos.router'
-import { SearchDetails } from '../component/SearchDetails'
+import {SearchVideoDetails } from '../component/SearchDetails'
 
 @Entry
 @Component
@@ -32,11 +32,11 @@ struct SearchPage{
       SearchHeader({title:this.search,search:this.search})
       Tabs({barPosition:BarPosition.Start}){
         TabContent(){
-          SearchDetails({search:this.search})
+          Text("综合")
         }.tabBar(this.TabBuilder(0,"综合"))
         TabContent(){
-          Text("番剧")
-        }.tabBar(this.TabBuilder(1,"番剧"))
+          SearchVideoDetails({search:this.search})
+        }.tabBar(this.TabBuilder(1,"视频"))
         TabContent(){
           Text("直播")
         }.tabBar(this.TabBuilder(2,"直播"))

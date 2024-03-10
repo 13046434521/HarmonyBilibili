@@ -1,6 +1,6 @@
 
 @Component
-
+// 主界面中的购物页面，很可能被去掉
 export struct ShoppingPage {
   @State message: string = '购物'
 

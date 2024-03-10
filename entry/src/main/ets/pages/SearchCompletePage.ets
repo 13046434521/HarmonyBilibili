@@ -4,6 +4,7 @@ import { Loading } from '../component/LoadingComponent'
 
 @Entry
 @Component
+// 完整的热搜页面
 struct SearchCompletePage {
   url: string = 'https://b23.tv/4n9Mg7Q'
   controller: webview.WebviewController = new webview.WebviewController()

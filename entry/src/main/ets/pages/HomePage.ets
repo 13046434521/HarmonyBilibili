@@ -3,6 +3,7 @@ import Api from '../net/Api'
 import router from '@ohos.router';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { SearchView } from '../component/HomeSearch';
+import { Utils } from '../Utils/Utils';
 
 @Component
 export struct HomePage {
@@ -42,16 +43,16 @@ export struct HomePage {
           .borderRadius({topLeft:5,topRight:5})
           .aspectRatio(4/3)
         Row(){
-          Image($r('app.media.ic_video_play_dack'))
+          Image($r('app.media.ic_video_play'))
             .width(20)
             .height('100%')
             .objectFit(ImageFit.Auto)
 
-          Text(views(homeBeanItem.stat.view))
+          Text(Utils.Views(homeBeanItem.stat.view))
             .height('100%')
             .textSizeStyle()
 
-          Image($r('app.media.ic_danmu_repeat_square_line_28'))
+          Image($r("app.media.ic_danmukus"))
             .width(20)
             .height(20)
             .height('100%')
@@ -64,7 +65,7 @@ export struct HomePage {
 
           Blank().layoutWeight(1)
 
-          Text(duration(homeBeanItem.duration))
+          Text(Utils.Duration(homeBeanItem.duration))
             .height('100%')
             .align(Alignment.End)
             .margin({right:5})
@@ -186,24 +187,4 @@ export struct HomePage {
   .height(20)
   .fontSize(11)
   .fontColor(Color.White)
-}
-
-// 观看量数据转换处理
-function views(views:number):string{
-  //console.log("views:"+views+"---"+(views/10000).toFixed(2)+"w")
-  if (views>10000) {
-    return (views/10000).toFixed(2)+"w"
-  }
-  return views.toString()
-}
-
-// 视频时常，转换处理
-function duration(duration:number):string{
-  let second:number|string = duration % 60
-  let minute:number|string = Math.floor(duration / 60)
-  if (second<10) {
-    second = '0'+second
-  }
-  // console.log("duration:"+duration+"---"+minute+'---'+second)
-  return duration>3600?Math.floor(duration / 3600)+":"+minute+":"+second:minute+":"+second
 }

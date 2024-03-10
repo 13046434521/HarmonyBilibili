@@ -2,35 +2,121 @@ import Api from '../net/Api'
 import { Loading } from './LoadingComponent'
 import router from '@ohos.router'
 import { SearchDetailsBean, SearchDetailsItemBean } from '../bean/SearchDetailsBean'
+import { Utils } from '../Utils/Utils'
 
 @Component
-export struct SearchDetails {
-  @State isLoading: boolean = false // ÎªfalseÊ±ÕýÔÚ¼ÓÔØ£¬trueÊ±¼ÓÔØÊ§°Ü»òÕß¼ÓÔØ³É¹¦
+export struct SearchVideoDetails {
+  @State isLoading: number = 0 // ä¸º0æ—¶æ­£åœ¨åŠ è½½ï¼Œ1æ—¶åŠ è½½æˆåŠŸ,-1åŠ è½½å¤±è´¥
   @Link search: string
   @State page:number=1
   @State searchDetailsItemBean:SearchDetailsItemBean[] =null
   aboutToAppear(){
     Api.getSearchDetails('video',this.search,this.page).then((searchDetailsBean)=>{
-      this.isLoading = true
+      this.isLoading = 1
       this.searchDetailsItemBean = searchDetailsBean.result
-    })
+    }).catch((err=>{
+      this.isLoading = -1
+    }))
   }
   build() {
     Column(){
-      if (!this.isLoading) {
+      if (this.isLoading === 0) {
         Loading().layoutWeight(1)
-      }else{
+      }else if (this.isLoading === 1){
         List(){
-          ForEach( this.searchDetailsItemBean,(item)=>{
+          ForEach( this.searchDetailsItemBean,(item:SearchDetailsItemBean)=>{
             ListItem(){
-              Text(item.title)
+              this.VideoItem(item)
             }
           })
         }.width('100%')
         .layoutWeight(1)
-        .lanes(2)
+      }else {
+        Text("åŠ è½½å‡ºé”™")
+          .width('100%')
+          .height('100%')
       }
     }.width('100%')
     .height('100%')
   }
+
+  @Builder VideoItem(item:SearchDetailsItemBean){
+    Column(){
+      Divider().color(Color.Gray)
+        .margin({ left:5 ,right:5})
+      Row(){
+        Image(item.upic)
+          .width('50%')
+          .aspectRatio(16/9)
+          .margin({left:4,right:4})
+/*        Stack(){
+          Image(item.upic)
+            .width('100%')
+            .aspectRatio(16/9)
+
+          Text(item.duration)
+            .maxLines(1)
+            .margin({bottom:4,right:8})
+            .fontSize(13)
+            .backgroundColor(Color.Grey)
+            .fontColor(Color.Black)
+            .borderRadius(2)
+
+
+        }.width('50%')
+        .align(Alignment.BottomEnd)*/
+
+        Column(){
+          Text(item.title)
+            .maxLines(2)
+            .fontColor(Color.Black)
+            .fontSize(14)
+            .textOverflow({overflow:TextOverflow.Ellipsis})
+
+          Blank().layoutWeight(1)
+            .margin(15)
+          Row(){
+            Image($r('app.media.icon_playlist_upper'))
+              .imageStyle()
+            Text(item.author)
+              .textStyle()
+          }.margin({left:8,bottom:4})
+          Row(){
+            Image($r('app.media.ic_video_play_dack'))
+              .imageStyle()
+            Text(Utils.Views(item.play))
+              .textStyle()
+
+            Image($r("app.media.ic_danmakus_dark"))
+              .imageStyle()
+              .margin({left:8,right:8})
+            Text(Utils.Views(item.danmaku))
+              .textStyle()
+
+          }.margin({left:8,bottom:8,top:4})
+        }
+        .alignItems(HorizontalAlign.Start)
+        .layoutWeight(1)
+
+
+      }.justifyContent(FlexAlign.SpaceBetween)
+      .width('100%')
+      .aspectRatio(16/5)
+    }
+  }
+}
+
+
+@Extend(Image) function imageStyle(){
+  .height(14)
+  .width(14)
+  .margin({right:8})
+  .objectFit(ImageFit.Auto)
+}
+
+@Extend(Text) function textStyle(){
+  .fontSize(12)
+  .fontColor(Color.Grey)
+  .maxLines(1)
+  .textOverflow({overflow:TextOverflow.Ellipsis})
 }

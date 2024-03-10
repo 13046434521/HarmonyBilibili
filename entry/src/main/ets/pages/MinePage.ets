@@ -1,5 +1,6 @@
 
 @Component
+// 主界面中的我的页面
 export struct MinePage {
   @State message: string = '我的'
 

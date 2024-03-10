@@ -1,6 +1,7 @@
 import { Loading } from '../component/LoadingComponent'
 
 @Component
+// 动态页面
 export struct MomentPage {
   @State message: string = '动态'
 @State isloading:boolean = false
