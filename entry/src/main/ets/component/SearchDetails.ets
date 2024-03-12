@@ -1,8 +1,8 @@
 import Api from '../net/Api'
 import { Loading } from './LoadingComponent'
-import router from '@ohos.router'
-import { SearchDetailsBean, SearchDetailsItemBean } from '../bean/SearchDetailsBean'
+import { SearchDetailsItemBean } from '../bean/SearchDetailsBean'
 import { Utils } from '../Utils/Utils'
+import { SearchRequest } from '../common/SearchRequest'
 
 @Component
 export struct SearchVideoDetails {
@@ -12,7 +12,14 @@ export struct SearchVideoDetails {
   @State searchDetailsItemBean: Array<SearchDetailsItemBean> = []
   @State isRefreshing: boolean = false
 
+  @Prop @Watch('initPage') searchRequest: string
+
   aboutToAppear() {
+    this.initPage()
+  }
+
+  initPage() {
+    this.page = 1
     Api.getSearchDetails('video', this.search, this.page).then((searchDetailsBean) => {
       this.isLoading = 1
       this.searchDetailsItemBean = searchDetailsBean.result
@@ -67,11 +74,11 @@ export struct SearchVideoDetails {
             .maxLines(2)
             .fontColor(Color.Black)
             .fontSize(14)
-            .letterSpacing(2)
+            .letterSpacing(1)
             .maxFontSize(16)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .width('100%')
-            .margin({left:8})
+            .width('90%')
+            .margin({ left: 8 })
             .align(Alignment.TopStart)
             .fontWeight(FontWeight.Bold)
 
@@ -85,11 +92,8 @@ export struct SearchVideoDetails {
           }.margin({ left: 8, bottom: 4 })
 
           Row() {
-            Image($r('app.media.ic_video_play_dack'))
-              .height(14)
-              .width(14)
-              .objectFit(ImageFit.Auto)
-              .margin({right:8})
+            Image($r('app.media.ic_detail_play'))
+              .imageStyle()
 
             Text(Utils.Views(item.play))
               .textStyle()
@@ -103,7 +107,7 @@ export struct SearchVideoDetails {
               .layoutWeight(1)
             Image($r('app.media.ic_more_vertical'))
               .imageStyle()
-              .onClick(()=>{
+              .onClick(() => {
                 AlertDialog.show(
                   {
                     message: item.description,
@@ -118,7 +122,7 @@ export struct SearchVideoDetails {
           }.margin({ left: 8, bottom: 8, top: 4 })
         }
         .alignItems(HorizontalAlign.Start)
-        .margin({top:12,bottom:4})
+        .margin({ top: 12, bottom: 4 })
         .layoutWeight(1)
 
       }.justifyContent(FlexAlign.SpaceBetween)
@@ -158,6 +162,17 @@ export struct SearchVideoDetails {
     })
     .width('100%')
     .layoutWeight(1)
+  }
+
+  request(request1: () => void) {
+    request1 = () => {
+      Api.getSearchDetails('video', this.search, this.page).then((searchDetailsBean) => {
+        this.isLoading = 1
+        this.searchDetailsItemBean = searchDetailsBean.result
+      }).catch((err => {
+        this.isLoading = -1
+      }))
+    }
   }
 }
 

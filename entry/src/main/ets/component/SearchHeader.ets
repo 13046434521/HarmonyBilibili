@@ -4,7 +4,7 @@ import router from '@ohos.router'
 export struct SearchHeader {
   @Prop title: string
   @Link search: string
-  clickEvent = ()=> {}
+  clickEvent = (msg?:string)=> {}
   build() {
     Row() {
       Image($r('app.media.ic_common_back_gray'))
@@ -31,7 +31,7 @@ export struct SearchHeader {
         .height('100%')
         .width(40)
         .onClick(() => {
-          this.clickEvent()
+          this.clickEvent(this.search)
         })
     }.width('100%')
     .height('5%')
