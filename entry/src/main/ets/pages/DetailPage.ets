@@ -15,8 +15,6 @@ struct DetailPage {
   aboutToAppear() {
     this.bvid = router.getParams()['bvid']
     this.cid = router.getParams()['cid']
-
-
   }
 
   build() {
@@ -25,7 +23,6 @@ struct DetailPage {
         Video({ src: this.url }).width('100%')
           .height(240)
           .autoPlay(false)
-
         // XComponent({
         //   id: this.ijkConfig.id,
         //   type: this.ijkConfig.type,

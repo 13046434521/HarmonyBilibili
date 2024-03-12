@@ -1,4 +1,5 @@
-import axios, {AxiosInstance} from '@ohos/axios'
+import axios, {AxiosInstance, AxiosRequestTransformer,
+  InternalAxiosRequestConfig} from '@ohos/axios'
 import HomeBean from '../bean/HomeBean';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { PlayVideoBean } from '../bean/PlayVideoBean';
@@ -24,6 +25,7 @@ class Api {
     }
   })
 
+
   instanceCookie = axios.create({
     baseURL: this.baseURl,
     timeout: 10000,
@@ -33,7 +35,25 @@ class Api {
       "Referer": "https://www.bilibili.com"
     }
   })
+/*  this.instance.interceptors.response.use((response: AxiosResponse) => {
+      // 对响应数据做点什么
+      response.data = '在拦截器中，内容被更改了'
+      return response;
+    }, (error: AxiosError) => {
+      // 对响应错误做点什么
+      return Promise.reject(error);
+    });*/
+  constructor() {
+    this.instance.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
+      console.log(`拦截器：发送URL：${value.baseURL}${value.url}`)
+      return value
+    })
 
+    this.instanceCookie.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
+      console.log(`拦截器:cookie的：发送URL：${value.baseURL}${value.url}`)
+      return value
+    })
+  }
   getApi(): AxiosInstance {
     return this.instance
   }
@@ -107,9 +127,7 @@ class Api {
 
   getSearchAllDetails(video?: string, keyword?: string, page: number = 0): Promise<SearchDetailsBean> {
     return new Promise((resolve, reject) => {
-      //https://api.bilibili.com/x/web-interface/search/all/v2
       let url = `/web-interface/search/type?search_type=video&keyword=${keyword}&page=${page}`
-      // this.instance.defaults.headers["cookie"] = this.cookie
       this.instanceCookie.get(url).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
           resolve(resp.data.data)
@@ -124,9 +142,21 @@ class Api {
       })
     })
   }
-  getSearchDetails(video?: string, keyword?: string, page: number = 0): Promise<SearchDetailsBean> {
+/*  视频：video
+  番剧：media_bangumi
+  影视：media_ft
+  直播间及主播：live
+  直播间：live_room
+  主播：live_user
+  专栏：article
+  话题：topic
+  用户：bili_user
+  相簿：photo*/
+  // 详细搜索，只能是上列的值
+  getSearchDetails(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchDetailsBean> {
     return new Promise((resolve, reject) => {
-      let url = `/web-interface/search/type?search_type=video&keyword=${keyword}&page=${page}`
+      let url = `/web-interface/search/type?search_type=${video}&keyword=${keyword}&page=${page}`
+      console.log("jtl:getSearchDetails:" + url)
       this.instanceCookie.get(url).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
           resolve(resp.data.data)
@@ -141,6 +171,10 @@ class Api {
       })
     })
   }
+}
+
+function resolveHttp(){
+
 }
 
 const api: Api = new Api()

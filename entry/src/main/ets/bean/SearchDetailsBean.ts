@@ -13,6 +13,8 @@
 "show_column": 0,
 "in_black_key": 0,
 "in_white_key": 0*/
+import observer from '@ohos.telephony.observer'
+
 export class SearchDetailsBean{
   seid:string
   suggest_keyword:string

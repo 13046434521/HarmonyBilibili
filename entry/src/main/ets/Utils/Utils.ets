@@ -18,5 +18,14 @@ export class Utils {
     // console.log("duration:"+duration+"---"+minute+'---'+second)
     return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
   }
+
+  static upRichText(title:string,fontSize:number){
+    return title.replace(`em class="keyword`,`p style="font-size: ${fontSize}px;text-align: start;font-weight: bold; color: rgb(24,78,228)`).replace(`em`,`p`)
+  }
+  static upRichTextClear(title:string){
+    let msg =  title.replace(`<em class="keyword">`,"").replace(`</em>`,"")
+    console.log("rich text:"+msg)
+    return msg
+  }
 }
 

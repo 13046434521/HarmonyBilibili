@@ -54,7 +54,7 @@ struct SearchPage{
       .animationDuration(200)
       .onChange((index: number) => {
         this.currentIndex = index
-      })
+      }).layoutWeight(1)
     }.width('100%')
     .height('100%')
   }

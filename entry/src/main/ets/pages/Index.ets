@@ -30,7 +30,6 @@ struct Index {
 
   @State currentTab :TabIcon = null
 
-
   build() {
     Tabs(){
       TabContent(){
