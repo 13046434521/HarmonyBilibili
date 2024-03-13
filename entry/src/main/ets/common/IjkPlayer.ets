@@ -1,4 +1,4 @@
-/*
+
 import {
   IjkMediaPlayer,
   OnBufferingUpdateListener,
@@ -12,10 +12,10 @@ import {
 
 @Observed
 export class IjkPlayerConfig {
-  */
+
 /*  id: 'xcomponentId',
     type: 'surface',
-    libraryname: 'ijkplayer_napi'*//*
+    libraryname: 'ijkplayer_napi'*/
 
   id: string = "ijkplayer"
   type: IjkPlayerConfigType = IjkPlayerConfigType.surface
@@ -24,21 +24,20 @@ export class IjkPlayerConfig {
 
   headers =  new Map<string,string>([
     ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
-    // ["Connection","keep-alive"],
-    // ["Referer", "https://www.bilibili.com"]
-    ['Content-Type','application/octet-stream']
+    ["Referer", "https://www.bilibili.com"]
   ]);
+
   public constructor(id?: string,
                      type?: IjkPlayerConfigType,
                      libraryName?: string,
                      url?: string,
                      header?: Map<string, string>) {
-*/
+
 /*    this.id = id
     this.type = type
     this.libraryName = libraryName
     this.url = url
-    this.header = header*//*
+    this.headers = header*/
 
   }
 }
@@ -51,7 +50,7 @@ export enum IjkPlayerConfigType {
 export class IjkPlayer extends IjkMediaPlayer {
   private static instance: IjkPlayer
   ijkPlayerConfig: IjkPlayerConfig
-
+  date :number =Date.now()
   private constructor() {
     super()
   }
@@ -74,8 +73,11 @@ export class IjkPlayer extends IjkMediaPlayer {
     this.setDebug(true)
     // 初始化视频资源
     this.native_setup()
-    this.setDataSource(this.ijkPlayerConfig.url)
+    // console.log("IjkPlayer.getInstance：setDataSource:ijkConfig:url1:"+this.ijkPlayerConfig.url)
     this.setDataSourceHeader(this.ijkPlayerConfig.headers)
+    this.setDataSource(this.ijkPlayerConfig.url)
+
+    this.setDataSourceHeaders(this.ijkPlayerConfig.url,this.ijkPlayerConfig.headers)
     // 默认设置
     this.defaultOption()
     // 屏幕常亮
@@ -90,8 +92,6 @@ export class IjkPlayer extends IjkMediaPlayer {
     this.setOnErrorListener(mOnErrorListener)
     // 将前面的Listener进行设置
     this.setMessageListener()
-    // 加载数据
-    this.prepareAsync()
   }
 
   // 播放器的一些默认设置
@@ -114,7 +114,7 @@ export class IjkPlayer extends IjkMediaPlayer {
     this.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max_cached_duration", "3000");
     // 无限制收流
     this.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", "1");
-
+    // this.setOptionLong(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", "1")
     this.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "opensles", "1");
 
     // 设置超时
@@ -124,4 +124,4 @@ export class IjkPlayer extends IjkMediaPlayer {
     this.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "addrinfo_timeout", "10000000");
     this.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_timeout", "10000000");
   }
-}*/
+}

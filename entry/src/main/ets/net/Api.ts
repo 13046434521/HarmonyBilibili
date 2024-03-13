@@ -35,22 +35,18 @@ class Api {
       "Referer": "https://www.bilibili.com"
     }
   })
-/*  this.instance.interceptors.response.use((response: AxiosResponse) => {
-      // 对响应数据做点什么
-      response.data = '在拦截器中，内容被更改了'
-      return response;
-    }, (error: AxiosError) => {
-      // 对响应错误做点什么
-      return Promise.reject(error);
-    });*/
+
   constructor() {
     this.instance.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
-      console.log(`拦截器：发送URL：${value.baseURL}${value.url}`)
+      console.log(`拦截器：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
+      for (const element of value.headers) {
+         console.log(`拦截器：header:${element.toString()}`)
+      }
       return value
     })
 
     this.instanceCookie.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
-      console.log(`拦截器:cookie的：发送URL：${value.baseURL}${value.url}`)
+      console.log(`拦截器:cookie的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
       return value
     })
   }
@@ -171,10 +167,6 @@ class Api {
       })
     })
   }
-}
-
-function resolveHttp(){
-
 }
 
 const api: Api = new Api()

@@ -122,7 +122,16 @@ struct SearchPage {
 
 
 
-// video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo
+// 视频：video
+// 番剧：media_bangumi
+// 影视：media_ft
+// 直播间及主播：live
+// 直播间：live_room
+// 主播：live_user
+// 专栏：article
+// 话题：topic
+// 用户：bili_user
+// 相簿：photo
 enum SearchType {
   ALL = 'all',
   VIDEO = 'video',

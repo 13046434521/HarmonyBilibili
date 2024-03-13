@@ -28,17 +28,17 @@ import { IjkPlayerNapi } from "./utils/IjkPlayerNapi";
 
 
 export class IjkMediaPlayer {
-  // private static instance: IjkMediaPlayer;
+  private static instances: IjkMediaPlayer;
 
   constructor() {
   };
 
-/*  public static getInstance(): IjkMediaPlayer {
-    if (!IjkMediaPlayer.instance) {
-      IjkMediaPlayer.instance = new IjkMediaPlayer();
+  public static getInstances(): IjkMediaPlayer {
+    if (!IjkMediaPlayer.instances) {
+      IjkMediaPlayer.instances = new IjkMediaPlayer();
     }
-    return IjkMediaPlayer.instance;
-  }*/
+    return IjkMediaPlayer.instances;
+  }
 
   public static OPT_CATEGORY_FORMAT: string = "1";
   public static OPT_CATEGORY_CODEC: string = "2";
@@ -70,11 +70,24 @@ export class IjkMediaPlayer {
   }
 
   setDataSource(url: string): void {
-    url = "https://upos-sz-mirror08c.bilivideo.com/upgcxcode/73/94/1392119473/1392119473-1-192.mp4?e=ig8euxZM2rNcNbRVhwdVhwdlhWdVhwdVhoNvNC8BqJIzNbfq9rVEuxTEnE8L5F6VnEsSTx0vkX8fqJeYTj_lta53NCM=&uipk=5&nbs=1&deadline=1709922889&gen=playurlv2&os=08cbv&oi=2018263300&trid=660f5693519340b9a6fb36c68c31fb13T&mid=3546578753162198&platform=html5&upsig=cf006756811d11221733536d2d1fccaf&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&bvc=vod&nettype=0&bw=24332&orderid=0,1&buvid=&build=0&mobi_app=&f=T_0_0&logo=80000000"
     if (!!this.ijkplayer_napi)
       this.ijkplayer_napi._setDataSource(url);
   }
-
+  setDataSourceHeaders(url: string, headers?:Map<string,string>) {
+    var builder = '';
+    if (headers) {
+      headers.forEach((value, key) => {
+        var parm = key.trim() + ": ";
+        if (value)
+          parm += value.trim();
+        parm += "\r\n";
+        builder += parm;
+      });
+      this.ijkplayer_napi._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", builder);
+      this.ijkplayer_napi._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "async,cache,crypto,file,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
+    }
+    this.ijkplayer_napi._setDataSource(url);
+  }
   setDataSourceHeader(headers: Map<string, string>): void {
     if (headers) {
       let builder: string = '';
@@ -85,6 +98,7 @@ export class IjkMediaPlayer {
         param += "\r\n";
         builder += param;
       });
+      console.log("拦截器后：setDataSourceHeader:"+`${builder}`)
       if (!!this.ijkplayer_napi) {
         this.ijkplayer_napi._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", builder);
         this.ijkplayer_napi._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "async,cache,crypto,file,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
