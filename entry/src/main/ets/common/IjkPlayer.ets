@@ -10,6 +10,10 @@ import {
   OnVideoSizeChangedListener
 } from "@ohos/ijkplayer";
 
+export enum IjkPlayerConfigType {
+  surface = 'surface',
+  component = 'component'
+}
 @Observed
 export class IjkPlayerConfig {
 
@@ -20,7 +24,7 @@ export class IjkPlayerConfig {
   id: string = "ijkplayer"
   type: IjkPlayerConfigType = IjkPlayerConfigType.surface
   libraryName: string = "ijkplayer_napi"
-  url: string
+  url: string =""
 
   headers =  new Map<string,string>([
     ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
@@ -42,18 +46,27 @@ export class IjkPlayerConfig {
   }
 }
 
-export enum IjkPlayerConfigType {
-  surface = 'surface',
-  component = 'component'
-}
 
-export class IjkPlayer extends IjkMediaPlayer {
+
+export class IjkPlayer extends IjkMediaPlayer implements OnVideoSizeChangedListener,OnPreparedListener,OnCompletionListener,
+OnBufferingUpdateListener,OnSeekCompleteListener,OnInfoListener,OnErrorListener {
   private static instance: IjkPlayer
   ijkPlayerConfig: IjkPlayerConfig
   date :number =Date.now()
+
   private constructor() {
     super()
   }
+
+  onVideoSizeChanged: (width: number, height: number, sar_num: number, sar_den: number) => {
+
+  }
+  onPrepared: () => void;
+  onCompletion: () => void;
+  onBufferingUpdate: (percent: number) => void;
+  onSeekComplete: () => void;
+  onInfo: (what: number, extra: number) => void;
+  onError: (what: number, extra: number) => void;
 
   public static getInstance(): IjkPlayer {
     if (!IjkPlayer.instance) {
@@ -70,12 +83,10 @@ export class IjkPlayer extends IjkMediaPlayer {
                     mOnInfoListener?: OnInfoListener, mOnErrorListener?: OnErrorListener) {
     this.ijkPlayerConfig = ijkPlayerConfig
     this.setContext(context);
-    this.setDebug(true)
+    this.setDebug(false)
     // 初始化视频资源
     this.native_setup()
-    // console.log("IjkPlayer.getInstance：setDataSource:ijkConfig:url1:"+this.ijkPlayerConfig.url)
-    this.setDataSourceHeader(this.ijkPlayerConfig.headers)
-    this.setDataSource(this.ijkPlayerConfig.url)
+    console.log("IjkPlayer.getInstance：setDataSource:url:"+this.ijkPlayerConfig.url)
 
     this.setDataSourceHeaders(this.ijkPlayerConfig.url,this.ijkPlayerConfig.headers)
     // 默认设置
@@ -92,6 +103,8 @@ export class IjkPlayer extends IjkMediaPlayer {
     this.setOnErrorListener(mOnErrorListener)
     // 将前面的Listener进行设置
     this.setMessageListener()
+    // 直接播放
+    this.prepareAsync()
   }
 
   // 播放器的一些默认设置

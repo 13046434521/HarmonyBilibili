@@ -74,6 +74,7 @@ export class IjkMediaPlayer {
       this.ijkplayer_napi._setDataSource(url);
   }
   setDataSourceHeaders(url: string, headers?:Map<string,string>) {
+    console.log("播放地址："+url)
     var builder = '';
     if (headers) {
       headers.forEach((value, key) => {

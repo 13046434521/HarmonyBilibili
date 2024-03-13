@@ -90,14 +90,13 @@ class Api {
 
   getPlayVideo(bvid: string, cid: number): Promise<PlayVideoBean> {
     return new Promise((resolve, reject) => {
-      //let url = `${this.playURL}?bvid=${bvid}&cid=${cid}&qn=112`
-      this.instance.get(`/player/playurl?bvid=${bvid}&cid=${cid}`).then(resp => {
+      this.instance.get(`/player/playurl?bvid=${bvid}&cid=${cid}&qn=112`).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
           resolve(resp.data.data)
         } else {
           reject("请求失败：" + resp.status)
         }
-        console.log("jtl:getHomeSearch:" + resp.status + "---" + JSON.stringify(resp.data))
+        console.log("jtl:getPlayVideo:" + resp.status + "---" + JSON.stringify(resp.data))
       }).catch(error => {
         console.log("jtl:" + error)
         reject("请求失败：" + error)

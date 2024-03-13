@@ -2,7 +2,6 @@ import Api from '../net/Api'
 import { Loading } from './LoadingComponent'
 import { SearchDetailsItemBean } from '../bean/SearchDetailsBean'
 import { Utils } from '../Utils/Utils'
-import { SearchRequest } from '../common/SearchRequest'
 
 @Component
 export struct SearchVideoDetails {
@@ -55,19 +54,19 @@ export struct SearchVideoDetails {
             .height('100%')
             .objectFit(ImageFit.Auto)
             .borderRadius(5)
-          Text(item.duration)
+          Text(Utils.TimeDeal(item.duration))
             .maxLines(1)
             .margin({ bottom: 4, right: 8 })
             .fontSize(12)
             .backgroundColor(Color.Grey)
             .fontColor(Color.White)
-            .borderRadius(8)
-            .padding(8)
+            .borderRadius(4)
+            .padding(4)
+            .opacity(0.8)
 
         }.width('50%')
         .padding(12)
         .align(Alignment.BottomEnd)
-
 
         Column() {
           Text(Utils.upRichTextClear(item.title))

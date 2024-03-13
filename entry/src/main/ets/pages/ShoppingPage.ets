@@ -1,3 +1,4 @@
+import { Utils } from '../Utils/Utils'
 
 @Component
 // 主界面中的购物页面，很可能被去掉
@@ -7,7 +8,7 @@ export struct ShoppingPage {
   build() {
     Row() {
       Column() {
-        Text(this.message)
+        Text(Utils.TimeDeal('12:1:1'))
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
       }
