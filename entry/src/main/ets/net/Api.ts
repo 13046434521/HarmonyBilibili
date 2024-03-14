@@ -107,7 +107,7 @@ class Api {
   // 详细搜索，type:只能是上列的值
   // 需要cookie
   getSearchDetails(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchDetailsBean> {
-    let key = keyword.replace(` `,`%20`)
+    let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/search/type?search_type=${video}&keyword=${key}&page=${page}`
     return this.request(url,true)
   }

@@ -62,7 +62,7 @@ export class Utils {
   }
 
   static upRichTextClear(title:string){
-    let msg =  title.replace(`<em class="keyword">`,"").replace(`</em>`,"")
+    let msg =  title.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")
     console.log("rich text:"+msg)
     return msg
   }
