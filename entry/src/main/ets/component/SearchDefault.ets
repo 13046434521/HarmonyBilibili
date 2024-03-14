@@ -10,10 +10,16 @@
  </center>
  <p>
  */
+import Api from '../net/Api'
 
 @Component
 export struct SearchDefaultDetails {
   @State message: string = '默认'
+
+  aboutToAppear(){
+
+    // Api.request()
+  }
 
   build() {
     Row() {

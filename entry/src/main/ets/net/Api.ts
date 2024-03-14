@@ -4,8 +4,9 @@ import HomeBean from '../bean/HomeBean';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { PlayVideoBean } from '../bean/PlayVideoBean';
 import { SearchHotBean } from '../bean/SearchHotBean';
-import { SearchDetailsBean, SearchDetailsItemBean } from '../bean/SearchDetailsBean';
+import { SearchVideoBean, SearchVideoItemBean } from '../bean/SearchVideoBean';
 import { PageListBean } from '../bean/PageListBean';
+import { SearchDefaultBean } from '../bean/SearchDefaultBean';
 
 class Api {
   baseURl = 'https://api.bilibili.com/x'
@@ -74,15 +75,18 @@ class Api {
 
   // https://api.bilibili.com/x/player/pagelist?bvid=BV1Hj421Z7Lw
   // {"code":0,"message":"0","ttl":1,"data":[{"cid":1469197725,"page":1,"from":"vupload","part":"美国即将封禁tiktok！","duration":222,"vid":"","weblink":"","dimension":{"width":1920,"height":1080,"rotate":0},"first_frame":"http://i0.hdslb.com/bfs/storyff/n240314sa2e909peujo7pbkqeqe4zik5_firsti.jpg"}]}
-  // 没有cid时，需要额外获取一遍
+  // Video页面，没有cid时，需要额外获取一遍
   getPageList(bvid: string):Promise<PageListBean[]>{
     let url = `/player/pagelist?bvid=${bvid}`
     return this.request(url)
   }
 
   //https://s.search.bilibili.com/main/suggest?term=kobe&main_ver=v1&highlight=""
-  getSearchSuggest(){}
-// getSearchHot(): Promise<BaseResponse<SearchHotBean>> {
+  getSearchSuggest(){
+
+  }
+  // getSearchHot(): Promise<BaseResponse<SearchHotBean>> {
+  // 20个热搜
   getSearchHot(): Promise<SearchHotBean> {
     let url = '/v2/search/trending/ranking'
     return this.request<SearchHotBean>(url)
@@ -90,8 +94,9 @@ class Api {
 
   // 综合搜索：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=洛天依&page=1
   //  需要cookie
-  getSearchDefalut(): Promise<SearchDetailsBean> {
-    let url = `/web-interface/wbi/search/all/v2`
+  getSearchDefault(keyword:string,page:number=1): Promise<SearchDefaultBean> {
+    let key = keyword.replace(/ /g,`%20`)
+    let url = `/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}`
     return this.request(url,true)
   }
 /*  视频：video
@@ -106,14 +111,14 @@ class Api {
   相簿：photo*/
   // 详细搜索，type:只能是上列的值
   // 需要cookie
-  getSearchDetails(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchDetailsBean> {
+  getSearchDetails(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchVideoBean> {
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/search/type?search_type=${video}&keyword=${key}&page=${page}`
     return this.request(url,true)
   }
 
   // 请求
-  request<T>(url:string,isCookie:boolean = false):Promise<T>{
+  private request<T>(url:string,isCookie:boolean = false):Promise<T>{
     let instance = this.instance
     if (isCookie){
       instance = this.instanceCookie

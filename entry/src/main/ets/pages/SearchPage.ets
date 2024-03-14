@@ -5,6 +5,10 @@ import { SearchDefaultDetails } from '../component/SearchDefault'
 import { SearchMediaBangumiDetails } from '../component/SearchMediaBangumi'
 import { SearchBiliUserDetails } from '../component/SearchBiliUser'
 import { SearchArticleDetails } from '../component/SearchArticle'
+import Api from '../net/Api'
+import { topTlistBean } from '../bean/SearchDefaultBean'
+import { LoadingStatus } from '../common/LoadingStatus'
+import { Loading } from '../component/LoadingComponent'
 
 
 @Entry
@@ -22,9 +26,47 @@ struct SearchPage {
   @State searchBiliUserRequest: string = ''
   @State searchPhotoRequest: string = ''
   @State type: SearchType = SearchType.ALL
-  typeArray:SearchType[] = [SearchType.ALL,SearchType.VIDEO,SearchType.MEDIA_BANGUMI,SearchType.LIVE,SearchType.BILI_USER,SearchType.ARTICLE]
+  typeArray: SearchType[] = [SearchType.ALL, SearchType.VIDEO, SearchType.MEDIA_BANGUMI, SearchType.LIVE, SearchType.BILI_USER, SearchType.MEDIA_FT,SearchType.ARTICLE]
+
+  @State videoTitle: string = "视频"
+  @State mediaBangumiTitle: string = "番剧"
+  @State mediaFtTitle: string = "影视"
+  @State liveTitle: string = "直播"
+  @State biliUserTitle: string = "用户"
+  @State articleTitle: string = "图文"
+
+  @State loadingStatus:LoadingStatus = LoadingStatus.Loading
+  @State errMessage:string =''
+  upDataTitleTab(topList: topTlistBean) {
+    if (topList.video != 0) {
+      this.videoTitle = `视频(${topList.video>99?"99+":topList.video})`
+    }
+    if (topList.media_bangumi != 0) {
+      this.mediaBangumiTitle = `番剧(${topList.media_bangumi>99?"99+":topList.media_bangumi})`
+    }
+    if (topList.live != 0) {
+      this.liveTitle = `直播(${topList.live>99?"99+":topList.live})`
+    }
+    if (topList.bili_user != 0) {
+      this.biliUserTitle = `用户(${topList.bili_user>99?"99+":topList.bili_user})`
+    }
+    if (topList.media_ft != 0) {
+      this.mediaFtTitle = `影视(${topList.media_ft>99?"99+":topList.media_ft})`
+    }
+    if (topList.article != 0) {
+      this.articleTitle = `图文(${topList.article>99?"99+":topList.article})`
+    }
+  }
+
   aboutToAppear() {
     this.search = router.getParams()['keyword']
+    Api.getSearchDefault(this.search).then(response => {
+      response.seid
+      this.upDataTitleTab(response.top_tlist)
+      this.loadingStatus = LoadingStatus.LoadingSuccess
+    }).catch (err=>{
+      this.errMessage = err
+    })
   }
 
   @Builder
@@ -32,16 +74,16 @@ struct SearchPage {
     Column() {
       Text(name)
         .fontColor(this.type === type ? Color.Pink : Color.Grey)
-        .fontSize(16)
-        .fontWeight(this.type === type ? 500 : 400)
+        .fontSize(14)
         .lineHeight(22)
-        .margin({ bottom: 7 })
+        .maxLines(1)
+        .margin({ bottom: 4 })
       Divider()
         .strokeWidth(2)
         .color(Color.Pink)
         .opacity(this.type === type ? 1 : 0)
         .width('60%')
-    }.width('100%')
+    }.width('22%')
   }
 
   build() {
@@ -49,81 +91,98 @@ struct SearchPage {
       SearchHeader({ title: this.search, search: this.search, clickEvent: (msg: string) => {
         this.upDateType()
       } })
-      Tabs({ barPosition: BarPosition.Start }) {
-        TabContent() {
-          SearchDefaultDetails()
-        }.tabBar(this.TabBuilder(SearchType.ALL, "综合"))
-        TabContent() {
-          // 视频页面
-          SearchVideoDetails({ search: this.search, searchRequest: this.searchVideoRequest })
-        }.tabBar(this.TabBuilder(SearchType.VIDEO, "视频"))
-        TabContent() {
-          SearchMediaBangumiDetails()
-        }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, "番剧"))
-        TabContent() {
-          Text("直播")
-        }.tabBar(this.TabBuilder(SearchType.LIVE, "直播"))
+      if (this.loadingStatus ===LoadingStatus.LoadingSuccess){
+        Tabs({ barPosition: BarPosition.Start }) {
+          TabContent() {
+            SearchDefaultDetails()
+          }.tabBar(this.TabBuilder(SearchType.ALL, "综合"))
 
-        TabContent() {
-         SearchBiliUserDetails()
-        }.tabBar(this.TabBuilder(SearchType.BILI_USER, "用户"))
-        TabContent() {
-          SearchArticleDetails()
-        }.tabBar(this.TabBuilder(SearchType.ARTICLE, "图文"))
+          TabContent() {
+            // 视频页面
+            SearchVideoDetails({ search: this.search, searchRequest: this.searchVideoRequest })
+          }.tabBar(this.TabBuilder(SearchType.VIDEO, this.videoTitle))
+
+          TabContent() {
+            SearchMediaBangumiDetails()
+          }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, this.mediaBangumiTitle))
+
+          TabContent() {
+            Text("直播")
+          }.tabBar(this.TabBuilder(SearchType.LIVE, this.liveTitle))
+
+          TabContent() {
+            SearchBiliUserDetails()
+          }.tabBar(this.TabBuilder(SearchType.BILI_USER, this.biliUserTitle))
+          TabContent() {
+            SearchBiliUserDetails()
+          }.tabBar(this.TabBuilder(SearchType.MEDIA_FT, this.mediaFtTitle))
+
+          TabContent() {
+            SearchArticleDetails()
+          }.tabBar(this.TabBuilder(SearchType.ARTICLE, this.articleTitle))
+        }
+        .vertical(false)
+        .barMode(BarMode.Scrollable)
+        .scrollable(false)
+        .animationDuration(200)
+        .onChange((index: number) => {
+          this.type = this.typeArray[index]
+        })
+        .layoutWeight(1)
+      }else if (LoadingStatus.Loading){
+        Loading().width('100%').layoutWeight(1)
+      }else{
+        Text("加载失败:"+this.errMessage)
+          .width("100%")
+          .layoutWeight(1)
+          .textAlign(TextAlign.Center)
       }
-      .vertical(false)
-      .barMode(BarMode.Fixed)
-      .animationDuration(200)
-      .onChange((index: number) => {
-        this.type = this.typeArray[index]
-      })
-      .layoutWeight(1)
+
     }.width('100%')
     .height('100%')
   }
 
-  upDateType(){
-  switch (this.type) {
-    case SearchType.VIDEO: {
-      this.searchVideoRequest = this.search
-      break
-    }
-    case SearchType.PHOTO: {
-      this.searchPhotoRequest = this.search
-      break
-    }
-    case SearchType.MEDIA_BANGUMI: {
-      this.searchMediaBangumiRequest = this.search
-      break
-    }
-    case SearchType.MEDIA_FT: {
-      this.searchMediaFtRequest = this.search
-      break
-    }
-    case SearchType.LIVE: {
-      this.searchLiveRequest = this.search
-      break
-    }
-    case SearchType.LIVE_USER: {
-      this.searchLiveUserRequest = this.search
-      break
-    }
-    case SearchType.ARTICLE: {
-      this.searchArticleRequest = this.search
-      break
-    }
-    case SearchType.BILI_USER: {
-      this.searchBiliUserRequest = this.search
-      break
-    }
-    default: {
-      this.searchTopicRequest = this.search
-      break
+  upDateType() {
+    switch (this.type) {
+      case SearchType.VIDEO: {
+        this.searchVideoRequest = this.search
+        break
+      }
+      case SearchType.PHOTO: {
+        this.searchPhotoRequest = this.search
+        break
+      }
+      case SearchType.MEDIA_BANGUMI: {
+        this.searchMediaBangumiRequest = this.search
+        break
+      }
+      case SearchType.MEDIA_FT: {
+        this.searchMediaFtRequest = this.search
+        break
+      }
+      case SearchType.LIVE: {
+        this.searchLiveRequest = this.search
+        break
+      }
+      case SearchType.LIVE_USER: {
+        this.searchLiveUserRequest = this.search
+        break
+      }
+      case SearchType.ARTICLE: {
+        this.searchArticleRequest = this.search
+        break
+      }
+      case SearchType.BILI_USER: {
+        this.searchBiliUserRequest = this.search
+        break
+      }
+      default: {
+        this.searchTopicRequest = this.search
+        break
+      }
     }
   }
 }
-}
-
 
 
 // 视频：video
@@ -132,7 +191,7 @@ struct SearchPage {
 // 直播间及主播：live
 // 直播间：live_room
 // 主播：live_user
-// 专栏：article
+// 图文：article
 // 话题：topic
 // 用户：bili_user
 // 相簿：photo
@@ -140,7 +199,7 @@ enum SearchType {
   ALL = 'all',
   VIDEO = 'video',
   MEDIA_BANGUMI = 'media_bangumi',
-  MEDIA_FT = 'media_ft',
+  MEDIA_FT = 'media_ft', // 影视
   LIVE = 'live',
   LIVE_USER = 'live_user',
   ARTICLE = 'article',

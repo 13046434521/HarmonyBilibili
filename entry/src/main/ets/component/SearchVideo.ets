@@ -1,6 +1,6 @@
 import Api from '../net/Api'
 import { Loading } from './LoadingComponent'
-import { SearchDetailsItemBean } from '../bean/SearchDetailsBean'
+import { SearchVideoItemBean } from '../bean/SearchVideoBean'
 import { Utils } from '../Utils/Utils'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
@@ -11,7 +11,7 @@ export struct SearchVideoDetails {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   @Link search: string
   @State page: number = 1
-  @State searchDetailsItemBean: Array<SearchDetailsItemBean> = []
+  @State searchDetailsItemBean: Array<SearchVideoItemBean> = []
   @State isRefreshing: boolean = false
 
   @Prop @Watch('initPage') searchRequest: string
@@ -49,7 +49,7 @@ export struct SearchVideoDetails {
   }
 
   @Builder
-  VideoItem(item: SearchDetailsItemBean) {
+  VideoItem(item: SearchVideoItemBean) {
     Column() {
       Divider().color(Color.Grey)
         .margin({ left: 5, right: 5 })
@@ -75,6 +75,10 @@ export struct SearchVideoDetails {
         .align(Alignment.BottomEnd)
 
         Column() {
+/*          RichText(Utils.upRichText(item.title))
+            .width('90%')
+            .margin({ left: 8 })
+            .align(Alignment.TopStart)*/
           Text(Utils.upRichTextClear(item.title))
             .maxLines(2)
             .fontColor(Color.Black)
@@ -142,7 +146,7 @@ export struct SearchVideoDetails {
   Refresh() {
     Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
       List() {
-        ForEach(this.searchDetailsItemBean, (item: SearchDetailsItemBean) => {
+        ForEach(this.searchDetailsItemBean, (item: SearchVideoItemBean) => {
           ListItem() {
             this.VideoItem(item)
           }

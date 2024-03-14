@@ -57,9 +57,11 @@ export class Utils {
     return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
   }
 
-  static upRichText(title:string,fontSize:number){
-    return title.replace(`em class="keyword`,`p style="font-size: ${fontSize}px;text-align: start;font-weight: bold; color: rgb(24,78,228)`).replace(`em`,`p`)
-  }
+  static upRichText(title:string){
+    let msg =  title.replace(/<em class="keyword">/g,"<font size=25px color=red>").replace(/<\/em>/g,"</font>")
+    console.log("rich text:"+msg)
+    return msg
+   }
 
   static upRichTextClear(title:string){
     let msg =  title.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")

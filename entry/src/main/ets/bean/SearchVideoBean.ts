@@ -15,7 +15,7 @@
 "in_white_key": 0*/
 import observer from '@ohos.telephony.observer'
 
-export class SearchDetailsBean{
+export class SearchVideoBean{
   seid:string
   suggest_keyword:string
   rqt_type:string
@@ -27,10 +27,10 @@ export class SearchDetailsBean{
   show_column:number
   in_black_key:number
   in_white_key:number
-  result:SearchDetailsItemBean[]
+  result:SearchVideoItemBean[]
 }
 
-export class SearchDetailsItemBean{
+export class SearchVideoItemBean{
   type:string
   id:number
   author:string

@@ -11,7 +11,7 @@ export struct MinePage {
     '<div style="width: 500px;height: 500px;border: 1px solid;margin: 0auto;">' +
     '<p style="font-size: 35px;text-align: center;font-weight: bold; color: rgb(24,78,228)">字体大小35px,行高45px</p>' +
     '<p style="background-color: #e5e5e5;line-height: 45px;font-size: 35px;text-indent: 2em;">' +
-    '<p>这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字</p>';
+    '<p>这是一段文字这是一段文字这是一段文<font size=25px color=red>php中文网</font>字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字这是一段文字</p>';
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center,
