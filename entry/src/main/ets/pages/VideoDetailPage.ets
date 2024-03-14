@@ -22,8 +22,8 @@ struct DetailPage {
     if (this.cid === 0) {
       Api.getPageList(this.bvid).then((item)=>{
         this.cid = item[0].cid
-        Utils.Toast("测试一下:"+item[0].cid)
         this.dimension = item[0].dimension
+
         Utils.Toast("测试一下:"+item[0].dimension.width+" --- "+item[0].dimension.height)
         this.loadingPage = LoadingStatus.LoadingSuccess
       }).catch(err=>{

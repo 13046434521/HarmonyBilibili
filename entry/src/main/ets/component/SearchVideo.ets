@@ -4,17 +4,18 @@ import { SearchDetailsItemBean } from '../bean/SearchDetailsBean'
 import { Utils } from '../Utils/Utils'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
+import { LoadingStatus } from '../common/LoadingStatus'
 
 @Component
 export struct SearchVideoDetails {
-  @State isLoading: number = 0 // 为0时正在加载，1时加载成功,-1加载失败
+  @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   @Link search: string
   @State page: number = 1
   @State searchDetailsItemBean: Array<SearchDetailsItemBean> = []
   @State isRefreshing: boolean = false
 
   @Prop @Watch('initPage') searchRequest: string
-
+  @State errMessage:string = ''
   aboutToAppear() {
     this.initPage()
   }
@@ -22,24 +23,26 @@ export struct SearchVideoDetails {
   initPage() {
     this.page = 1
     Api.getSearchDetails('video', this.search, this.page).then((searchDetailsBean) => {
-      this.isLoading = 1
+      this.loadingStatus =LoadingStatus.LoadingSuccess
       this.searchDetailsItemBean = searchDetailsBean.result
     }).catch((err => {
-      this.isLoading = -1
+      this.loadingStatus =LoadingStatus.LoadingFailure
+      this.errMessage = err
       promptAction.showToast({message:err})
     }))
   }
 
   build() {
     Column() {
-      if (this.isLoading === 0) {
+      if (this.loadingStatus === LoadingStatus.Loading) {
         Loading().layoutWeight(1)
-      } else if (this.isLoading === 1) {
+      } else if (this.loadingStatus === LoadingStatus.LoadingSuccess) {
         this.Refresh()
       } else {
-        Text("加载出错")
+        Text("加载出错:"+this.errMessage)
           .width('100%')
           .height('100%')
+          .align(Alignment.Center)
       }
     }.width('100%')
     .height('100%')
@@ -184,4 +187,8 @@ function textStyle() {
   .fontColor(Color.Grey)
   .maxLines(1)
   .textOverflow({ overflow: TextOverflow.Ellipsis })
+}
+
+@Builder function get123(){
+
 }
