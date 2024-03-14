@@ -2,7 +2,7 @@
   "src": [
     "pages/Index",
     "pages/SearchHotPage",
-    "pages/DetailPage",
+    "pages/VideoDetailPage",
     "pages/SearchPage",
     "pages/SearchCompletePage"
   ]

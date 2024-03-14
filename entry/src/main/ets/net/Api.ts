@@ -5,6 +5,7 @@ import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { PlayVideoBean } from '../bean/PlayVideoBean';
 import { SearchHotBean } from '../bean/SearchHotBean';
 import { SearchDetailsBean, SearchDetailsItemBean } from '../bean/SearchDetailsBean';
+import { PageListBean } from '../bean/PageListBean';
 
 class Api {
   baseURl = 'https://api.bilibili.com/x'
@@ -55,87 +56,43 @@ class Api {
   }
 
   getHomePages(page: number = 0): Promise<HomeBean> {
-    return new Promise((resolve, reject) => {
-      this.instance.get(`/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=${page}&feed_version=undefined`).then(resp => {
-        if (resp.status == axios.HttpStatusCode.Ok) {
-          resolve(resp.data.data)
-        } else {
-          reject("请求失败：" + resp.status)
-        }
-        console.log("jtl:getHomePages:" + resp.status + "---" + JSON.stringify(resp.data))
-      }).catch(error => {
-        console.log("jtl:" + error)
-        reject("请求失败：" + error)
-      })
-    })
+    let url = `/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=${page}&feed_version=undefined`
+    return this.request(url)
   }
 
   getHomeSearch(): Promise<HomeSearchBean> {
-    return new Promise((resolve, reject) => {
-      this.instance.get("/web-interface/search/default").then(resp => {
-        if (resp.status == axios.HttpStatusCode.Ok) {
-          resolve(resp.data.data)
-        } else {
-          reject("请求失败：" + resp.status)
-        }
-        console.log("jtl:getHomeSearch:" + resp.status + "---" + JSON.stringify(resp.data))
-      }).catch(error => {
-        console.log("jtl:" + error)
-        reject("请求失败：" + error)
-      })
-    })
+    let url = "/web-interface/search/default"
+    return this.request(url)
   }
 
   // 'https://api.bilibili.com/x/web-interface/archive/stat?bvid=BV1dS421c777&cid=1461669931'
 
   getPlayVideo(bvid: string, cid: number): Promise<PlayVideoBean> {
-    return new Promise((resolve, reject) => {
-      this.instance.get(`/player/playurl?bvid=${bvid}&cid=${cid}&qn=112`).then(resp => {
-        if (resp.status == axios.HttpStatusCode.Ok) {
-          resolve(resp.data.data)
-        } else {
-          reject("请求失败：" + resp.status)
-        }
-        console.log("jtl:getPlayVideo:" + resp.status + "---" + JSON.stringify(resp.data))
-      }).catch(error => {
-        console.log("jtl:" + error)
-        reject("请求失败：" + error)
-      })
-    })
+    let url = `/player/playurl?bvid=${bvid}&cid=${cid}&qn=112`
+    return this.request(url)
   }
 
+  // https://api.bilibili.com/x/player/pagelist?bvid=BV1Hj421Z7Lw
+  // {"code":0,"message":"0","ttl":1,"data":[{"cid":1469197725,"page":1,"from":"vupload","part":"美国即将封禁tiktok！","duration":222,"vid":"","weblink":"","dimension":{"width":1920,"height":1080,"rotate":0},"first_frame":"http://i0.hdslb.com/bfs/storyff/n240314sa2e909peujo7pbkqeqe4zik5_firsti.jpg"}]}
+  // 没有cid时，需要额外获取一遍
+  getPageList(bvid: string):Promise<PageListBean[]>{
+    let url = `/player/pagelist?bvid=${bvid}`
+    return this.request(url)
+  }
+
+  //https://s.search.bilibili.com/main/suggest?term=kobe&main_ver=v1&highlight=""
+  getSearchSuggest(){}
+// getSearchHot(): Promise<BaseResponse<SearchHotBean>> {
   getSearchHot(): Promise<SearchHotBean> {
-    return new Promise((resolve, reject) => {
-      this.instance.get('/v2/search/trending/ranking').then(resp => {
-        if (resp.status == axios.HttpStatusCode.Ok) {
-          resolve(resp.data.data)
-        } else {
-          reject("请求失败：" + resp.status)
-        }
-        console.log("jtl:getSearchHot:" + resp.status + "---" + JSON.stringify(resp.data))
-      }).catch(error => {
-        console.log("jtl:" + error)
-        reject("请求失败：" + error)
-      })
-    })
+    let url = '/v2/search/trending/ranking'
+    return this.request<SearchHotBean>(url)
   }
 
-  getSearchAllDetails(video?: string, keyword?: string, page: number = 0): Promise<SearchDetailsBean> {
-    return new Promise((resolve, reject) => {
-      let url = `/web-interface/search/type?search_type=video&keyword=${keyword}&page=${page}`
-      this.instanceCookie.get(url).then(resp => {
-        if (resp.status == axios.HttpStatusCode.Ok) {
-          resolve(resp.data.data)
-        } else {
-          reject("请求失败：" + resp.status)
-          console.log("jtl:" + resp.status)
-        }
-        console.log("jtl:getSearchDetails:" + resp.status + "---" + JSON.stringify(resp.data))
-      }).catch(error => {
-        console.log("jtl:" + error)
-        reject("请求失败：" + error)
-      })
-    })
+  // 综合搜索：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=洛天依&page=1
+  //  需要cookie
+  getSearchDefalut(): Promise<SearchDetailsBean> {
+    let url = `/web-interface/wbi/search/all/v2`
+    return this.request(url,true)
   }
 /*  视频：video
   番剧：media_bangumi
@@ -147,26 +104,36 @@ class Api {
   话题：topic
   用户：bili_user
   相簿：photo*/
-  // 详细搜索，只能是上列的值
+  // 详细搜索，type:只能是上列的值
+  // 需要cookie
   getSearchDetails(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchDetailsBean> {
+    let url = `/web-interface/search/type?search_type=${video}&keyword=${keyword}&page=${page}`
+    return this.request(url,true)
+  }
+
+  // 请求
+  request<T>(url:string,isCookie:boolean = false):Promise<T>{
+    let instance = this.instance
+    if (isCookie){
+      instance = this.instanceCookie
+    }
     return new Promise((resolve, reject) => {
-      let url = `/web-interface/search/type?search_type=${video}&keyword=${keyword}&page=${page}`
-      console.log("jtl:getSearchDetails:" + url)
-      this.instanceCookie.get(url).then(resp => {
+      instance.get(url).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
           resolve(resp.data.data)
         } else {
           reject("请求失败：" + resp.status)
-          console.log("jtl:" + resp.status)
         }
-        console.log("jtl:getSearchDetails:" + resp.status + "---" + JSON.stringify(resp.data))
+        console.log("Bilibili:response data:" + resp.status + "---" + JSON.stringify(resp.data))
       }).catch(error => {
-        console.log("jtl:" + error)
         reject("请求失败：" + error)
+        console.log("Bilibili:response err:" + error)
       })
     })
   }
 }
+
+
 
 const api: Api = new Api()
 

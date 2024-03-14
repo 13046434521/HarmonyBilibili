@@ -1,4 +1,5 @@
 import window from '@ohos.window'
+import promptAction from '@ohos.promptAction'
 
 export class Utils {
   // 观看量数据转换处理
@@ -73,7 +74,9 @@ export class Utils {
       return num;
     }
   }
-
+  static Toast(message:string){
+    promptAction.showToast({message:message})
+  }
   // private stringForTime(timeMs: number): string {
   //   let totalSeconds: number | string = (timeMs / 1000);
   //   let newSeconds: number | string = totalSeconds % 60;
@@ -109,5 +112,7 @@ function windowOrientation(orientation: window.Orientation){
       data.setPreferredOrientation(orientation);
     })
   }
+
+
 }
 

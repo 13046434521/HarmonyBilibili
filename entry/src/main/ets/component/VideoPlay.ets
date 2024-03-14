@@ -42,6 +42,7 @@ export struct VideoPlay {
 
   aboutToAppear() {
     // IjkPlayer.getInstance().reset()
+    // promptAction.showToast({message:"bvid:"+this.bvid+"  "+"cid:"+this.cid})
   }
 
   aboutToDisappear() {
@@ -49,6 +50,7 @@ export struct VideoPlay {
   }
 
   build() {
+
     Column() {
       Stack({ alignContent: Alignment.BottomStart }) {
         XComponent({
@@ -191,7 +193,7 @@ function loadData(context: Object) {
 
   }).catch(err => {
     promptAction.showToast({
-      message: `${err}  bvid:${this.bvid}  cid:${this.cid}  url:${this.url}`,
+      message: `${"加载视频url失败："}  bvid:${this.bvid}  cid:${this.cid}  url:${this.url}`,
       duration: 2000,
     });
   })
@@ -224,6 +226,7 @@ function initListener() {
   //设置播放完成回调监听
   this.mOnCompletionListener = {
     onCompletion: () => {
+      this.state = PlayStatus.PAUSE
       promptAction.showToast({
         message: "播完了"
       })

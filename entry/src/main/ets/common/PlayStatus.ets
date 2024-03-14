@@ -17,5 +17,7 @@ export enum PlayStatus {
     INIT='初始化',
     PLAY='播放',
     PAUSE='暂停',
-    RELEASE='释放'
+    RELEASE='释放',
+    LOADING = '加载中',
+    STOP = '结束'
 }

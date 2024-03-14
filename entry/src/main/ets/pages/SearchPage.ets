@@ -1,6 +1,10 @@
 import { SearchHeader } from '../component/SearchHeader'
 import router from '@ohos.router'
-import { SearchVideoDetails } from '../component/SearchDetails'
+import { SearchVideoDetails } from '../component/SearchVideo'
+import { SearchDefaultDetails } from '../component/SearchDefault'
+import { SearchMediaBangumiDetails } from '../component/SearchMediaBangumi'
+import { SearchBiliUserDetails } from '../component/SearchBiliUser'
+import { SearchArticleDetails } from '../component/SearchArticle'
 
 
 @Entry
@@ -47,24 +51,24 @@ struct SearchPage {
       } })
       Tabs({ barPosition: BarPosition.Start }) {
         TabContent() {
-          Text("综合")
+          SearchDefaultDetails()
         }.tabBar(this.TabBuilder(SearchType.ALL, "综合"))
         TabContent() {
           // 视频页面
           SearchVideoDetails({ search: this.search, searchRequest: this.searchVideoRequest })
         }.tabBar(this.TabBuilder(SearchType.VIDEO, "视频"))
         TabContent() {
-          Text("番剧")
+          SearchMediaBangumiDetails()
         }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, "番剧"))
         TabContent() {
           Text("直播")
         }.tabBar(this.TabBuilder(SearchType.LIVE, "直播"))
 
         TabContent() {
-          Text("用户")
+         SearchBiliUserDetails()
         }.tabBar(this.TabBuilder(SearchType.BILI_USER, "用户"))
         TabContent() {
-          Text("图文")
+          SearchArticleDetails()
         }.tabBar(this.TabBuilder(SearchType.ARTICLE, "图文"))
       }
       .vertical(false)

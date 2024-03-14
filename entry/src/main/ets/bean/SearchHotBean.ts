@@ -1,3 +1,5 @@
+import { BaseResponse } from './BaseResponse'
+
 export class SearchHotBean{
 /*  "data": {
     "trackid": "11135390230791623592",

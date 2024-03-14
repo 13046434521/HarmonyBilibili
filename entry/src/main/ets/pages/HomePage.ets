@@ -107,7 +107,7 @@ export struct HomePage {
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
     .backgroundColor(Color.White)
     .onClick(event=>{
-      router.pushUrl({url:"pages/DetailPage",params:{
+      router.pushUrl({url:"pages/VideoDetailPage",params:{
         bvid:homeBeanItem.bvid,
         cid:homeBeanItem.cid
       }})

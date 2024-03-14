@@ -2,6 +2,8 @@ import Api from '../net/Api'
 import { Loading } from './LoadingComponent'
 import { SearchDetailsItemBean } from '../bean/SearchDetailsBean'
 import { Utils } from '../Utils/Utils'
+import router from '@ohos.router'
+import promptAction from '@ohos.promptAction'
 
 @Component
 export struct SearchVideoDetails {
@@ -24,6 +26,7 @@ export struct SearchVideoDetails {
       this.searchDetailsItemBean = searchDetailsBean.result
     }).catch((err => {
       this.isLoading = -1
+      promptAction.showToast({message:err})
     }))
   }
 
@@ -127,7 +130,9 @@ export struct SearchVideoDetails {
       }.justifyContent(FlexAlign.SpaceBetween)
       .width('100%')
       .aspectRatio(16 / 5)
-    }
+    }.onClick(()=>{
+      router.pushUrl({url:'pages/VideoDetailPage',params:{'bvid':item.bvid,'cid':0}})
+    })
   }
 
   @Builder
@@ -161,17 +166,6 @@ export struct SearchVideoDetails {
     })
     .width('100%')
     .layoutWeight(1)
-  }
-
-  request(request1: () => void) {
-    request1 = () => {
-      Api.getSearchDetails('video', this.search, this.page).then((searchDetailsBean) => {
-        this.isLoading = 1
-        this.searchDetailsItemBean = searchDetailsBean.result
-      }).catch((err => {
-        this.isLoading = -1
-      }))
-    }
   }
 }
 
