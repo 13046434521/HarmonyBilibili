@@ -9,6 +9,7 @@ import { PageListBean } from '../bean/PageListBean';
 import { SearchBaseBean, SearchDefaultResultBean } from '../bean/SearchBaseBean';
 import { SearchType } from '../common/SearchType';
 import { Utils } from '../Utils/Utils';
+import { SearchSuggestBean, SearchSuggestResultBean } from '../bean/SearchSuggestBean';
 
 class Api {
   baseURl = 'https://api.bilibili.com/x'
@@ -100,8 +101,10 @@ class Api {
   }
 
   //https://s.search.bilibili.com/main/suggest?term=kobe&main_ver=v1&highlight=""
-  getSearchSuggest(){
-
+  getSearchSuggest(suggest:string): Promise<SearchSuggestResultBean>{
+    let keyword = suggest.replace(/ /g,`%20`)
+    let url = `https://s.search.bilibili.com/main/suggest?term=${keyword}&main_ver=v1&highlight=""`
+    return this.request<SearchSuggestResultBean>(url,axios)
   }
   // getSearchHot(): Promise<BaseResponse<SearchHotBean>> {
   // 20个热搜
@@ -110,12 +113,12 @@ class Api {
     return this.request<SearchHotBean>(url)
   }
 
-  // 综合搜索：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=洛天依&page=1
+  //  综合搜索：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=洛天依&page=1
   //  需要cookie
   getSearchDefault(keyword:string,page:number=1): Promise<SearchBaseBean<SearchDefaultResultBean>> {
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}`
-    return this.request(url,true)
+    return this.request(url,this.instanceCookie)
   }
 /*  视频：video
   番剧：media_bangumi
@@ -133,24 +136,32 @@ class Api {
   getSearchType<T>(search_type:SearchType, keyword?: string, page?: number): Promise<SearchBaseBean<T>> {
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}`
-    return this.request(url,true)
+    return this.request(url,this.instanceCookie)
   }
 
   // 请求
-  private request<T>(url:string,isCookie:boolean = false):Promise<T>{
+  private request<T>(url:string,axiosInstance?:AxiosInstance):Promise<T>{
     let instance = this.instance
-    if (isCookie){
-      instance = this.instanceCookie
+    if (axiosInstance){
+      instance = axiosInstance
     }
+
     return new Promise((resolve, reject) => {
       instance.get(url).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
-          resolve(resp.data.data)
+          // 不同的请求，返回的值不一样，正常用data
+          let httpData = resp.data.data
+          // 不同的请求，返回的值不一样，SearchSuggest是result
+          if (httpData === undefined) {
+            httpData= resp.data.result
+          }
+
+          resolve(httpData)
         } else {
           reject("请求失败：" + resp.status)
           Utils.Toast("Bilibili:status err:" + resp.status)
         }
-        console.log("Bilibili:status data:" + resp.status + "---" + JSON.stringify(resp.data))
+        console.log("Bilibili:status data:"+url+"  status" + resp.status + "--*--" + JSON.stringify(resp.data))
       }).catch(error => {
         reject("请求失败：" + error)
         console.log("Bilibili:response err:" + error)

@@ -191,7 +191,3 @@ function textStyle() {
   .maxLines(1)
   .textOverflow({ overflow: TextOverflow.Ellipsis })
 }
-
-@Builder function get123(){
-
-}

@@ -14,6 +14,7 @@ import { SearchLiving } from '../component/SearchLiving'
 import { SearchType } from '../common/SearchType'
 import util from '@ohos.util'
 import { Utils } from '../Utils/Utils'
+import { SearchSuggest } from '../component/SearchSuggest'
 
 
 @Entry
@@ -51,6 +52,7 @@ struct SearchPage {
     }
     return res;
   }
+
   upDataTitleTab(topList: topTlistBean) {
     if (topList.video != 0) {
       this.videoTitle = `视频(${this.setTitleNum(topList.video)})`
@@ -106,7 +108,10 @@ struct SearchPage {
       SearchHeader({ title: this.search, search: this.search, clickEvent: (msg: string) => {
         this.upDateType()
       } })
-      if (this.loadingStatus ===LoadingStatus.LoadingSuccess){
+
+      SearchSuggest({keywords:this.search})
+
+/*      if (this.loadingStatus ===LoadingStatus.LoadingSuccess){
         Tabs({ barPosition: BarPosition.Start }) {
           TabContent() {
             SearchDefaultDetails()
@@ -152,7 +157,8 @@ struct SearchPage {
           .width("100%")
           .layoutWeight(1)
           .textAlign(TextAlign.Center)
-      }
+      }*/
+
 
     }.width('100%')
     .height('100%')
