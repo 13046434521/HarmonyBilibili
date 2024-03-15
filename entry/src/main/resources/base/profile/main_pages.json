@@ -4,6 +4,6 @@
     "pages/SearchHotPage",
     "pages/VideoDetailPage",
     "pages/SearchPage",
-    "pages/SearchCompletePage"
+    "pages/SearchWebPage"
   ]
 }

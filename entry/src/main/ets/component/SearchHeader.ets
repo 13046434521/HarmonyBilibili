@@ -25,7 +25,7 @@ export struct SearchHeader {
         })
 
       Text('搜索')
-        .fontColor(Color.Pink)
+        .fontColor($r('app.color.bilibili_theme'))
         .fontSize(16)
         .margin(15)
         .height('100%')

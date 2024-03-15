@@ -11,6 +11,14 @@
     {
       "name": "EntryAbility_label",
       "value": "Bilibili"
+    },
+    {
+      "name": "web_searchhot_link1",
+      "value": "https://show.bilibili.com/platform/home.html?msource=pc_web&spm_id_from=333.337.0.0"
+    },
+    {
+      "name": "web_searchhot_link",
+      "value": "https://b23.tv/4n9Mg7Q"
     }
   ]
 }

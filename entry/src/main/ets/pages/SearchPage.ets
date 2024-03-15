@@ -90,14 +90,14 @@ struct SearchPage {
   TabBuilder(type: SearchType, name: string) {
     Column() {
       Text(name)
-        .fontColor(this.type === type ? Color.Pink : Color.Grey)
+        .fontColor(this.type === type ?$r('app.color.bilibili_theme'): $r('app.color.bilibili_text_grey'))
         .fontSize(14)
         .lineHeight(22)
         .maxLines(1)
         .margin({ bottom: 4 })
       Divider()
         .strokeWidth(2)
-        .color(Color.Pink)
+        .color($r('app.color.bilibili_theme'))
         .opacity(this.type === type ? 1 : 0)
         .width('60%')
     }.width('22%')

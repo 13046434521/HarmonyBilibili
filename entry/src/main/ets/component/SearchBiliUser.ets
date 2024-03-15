@@ -85,7 +85,7 @@ export struct SearchBiliUserDetails {
         Row() {
           Text(item.uname)
             .fontSize(13)
-            .fontColor(item.official_verify.type === 127 ? Color.Black : Color.Pink)
+            .fontColor(item.official_verify.type === 127 ? $r('app.color.bilibili_text_black') : $r('app.color.bilibili_theme'))
           Image(this.userLevel(item.level))
             .height('15%')
             .margin(4)
@@ -93,7 +93,7 @@ export struct SearchBiliUserDetails {
         }
 
         Text(`${this.userFans(item.fans)}粉丝     ${item.videos}个视频${'\n'}${item.official_verify.desc}`)
-          .fontColor(Color.Grey)
+          .fontColor( $r('app.color.bilibili_text_grey'))
           .fontSize(10)
           .maxLines(2)
           .lineHeight(16)
@@ -109,8 +109,8 @@ export struct SearchBiliUserDetails {
       Text(" + 关注")
         .height('30%')
         .aspectRatio(3 / 1)
-        .fontColor(Color.White)
-        .backgroundColor(Color.Pink)
+        .fontColor($r('app.color.bilibili_text_white'))
+        .backgroundColor($r('app.color.bilibili_theme'))
         .textAlign(TextAlign.Center)
         .borderRadius(2)
         .margin(8)

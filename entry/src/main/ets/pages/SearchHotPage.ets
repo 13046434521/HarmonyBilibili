@@ -30,8 +30,8 @@ struct SearchHotPage {
         router.pushUrl({url:"pages/SearchPage",params:{keyword:this.search}})
      }})
       this.SearchHot((content) => {
-        router.pushUrl({url:"pages/SearchCompletePage"})
-        console.log(content+"pages/SearchCompletePage")
+        router.pushUrl({url:"pages/SearchWebPage"})
+        console.log(content+"pages/SearchWebPage")
       })
       List() {
         ForEach(this.searchHotBean, (item: SearchHotBeanItem) => {
@@ -55,7 +55,7 @@ struct SearchHotPage {
       Row() {
         Text('完整榜单')
           .fontSize(12)
-          .fontColor(Color.Grey)
+          .fontColor($r('app.color.bilibili_text_grey_bold'))
         Image($r('app.media.ic_search_complete'))
           .objectFit(ImageFit.Auto)
           .interpolation(ImageInterpolation.High)

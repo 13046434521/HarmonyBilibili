@@ -31,7 +31,7 @@ export struct HomePage {
       .width('100%')
     }
     .height('100%')
-    .backgroundColor("#F8F8FF")
+    .backgroundColor($r('app.color.bilibili_background_grey'))
   }
 
   @Builder HomeItem(homeBeanItem:HomeBeanItem){
@@ -74,17 +74,19 @@ export struct HomePage {
         .height(32)
       }
       .alignContent(Alignment.Bottom)
+
       Text(homeBeanItem.title)
-        .textAlign(TextAlign.Start)
-        .textOverflow({ overflow:TextOverflow.Clip})
+        .baselineOffset(40)
+        .textOverflow({ overflow:TextOverflow.Ellipsis})
         .maxLines(2)
-        .fontSize(12)
+        .fontSize(14)
         .letterSpacing(1)
         .width('100%')
-        .margin({top:8,bottom:8})
-        .padding({left:4,right:4})
-        .height(32)
-        .lineHeight(16)
+        .aspectRatio(3/1)
+        .padding(8)
+        .fontColor($r('app.color.bilibili_text_black'))
+        .lineHeight(20)
+        .alignSelf(ItemAlign.Start)
 
       Row(){
         Image($r('app.media.icon_playlist_upper'))
@@ -96,16 +98,16 @@ export struct HomePage {
           .fontSize(11)
           .layoutWeight(1)
           .margin({left:5})
-          .fontColor(Color.Gray)
+          .fontColor($r('app.color.bilibili_text_grey_bold'))
         Image(homeBeanItem.owner.face)
           .width(20)
           .align(Alignment.End)
           .visibility(Visibility.None)
       }.width('100%')
-      .height(20)
+      .height(24)
     }
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
-    .backgroundColor(Color.White)
+    .backgroundColor($r('app.color.bilibili_background_white'))
     .onClick(event=>{
       router.pushUrl({url:"pages/VideoDetailPage",params:{
         bvid:homeBeanItem.bvid,
@@ -144,7 +146,9 @@ export struct HomePage {
         .aspectRatio(1)
         .margin({left:10,right:10})
     }.width("100%")
-    .margin({top:20,bottom:20})
+    .height('8%')
+    .backgroundColor($r('app.color.bilibili_background_white'))
+    .margin({top:0,bottom:0})
     .justifyContent(FlexAlign.SpaceEvenly)
   }
 
@@ -183,7 +187,7 @@ export struct HomePage {
   }
 }
 
-@Extend(Text) function  textSizeStyle(){
+@Extend(Text) function textSizeStyle(){
   .height(20)
   .fontSize(11)
   .fontColor(Color.White)

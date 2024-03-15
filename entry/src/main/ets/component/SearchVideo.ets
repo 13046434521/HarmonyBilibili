@@ -51,7 +51,7 @@ export struct SearchVideoDetails {
   @Builder
   VideoItem(item: SearchVideoItemBean) {
     Column() {
-      Divider().color(Color.Grey)
+      Divider().color($r('app.color.bilibili_divider'))
         .margin({ left: 5, right: 5 })
       Row() {
         Stack() {

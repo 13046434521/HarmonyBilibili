@@ -7,5 +7,6 @@ export struct Failure{
     Text(this.msg+'\n'+this.extra)
       .width('100%')
       .height('100%')
+      .align(Alignment.Center)
   }
 }

@@ -34,14 +34,13 @@ export struct SearchSuggest {
               .aspectRatio(8/1)
           }
         })
-      }.divider({ strokeWidth: 1, color: Color.Grey, startMargin: 8, endMargin: 8 })
+      }.divider({ strokeWidth: 1, color: $r('app.color.bilibili_divider'), startMargin: 8, endMargin: 8 })
       .width('100%')
       .backgroundColor(Color.White)
 
     }.width('100%')
     .height('100%')
     .alignItems(VerticalAlign.Top)
-    .backgroundColor(Color.Grey)
-
+    .backgroundColor($r('app.color.bilibili_background_grey'))
   }
 }

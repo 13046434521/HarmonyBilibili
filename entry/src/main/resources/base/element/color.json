@@ -3,6 +3,46 @@
     {
       "name": "start_window_background",
       "value": "#FFFFFF"
-    }
+    },
+    {
+      "name": "bilibili_background_white",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "bilibili_divider",
+      "value": "#E4E4E4"
+    },
+    {
+      "name": "bilibili_theme",
+      "value": "#ED6A96"
+    },
+    {
+      "name": "bilibili_text_grey",
+      "value": "#F2F3F5"
+    },
+    {
+      "name": "bilibili_text_grey_bold",
+      "value": "#94999D"
+    },
+    {
+      "name": "bilibili_text_black",
+      "value": "#18191D"
+    },
+    {
+      "name": "bilibili_text_white",
+      "value": "#F2F3F5"
+    },
+    {
+      "name": "bilibili_background_grey",
+      "value": "#F2F3F5"
+    },
+    {
+      "name": "color_pink",
+      "value": "#ED6A96"
+    },
+    {
+      "name": "color_grey",
+      "value": "#F2F3F5"
+    },
   ]
 }
