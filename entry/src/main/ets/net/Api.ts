@@ -69,14 +69,25 @@ class Api {
   }
 
   // 'https://api.bilibili.com/x/player/playurl?bvid=BV1dS421c777&cid=1461669931&qn=116'
+  // 需要Referer
+  // 视频Video
   getPlayVideo(bvid: string, cid: number): Promise<PlayVideoBean> {
-    let url = `/player/playurl?bvid=${bvid}&cid=${cid}&qn=112`
+    let url = `/player/playurl?bvid=${bvid}&cid=${cid}&qn=116`
     return this.request(url)
   }
 
   // 'https://api.bilibili.com/x/player/wbi/playurl?avid=1000489113&cid=1432195172&qn=116'
+  // 需要Referer
+  // 影视
   getPlayVideoAid(avid: number, cid: number): Promise<PlayVideoBean> {
     let url = `/player/playurl?avid=${avid}&cid=${cid}&qn=116`
+    return this.request(url)
+  }
+  // 'https://api.bilibili.com/pgc/player/web/playurl?ep_id=232533'
+  // 需要Referer
+  // 番剧
+  getPlayVideoEpId(ep_id: number): Promise<PlayVideoBean> {
+    let url = `/player/playurl?ep_id=${ep_id}&qn=116`
     return this.request(url)
   }
 
