@@ -76,13 +76,8 @@ struct SearchPage {
 
   aboutToAppear() {
     this.search = router.getParams()['keyword']
-    this.searchPage()
-  }
-
-  searchPage() {
-    // 搜索页面时，不需要SearchSuggest
-    this.isNeedSuggest = false
     Api.getSearchDefault(this.search).then(response => {
+      response.seid
       this.upDataTitleTab(response.top_tlist)
       this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch(err => {
@@ -110,29 +105,20 @@ struct SearchPage {
 
   build() {
     Column() {
-      SearchHeader({ title: this.search, change: (value: string) => {
-        this.search = value
-        this.isNeedSuggest = true
-      }, clickEvent: () => {
-        this.searchPage()
-      } })
-      if (this.isNeedSuggest && this.search != "") {
-        SearchSuggest({ keywords: this.search, click: (value: string) => {
-          this.search = value
-          this.searchPage()
-        } })
-      } else {
-        // Row().width('100%').aspectRatio(1).backgroundColor(Color.Black)
-        LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this) })
-          .layoutWeight(1)
-      }
+      // SearchHeader({ title: this.search, search: this.search, clickEvent: (msg: string) => {
+      //   this.upDateType()
+      // } })
+      // if (this.isNeedSuggest) {
+      //   SearchSuggest({ keywords: this.search })
+      // } else {
+      //   LoadingData({loadingStatus:this.loadingStatus,page:this.tabPages.bind(this)})
+      // }
 
     }.width('100%')
     .height('100%')
   }
 
-  @Builder
-  tabPages() {
+  @Builder tabPages(){
     Tabs({ barPosition: BarPosition.Start }) {
       TabContent() {
         SearchDefaultDetails()

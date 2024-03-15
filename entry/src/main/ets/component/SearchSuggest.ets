@@ -6,7 +6,7 @@ import { Utils } from '../Utils/Utils'
 export struct SearchSuggest {
   @Prop @Watch("init") keywords: string
   @State suggestTags: SearchSuggestTagBean[] = []
-  @State isInit: boolean = false
+  click:(value:string)=>void
 
   aboutToAppear() {
     this.init()
@@ -32,7 +32,9 @@ export struct SearchSuggest {
               .margin({ left:8,right:8 })
               .width('100%')
               .aspectRatio(8/1)
-          }
+          }.onClick(()=>{
+            this.click(Utils.upRichTextClear(item.value))
+          })
         })
       }.divider({ strokeWidth: 1, color: $r('app.color.bilibili_divider'), startMargin: 8, endMargin: 8 })
       .width('100%')

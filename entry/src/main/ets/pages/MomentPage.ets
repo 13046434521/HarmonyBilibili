@@ -10,15 +10,20 @@ export struct MomentPage {
   build() {
     Row() {
       Column() {
-        LoadingData({loadingStatus:this.loadingStatus,page:this.loading})
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
+        Button("loading")
           .onClick(()=>{
-            // this.isloading= !this.isloading
+            this.loadingStatus = LoadingStatus.Loading
           })
-          .height(100)
-
+        Button("loadingFailure")
+          .onClick(()=>{
+            this.loadingStatus = LoadingStatus.LoadingFailure
+          })
+        Button("loadingSuccess")
+          .onClick(()=>{
+            this.loadingStatus = LoadingStatus.LoadingSuccess
+          })
+        LoadingData({loadingStatus:this.loadingStatus,page:this.loading})
+          .layoutWeight(1)
       }
       .width('100%')
     }
@@ -26,6 +31,6 @@ export struct MomentPage {
   }
 
   @Builder loading(){
-    Loading().layoutWeight(1).height(200).width(200)
+    Image($r('app.media.test')).height(100).width(100)
   }
 }

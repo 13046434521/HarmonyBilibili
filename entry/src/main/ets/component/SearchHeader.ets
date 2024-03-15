@@ -3,8 +3,8 @@ import router from '@ohos.router'
 @Component
 export struct SearchHeader {
   @Prop title: string
-  @Link search: string
-  clickEvent = (msg?:string)=> {}
+  clickEvent? = (msg?:string)=> {}
+  change? = (value:string)=> {}
   build() {
     Row() {
       Image($r('app.media.ic_common_back_gray'))
@@ -21,7 +21,7 @@ export struct SearchHeader {
         .height('100%')
         .layoutWeight(1)
         .onChange((value: string) => {
-          this.search = value
+          this.change(value)
         })
 
       Text('搜索')
@@ -31,7 +31,7 @@ export struct SearchHeader {
         .height('100%')
         .width(40)
         .onClick(() => {
-          this.clickEvent(this.search)
+          this.clickEvent()
         })
     }.width('100%')
     .height('5%')

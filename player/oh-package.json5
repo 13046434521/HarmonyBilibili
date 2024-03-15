@@ -1,0 +1,13 @@
+{
+  "name": "player",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    // 本地库导入方式
+    "@ohos/ijkplayer": "file:../ijkplayer"
+  }
+}
+

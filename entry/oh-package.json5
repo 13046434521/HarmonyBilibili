@@ -8,6 +8,7 @@
   "version": "1.0.0",
   "dependencies": {
     // 本地库导入方式
-    "@ohos/ijkplayer": "file:../ijkplayer"
+    "@ohos/ijkplayer": "file:../ijkplayer",
+    "@ohos/ijkplayer": "file:../player"
   }
 }
