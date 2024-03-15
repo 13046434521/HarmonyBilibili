@@ -159,11 +159,11 @@ export struct HomePage {
         })
       }.lanes(2)
       .onReachEnd(()=>{
-        Api.getHomePages(++this.homePage).then(homebean=>{
+        Api.getHomePages(this.homePage+1).then(homebean=>{
+          this.homePage++
           this.homeBeanData = this.homeBeanData.concat( homebean.item)
-          console.log('onReachEnd :'+homebean.item )
         }).catch(err=>{
-          console.log('onReachEnd :'+err )
+          Utils.Toast(err)
         })
       })
 

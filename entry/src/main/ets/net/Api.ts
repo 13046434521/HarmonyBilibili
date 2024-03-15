@@ -7,6 +7,8 @@ import { SearchHotBean } from '../bean/SearchHotBean';
 import { SearchVideoBean, SearchVideoItemBean } from '../bean/SearchVideoBean';
 import { PageListBean } from '../bean/PageListBean';
 import { SearchBaseBean, SearchDefaultResultBean } from '../bean/SearchBaseBean';
+import { SearchType } from '../common/SearchType';
+import { Utils } from '../Utils/Utils';
 
 class Api {
   baseURl = 'https://api.bilibili.com/x'
@@ -114,11 +116,12 @@ class Api {
   话题：topic
   用户：bili_user
   相簿：photo*/
+  // "video" |"media_bangumi" |"media_ft" |"live" |"live_room" |"live_user" |"article" |"topic" |"bili_user" |"photo"
   // 详细搜索，type:只能是上列的值
   // 需要cookie
-  getSearchDetails<T>(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchBaseBean<T>> {
+  getSearchType<T>(search_type:SearchType, keyword?: string, page?: number): Promise<SearchBaseBean<T>> {
     let key = keyword.replace(/ /g,`%20`)
-    let url = `/web-interface/search/type?search_type=${video}&keyword=${key}&page=${page}`
+    let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}`
     return this.request(url,true)
   }
 
@@ -134,11 +137,13 @@ class Api {
           resolve(resp.data.data)
         } else {
           reject("请求失败：" + resp.status)
+          Utils.Toast("Bilibili:status err:" + resp.status)
         }
-        console.log("Bilibili:response data:" + resp.status + "---" + JSON.stringify(resp.data))
+        console.log("Bilibili:status data:" + resp.status + "---" + JSON.stringify(resp.data))
       }).catch(error => {
         reject("请求失败：" + error)
         console.log("Bilibili:response err:" + error)
+        Utils.Toast("Bilibili:response err:" + error)
       })
     })
   }

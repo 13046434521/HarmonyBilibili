@@ -11,6 +11,9 @@ import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
 import { SearchMediaFt } from '../component/SearchMediaFt'
 import { SearchLiving } from '../component/SearchLiving'
+import { SearchType } from '../common/SearchType'
+import util from '@ohos.util'
+import { Utils } from '../Utils/Utils'
 
 
 @Entry
@@ -115,22 +118,22 @@ struct SearchPage {
           }.tabBar(this.TabBuilder(SearchType.VIDEO, this.videoTitle))
 
           TabContent() {
-            SearchMediaBangumiDetails()
+            SearchMediaBangumiDetails({ search: this.search, searchRequest: this.searchBiliUserRequest })
           }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, this.mediaBangumiTitle))
 
           TabContent() {
-            SearchLiving()
+            SearchLiving({ search: this.search, searchRequest: this.searchBiliUserRequest })
           }.tabBar(this.TabBuilder(SearchType.LIVE, this.liveTitle))
 
           TabContent() {
-            SearchBiliUserDetails()
+            SearchBiliUserDetails({ search: this.search, searchRequest: this.searchBiliUserRequest })
           }.tabBar(this.TabBuilder(SearchType.BILI_USER, this.biliUserTitle))
           TabContent() {
-            SearchMediaFt()
+            SearchMediaFt({ search: this.search, searchRequest: this.searchBiliUserRequest })
           }.tabBar(this.TabBuilder(SearchType.MEDIA_FT, this.mediaFtTitle))
 
           TabContent() {
-            SearchArticleDetails()
+            SearchArticleDetails({ search: this.search, searchRequest: this.searchBiliUserRequest })
           }.tabBar(this.TabBuilder(SearchType.ARTICLE, this.articleTitle))
         }
         .vertical(false)
@@ -139,6 +142,7 @@ struct SearchPage {
         .animationDuration(200)
         .onChange((index: number) => {
           this.type = this.typeArray[index]
+          Utils.Toast(this.type)
         })
         .layoutWeight(1)
       }else if (this.loadingStatus === LoadingStatus.Loading){
@@ -155,6 +159,7 @@ struct SearchPage {
   }
 
   upDateType() {
+    Utils.Toast(this.type + '   ' + this.search)
     switch (this.type) {
       case SearchType.VIDEO: {
         this.searchVideoRequest = this.search
@@ -194,28 +199,4 @@ struct SearchPage {
       }
     }
   }
-}
-
-
-// 视频：video
-// 番剧：media_bangumi
-// 影视：media_ft
-// 直播间及主播：live
-// 直播间：live_room
-// 主播：live_user
-// 图文：article
-// 话题：topic
-// 用户：bili_user
-// 相簿：photo
-enum SearchType {
-  ALL = 'all',
-  VIDEO = 'video',
-  MEDIA_BANGUMI = 'media_bangumi',
-  MEDIA_FT = 'media_ft', // 影视
-  LIVE = 'live',
-  LIVE_USER = 'live_user',
-  ARTICLE = 'article',
-  TOPIC = 'topic',
-  BILI_USER = 'bili_user',
-  PHOTO = 'photo',
 }

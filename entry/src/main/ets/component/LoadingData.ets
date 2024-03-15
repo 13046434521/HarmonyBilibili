@@ -5,7 +5,7 @@ import { Loading } from './LoadingComponent'
 @Component
 export struct LoadingData{
   @BuilderParam page:()=>void
-  @Prop loadingStatus :LoadingStatus
+  @Link loadingStatus :LoadingStatus
   build(){
     Column(){
       if (this.loadingStatus === LoadingStatus.Loading){

@@ -5,6 +5,7 @@ import { Utils } from '../Utils/Utils'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
 import { LoadingStatus } from '../common/LoadingStatus'
+import { SearchType } from '../common/SearchType'
 
 @Component
 export struct SearchVideoDetails {
@@ -22,13 +23,12 @@ export struct SearchVideoDetails {
 
   initPage() {
     this.page = 1
-    Api.getSearchDetails<SearchVideoItemBean>('video', this.search, this.page).then((searchDetailsBean) => {
+    Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page).then((searchDetailsBean) => {
       this.loadingStatus =LoadingStatus.LoadingSuccess
       this.searchDetailsItemBean = searchDetailsBean.result
     }).catch((err => {
       this.loadingStatus =LoadingStatus.LoadingFailure
       this.errMessage = err
-      promptAction.showToast({message:err})
     }))
   }
 
@@ -153,18 +153,17 @@ export struct SearchVideoDetails {
         })
       }
       .onReachEnd(() => {
-        console.log('onReachEnd 前:getSearchDetails' + this.searchDetailsItemBean[0].title)
-        Api.getSearchDetails<SearchVideoItemBean>('video', this.search, ++this.page).then((searchDetailsBean) => {
+        Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page+1).then((searchDetailsBean) => {
+          this.page++
           this.searchDetailsItemBean = this.searchDetailsItemBean.concat(searchDetailsBean.result)
         }).catch((err => {
-          // 错误代码
-          console.log('onReachEnd :' + err)
+          Utils.Toast(err)
         }))
       }).width('100%')
       .layoutWeight(1)
     }.onRefreshing(() => {
       this.page = 1
-      Api.getSearchDetails<SearchVideoItemBean>('video', this.search, this.page).then((searchDetailsBean) => {
+      Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page).then((searchDetailsBean) => {
         this.searchDetailsItemBean = searchDetailsBean.result
         this.isRefreshing = false
       }).catch((err => {

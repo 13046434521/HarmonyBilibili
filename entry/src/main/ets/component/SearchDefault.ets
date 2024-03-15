@@ -10,7 +10,11 @@
  </center>
  <p>
  */
+import { SearchDefaultResultBean } from '../bean/SearchBaseBean'
+import { LoadingStatus } from '../common/LoadingStatus'
+import { SearchType } from '../common/SearchType'
 import Api from '../net/Api'
+import { LoadingData } from './LoadingData'
 
 @Component
 export struct SearchDefaultDetails {
