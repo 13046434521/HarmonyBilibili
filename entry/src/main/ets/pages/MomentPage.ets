@@ -1,4 +1,6 @@
+import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
+import { LoadingData } from '../component/LoadingData'
 
 @Component
 // 动态页面
@@ -9,7 +11,7 @@ export struct MomentPage {
     Row() {
       Column() {
         if (!this.isloading){
-          Loading().layoutWeight(1).height(200).width(200)
+          LoadingData({loadingStatus:LoadingStatus.Loading,page:this.loading})
         }
         Text(this.message)
           .fontSize(50)
@@ -23,5 +25,9 @@ export struct MomentPage {
       .width('100%')
     }
     .height('100%')
+  }
+
+  @Builder loading(){
+    Loading().layoutWeight(1).height(200).width(200)
   }
 }

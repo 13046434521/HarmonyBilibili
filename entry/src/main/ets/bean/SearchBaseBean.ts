@@ -1,5 +1,5 @@
 // Ä¬ÈÏËÑË÷½á¹û£ºhttps://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=%E6%B4%9B%E5%A4%A9%E4%BE%9D&page=1
-export class SearchDefaultBean{
+export class SearchBaseBean<T>{
 /*  "seid": "1871174439078139085",
   "page": 1,
   "pagesize": 20,
@@ -28,7 +28,7 @@ export class SearchDefaultBean{
   show_module_list:string[]
   in_black_key:number
   in_white_key:number
-  result:SearchDefaultResultBean[]
+  result:T[]
 }
 
 export class topTlistBean{

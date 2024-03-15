@@ -6,9 +6,11 @@ import { SearchMediaBangumiDetails } from '../component/SearchMediaBangumi'
 import { SearchBiliUserDetails } from '../component/SearchBiliUser'
 import { SearchArticleDetails } from '../component/SearchArticle'
 import Api from '../net/Api'
-import { topTlistBean } from '../bean/SearchDefaultBean'
+import { topTlistBean } from '../bean/SearchBaseBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
+import { SearchMediaFt } from '../component/SearchMediaFt'
+import { SearchLiving } from '../component/SearchLiving'
 
 
 @Entry
@@ -117,14 +119,14 @@ struct SearchPage {
           }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, this.mediaBangumiTitle))
 
           TabContent() {
-            Text("直播")
+            SearchLiving()
           }.tabBar(this.TabBuilder(SearchType.LIVE, this.liveTitle))
 
           TabContent() {
             SearchBiliUserDetails()
           }.tabBar(this.TabBuilder(SearchType.BILI_USER, this.biliUserTitle))
           TabContent() {
-            SearchBiliUserDetails()
+            SearchMediaFt()
           }.tabBar(this.TabBuilder(SearchType.MEDIA_FT, this.mediaFtTitle))
 
           TabContent() {

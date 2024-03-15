@@ -2,8 +2,8 @@ import { LoadingStatus } from '../common/LoadingStatus'
 import { LoadingData } from './LoadingData'
 
 @Component
-export struct SearchBiliUserDetails {
-  @State message: string = '用户'
+export struct SearchMediaFt {
+  @State message: string = '影视'
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
   build() {
     Row() {

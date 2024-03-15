@@ -6,7 +6,7 @@ import { PlayVideoBean } from '../bean/PlayVideoBean';
 import { SearchHotBean } from '../bean/SearchHotBean';
 import { SearchVideoBean, SearchVideoItemBean } from '../bean/SearchVideoBean';
 import { PageListBean } from '../bean/PageListBean';
-import { SearchDefaultBean } from '../bean/SearchDefaultBean';
+import { SearchBaseBean, SearchDefaultResultBean } from '../bean/SearchBaseBean';
 
 class Api {
   baseURl = 'https://api.bilibili.com/x'
@@ -99,7 +99,7 @@ class Api {
 
   // 综合搜索：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=洛天依&page=1
   //  需要cookie
-  getSearchDefault(keyword:string,page:number=1): Promise<SearchDefaultBean> {
+  getSearchDefault(keyword:string,page:number=1): Promise<SearchBaseBean<SearchDefaultResultBean>> {
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}`
     return this.request(url,true)
@@ -116,7 +116,7 @@ class Api {
   相簿：photo*/
   // 详细搜索，type:只能是上列的值
   // 需要cookie
-  getSearchDetails(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchVideoBean> {
+  getSearchDetails<T>(video?:"video"|"media_bangumi"|"media_ft"|"live"|"live_room"|"live_user"|"article"|"topic"|"bili_user"|"photo", keyword?: string, page?: number): Promise<SearchBaseBean<T>> {
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/search/type?search_type=${video}&keyword=${key}&page=${page}`
     return this.request(url,true)

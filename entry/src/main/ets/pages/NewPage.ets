@@ -11,6 +11,7 @@ export struct NewPage {
     Row() {
       Column() {
         Search()
+
         Text(this.message)
           .copyOption(CopyOptions.InApp)
           .fontSize(14)

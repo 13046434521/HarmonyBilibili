@@ -22,7 +22,7 @@ export struct SearchVideoDetails {
 
   initPage() {
     this.page = 1
-    Api.getSearchDetails('video', this.search, this.page).then((searchDetailsBean) => {
+    Api.getSearchDetails<SearchVideoItemBean>('video', this.search, this.page).then((searchDetailsBean) => {
       this.loadingStatus =LoadingStatus.LoadingSuccess
       this.searchDetailsItemBean = searchDetailsBean.result
     }).catch((err => {
@@ -154,7 +154,7 @@ export struct SearchVideoDetails {
       }
       .onReachEnd(() => {
         console.log('onReachEnd 前:getSearchDetails' + this.searchDetailsItemBean[0].title)
-        Api.getSearchDetails('video', this.search, ++this.page).then((searchDetailsBean) => {
+        Api.getSearchDetails<SearchVideoItemBean>('video', this.search, ++this.page).then((searchDetailsBean) => {
           this.searchDetailsItemBean = this.searchDetailsItemBean.concat(searchDetailsBean.result)
         }).catch((err => {
           // 错误代码
@@ -164,7 +164,7 @@ export struct SearchVideoDetails {
       .layoutWeight(1)
     }.onRefreshing(() => {
       this.page = 1
-      Api.getSearchDetails('video', this.search, this.page).then((searchDetailsBean) => {
+      Api.getSearchDetails<SearchVideoItemBean>('video', this.search, this.page).then((searchDetailsBean) => {
         this.searchDetailsItemBean = searchDetailsBean.result
         this.isRefreshing = false
       }).catch((err => {

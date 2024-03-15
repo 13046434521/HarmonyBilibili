@@ -1,16 +1,18 @@
+import { LoadingStatus } from '../common/LoadingStatus'
+import { LoadingData } from './LoadingData'
+
 @Component
 export struct SearchMediaBangumiDetails {
   @State message: string = '番剧'
-
+  @State loadingStatus:LoadingStatus = LoadingStatus.Loading
   build() {
     Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-      }
-      .width('100%')
+      LoadingData({loadingStatus :this.loadingStatus,page:this.biliUserPage})
     }
     .height('100%')
+  }
+
+  @Builder biliUserPage(){
+    Column().layoutWeight(1)
   }
 }
