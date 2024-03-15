@@ -37,24 +37,33 @@ struct SearchPage {
 
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
   @State errMessage:string =''
+
+  // 超过99的变成99+
+  setTitleNum(title:number):string{
+    let res = `${title}`
+    if (title>99) {
+      res = "99+"
+    }
+    return res;
+  }
   upDataTitleTab(topList: topTlistBean) {
     if (topList.video != 0) {
-      this.videoTitle = `视频(${topList.video>99?"99+":topList.video})`
+      this.videoTitle = `视频(${this.setTitleNum(topList.video)})`
     }
     if (topList.media_bangumi != 0) {
-      this.mediaBangumiTitle = `番剧(${topList.media_bangumi>99?"99+":topList.media_bangumi})`
+      this.mediaBangumiTitle = `番剧(${this.setTitleNum(topList.media_bangumi)})`
     }
     if (topList.live != 0) {
-      this.liveTitle = `直播(${topList.live>99?"99+":topList.live})`
+      this.liveTitle = `直播(${this.setTitleNum(topList.live)})`
     }
     if (topList.bili_user != 0) {
-      this.biliUserTitle = `用户(${topList.bili_user>99?"99+":topList.bili_user})`
+      this.biliUserTitle = `用户(${this.setTitleNum(topList.bili_user)})`
     }
     if (topList.media_ft != 0) {
-      this.mediaFtTitle = `影视(${topList.media_ft>99?"99+":topList.media_ft})`
+      this.mediaFtTitle = `影视(${this.setTitleNum(topList.media_ft)})`
     }
     if (topList.article != 0) {
-      this.articleTitle = `图文(${topList.article>99?"99+":topList.article})`
+      this.articleTitle = `图文(${this.setTitleNum(topList.article)})`
     }
   }
 
@@ -66,6 +75,7 @@ struct SearchPage {
       this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch (err=>{
       this.errMessage = err
+      this.loadingStatus = LoadingStatus.LoadingFailure
     })
   }
 
@@ -129,7 +139,7 @@ struct SearchPage {
           this.type = this.typeArray[index]
         })
         .layoutWeight(1)
-      }else if (LoadingStatus.Loading){
+      }else if (this.loadingStatus === LoadingStatus.Loading){
         Loading().width('100%').layoutWeight(1)
       }else{
         Text("加载失败:"+this.errMessage)

@@ -66,10 +66,15 @@ class Api {
     return this.request(url)
   }
 
-  // 'https://api.bilibili.com/x/web-interface/archive/stat?bvid=BV1dS421c777&cid=1461669931'
-
+  // 'https://api.bilibili.com/x/player/playurl?bvid=BV1dS421c777&cid=1461669931&qn=116'
   getPlayVideo(bvid: string, cid: number): Promise<PlayVideoBean> {
     let url = `/player/playurl?bvid=${bvid}&cid=${cid}&qn=112`
+    return this.request(url)
+  }
+
+  // 'https://api.bilibili.com/x/player/wbi/playurl?avid=1000489113&cid=1432195172&qn=116'
+  getPlayVideoAid(avid: number, cid: number): Promise<PlayVideoBean> {
+    let url = `/player/playurl?avid=${avid}&cid=${cid}&qn=116`
     return this.request(url)
   }
 
