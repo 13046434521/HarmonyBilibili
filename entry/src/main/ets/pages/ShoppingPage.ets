@@ -1,7 +1,7 @@
 import { Utils } from '../Utils/Utils'
 
 class ButtonState{
-  state:number = 0;
+  state:number
 
   constructor(state:number) {
     this.state = state;
@@ -13,10 +13,11 @@ class ButtonState{
 export struct ShoppingPage {
   @State message: string = '购物'
   @State test :ButtonState =new ButtonState(1)
+  num:number
   build() {
     Row() {
       Column() {
-        Button("主组件的状态值:"+this.test.state)
+        Button("主组件的状态值:"+this.test.state+"  "+this.num)
           .onClick(()=>{
             this.test.state++
             // this.test ++

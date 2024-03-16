@@ -12,7 +12,7 @@ export struct SearchBiliUserDetails {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   @Prop search: string = ""
   @State page: number = 1
-  @State searchBiliUserBeans: Array<SearchBiliUserBean> = []
+  @State searchBiliUserBeans: Array<SearchBiliUserBean> = null
   searchType: SearchType = SearchType.BILI_USER
 
   aboutToAppear() {
@@ -23,7 +23,12 @@ export struct SearchBiliUserDetails {
     this.page = 1
     Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
       this.searchBiliUserBeans = response.result
+
       this.loadingStatus = LoadingStatus.LoadingSuccess
+      for (let index = 0; index <  this.searchBiliUserBeans.length; index++) {
+        const element =  this.searchBiliUserBeans[index];
+        console.log("SearchBiliUser:"+index+" --- "+element)
+      }
     }).catch(err => {
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
@@ -40,8 +45,11 @@ export struct SearchBiliUserDetails {
   biliUserPage() {
     Column() {
       List() {
-        ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean) => {
+        ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean,index?: number) => {
           this.biliUserItem(item)
+        },(item:SearchBiliUserBean)=>{
+
+          return item.upic
         })
       }.layoutWeight(1)
       .onReachEnd(() => {
@@ -59,8 +67,8 @@ export struct SearchBiliUserDetails {
   @Builder
   biliUserItem(item: SearchBiliUserBean) {
     Row() {
-      Image(`https:${item.upic}`)
-        .alt($r('app.media.test'))
+      Image("https:"+item.upic)
+        .alt($r('app.media.ic_placeholder'))
         .margin(8)
         .height('65%')
         .aspectRatio(1)

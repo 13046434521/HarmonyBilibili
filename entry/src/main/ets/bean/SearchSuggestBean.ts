@@ -8,7 +8,7 @@ export class SearchSuggestBean {
 export class SearchSuggestResultBean {
   tag: SearchSuggestTagBean[]
 }
-@Observed
+
 export class SearchSuggestTagBean {
   value: string
   term: string

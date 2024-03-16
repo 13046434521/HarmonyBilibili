@@ -23,7 +23,7 @@
 
 
 // https://api.bilibili.com/x/web-interface/search/type?search_type=bili_user&keyword=ð©ÀºÇò&page=1
-export class  SearchBiliUserBean{
+export class SearchBiliUserBean{
   type :string
   uname :string
   usign :string

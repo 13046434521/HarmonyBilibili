@@ -13,7 +13,6 @@ import { SearchVideoDetails } from './SearchVideo'
 
 @Component
 export struct SearchTabsAll {
-  @State currentIndex: number = 0
   @State type: SearchType = SearchType.ALL
   typeArray: SearchType[] = [SearchType.ALL, SearchType.VIDEO, SearchType.MEDIA_BANGUMI, SearchType.LIVE, SearchType.BILI_USER, SearchType.MEDIA_FT, SearchType.ARTICLE]
   @State videoTitle: string = "视频"
@@ -24,12 +23,16 @@ export struct SearchTabsAll {
   @State articleTitle: string = "图文"
   @Link loadingStatus: LoadingStatus
   @Prop @Watch('upDataTitleTab') topList: topTlistBean
-  @Prop search: string = ""
-  private controller: TabsController = new TabsController()
+  @Prop search: string
+  controller: TabsController = new TabsController()
 
   build() {
-    LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this) })
-      .width('100%')
+    Column() {
+      LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this) })
+        .width('100%')
+        .height('100%')
+    }.width('100%').height('100%')
+
   }
 
   @Builder
@@ -47,6 +50,12 @@ export struct SearchTabsAll {
         .opacity(this.type === type ? 1 : 0)
         .width('60%')
     }.width('18%')
+    .onClick(() => {
+      // this.type = type
+      let index = this.upDatePage(type)
+      this.controller.changeIndex(index)
+      // Utils.Toast( this.controller[0]+"  "+this.type.toString() + "  --- "+index+"   " + type.toString() + " --- " + name)
+    })
   }
 
   @Builder
@@ -62,9 +71,7 @@ export struct SearchTabsAll {
       }.tabBar(this.TabBuilder(SearchType.VIDEO, this.videoTitle))
 
       TabContent() {
-        SearchMediaBangumiDetails({
-          search: this.search,
-        })
+        SearchMediaBangumiDetails({ search: this.search })
       }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, this.mediaBangumiTitle))
 
       TabContent() {
@@ -72,9 +79,7 @@ export struct SearchTabsAll {
       }.tabBar(this.TabBuilder(SearchType.LIVE, this.liveTitle))
 
       TabContent() {
-        SearchBiliUserDetails({
-          search: this.search,
-        })
+        SearchBiliUserDetails({ search: this.search })
       }.tabBar(this.TabBuilder(SearchType.BILI_USER, this.biliUserTitle))
 
       TabContent() {
@@ -82,43 +87,50 @@ export struct SearchTabsAll {
       }.tabBar(this.TabBuilder(SearchType.MEDIA_FT, this.mediaFtTitle))
 
       TabContent() {
-        SearchArticleDetails({
-          search: this.search,
-        })
+        SearchArticleDetails({ search: this.search })
       }.tabBar(this.TabBuilder(SearchType.ARTICLE, this.articleTitle))
     }
     .width('100%')
     .vertical(false)
-    .scrollable(false)
+    .scrollable(true)
     .barWidth('100%')
     .barMode(BarMode.Scrollable)
     .animationDuration(200)
     .onChange((index: number) => {
+      Utils.Toast(this.type+"   "+this.typeArray[index]+"   "+index)
       this.type = this.typeArray[index]
-      // Utils.Toast(this.type)
-    })
+    }).hitTestBehavior(HitTestMode.Transparent)
   }
 
-  upDataTitleTab(topList: topTlistBean) {
-    Utils.Toast("upDataTitleTab:"+topList.video)
-    if (topList.video != 0) {
-      this.videoTitle = `视频(${this.setTitleNum(topList.video)})`
+  upDataTitleTab() {
+    // Utils.Toast(this.type +' --upDataTitleTab--  '+this.search)
+    if (this.topList.video != 0) {
+      this.videoTitle = `视频(${this.setTitleNum(this.topList.video)})`
     }
-    if (topList.media_bangumi != 0) {
-      this.mediaBangumiTitle = `番剧(${this.setTitleNum(topList.media_bangumi)})`
+    if (this.topList.media_bangumi != 0) {
+      this.mediaBangumiTitle = `番剧(${this.setTitleNum(this.topList.media_bangumi)})`
     }
-    if (topList.live != 0) {
-      this.liveTitle = `直播(${this.setTitleNum(topList.live)})`
+    if (this.topList.live != 0) {
+      this.liveTitle = `直播(${this.setTitleNum(this.topList.live)})`
     }
-    if (topList.bili_user != 0) {
-      this.biliUserTitle = `用户(${this.setTitleNum(topList.bili_user)})`
+    if (this.topList.bili_user != 0) {
+      this.biliUserTitle = `用户(${this.setTitleNum(this.topList.bili_user)})`
     }
-    if (topList.media_ft != 0) {
-      this.mediaFtTitle = `影视(${this.setTitleNum(topList.media_ft)})`
+    if (this.topList.media_ft != 0) {
+      this.mediaFtTitle = `影视(${this.setTitleNum(this.topList.media_ft)})`
     }
-    if (topList.article != 0) {
-      this.articleTitle = `图文(${this.setTitleNum(topList.article)})`
+    if (this.topList.article != 0) {
+      this.articleTitle = `图文(${this.setTitleNum(this.topList.article)})`
     }
+  }
+
+  upDatePage(type: SearchType): number {
+    for (let index = 0; index < this.typeArray.length; index++) {
+      if (type === this.typeArray[index]) {
+        return index
+      }
+    }
+    return 0
   }
 
   // 超过99的变成99+

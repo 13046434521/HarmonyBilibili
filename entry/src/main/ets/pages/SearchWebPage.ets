@@ -8,7 +8,7 @@ import { Loading } from '../component/LoadingComponent'
 struct SearchWebPage {
   url: string = getContext(this).resourceManager.getStringSync($r('app.string.web_searchhot_link'))
   controller: webview.WebviewController = new webview.WebviewController()
-@State loadingPage:boolean = false
+  @State loadingPage:boolean = false
   build() {
 
     Stack({alignContent:Alignment.Center}) {

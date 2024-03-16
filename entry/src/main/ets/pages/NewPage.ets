@@ -1,3 +1,4 @@
+import { Utils } from '../Utils/Utils'
 
 @Component
 export struct NewPage {
@@ -19,6 +20,10 @@ export struct NewPage {
         .color('#007DFF')
         .opacity(this.currentIndex === index ? 1 : 0)
     }.width('18%')
+    .onClick(()=>{
+      this.controller.changeIndex(index)
+      Utils.Toast(index+"  " +name)
+    })
   }
 
   build() {

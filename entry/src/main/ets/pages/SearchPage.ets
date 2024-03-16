@@ -29,8 +29,9 @@ struct SearchPage {
     // 搜索页面时，不需要SearchSuggest
     this.isNeedSuggest = false
     this.loadingStatus = LoadingStatus.Loading
-    Utils.Toast(this.search+"   "+keywords)
+
     Api.getSearchDefault(keywords).then(response => {
+      Utils.Toast(this.search+"   "+response.top_tlist.video)
       this.topList = response.top_tlist
       this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch(err => {
@@ -67,7 +68,7 @@ struct SearchPage {
         this.searchPage(this.search)
       } })
     } else {
-      SearchTabsAll({loadingStatus:this.loadingStatus,topList:this.topList})
+      SearchTabsAll({loadingStatus:this.loadingStatus,topList:this.topList,search:this.search})
     }
   }
 }

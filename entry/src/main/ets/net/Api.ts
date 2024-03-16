@@ -44,9 +44,9 @@ class Api {
   constructor() {
     this.instance.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
       console.log(`拦截器：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
-      for (const element of value.headers) {
-         console.log(`拦截器：header:${element.toString()}`)
-      }
+      // for (const element of value.headers) {
+      //    console.log(`拦截器：header:${element.toString()}`)
+      // }
       return value
     })
 

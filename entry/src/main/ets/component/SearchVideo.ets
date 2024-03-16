@@ -10,7 +10,7 @@ import { SearchType } from '../common/SearchType'
 @Component
 export struct SearchVideoDetails {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  @Link search: string
+  @State search: string =" "
   @State page: number = 1
   @State searchDetailsItemBean: Array<SearchVideoItemBean> = []
   @State isRefreshing: boolean = false
@@ -27,6 +27,7 @@ export struct SearchVideoDetails {
       this.searchDetailsItemBean = searchDetailsBean.result
     }).catch((err => {
       this.loadingStatus =LoadingStatus.LoadingFailure
+      Utils.Toast(err+"")
       this.errMessage = err
     }))
   }
@@ -59,6 +60,7 @@ export struct SearchVideoDetails {
             .height('100%')
             .objectFit(ImageFit.Auto)
             .borderRadius(5)
+            .alt($r('app.media.ic_placeholder'))
           Text(Utils.TimeDeal(item.duration))
             .maxLines(1)
             .margin({ bottom: 4, right: 8 })
@@ -74,10 +76,6 @@ export struct SearchVideoDetails {
         .align(Alignment.BottomEnd)
 
         Column() {
-/*          RichText(Utils.upRichText(item.title))
-            .width('90%')
-            .margin({ left: 8 })
-            .align(Alignment.TopStart)*/
           Text(Utils.upRichTextClear(item.title))
             .maxLines(2)
             .fontColor(Color.Black)
