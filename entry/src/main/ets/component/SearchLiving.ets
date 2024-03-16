@@ -13,9 +13,8 @@ export struct SearchLiving {
   @State searchBiliUserBeans: SearchBiliUserBean[] = []
 
   searchType:SearchType = SearchType.BILI_USER
-  @Prop @Watch('initPage') searchRequest: string
   aboutToAppear(){
-    this.initPage
+    this.initPage()
   }
 
   initPage(){

@@ -14,7 +14,7 @@ export struct SearchArticleDetails {
   @State searchArticleBeans: SearchArticleBean[] = []
 
   searchType:SearchType = SearchType.BILI_USER
-  @Prop @Watch('initPage') searchRequest: string
+
   aboutToAppear(){
     this.initPage
   }

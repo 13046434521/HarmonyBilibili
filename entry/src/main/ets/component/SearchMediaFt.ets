@@ -13,7 +13,6 @@ export struct SearchMediaFt {
   @State searchBiliUserBeans: SearchBiliUserBean[] = []
 
   searchType:SearchType = SearchType.BILI_USER
-  @Prop @Watch('initPage') searchRequest: string
   aboutToAppear(){
     this.initPage
   }

@@ -1,4 +1,3 @@
-import { MomentPage } from './MomentPage'
 
 @Component
 export struct NewPage {

@@ -14,15 +14,6 @@ import { SearchVideoDetails } from './SearchVideo'
 @Component
 export struct SearchTabsAll {
   @State currentIndex: number = 0
-  @State searchVideoRequest: string = ''
-  @State searchMediaBangumiRequest: string = ''
-  @State searchMediaFtRequest: string = ''
-  @State searchLiveRequest: string = ''
-  @State searchArticleRequest: string = ''
-  @State searchLiveUserRequest: string = ''
-  @State searchTopicRequest: string = ''
-  @State searchBiliUserRequest: string = ''
-  @State searchPhotoRequest: string = ''
   @State type: SearchType = SearchType.ALL
   typeArray: SearchType[] = [SearchType.ALL, SearchType.VIDEO, SearchType.MEDIA_BANGUMI, SearchType.LIVE, SearchType.BILI_USER, SearchType.MEDIA_FT, SearchType.ARTICLE]
   @State videoTitle: string = "视频"
@@ -32,8 +23,9 @@ export struct SearchTabsAll {
   @State biliUserTitle: string = "用户"
   @State articleTitle: string = "图文"
   @Link loadingStatus: LoadingStatus
-  @Link @Watch('upDataTitleTab')topList: topTlistBean
+  @Prop @Watch('upDataTitleTab') topList: topTlistBean
   @Prop search: string = ""
+  private controller: TabsController = new TabsController()
 
   build() {
     LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this) })
@@ -56,45 +48,42 @@ export struct SearchTabsAll {
         .width('60%')
     }.width('18%')
   }
-  private controller: TabsController = new TabsController()
+
   @Builder
   tabPages() {
-    Tabs({ barPosition: BarPosition.Start,controller:this.controller }) {
+    Tabs({ barPosition: BarPosition.Start, controller: this.controller }) {
       TabContent() {
         SearchDefaultDetails()
       }.tabBar(this.TabBuilder(SearchType.ALL, "综合"))
 
       TabContent() {
         // 视频页面
-        SearchVideoDetails({ search: this.search, searchRequest: this.searchVideoRequest })
+        SearchVideoDetails({ search: this.search })
       }.tabBar(this.TabBuilder(SearchType.VIDEO, this.videoTitle))
 
       TabContent() {
         SearchMediaBangumiDetails({
           search: this.search,
-          searchRequest: this.searchBiliUserRequest
         })
       }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, this.mediaBangumiTitle))
 
       TabContent() {
-        SearchLiving({ search: this.search, searchRequest: this.searchBiliUserRequest })
+        SearchLiving({ search: this.search })
       }.tabBar(this.TabBuilder(SearchType.LIVE, this.liveTitle))
 
       TabContent() {
         SearchBiliUserDetails({
           search: this.search,
-          searchRequest: this.searchBiliUserRequest
         })
       }.tabBar(this.TabBuilder(SearchType.BILI_USER, this.biliUserTitle))
 
       TabContent() {
-        SearchMediaFt({ search: this.search, searchRequest: this.searchBiliUserRequest })
+        SearchMediaFt({ search: this.search })
       }.tabBar(this.TabBuilder(SearchType.MEDIA_FT, this.mediaFtTitle))
 
       TabContent() {
         SearchArticleDetails({
           search: this.search,
-          searchRequest: this.searchBiliUserRequest
         })
       }.tabBar(this.TabBuilder(SearchType.ARTICLE, this.articleTitle))
     }
@@ -110,58 +99,8 @@ export struct SearchTabsAll {
     })
   }
 
-  upDateType() {
-    Utils.Toast(this.type + '   ' + this.search)
-    switch (this.type) {
-      case SearchType.VIDEO: {
-        this.searchVideoRequest = this.search
-        break
-      }
-      case SearchType.PHOTO: {
-        this.searchPhotoRequest = this.search
-        break
-      }
-      case SearchType.MEDIA_BANGUMI: {
-        this.searchMediaBangumiRequest = this.search
-        break
-      }
-      case SearchType.MEDIA_FT: {
-        this.searchMediaFtRequest = this.search
-        break
-      }
-      case SearchType.LIVE: {
-        this.searchLiveRequest = this.search
-        break
-      }
-      case SearchType.LIVE_USER: {
-        this.searchLiveUserRequest = this.search
-        break
-      }
-      case SearchType.ARTICLE: {
-        this.searchArticleRequest = this.search
-        break
-      }
-      case SearchType.BILI_USER: {
-        this.searchBiliUserRequest = this.search
-        break
-      }
-      default: {
-        this.searchTopicRequest = this.search
-        break
-      }
-    }
-  }
-
-  // 超过99的变成99+
-  setTitleNum(title: number): string {
-    let res = `${title}`
-    if (title > 99) {
-      res = "99+"
-    }
-    return res;
-  }
-
   upDataTitleTab(topList: topTlistBean) {
+    Utils.Toast("upDataTitleTab:"+topList.video)
     if (topList.video != 0) {
       this.videoTitle = `视频(${this.setTitleNum(topList.video)})`
     }
@@ -180,5 +119,14 @@ export struct SearchTabsAll {
     if (topList.article != 0) {
       this.articleTitle = `图文(${this.setTitleNum(topList.article)})`
     }
+  }
+
+  // 超过99的变成99+
+  setTitleNum(title: number): string {
+    let res = `${title}`
+    if (title > 99) {
+      res = "99+"
+    }
+    return res;
   }
 }

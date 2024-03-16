@@ -15,7 +15,6 @@ export struct SearchVideoDetails {
   @State searchDetailsItemBean: Array<SearchVideoItemBean> = []
   @State isRefreshing: boolean = false
 
-  @Prop @Watch('initPage') searchRequest: string
   @State errMessage:string = ''
   aboutToAppear() {
     this.initPage()
