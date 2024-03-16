@@ -26,15 +26,16 @@ struct SearchHotPage {
 
   build() {
     Column() {
-     SearchHeader({title:this.title,placeholder:this.title,change:(value:string)=>{
+     SearchHeader({title:this.title,placeholder:this.search,change:(value:string)=>{
        this.search = value
      },clickEvent:()=>{
         router.pushUrl({url:"pages/SearchPage",params:{keyword:this.search}})
      }})
+
       this.SearchHot((content) => {
         router.pushUrl({url:"pages/SearchWebPage"})
-        console.log(content+"pages/SearchWebPage")
       })
+
       List() {
         ForEach(this.searchHotBean, (item: SearchHotBeanItem) => {
           this.SearchHotItem(item.show_name, item.icon)

@@ -32,7 +32,7 @@ export struct SearchTabsAll {
   @State biliUserTitle: string = "用户"
   @State articleTitle: string = "图文"
   @Link loadingStatus: LoadingStatus
-  @Link topList: topTlistBean
+  @Link @Watch('upDataTitleTab')topList: topTlistBean
   @Prop search: string = ""
 
   build() {
@@ -47,19 +47,19 @@ export struct SearchTabsAll {
         .fontColor(this.type === type ? $r('app.color.bilibili_theme') : $r('app.color.bilibili_text_grey_bold'))
         .fontSize(14)
         .maxLines(1)
-        .margin({ bottom: 4 })
+        .textAlign(TextAlign.Center)
+        .margin({ bottom: 8 })
       Divider()
         .strokeWidth(2)
         .color($r('app.color.bilibili_theme'))
         .opacity(this.type === type ? 1 : 0)
         .width('60%')
     }.width('18%')
-    .aspectRatio(2/1)
   }
-
+  private controller: TabsController = new TabsController()
   @Builder
   tabPages() {
-    Tabs({ barPosition: BarPosition.Start }) {
+    Tabs({ barPosition: BarPosition.Start,controller:this.controller }) {
       TabContent() {
         SearchDefaultDetails()
       }.tabBar(this.TabBuilder(SearchType.ALL, "综合"))
@@ -98,16 +98,16 @@ export struct SearchTabsAll {
         })
       }.tabBar(this.TabBuilder(SearchType.ARTICLE, this.articleTitle))
     }
+    .width('100%')
     .vertical(false)
-    .barMode(BarMode.Scrollable)
     .scrollable(false)
-    .barHeight(32)
+    .barWidth('100%')
+    .barMode(BarMode.Scrollable)
     .animationDuration(200)
     .onChange((index: number) => {
       this.type = this.typeArray[index]
       // Utils.Toast(this.type)
     })
-    .layoutWeight(1)
   }
 
   upDateType() {

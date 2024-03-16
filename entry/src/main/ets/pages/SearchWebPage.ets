@@ -10,6 +10,7 @@ struct SearchWebPage {
   controller: webview.WebviewController = new webview.WebviewController()
 @State loadingPage:boolean = false
   build() {
+
     Stack({alignContent:Alignment.Center}) {
       if (!this.loadingPage){
         Loading().layoutWeight(1)

@@ -5,6 +5,7 @@ import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchSuggest } from '../component/SearchSuggest'
 import { SearchTabsAll } from '../component/SearchTabsAll'
 import { topTlistBean } from '../bean/SearchBaseBean'
+import { Utils } from '../Utils/Utils'
 
 
 @Entry
@@ -13,11 +14,14 @@ struct SearchPage {
   @State search: string = '搜索视频、番剧或up主'
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   @State isNeedSuggest: boolean = false
-  errMessage: string = ''
   @State topList: topTlistBean = new topTlistBean()
+  errMessage: string = ''
+  placeholder:string = ''
+  @State isTitleVisible:boolean = false;
 
   aboutToAppear() {
     this.search = router.getParams()['keyword']
+    this.placeholder= this.search
     this.searchPage(this.search)
   }
 
@@ -25,7 +29,7 @@ struct SearchPage {
     // 搜索页面时，不需要SearchSuggest
     this.isNeedSuggest = false
     this.loadingStatus = LoadingStatus.Loading
-
+    Utils.Toast(this.search+"   "+keywords)
     Api.getSearchDefault(keywords).then(response => {
       this.topList = response.top_tlist
       this.loadingStatus = LoadingStatus.LoadingSuccess
@@ -38,26 +42,20 @@ struct SearchPage {
   build() {
     Column() {
       // 搜索Header
-      SearchHeader({ title: this.search,placeholder:this.search, change: (value: string) => {
+      SearchHeader({ title: this.search,isTitleVisible:this.isTitleVisible,placeholder:this.placeholder, change: (value: string) => {
         this.search = value
         this.isNeedSuggest = true
       }, clickEvent: (title,placeholder) => {
         if (this.search === "") {
           this.search =placeholder
         }
+        this.isTitleVisible = true
         this.searchPage(this.search)
       } })
-
       // Tabs页面
       this.SearchTabs()
     }.width('100%')
     .height('100%')
-
-  }
-
-  @Builder
-  SearchHeader(){
-
   }
 
   @Builder
@@ -65,6 +63,7 @@ struct SearchPage {
     if (this.isNeedSuggest && this.search != "") {
       SearchSuggest({ keywords: this.search, click: (value: string) => {
         this.search = value
+        this.isTitleVisible = true
         this.searchPage(this.search)
       } })
     } else {
