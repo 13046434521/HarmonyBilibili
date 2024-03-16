@@ -10,7 +10,7 @@ import { Utils } from '../Utils/Utils'
 export struct SearchBiliUserDetails {
   @State message: string = '用户'
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  @Prop search: string = "kobe"
+  @Prop search: string = ""
   @State page: number = 1
   @State searchBiliUserBeans: Array<SearchBiliUserBean> = []
   searchType: SearchType = SearchType.BILI_USER
@@ -32,49 +32,34 @@ export struct SearchBiliUserDetails {
 
   build() {
     Row() {
-      // this.biliUserPage()
-      LoadingData({loadingStatus :this.loadingStatus,page:this.biliUserPage.bind(this)})
+      LoadingData({ loadingStatus: this.loadingStatus, page: this.biliUserPage.bind(this) })
     }
     .height('100%')
   }
 
   @Builder
   biliUserPage() {
-    Column(){
-/*      Divider()
-        .color(Color.Grey)
-        .margin({left:8,right:8,bottom:8})
-        .width('100%')
-        .height(1)*/
+    Column() {
       List() {
         ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean) => {
           this.biliUserItem(item)
         })
       }.layoutWeight(1)
-      .onReachEnd(()=>{
-        Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page+1).then(response => {
+      .onReachEnd(() => {
+        Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page + 1).then(response => {
           this.page++
-          this.searchBiliUserBeans  =  this.searchBiliUserBeans.concat( response.result)
+          this.searchBiliUserBeans = this.searchBiliUserBeans.concat(response.result)
         }).catch(err => {
           Utils.Toast(err)
         })
       })
-     // .divider({strokeWidth:1,color:Color.Grey,startMargin:8,endMargin:8})
-      /*      Divider()
-             .color(Color.Grey)
-             .margin({left:8,right:8,top:8})
-             .width('100%')
-             .height(1)*/
     }.layoutWeight(1)
 
   }
 
   @Builder
   biliUserItem(item: SearchBiliUserBean) {
-
-
     Row() {
-
       Image(`https:${item.upic}`)
         .alt($r('app.media.test'))
         .margin(8)
@@ -93,14 +78,15 @@ export struct SearchBiliUserDetails {
         }
 
         Text(`${this.userFans(item.fans)}粉丝     ${item.videos}个视频${'\n'}${item.official_verify.desc}`)
-          .fontColor( $r('app.color.bilibili_text_grey'))
+          .fontColor($r('app.color.bilibili_text_grey_bold'))
           .fontSize(10)
           .maxLines(2)
           .lineHeight(16)
-          .textOverflow({overflow:TextOverflow.Ellipsis})
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
           .height('45%')
           .textAlign(TextAlign.Start)
-      }.alignItems(HorizontalAlign.Start)
+      }
+      .alignItems(HorizontalAlign.Start)
       .justifyContent(FlexAlign.Start)
       .height('80%')
       .margin(8)
@@ -121,9 +107,10 @@ export struct SearchBiliUserDetails {
     .aspectRatio(25 / 6)
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
-        Divider()
-      .color(Color.Grey)
-      .margin({left:8,right:8})
+
+    Divider()
+      .color('#94999D')
+      .margin({ left: 8, right: 8 })
   }
 
   userLevel(level: number): Resource {
@@ -162,10 +149,10 @@ export struct SearchBiliUserDetails {
     return icon
   }
 
-  userFans(fans:number):string{
+  userFans(fans: number): string {
     let fansRes = fans.toString()
-    if (fans>=10000) {
-      fansRes = Math.floor(fans/10000).toFixed(1)+"万"
+    if (fans >= 10000) {
+      fansRes = Math.floor(fans / 10000).toFixed(1) + "万"
     }
 
     return fansRes

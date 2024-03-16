@@ -1,19 +1,59 @@
 import { Utils } from '../Utils/Utils'
 
+class ButtonState{
+  state:number = 0;
+
+  constructor(state:number) {
+    this.state = state;
+  }
+}
+@Preview
 @Component
 // 主界面中的购物页面，很可能被去掉
 export struct ShoppingPage {
   @State message: string = '购物'
-
+  @State test :ButtonState =new ButtonState(1)
   build() {
     Row() {
       Column() {
-        Text(Utils.TimeDeal('12:1:1'))
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
+        Button("主组件的状态值:"+this.test.state)
+          .onClick(()=>{
+            this.test.state++
+            // this.test ++
+          })
+
+        son({test:$test})
       }
       .width('100%')
     }
     .height('100%')
+  }
+}
+
+@Component
+struct son{
+  @Link test :ButtonState
+  build(){
+    Column(){
+      Button("子组件的值:"+this.test.state)
+        .onClick(()=>{
+          this.test.state ++
+        })
+
+      grandson({test:$test})
+    }
+
+  }
+}
+@Component
+struct grandson{
+  @Link test :ButtonState
+  build(){
+    Column() {
+      Button("孙子组件的值:" + this.test.state)
+        .onClick(() => {
+          this.test.state++
+        })
+    }
   }
 }

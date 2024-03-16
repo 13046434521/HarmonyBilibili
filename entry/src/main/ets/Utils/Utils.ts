@@ -58,13 +58,16 @@ export class Utils {
   }
 
   static upRichText(title:string){
-    let msg =  title.replace(/<em class="keyword">/g,"<font size=25px color=red>").replace(/<\/em>/g,"</font>")
+    let msg =  title.replace(/<em class="keyword">/g,"<font size=25px color=red>")
+      .replace(/<\/em>/g,"</font>")
     console.log("rich text:"+msg)
     return msg
    }
 
   static upRichTextClear(title:string){
+    //result: string = str.replace(/[^a-zA-Z0-9]/g, '');
     let msg =  title.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")
+      .replace(/&#x27;/g,"'")
     console.log("rich text:"+msg)
     return msg
   }

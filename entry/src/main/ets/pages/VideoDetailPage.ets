@@ -1,7 +1,6 @@
 import router from '@ohos.router'
 import display from '@ohos.display'
 import Api from '../net/Api'
-import { VideoPlay } from '../component/VideoPlay'
 import promptAction from '@ohos.promptAction'
 import { PageListDimensionBean } from '../bean/PageListBean'
 import { LoadingStatus } from '../common/LoadingStatus'
@@ -38,8 +37,9 @@ struct DetailPage {
     Row() {
       if (this.loadingPage === LoadingStatus.LoadingSuccess){
         Column() {
-          VideoPlay({bvid:this.bvid,cid:this.cid})
-            .width('100%')
+          Text(`bvid:${this.bvid},cid:${this.cid}`)
+          // VideoPlay({bvid:this.bvid,cid:this.cid})
+          //   .width('100%')
         }.layoutWeight(1)
       }else if (this.loadingPage === LoadingStatus.Loading){
         Loading().width('100%')

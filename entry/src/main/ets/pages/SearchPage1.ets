@@ -76,8 +76,14 @@ struct SearchPage {
 
   aboutToAppear() {
     this.search = router.getParams()['keyword']
-    Api.getSearchDefault(this.search).then(response => {
-      response.seid
+    this.searchPage(this.search)
+  }
+
+  searchPage(keywords:string) {
+    // 搜索页面时，不需要SearchSuggest
+    this.isNeedSuggest = false
+    this.loadingStatus = LoadingStatus.Loading
+    Api.getSearchDefault(keywords).then(response => {
       this.upDataTitleTab(response.top_tlist)
       this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch(err => {
@@ -105,20 +111,31 @@ struct SearchPage {
 
   build() {
     Column() {
-      // SearchHeader({ title: this.search, search: this.search, clickEvent: (msg: string) => {
-      //   this.upDateType()
-      // } })
-      // if (this.isNeedSuggest) {
-      //   SearchSuggest({ keywords: this.search })
-      // } else {
-      //   LoadingData({loadingStatus:this.loadingStatus,page:this.tabPages.bind(this)})
-      // }
+      SearchHeader({ title: this.search,placeholder:this.search, change: (value: string) => {
+        this.search = value
+        this.isNeedSuggest = true
+      }, clickEvent: (title,placeholder) => {
+        if (this.search === "") {
+          this.search =placeholder
+        }
+        this.searchPage(this.search)
+      } })
+      if (this.isNeedSuggest && this.search != "") {
+        SearchSuggest({ keywords: this.search, click: (value: string) => {
+          this.search = value
+          this.searchPage(this.search)
+        } })
+      } else {
+        LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this) })
+          .layoutWeight(1)
+      }
 
     }.width('100%')
     .height('100%')
   }
 
-  @Builder tabPages(){
+  @Builder
+  tabPages() {
     Tabs({ barPosition: BarPosition.Start }) {
       TabContent() {
         SearchDefaultDetails()
