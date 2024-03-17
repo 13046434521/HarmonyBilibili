@@ -50,10 +50,13 @@ export struct SearchBiliUserDetails {
           }
         })
       }.layoutWeight(1)
+      .cachedCount(3)
       .onReachEnd(() => {
         Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page + 1).then(response => {
-          this.page++
-          this.searchBiliUserBeans = this.searchBiliUserBeans.concat(response.result)
+          if (response.result!=undefined) {
+            this.page++
+            this.searchBiliUserBeans = this.searchBiliUserBeans.concat(response.result)
+          }
         }).catch(err => {
           Utils.Toast(err)
         })

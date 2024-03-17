@@ -159,6 +159,9 @@ class Api {
           if (httpData === undefined) {
             httpData= resp.data.result
           }
+          if (httpData===null) {
+            Utils.Toast("当前请求返回可以数据为空:"+url)
+          }
           console.log("Bilibili:status data:"+url+"  status" + resp.status + "--*--" + JSON.stringify(httpData))
           resolve(httpData)
         } else {

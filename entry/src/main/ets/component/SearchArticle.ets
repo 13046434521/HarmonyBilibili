@@ -62,8 +62,10 @@ export struct SearchArticleDetails {
     })
     .onReachEnd(()=>{
       Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page+1).then(response => {
-        this.searchArticleBeans =  this.searchArticleBeans.concat(response.result)
-        this.page++
+        if (response.result!=undefined) {
+          this.searchArticleBeans =  this.searchArticleBeans.concat(response.result)
+          this.page++
+        }
       }).catch(err => {
         this.err = err
       })

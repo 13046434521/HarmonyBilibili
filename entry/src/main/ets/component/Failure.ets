@@ -2,7 +2,7 @@
 @Component
 export struct Failure{
   @Prop msg:string = "加载失败....."
-  extra:string =''
+  @Prop extra:string =''
 
   aboutToAppear(){
     console.log("加载失败页面刷新  "+this.extra)

@@ -144,9 +144,13 @@ export struct SearchVideoDetails {
         })
       }
       .onReachEnd(() => {
-        Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page+1).then((searchDetailsBean) => {
-          this.page++
-          this.searchDetailsItemBean = this.searchDetailsItemBean.concat(searchDetailsBean.result)
+        Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page+1)
+          .then((response) => {
+          if (response.result!=undefined) {
+            this.page++
+            this.searchDetailsItemBean = this.searchDetailsItemBean.concat(response.result)
+          }
+
         }).catch((err => {
           Utils.Toast(err)
         }))

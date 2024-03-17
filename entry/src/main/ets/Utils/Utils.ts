@@ -4,13 +4,14 @@ import util from '@ohos.util'
 
 export class Utils {
   // 观看量数据转换处理
-  static Views(views: number): string {
+  static Views(views: number,unit:string='w'): string {
     //console.log("views:"+views+"---"+(views/10000).toFixed(2)+"w")
     if (views > 10000) {
-      return (views / 10000).toFixed(2) + "w"
+      return (views / 10000).toFixed(2) + unit
     }
     return views.toString()
   }
+
   static TimeDeal(duration: string): string {
     if (!duration) {
       return duration

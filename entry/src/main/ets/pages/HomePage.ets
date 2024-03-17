@@ -165,9 +165,11 @@ export struct HomePage {
         })
       }.lanes(2)
       .onReachEnd(()=>{
-        Api.getHomePages(this.homePage+1).then(homebean=>{
-          this.homePage++
-          this.homeBeanData = this.homeBeanData.concat( homebean.item)
+        Api.getHomePages(this.homePage+1).then(response=>{
+          if (response.item!=undefined) {
+            this.homePage++
+            this.homeBeanData = this.homeBeanData.concat(response.item)
+          }
         }).catch(err=>{
           Utils.Toast(err)
         })

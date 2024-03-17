@@ -30,11 +30,10 @@ export struct SearchTabsAll {
   }
 
   build() {
-    Column() {
-      LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this),extraFailure:"SearchTabsAll",extraSuccess:'SearchTabsAll' })
-        .width('100%')
-        .height('100%')
-    }.width('100%').height('100%')
+    LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this),extraFailure:"SearchTabsAll",extraSuccess:'SearchTabsAll' })
+      .width('100%')
+      .height('100%')
+      .layoutWeight(1)
   }
 
   @Builder
@@ -94,8 +93,7 @@ export struct SearchTabsAll {
     .animationDuration(200)
     .onChange((index: number) => {
       this.currentIndex = index
-    }).width('100%')
-    .height('100%')
+    })
   }
 
   upDataTitle(){

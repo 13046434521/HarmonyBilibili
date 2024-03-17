@@ -6,7 +6,7 @@ import { Loading } from './LoadingComponent'
 export struct LoadingData{
   @BuilderParam page:()=>void
   @Link loadingStatus :LoadingStatus
-   extraFailure:string =''
+  @Prop extraFailure:string =''
   extraSuccess:string =''
   build(){
     Column(){
@@ -23,6 +23,6 @@ export struct LoadingData{
       // if (this.loadingStatus === LoadingStatus.LoadingSuccess){
       //   this.page()
       // }
-    }.layoutWeight(1)
+    }
   }
 }
