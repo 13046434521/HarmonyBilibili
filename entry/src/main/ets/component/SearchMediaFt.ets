@@ -13,23 +13,26 @@ export struct SearchMediaFt {
   @State searchBiliUserBeans: SearchBiliUserBean[] = []
 
   searchType:SearchType = SearchType.BILI_USER
-  aboutToAppear(){
-    this.initPage
+  aboutToAppear() {
+    console.log("影视 页面刷新了")
+    this.initPage()
   }
-
+  aboutToDisappear(){
+    console.log("影视 页面销毁了")
+  }
   initPage(){
     this.page = 1
-    Api.getSearchType<SearchBiliUserBean>(this.searchType,this.search,this.page).then(response=>{
-      this.searchBiliUserBeans = response.result
-      this.loadingStatus = LoadingStatus.LoadingSuccess
-    }).catch(err=>{
-      this.loadingStatus = LoadingStatus.LoadingFailure
-    })
+    // Api.getSearchType<SearchBiliUserBean>(this.searchType,this.search,this.page).then(response=>{
+    //   this.searchBiliUserBeans = response.result
+    //   this.loadingStatus = LoadingStatus.LoadingSuccess
+    // }).catch(err=>{
+    //   this.loadingStatus = LoadingStatus.LoadingFailure
+    // })
   }
 
   build() {
     Row() {
-      LoadingData({loadingStatus :this.loadingStatus,page:this.biliUserPage})
+      LoadingData({loadingStatus :this.loadingStatus,page:this.biliUserPage,extraFailure:"Search影视",extraSuccess:'Search影视'})
     }
     .height('100%')
   }

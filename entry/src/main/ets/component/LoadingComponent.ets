@@ -2,12 +2,16 @@
 @Component
 export struct Loading {
   @State state :AnimationStatus = AnimationStatus.Initial
+  extra:string =''
   aboutToAppear(){
     this.state = AnimationStatus.Running
+    console.log("加载ing页面刷新   "+this.extra)
   }
+
 
   aboutToDisappear(){
     this.state = AnimationStatus.Stopped
+    console.log("加载ing页面销毁   "+this.extra)
   }
   build() {
     Column(){

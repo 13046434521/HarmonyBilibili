@@ -17,18 +17,21 @@ export struct SearchBiliUserDetails {
 
   aboutToAppear() {
     this.initPage()
+    console.log("用户 页面刷新了")
+  }
+  aboutToDisappear(){
+    console.log("用户 页面销毁了")
   }
 
   initPage() {
     this.page = 1
     Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
       this.searchBiliUserBeans = response.result
-
-      this.loadingStatus = LoadingStatus.LoadingSuccess
-      for (let index = 0; index <  this.searchBiliUserBeans.length; index++) {
-        const element =  this.searchBiliUserBeans[index];
-        console.log("SearchBiliUser:"+index+" --- "+element)
+      for (let index = 0; index < this.searchBiliUserBeans.length; index++) {
+        const element = this.searchBiliUserBeans[index];
+        console.log("用户 searchBeanItem:"+index+" "+typeof element+"  "+typeof element.upic)
       }
+      this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch(err => {
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
@@ -36,7 +39,7 @@ export struct SearchBiliUserDetails {
 
   build() {
     Row() {
-      LoadingData({ loadingStatus: this.loadingStatus, page: this.biliUserPage.bind(this) })
+      LoadingData({ loadingStatus: this.loadingStatus, page: this.biliUserPage.bind(this),extraFailure:"SearchBiliUser",extraSuccess:'SearchBiliUser' })
     }
     .height('100%')
   }
@@ -48,7 +51,6 @@ export struct SearchBiliUserDetails {
         ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean,index?: number) => {
           this.biliUserItem(item)
         },(item:SearchBiliUserBean)=>{
-
           return item.upic
         })
       }.layoutWeight(1)
@@ -108,7 +110,6 @@ export struct SearchBiliUserDetails {
         .borderRadius(2)
         .margin(8)
         .fontSize(14)
-
     }
     .width('100%')
     .aspectRatio(25 / 6)

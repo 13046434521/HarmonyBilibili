@@ -9,9 +9,12 @@ export struct SearchSuggest {
   click:(value:string)=>void
 
   aboutToAppear() {
+    console.log("搜索建议 页面刷新了")
     this.init()
   }
-
+  aboutToDisappear(){
+    console.log("搜索建议 页面销毁了")
+  }
   init() {
     Api.getSearchSuggest(this.keywords).then((response: SearchSuggestResultBean) => {
       this.suggestTags = []

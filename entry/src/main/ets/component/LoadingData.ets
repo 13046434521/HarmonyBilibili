@@ -6,15 +6,23 @@ import { Loading } from './LoadingComponent'
 export struct LoadingData{
   @BuilderParam page:()=>void
   @Link loadingStatus :LoadingStatus
+   extraFailure:string =''
+  extraSuccess:string =''
   build(){
     Column(){
       if (this.loadingStatus === LoadingStatus.Loading){
-        Loading()
+        Loading({extra:this.extraSuccess})
       }else if (this.loadingStatus === LoadingStatus.LoadingSuccess){
         this.page()
       }else{
-        Failure()
+        Failure({extra:this.extraFailure})
       }
+
+      // Loading({extra:this.extraSuccess}).visibility(this.loadingStatus === LoadingStatus.Loading?Visibility.Visible:Visibility.Hidden)
+      // Failure({extra:this.extraFailure}).visibility(this.loadingStatus === LoadingStatus.LoadingFailure?Visibility.Visible:Visibility.Hidden)
+      // if (this.loadingStatus === LoadingStatus.LoadingSuccess){
+      //   this.page()
+      // }
     }
   }
 }

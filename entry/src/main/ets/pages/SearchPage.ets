@@ -45,6 +45,7 @@ struct SearchPage {
       // 搜索Header
       SearchHeader({ title: this.search,isTitleVisible:this.isTitleVisible,placeholder:this.placeholder, change: (value: string) => {
         this.search = value
+
         this.isNeedSuggest = true
       }, clickEvent: (title,placeholder) => {
         if (this.search === "") {
@@ -68,7 +69,7 @@ struct SearchPage {
         this.searchPage(this.search)
       } })
     } else {
-      SearchTabsAll({loadingStatus:this.loadingStatus,topList:this.topList,search:this.search})
+      SearchTabsAll({loadingStatus:this.loadingStatus,search:this.search===""?this.placeholder:this.search})
     }
   }
 }

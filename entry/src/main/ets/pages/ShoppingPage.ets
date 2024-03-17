@@ -22,8 +22,8 @@ export struct ShoppingPage {
             this.test.state++
             // this.test ++
           })
-
-        son({test:$test})
+        // ling  $this
+        son({test:this.test})
       }
       .width('100%')
     }
@@ -33,7 +33,7 @@ export struct ShoppingPage {
 
 @Component
 struct son{
-  @Link test :ButtonState
+  @Prop test :ButtonState
   build(){
     Column(){
       Button("子组件的值:"+this.test.state)
@@ -41,14 +41,14 @@ struct son{
           this.test.state ++
         })
 
-      grandson({test:$test})
+      grandson({test:this.test})
     }
 
   }
 }
 @Component
 struct grandson{
-  @Link test :ButtonState
+  @Prop test :ButtonState
   build(){
     Column() {
       Button("孙子组件的值:" + this.test.state)

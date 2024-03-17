@@ -10,10 +10,11 @@ import { SearchLiving } from './SearchLiving'
 import { SearchMediaBangumiDetails } from './SearchMediaBangumi'
 import { SearchMediaFt } from './SearchMediaFt'
 import { SearchVideoDetails } from './SearchVideo'
-import util from '@ohos.util'
 
 @Component
 export struct SearchTabsAll {
+  @State type: SearchType = SearchType.ALL
+  typeArray: SearchType[] = [SearchType.ALL, SearchType.VIDEO, SearchType.MEDIA_BANGUMI, SearchType.LIVE, SearchType.BILI_USER, SearchType.MEDIA_FT, SearchType.ARTICLE]
   @State videoTitle: string = "视频"
   @State mediaBangumiTitle: string = "番剧"
   @State mediaFtTitle: string = "影视"
@@ -24,27 +25,35 @@ export struct SearchTabsAll {
   @Prop search: string
   controller: TabsController = new TabsController()
 
-  @State currentIndex :number = 0
   aboutToAppear(){
     console.log("SearchTabsAll 页面刷新了")
   }
   aboutToDisappear(){
     console.log("SearchTabsAll 页面销毁了")
   }
+  test(){
+    console.log("页面:controller出问题了"+this.controller)
+  }
 
   build() {
     Column() {
-      LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this),extraFailure:"SearchTabsAll",extraSuccess:'SearchTabsAll' })
+      Button("状态归0").onClick(()=>{
+        this.test()
+        this.type = SearchType.ALL
+        this.controller.changeIndex(3)
+      })
+      LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this) })
         .width('100%')
         .height('100%')
     }.width('100%').height('100%')
+
   }
 
   @Builder
-  TabBuilder(index: number, name: string) {
+  TabBuilder(type: SearchType, name: string) {
     Column() {
       Text(name)
-        .fontColor(this.currentIndex === index ? $r('app.color.bilibili_theme') : $r('app.color.bilibili_text_grey_bold'))
+        .fontColor(this.type === type ? $r('app.color.bilibili_theme') : $r('app.color.bilibili_text_grey_bold'))
         .fontSize(14)
         .maxLines(1)
         .textAlign(TextAlign.Center)
@@ -52,45 +61,48 @@ export struct SearchTabsAll {
       Divider()
         .strokeWidth(2)
         .color($r('app.color.bilibili_theme'))
-        .opacity(this.currentIndex === index  ? 1 : 0)
+        .opacity(this.type === type ? 1 : 0)
         .width('60%')
     }.width('18%')
-    // .onClick(() => {
-    //   this.controller.changeIndex(index)
-    //   Utils.Toast(this+"  "+index)
-    // })
+    .onClick(() => {
+      // this.type = type
+      let index = this.upDatePage(type)
+      this.controller.changeIndex(index)
+      // Utils.Toast( this.controller[0]+"  "+this.type.toString() + "  --- "+index+"   " + type.toString() + " --- " + name)
+    })
   }
 
   @Builder
   tabPages() {
-    Tabs({ barPosition: BarPosition.Start }) {
+    Tabs({ barPosition: BarPosition.Start, controller: new TabsController() }) {
       TabContent() {
         SearchDefaultDetails()
-      }.tabBar(this.TabBuilder(0, "综合"))
+      }.tabBar(this.TabBuilder(SearchType.ALL, "综合"))
+
       TabContent() {
         // 视频页面
         SearchVideoDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(1, this.videoTitle))
+      }.tabBar(this.TabBuilder(SearchType.VIDEO, this.videoTitle))
 
       TabContent() {
         SearchMediaBangumiDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(2, this.mediaBangumiTitle))
+      }.tabBar(this.TabBuilder(SearchType.MEDIA_BANGUMI, this.mediaBangumiTitle))
 
       TabContent() {
         SearchLiving({ search: this.search })
-      }.tabBar(this.TabBuilder(3, this.liveTitle))
+      }.tabBar(this.TabBuilder(SearchType.LIVE, this.liveTitle))
 
       TabContent() {
         SearchBiliUserDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(4, this.biliUserTitle))
+      }.tabBar(this.TabBuilder(SearchType.BILI_USER, this.biliUserTitle))
 
       TabContent() {
         SearchMediaFt({ search: this.search })
-      }.tabBar(this.TabBuilder(5, this.mediaFtTitle))
+      }.tabBar(this.TabBuilder(SearchType.MEDIA_FT, this.mediaFtTitle))
 
       TabContent() {
         SearchArticleDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(6, this.articleTitle))
+      }.tabBar(this.TabBuilder(SearchType.ARTICLE, this.articleTitle))
     }
     .width('100%')
     .vertical(false)
@@ -99,11 +111,20 @@ export struct SearchTabsAll {
     .barMode(BarMode.Scrollable)
     .animationDuration(200)
     .onChange((index: number) => {
-      Utils.Toast(this.currentIndex+"   "+"   "+index)
-      this.currentIndex = index
-      // this.controller.changeIndex(index)
-    }).width('100%')
-    .height('100%')
+      Utils.Toast(this.type+"   "+this.typeArray[index]+"   "+index)
+      this.type = this.typeArray[index]
+      this.controller.changeIndex(index)
+    }).hitTestBehavior(HitTestMode.Transparent)
+  }
+
+
+  upDatePage(type: SearchType): number {
+    for (let index = 0; index < this.typeArray.length; index++) {
+      if (type === this.typeArray[index]) {
+        return index
+      }
+    }
+    return 0
   }
 
   // 超过99的变成99+

@@ -6,6 +6,7 @@ import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
+import { LoadingData } from './LoadingData'
 
 @Component
 export struct SearchVideoDetails {
@@ -14,12 +15,14 @@ export struct SearchVideoDetails {
   @State page: number = 1
   @State searchDetailsItemBean: Array<SearchVideoItemBean> = []
   @State isRefreshing: boolean = false
-
   @State errMessage:string = ''
   aboutToAppear() {
+    console.log("视频 页面刷新了")
     this.initPage()
   }
-
+  aboutToDisappear(){
+    console.log("视频 页面销毁了")
+  }
   initPage() {
     this.page = 1
     Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page).then((searchDetailsBean) => {
@@ -34,16 +37,7 @@ export struct SearchVideoDetails {
 
   build() {
     Column() {
-      if (this.loadingStatus === LoadingStatus.Loading) {
-        Loading().layoutWeight(1)
-      } else if (this.loadingStatus === LoadingStatus.LoadingSuccess) {
-        this.Refresh()
-      } else {
-        Text("加载出错:"+this.errMessage)
-          .width('100%')
-          .height('100%')
-          .align(Alignment.Center)
-      }
+     LoadingData({loadingStatus :this.loadingStatus,page:this.biliVideo,extraFailure:"Search视频",extraSuccess:'Search视频'})
     }.width('100%')
     .height('100%')
   }
@@ -140,7 +134,7 @@ export struct SearchVideoDetails {
   }
 
   @Builder
-  Refresh() {
+  biliVideo() {
     Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
       List() {
         ForEach(this.searchDetailsItemBean, (item: SearchVideoItemBean) => {
