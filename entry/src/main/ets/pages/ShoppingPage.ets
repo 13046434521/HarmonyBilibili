@@ -17,7 +17,7 @@ export struct ShoppingPage {
   build() {
     Row() {
       Column() {
-        Button("主组件的状态值:"+this.test.state+"  "+this.num)
+        Button("主组件的状态值:"+this.test.state+"  "+this.message)
           .onClick(()=>{
             this.test.state++
             // this.test ++

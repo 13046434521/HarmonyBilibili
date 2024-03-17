@@ -138,6 +138,10 @@ class Api {
     let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}`
     return this.request(url,this.instanceCookie)
   }
+  // https://api.bilibili.com/x/article/viewinfo?id=2265901
+  // article的详细内容链接,id为SearchArticle中的id
+
+
 
   // 请求
   private request<T>(url:string,axiosInstance?:AxiosInstance):Promise<T>{

@@ -69,7 +69,7 @@ struct SearchPage {
         this.searchPage(this.search)
       } })
     } else {
-      SearchTabsAll({loadingStatus:this.loadingStatus,search:this.search===""?this.placeholder:this.search})
+      SearchTabsAll({loadingStatus:this.loadingStatus,topList:this.topList,search:this.search===""?this.placeholder:this.search})
     }
   }
 }

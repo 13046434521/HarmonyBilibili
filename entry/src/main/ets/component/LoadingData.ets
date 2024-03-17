@@ -11,11 +11,11 @@ export struct LoadingData{
   build(){
     Column(){
       if (this.loadingStatus === LoadingStatus.Loading){
-        Loading({extra:this.extraSuccess})
+        Loading({extra:this.extraSuccess}).layoutWeight(1)
       }else if (this.loadingStatus === LoadingStatus.LoadingSuccess){
         this.page()
       }else{
-        Failure({extra:this.extraFailure})
+        Failure({extra:this.extraFailure}).layoutWeight(1)
       }
 
       // Loading({extra:this.extraSuccess}).visibility(this.loadingStatus === LoadingStatus.Loading?Visibility.Visible:Visibility.Hidden)

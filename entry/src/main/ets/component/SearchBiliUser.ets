@@ -27,10 +27,6 @@ export struct SearchBiliUserDetails {
     this.page = 1
     Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
       this.searchBiliUserBeans = response.result
-      for (let index = 0; index < this.searchBiliUserBeans.length; index++) {
-        const element = this.searchBiliUserBeans[index];
-        console.log("用户 searchBeanItem:"+index+" "+typeof element+"  "+typeof element.upic)
-      }
       this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch(err => {
       this.loadingStatus = LoadingStatus.LoadingFailure
@@ -49,9 +45,9 @@ export struct SearchBiliUserDetails {
     Column() {
       List() {
         ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean,index?: number) => {
-          this.biliUserItem(item)
-        },(item:SearchBiliUserBean)=>{
-          return item.upic
+          ListItem(){
+            this.biliUserItem(item)
+          }
         })
       }.layoutWeight(1)
       .onReachEnd(() => {
@@ -69,7 +65,7 @@ export struct SearchBiliUserDetails {
   @Builder
   biliUserItem(item: SearchBiliUserBean) {
     Row() {
-      Image("https:"+item.upic)
+      Image(`https:${item.upic}`)
         .alt($r('app.media.ic_placeholder'))
         .margin(8)
         .height('65%')
@@ -77,7 +73,7 @@ export struct SearchBiliUserDetails {
         .borderRadius(100)
       Column() {
         Row() {
-          Text(item.uname)
+          Text(`https:${item.uname}`)
             .fontSize(13)
             .fontColor(item.official_verify.type === 127 ? $r('app.color.bilibili_text_black') : $r('app.color.bilibili_theme'))
           Image(this.userLevel(item.level))

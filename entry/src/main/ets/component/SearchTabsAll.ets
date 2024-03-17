@@ -1,3 +1,4 @@
+import { topTlistBean } from '../bean/SearchBaseBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { LoadingData } from './LoadingData'
 import { SearchArticleDetails } from './SearchArticle'
@@ -18,6 +19,7 @@ export struct SearchTabsAll {
   @State articleTitle: string = "图文"
   @Link loadingStatus: LoadingStatus
   @Prop search: string
+  @Prop @Watch('upDataTitle')topList: topTlistBean = new topTlistBean()
 
   @State currentIndex :number = 0
   aboutToAppear(){
@@ -25,6 +27,15 @@ export struct SearchTabsAll {
   }
   aboutToDisappear(){
     console.log("SearchTabsAll 页面销毁了")
+  }
+
+  upDataTitle(){
+    this.videoTitle+=this.setTitleNum(this.topList.video)
+    this.mediaBangumiTitle+=this.setTitleNum(this.topList.media_bangumi)
+    this.mediaFtTitle+=this.setTitleNum(this.topList.media_ft)
+    this.liveTitle+=this.setTitleNum(this.topList.live)
+    this.biliUserTitle+=this.setTitleNum(this.topList.bili_user)
+    this.articleTitle+=this.setTitleNum(this.topList.article)
   }
 
   build() {
@@ -98,9 +109,12 @@ export struct SearchTabsAll {
 
   // 超过99的变成99+
   setTitleNum(title: number): string {
-    let res = `${title}`
+    let res = `(${title})`
     if (title > 99) {
-      res = "99+"
+      res = "(99+)"
+    }
+    if (title<=0) {
+      res=''
     }
     return res;
   }

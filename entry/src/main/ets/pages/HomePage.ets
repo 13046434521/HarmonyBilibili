@@ -159,8 +159,9 @@ export struct HomePage {
         ForEach(this.homeBeanData,(item:HomeBeanItem)=>{
           ListItem(){
             this.HomeItem(item)
-
           }.margin(3)
+        },(item:HomeBeanItem)=>{
+          return  item.id+item.cid+item.title
         })
       }.lanes(2)
       .onReachEnd(()=>{

@@ -25,11 +25,11 @@
 // https://api.bilibili.com/x/web-interface/search/type?search_type=bili_user&keyword=ð©ÀºÇò&page=1
 export class SearchBiliUserBean{
   type :string
-  uname :string
+  uname :string//?
   usign :string
-  upic :string
+  upic :string//?
   verify_info :string
-  official_verify:SearchBiliUserVerifyBean
+  official_verify:SearchBiliUserVerifyBean//?
 
   mid :number
   fans :number

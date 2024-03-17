@@ -43,7 +43,7 @@ export class Utils {
   }
   // 视频时常，转换处理
   static Duration(duration: number): string {
-    console.log("Duration:time:"+duration)
+    //console.log("Duration:time:"+duration)
 
     let second: number | string = (duration % 60)
     let minute: number | string = Math.floor(duration / 60)
@@ -53,14 +53,14 @@ export class Utils {
       second.toFixed(0)
     }
 
-    console.log("duration:"+duration+"---"+minute+'---'+second)
+    //console.log("duration:"+duration+"---"+minute+'---'+second)
     return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
   }
 
   static upRichText(title:string){
     let msg =  title.replace(/<em class="keyword">/g,"<font size=25px color=red>")
       .replace(/<\/em>/g,"</font>")
-    console.log("rich text:"+msg)
+    //console.log("rich text:"+msg)
     return msg
    }
 
@@ -68,7 +68,7 @@ export class Utils {
     //result: string = str.replace(/[^a-zA-Z0-9]/g, '');
     let msg =  title.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")
       .replace(/&#x27;/g,"'")
-    console.log("rich text:"+msg)
+    //console.log("rich text:"+msg)
     return msg
   }
 
@@ -81,6 +81,19 @@ export class Utils {
   }
   static Toast(message:string){
     promptAction.showToast({message:message})
+  }
+
+  static  timestampToDate(timestamp: number): string {
+    const date = new Date(timestamp); // 将时间戳转换为Date对象
+    const year = date.getFullYear(); // 获取年份
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 获取月份并补零
+    const day = date.getDate().toString().padStart(2, '0'); // 获取日期并补零
+    const hours = date.getHours().toString().padStart(2, '0'); // 获取小时并补零
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // 获取分钟并补零
+    const seconds = date.getSeconds().toString().padStart(2, '0'); // 获取秒钟并补零
+
+    // return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`; // 返回格式化的日期字符串
+    return `${year}年${month}月${day}日`
   }
   // private stringForTime(timeMs: number): string {
   //   let totalSeconds: number | string = (timeMs / 1000);
@@ -117,7 +130,5 @@ function windowOrientation(orientation: window.Orientation){
       data.setPreferredOrientation(orientation);
     })
   }
-
-
 }
 
