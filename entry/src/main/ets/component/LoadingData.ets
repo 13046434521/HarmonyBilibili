@@ -23,6 +23,6 @@ export struct LoadingData{
       // if (this.loadingStatus === LoadingStatus.LoadingSuccess){
       //   this.page()
       // }
-    }
+    }.layoutWeight(1)
   }
 }

@@ -8,7 +8,7 @@ export struct SearchView{
         .height(24)
         .width(24)
         .margin(16)
-        .objectFit(ImageFit.Auto)
+        .objectFit(ImageFit.Cover)
       Text(this.title)
         .height(24)
         .layoutWeight(1)

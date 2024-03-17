@@ -159,13 +159,12 @@ class Api {
           if (httpData === undefined) {
             httpData= resp.data.result
           }
-
+          console.log("Bilibili:status data:"+url+"  status" + resp.status + "--*--" + JSON.stringify(httpData))
           resolve(httpData)
         } else {
           reject("请求失败：" + resp.status)
           Utils.Toast("Bilibili:status err:" + resp.status)
         }
-        console.log("Bilibili:status data:"+url+"  status" + resp.status + "--*--" + JSON.stringify(resp.data))
       }).catch(error => {
         reject("请求失败：" + error)
         console.log("Bilibili:response err:" + error)

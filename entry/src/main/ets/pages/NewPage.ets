@@ -24,6 +24,6 @@ struct  testCom{
     console.log("测试一下页面消失")
   }
   build(){
-    Text("子组件").height('20%').width('100%').visibility(this.isShow?Visibility.Visible:Visibility.Hidden)
+    Text(Utils.timestampToDate(1547619147)).height('20%').width('100%').visibility(this.isShow?Visibility.Visible:Visibility.Hidden)
   }
 }

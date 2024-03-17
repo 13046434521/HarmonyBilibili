@@ -42,7 +42,7 @@ export struct SearchBiliUserDetails {
 
   @Builder
   biliUserPage() {
-    Column() {
+    Column(){
       List() {
         ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean,index?: number) => {
           ListItem(){
@@ -57,9 +57,10 @@ export struct SearchBiliUserDetails {
         }).catch(err => {
           Utils.Toast(err)
         })
-      })
-    }.layoutWeight(1)
-
+      }).divider({ strokeWidth: 1, color: $r('app.color.bilibili_divider'), startMargin: 8, endMargin: 8 })
+      .width('100%')
+      .backgroundColor(Color.White)
+    }
   }
 
   @Builder
@@ -73,7 +74,7 @@ export struct SearchBiliUserDetails {
         .borderRadius(100)
       Column() {
         Row() {
-          Text(`https:${item.uname}`)
+          Text(`${item.uname}`)
             .fontSize(13)
             .fontColor(item.official_verify.type === 127 ? $r('app.color.bilibili_text_black') : $r('app.color.bilibili_theme'))
           Image(this.userLevel(item.level))
@@ -111,10 +112,6 @@ export struct SearchBiliUserDetails {
     .aspectRatio(25 / 6)
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
-
-    Divider()
-      .color('#94999D')
-      .margin({ left: 8, right: 8 })
   }
 
   userLevel(level: number): Resource {

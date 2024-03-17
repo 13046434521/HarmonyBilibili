@@ -9,88 +9,123 @@ import { LoadingData } from './LoadingData'
 @Component
 export struct SearchArticleDetails {
   @State message: string = '图文'
-  @State loadingStatus:LoadingStatus = LoadingStatus.Loading
-  @Prop search:string = "kobe"
-  @State page:number=1
+  @State loadingStatus: LoadingStatus = LoadingStatus.Loading
+  @Prop search: string = ""
+  @State page: number = 1
   @State searchArticleBeans: SearchArticleBean[] = []
-  searchType:SearchType = SearchType.BILI_USER
-  @State err:string=""
+  searchType: SearchType = SearchType.ARTICLE
+  @State err: string = ""
+
   aboutToAppear() {
-    console.log("图文 页面刷新了")
+    console.log("图文 页面刷新了" + this.searchArticleBeans.length)
     this.initPage()
   }
 
-  aboutToDisappear(){
+  aboutToDisappear() {
     console.log("图文 页面销毁了")
   }
 
-  initPage(){
+  initPage() {
     this.page = 1
-    Api.getSearchType<SearchArticleBean>(this.searchType,this.search,this.page).then(response=>{
+    Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page).then(response => {
       this.searchArticleBeans = response.result
       this.loadingStatus = LoadingStatus.LoadingSuccess
-    }).catch(err=>{
+    }).catch(err => {
       this.err = err
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
   }
 
   build() {
-    LoadingData({loadingStatus :this.loadingStatus,page:this.biliUserPage,extraFailure:"SearchArticle",extraSuccess:'SearchArticle' })
+    LoadingData({
+      loadingStatus: this.loadingStatus,
+      page: this.articlePage.bind(this),
+      extraFailure: "SearchArticle",
+      extraSuccess: 'SearchArticle'
+    })
   }
 
-  @Builder biliUserPage(){
-    Column(){
-      List(){
-        ForEach(this.searchArticleBeans,(item:SearchArticleBean)=>{
+  @Builder
+  articlePage() {
+    List() {
+      ForEach(this.searchArticleBeans, (item: SearchArticleBean) => {
+        ListItem() {
           this.articleItem(item)
-        })
-      }
-    }.layoutWeight(1)
+        }.width('100%')
+        .aspectRatio(3.5)
+      })
+    }.divider({
+      strokeWidth: 1,
+      color: $r('app.color.bilibili_divider'),
+      startMargin: 8,
+      endMargin: 8
+    })
+    .onReachEnd(()=>{
+      Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page+1).then(response => {
+        this.searchArticleBeans =  this.searchArticleBeans.concat(response.result)
+        this.page++
+      }).catch(err => {
+        this.err = err
+      })
+    })
+    .width('100%')
+    .backgroundColor(Color.White)
   }
 
-  @Builder articleItem(item:SearchArticleBean){
-    Row(){
-      Image("https:"+item.image_urls[0])
-        .margin(15)
+  @Builder
+  articleItem(item: SearchArticleBean) {
+    Row() {
+      Image("https:" + item.image_urls[0])
         .borderRadius(2)
-        .width('28%')
+        .height('90%')
         .aspectRatio(1)
-        .objectFit(ImageFit.Auto)
+        .objectFit(ImageFit.Cover)
         .alt($r('app.media.ic_placeholder'))
-      Column(){
+        .margin({ left: 10, right: 10 })
+      Column() {
         Text(Utils.upRichTextClear(item.title))
           .maxLines(1)
-          .textOverflow({overflow:TextOverflow.Ellipsis})
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
           .fontSize(14)
           .fontColor($r('app.color.bilibili_text_black'))
+          .margin({ bottom: 10 })
 
         Text(Utils.upRichTextClear(item.desc))
           .maxLines(2)
-          .textOverflow({overflow:TextOverflow.Ellipsis})
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
           .fontSize(10)
           .fontColor($r('app.color.bilibili_text_grey_bold'))
+          .margin({ bottom: 10 })
+        Row() {
+          Text("文章类型:" + item.category_name)
+            .fontSize(11)
+            .fontColor($r('app.color.bilibili_text_grey_bold'))
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .width("45%")
+            .margin({ right: 4 })
+          Blank().layoutWeight(1)
 
-        Row(){
-          Text(item.category_name)
-          Image($r('app.media.biliplayer_ic_topbar_like_bold'))
-            .height('30%')
+          Image($r('app.media.ic_like_bold'))
+            .height('15%')
             .aspectRatio(1)
             .objectFit(ImageFit.Auto)
-          Text(item.like+"")
-          Text(Utils.timestampToDate(item.pub_time))
+
+          Text(item.like + " · " + Utils.timestampToDate(item.pub_time))
+            .fontSize(10)
+            .fontColor($r('app.color.bilibili_text_grey_bold'))
+            .margin({ left: 2})
         }.justifyContent(FlexAlign.Start)
         .width('100%')
-      }.alignItems(HorizontalAlign.Start)
-        .layoutWeight(1)
-        .margin({right:15})
+      }
+      .alignItems(HorizontalAlign.Start)
+      .justifyContent(FlexAlign.SpaceEvenly)
+      .height('100%')
+      .layoutWeight(1)
+      .margin({ right: 10 })
     }.width('100%')
-    .aspectRatio(25 / 10)
+    .height('100%')
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
-
-    Divider()
-      .color('#94999D')
-      .margin({ left: 8, right: 8 })
   }
 }

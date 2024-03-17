@@ -29,15 +29,6 @@ export struct SearchTabsAll {
     console.log("SearchTabsAll 页面销毁了")
   }
 
-  upDataTitle(){
-    this.videoTitle+=this.setTitleNum(this.topList.video)
-    this.mediaBangumiTitle+=this.setTitleNum(this.topList.media_bangumi)
-    this.mediaFtTitle+=this.setTitleNum(this.topList.media_ft)
-    this.liveTitle+=this.setTitleNum(this.topList.live)
-    this.biliUserTitle+=this.setTitleNum(this.topList.bili_user)
-    this.articleTitle+=this.setTitleNum(this.topList.article)
-  }
-
   build() {
     Column() {
       LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this),extraFailure:"SearchTabsAll",extraSuccess:'SearchTabsAll' })
@@ -107,6 +98,14 @@ export struct SearchTabsAll {
     .height('100%')
   }
 
+  upDataTitle(){
+    this.videoTitle="视频"+this.setTitleNum(this.topList.video)
+    this.mediaBangumiTitle="番剧"+this.setTitleNum(this.topList.media_bangumi)
+    this.mediaFtTitle="影视"+this.setTitleNum(this.topList.media_ft)
+    this.liveTitle="直播"+this.setTitleNum(this.topList.live)
+    this.biliUserTitle="用户"+this.setTitleNum(this.topList.bili_user)
+    this.articleTitle="图文"+this.setTitleNum(this.topList.article)
+  }
   // 超过99的变成99+
   setTitleNum(title: number): string {
     let res = `(${title})`

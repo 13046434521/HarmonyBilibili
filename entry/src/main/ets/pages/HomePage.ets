@@ -39,7 +39,7 @@ export struct HomePage {
       Stack(){
         Image(homeBeanItem.pic)
           .width('100%')
-          .objectFit(ImageFit.Auto)
+          .objectFit(ImageFit.Cover)
           .borderRadius({topLeft:5,topRight:5})
           .aspectRatio(4/3)
           .alt($r('app.media.ic_placeholder'))

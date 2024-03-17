@@ -1,8 +1,9 @@
 import window from '@ohos.window'
 import promptAction from '@ohos.promptAction'
+import util from '@ohos.util'
 
 export class Utils {
-  // ¹Û¿´Á¿Êı¾İ×ª»»´¦Àí
+  // è§‚çœ‹é‡æ•°æ®è½¬æ¢å¤„ç†
   static Views(views: number): string {
     //console.log("views:"+views+"---"+(views/10000).toFixed(2)+"w")
     if (views > 10000) {
@@ -41,7 +42,7 @@ export class Utils {
       return hour+":"+minute+":"+second
     }
   }
-  // ÊÓÆµÊ±³££¬×ª»»´¦Àí
+  // è§†é¢‘æ—¶å¸¸ï¼Œè½¬æ¢å¤„ç†
   static Duration(duration: number): string {
     //console.log("Duration:time:"+duration)
 
@@ -65,8 +66,12 @@ export class Utils {
    }
 
   static upRichTextClear(title:string){
+    // utf-8ç¼–ç 
+    let coding = title
+    // let coding = new util.TextDecoder(title).encoding
+
     //result: string = str.replace(/[^a-zA-Z0-9]/g, '');
-    let msg =  title.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")
+    let msg =  coding.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")
       .replace(/&#x27;/g,"'")
     //console.log("rich text:"+msg)
     return msg
@@ -83,17 +88,17 @@ export class Utils {
     promptAction.showToast({message:message})
   }
 
-  static  timestampToDate(timestamp: number): string {
-    const date = new Date(timestamp); // ½«Ê±¼ä´Á×ª»»ÎªDate¶ÔÏó
-    const year = date.getFullYear(); // »ñÈ¡Äê·İ
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // »ñÈ¡ÔÂ·İ²¢²¹Áã
-    const day = date.getDate().toString().padStart(2, '0'); // »ñÈ¡ÈÕÆÚ²¢²¹Áã
-    const hours = date.getHours().toString().padStart(2, '0'); // »ñÈ¡Ğ¡Ê±²¢²¹Áã
-    const minutes = date.getMinutes().toString().padStart(2, '0'); // »ñÈ¡·ÖÖÓ²¢²¹Áã
-    const seconds = date.getSeconds().toString().padStart(2, '0'); // »ñÈ¡ÃëÖÓ²¢²¹Áã
+  static  timestampToDate(timestamp_ms: number): string {
+    const date = new Date(timestamp_ms * 1000); // å°†æ—¶é—´æˆ³è½¬æ¢ä¸ºDateå¯¹è±¡
+    const year = date.getFullYear(); // è·å–å¹´ä»½
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // è·å–æœˆä»½å¹¶è¡¥é›¶
+    const day = date.getDate().toString().padStart(2, '0'); // è·å–æ—¥æœŸå¹¶è¡¥é›¶
+    const hours = date.getHours().toString().padStart(2, '0'); // è·å–å°æ—¶å¹¶è¡¥é›¶
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // è·å–åˆ†é’Ÿå¹¶è¡¥é›¶
+    const seconds = date.getSeconds().toString().padStart(2, '0'); // è·å–ç§’é’Ÿå¹¶è¡¥é›¶
 
-    // return `${year}Äê${month}ÔÂ${day}ÈÕ ${hours}:${minutes}:${seconds}`; // ·µ»Ø¸ñÊ½»¯µÄÈÕÆÚ×Ö·û´®
-    return `${year}Äê${month}ÔÂ${day}ÈÕ`
+    // return `${year}å¹´${month}æœˆ${day}æ—¥ ${hours}:${minutes}:${seconds}`; // è¿”å›æ ¼å¼åŒ–çš„æ—¥æœŸå­—ç¬¦ä¸²
+    return `${year}å¹´${month}æœˆ${day}æ—¥`
   }
   // private stringForTime(timeMs: number): string {
   //   let totalSeconds: number | string = (timeMs / 1000);
@@ -119,7 +124,7 @@ export class Utils {
   // }
 }
 
-// ÇĞ»»ºáÊúÆÁ
+// åˆ‡æ¢æ¨ªç«–å±
 function windowOrientation(orientation: window.Orientation){
   if (globalThis.windowStage != undefined) {
     globalThis.windowStage.getMainWindow((err, data) => {

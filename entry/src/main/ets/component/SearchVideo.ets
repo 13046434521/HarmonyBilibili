@@ -37,7 +37,7 @@ export struct SearchVideoDetails {
 
   build() {
     Column() {
-     LoadingData({loadingStatus :this.loadingStatus,page:this.biliVideo,extraFailure:"Search视频",extraSuccess:'Search视频'})
+     LoadingData({loadingStatus :this.loadingStatus,page:this.biliVideo.bind(this),extraFailure:"Search视频",extraSuccess:'Search视频'})
     }.width('100%')
     .height('100%')
   }

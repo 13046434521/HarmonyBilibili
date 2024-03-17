@@ -27,7 +27,7 @@ export struct Loading {
         },
         ]).iterations(-1)
           .duration(2000)
-          .width('25%')
+          .width('15%')
           .aspectRatio(1)
           .state(this.state)
         Text('加载中...')
