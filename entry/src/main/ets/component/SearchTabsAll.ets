@@ -1,7 +1,4 @@
-import { topTlistBean } from '../bean/SearchBaseBean'
 import { LoadingStatus } from '../common/LoadingStatus'
-import { SearchType } from '../common/SearchType'
-import { Utils } from '../Utils/Utils'
 import { LoadingData } from './LoadingData'
 import { SearchArticleDetails } from './SearchArticle'
 import { SearchBiliUserDetails } from './SearchBiliUser'
@@ -10,7 +7,6 @@ import { SearchLiving } from './SearchLiving'
 import { SearchMediaBangumiDetails } from './SearchMediaBangumi'
 import { SearchMediaFt } from './SearchMediaFt'
 import { SearchVideoDetails } from './SearchVideo'
-import util from '@ohos.util'
 
 @Component
 export struct SearchTabsAll {
@@ -22,7 +18,6 @@ export struct SearchTabsAll {
   @State articleTitle: string = "图文"
   @Link loadingStatus: LoadingStatus
   @Prop search: string
-  controller: TabsController = new TabsController()
 
   @State currentIndex :number = 0
   aboutToAppear(){
@@ -55,10 +50,7 @@ export struct SearchTabsAll {
         .opacity(this.currentIndex === index  ? 1 : 0)
         .width('60%')
     }.width('18%')
-    // .onClick(() => {
-    //   this.controller.changeIndex(index)
-    //   Utils.Toast(this+"  "+index)
-    // })
+
   }
 
   @Builder
@@ -99,9 +91,7 @@ export struct SearchTabsAll {
     .barMode(BarMode.Scrollable)
     .animationDuration(200)
     .onChange((index: number) => {
-      Utils.Toast(this.currentIndex+"   "+"   "+index)
       this.currentIndex = index
-      // this.controller.changeIndex(index)
     }).width('100%')
     .height('100%')
   }
