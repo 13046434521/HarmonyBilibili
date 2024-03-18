@@ -12,17 +12,14 @@ export struct SearchLiving {
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
   @Prop search:string = ""
   @State page:number=1
-  livingData :LivingData = new LivingData()
+  @State livingData :LivingData = new LivingData()
   scrollerController:Scroller = new Scroller()
   searchType:SearchType = SearchType.LIVE_ROOM
 
   aboutToAppear() {
-    console.log("直播 页面刷新了")
     this.initPage()
   }
-  aboutToDisappear(){
-    console.log("直播 页面销毁了")
-  }
+
   initPage(){
     this.page = 1
     Api.getSearchType<SearchLiveRoomBean>(this.searchType,this.search,this.page).then(response=>{
@@ -48,10 +45,8 @@ export struct SearchLiving {
         List({scroller: this.scrollerController }) {
           LazyForEach(this.livingData,(item:SearchLiveRoomBean)=>{
             ListItem() {
-              Column(){
-                LiveRoomItem({ searchLiveRoomBean: item })
-                  .margin(4)
-              }
+              LiveRoomItem({ searchLiveRoomBean: item })
+                .margin(4)
             }
           },(item:SearchLiveRoomBean)=>item.roomid+item.uname)
         }.edgeEffect(EdgeEffect.None)

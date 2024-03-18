@@ -1,4 +1,13 @@
 # ChangeList
+### 目前问题：
+1. ~~番剧页面会报TypeError问题，可能网络申请导致~~ (2024-4-18解决)
+4. ~~SearchTabsAll页面 controller不好使~~ (2024-4-18解决)
+3. ~~番剧，图文的item控件，没有提取成单独的组件。无法在综合页面使用~~(2024-4-18解决)
+2. 番剧页面用Scroll控件保存数据，没有下拉刷新功能
+5. 直播页面没有做下拉加载
+
+
+
 
 ## 2024-4-17
         图文页面，最下部缺失，无法全屏
@@ -38,14 +47,15 @@
     使用懒加载+List+Scroll完成直播页面
 #### 11. 减少search页面各Tabs页面嵌套层级
     减少search页面各Tabs页面嵌套层级
-#### 12. 把Bean数据从class改为interface
+
+## 2024-4-19
+#### 1. 把Bean数据从class改为interface
     Default页面的各种类数据格式和Video，番剧等一致，改为interface直接implement就能使用
-#### 13. 把各页面的Item抽取
+#### 2. 把各页面的Item抽取
     将Search页面的Video，番剧，影视，直播间等页面的Item抽取出单独组件，方便后续默认搜索页面（SearchDefault）页面使用
 
-### 2024-4-18 目前问题：
-    番剧页面会报TypeError问题，可能网络申请导致  解决
-    番剧页面用Scroll控件保存数据，没有下拉刷新功能  
-    番剧，图文的item控件，没有提取成单独的组件。无法在综合页面使用
-    SearchTabsAll页面 controller不好使
-    直播页面没有做下拉加载
+#### 3. 所有的搜索页面做成懒加载
+    从ForEach改为LazyForEach，提高性能
+#### 4. 把各主页面热搜页面做成懒加载，新增KeyGenerator 
+    把所有懒加载页面都增加了KeyGenerator，以免重复渲染，浪费性能
+        

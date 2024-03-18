@@ -1,6 +1,7 @@
 import router from '@ohos.router'
 import { SearchHotBeanItem } from '../bean/SearchHotBean'
 import { SearchHeader} from '../component/SearchHeader'
+import { HotSearchData } from '../datasource/HotSearchData'
 
 import Api from '../net/Api'
 
@@ -9,7 +10,7 @@ import Api from '../net/Api'
 struct SearchHotPage {
   @State title: string = '搜索视频、番剧或up主'
   @State search: string = '搜索视频、番剧或up主'
-  @State searchHotBean: SearchHotBeanItem[] = []
+  @State hotSearchData: HotSearchData = new HotSearchData()
 
   aboutToAppear() {
     // 传搜索栏的值
@@ -20,7 +21,8 @@ struct SearchHotPage {
     }
     // 获取当前热搜数据
     Api.getSearchHot().then((searchHotBean => {
-      this.searchHotBean = searchHotBean.list.slice(0, 10)
+      let data = searchHotBean.list.slice(0, 10)
+      this.hotSearchData.pushDataAll(data)
     }))
   }
 
@@ -39,7 +41,7 @@ struct SearchHotPage {
       })
 
       List() {
-        ForEach(this.searchHotBean, (item: SearchHotBeanItem) => {
+        LazyForEach(this.hotSearchData, (item: SearchHotBeanItem) => {
           this.SearchHotItem(item.show_name, item.icon)
         })
       }.lanes(2)

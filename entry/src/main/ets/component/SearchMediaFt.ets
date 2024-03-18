@@ -19,9 +19,7 @@ export struct SearchMediaFt {
   aboutToAppear() {
     this.initPage()
   }
-  
-  aboutToDisappear(){
-  }
+
   
   initPage(){
     this.page = 1
@@ -51,7 +49,7 @@ export struct SearchMediaFt {
       Column() {
         LazyForEach(this.mediaFtData, (item, index) => {
           MediaFtItem({ searchMediaFtBean: item })
-        }, item => item)
+        }, (item:SearchMediaFtBean) => item.media_id+item.title)
       }.width('100%')
     }.width('100%')
     .align(Alignment.Top)

@@ -6,6 +6,7 @@ import router from '@ohos.router'
 import { SearchBiliUserBean } from '../bean/SearchBiliUserBean'
 import { Utils } from '../Utils/Utils'
 import { BiliUserItem } from './item/BiliUserItem'
+import { BiliUserData } from '../datasource/BiliUserData'
 
 @Component
 export struct SearchBiliUserDetails {
@@ -13,22 +14,18 @@ export struct SearchBiliUserDetails {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   @Prop search: string = ""
   @State page: number = 1
-  @State searchBiliUserBeans: Array<SearchBiliUserBean> = null
+  @State biliUserData:BiliUserData = new BiliUserData()
   searchType: SearchType = SearchType.BILI_USER
 
   aboutToAppear() {
     this.initPage()
-    console.log("用户 页面刷新了")
-  }
-  aboutToDisappear(){
-    console.log("用户 页面销毁了")
   }
 
   initPage() {
     this.page = 1
     Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
-      this.searchBiliUserBeans = response.result
-      if (this.searchBiliUserBeans!=null&&this.searchBiliUserBeans.length!=0) {
+      this.biliUserData.pushDataAll(response.result)
+      if (response.result!=null&& this.biliUserData.totalCount()!=0) {
         this.loadingStatus = LoadingStatus.LoadingSuccess
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
@@ -47,18 +44,18 @@ export struct SearchBiliUserDetails {
   @Builder
   biliUserPage() {
       List() {
-        ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean,index?: number) => {
+        LazyForEach(this.biliUserData, (item: SearchBiliUserBean,index?: number) => {
           ListItem(){
             BiliUserItem({item:item})
           }
-        })
+        },(item:SearchBiliUserBean)=>item.mid+item.uname)
       }.layoutWeight(1)
       .cachedCount(3)
       .onReachEnd(() => {
         Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page + 1).then(response => {
           if (response.result!=undefined) {
             this.page++
-            this.searchBiliUserBeans = this.searchBiliUserBeans.concat(response.result)
+            this.biliUserData.pushDataAll(response.result)
           }
         }).catch(err => {
           Utils.Toast(err)

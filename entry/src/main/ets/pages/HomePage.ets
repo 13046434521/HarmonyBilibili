@@ -4,17 +4,18 @@ import router from '@ohos.router';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { SearchView } from '../component/HomeSearch';
 import { Utils } from '../Utils/Utils';
+import { HomeData } from '../datasource/HomeData';
 
 @Component
 export struct HomePage {
   @State message: string = 'Home'
-  @State homeBeanData:Array<HomeBeanItem>=[]
+  @State homeData:HomeData = new HomeData()
   @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
   @State homePage: number = 0
   @State isRefreshing: boolean = false
   aboutToAppear(){
     Api.getHomePages().then(homebean=>{
-      this.homeBeanData = homebean.item
+      this.homeData.pushDataAll(homebean.item)
     })
 
     Api.getHomeSearch().then(homesearchbean=>{
@@ -156,37 +157,34 @@ export struct HomePage {
   @Builder Refresh(){
     Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
       List(){
-        ForEach(this.homeBeanData,(item:HomeBeanItem)=>{
+        LazyForEach(this.homeData,(item:HomeBeanItem)=>{
           ListItem(){
             this.HomeItem(item)
           }.margin(3)
-        },(item:HomeBeanItem)=>{
-          return  item.id+item.cid+item.title
-        })
+        },(item:HomeBeanItem)=>item.id+item.cid+item.title)
       }.lanes(2)
       .onReachEnd(()=>{
         Api.getHomePages(this.homePage+1).then(response=>{
           if (response.item!=undefined) {
             this.homePage++
-            this.homeBeanData = this.homeBeanData.concat(response.item)
+            this.homeData.pushDataAll(response.item)
           }
         }).catch(err=>{
-          Utils.Toast(err)
+          Utils.Toast("主页面"+err)
         })
       })
 
-    }.onStateChange(state=>{
-      console.log('onStateChange $' + state)
-    }).onRefreshing(()=>{
+    }.onRefreshing(()=>{
       Api.getHomePages().then(homebean=>{
-        this.homeBeanData = homebean.item
+        this.homeData.cleanData()
+        this.homeData.pushDataAll(homebean.item)
         this.isRefreshing = false
+        this.homePage = 1
       }).catch(err=>{
         this.isRefreshing = false
       }).finally(()=>{
         this.homePage = 0
       })
-      console.log('onRefreshing $' )
     }).layoutWeight(1)
   }
 }

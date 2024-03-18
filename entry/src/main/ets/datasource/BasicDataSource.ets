@@ -27,6 +27,11 @@ export abstract  class BasicDataSource<T> implements IDataSource  {
     }
   }
 
+  public cleanData(): void {
+    this.dataArray =[]
+    this.listeners =[]
+  }
+
   registerDataChangeListener(listener: DataChangeListener): void {
     if (this.listeners.indexOf(listener) < 0) {
       this.listeners.push(listener)
