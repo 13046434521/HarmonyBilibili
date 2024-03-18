@@ -6,6 +6,7 @@ import { SearchSuggest } from '../component/SearchSuggest'
 import { SearchTabsAll } from '../component/SearchTabsAll'
 import { topTlistBean } from '../bean/SearchBaseBean'
 import { Utils } from '../Utils/Utils'
+import { LoadingData } from '../component/LoadingData'
 
 let controllerLocalStrorage = new LocalStorage({'tabsController':new TabsController()})
 @Entry(controllerLocalStrorage)
@@ -68,7 +69,13 @@ struct SearchPage {
         this.searchPage(this.search)
       } })
     } else {
-      SearchTabsAll({loadingStatus:this.loadingStatus,topList:this.topList,search:this.search===""?this.placeholder:this.search})
+      LoadingData({loadingStatus:this.loadingStatus,page:this.searchTabsAll.bind(this)})
+        .layoutWeight(1)
     }
+  }
+
+  @Builder
+  searchTabsAll(){
+    SearchTabsAll({topList:this.topList,search:this.search===""?this.placeholder:this.search})
   }
 }

@@ -18,7 +18,6 @@ export struct SearchTabsAll {
   @State liveTitle: string = "直播"
   @State biliUserTitle: string = "用户"
   @State articleTitle: string = "图文"
-  @Prop loadingStatus: LoadingStatus
   @Prop search: string
   @Prop @Watch('upDataTitle')topList: topTlistBean = new topTlistBean()
   @State currentIndex :number = 0
@@ -26,14 +25,14 @@ export struct SearchTabsAll {
 
   aboutToAppear(){
     console.log("SearchTabsAll 页面刷新了")
+    this.upDataTitle()
   }
   aboutToDisappear(){
     console.log("SearchTabsAll 页面销毁了")
   }
 
   build() {
-    LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this)})
-      .layoutWeight(1)
+    this.tabPages()
   }
 
   @Builder

@@ -11,16 +11,14 @@ export struct LoadingData{
   extraSuccess:string =''
 
   build(){
-    Column(){
-      if (this.loadingStatus === LoadingStatus.Loading){
-        Loading({extra:this.extraSuccess}).layoutWeight(1)
-      }else if (this.loadingStatus === LoadingStatus.LoadingSuccess){
-        this.page()
-      }else if (this.loadingStatus === LoadingStatus.LoadingFailure){
-        Failure({extra:this.extraFailure}).layoutWeight(1)
-      }else{
-        NoData()
-      }
+    if (this.loadingStatus === LoadingStatus.Loading){
+      Loading({extra:this.extraSuccess}).layoutWeight(1)
+    }else if (this.loadingStatus === LoadingStatus.LoadingSuccess){
+      this.page()
+    }else if (this.loadingStatus === LoadingStatus.LoadingFailure){
+      Failure({extra:this.extraFailure}).layoutWeight(1)
+    }else{
+      NoData()
     }
   }
 }

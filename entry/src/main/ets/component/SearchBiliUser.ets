@@ -38,15 +38,12 @@ export struct SearchBiliUserDetails {
   }
 
   build() {
-    Row() {
-      LoadingData({ loadingStatus: this.loadingStatus, page: this.biliUserPage.bind(this),extraFailure:"SearchBiliUser",extraSuccess:'SearchBiliUser' })
-    }
-    .height('100%')
+    LoadingData({ loadingStatus: this.loadingStatus, page: this.biliUserPage.bind(this),extraFailure:"SearchBiliUser",extraSuccess:'SearchBiliUser' })
+
   }
 
   @Builder
   biliUserPage() {
-    Column(){
       List() {
         ForEach(this.searchBiliUserBeans, (item: SearchBiliUserBean,index?: number) => {
           ListItem(){
@@ -67,7 +64,6 @@ export struct SearchBiliUserDetails {
       }).divider({ strokeWidth: 1, color: $r('app.color.bilibili_divider'), startMargin: 8, endMargin: 8 })
       .width('100%')
       .backgroundColor(Color.White)
-    }
   }
 
   @Builder
