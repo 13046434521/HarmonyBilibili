@@ -15,22 +15,7 @@
 "in_white_key": 0*/
 import observer from '@ohos.telephony.observer'
 
-export class SearchVideoBean{
-  seid:string
-  suggest_keyword:string
-  rqt_type:string
-  page:number
-  pagesize:number
-  numResults:number
-  numPages:number
-  egg_hit:number
-  show_column:number
-  in_black_key:number
-  in_white_key:number
-  result:SearchVideoItemBean[]
-}
-
-export class SearchVideoItemBean{
+export interface SearchVideoBean{
   type:string
   id:number
   author:string

@@ -1,7 +1,8 @@
+import { SearchMediaBangumiEps } from './SearchMediaBangumiBean'
 
 //https://api.bilibili.com/x/web-interface/search/type?search_type=media_ft&keyword=年会不能停&page=1
 // 影视的返回数据，和番剧是一样的。这里用两个类来进行区分，以免后续出现修改
-export class SearchMediaFtBean{
+export interface SearchMediaFtBean{
   type: string
   media_id: number
   title: string
@@ -38,10 +39,10 @@ export class SearchMediaFtBean{
   pgc_season_id: number
   corner: number
   index_show: string
-  eps: SearchMediaFtBean[]
+  eps: SearchMediaBangumiEps[]
   badges: SearchMediaFtBadgesColor[]
 }
-export class SearchMediaFtEps{
+export interface SearchMediaFtEps{
   id: number
   cover: string
   title: number
@@ -52,7 +53,7 @@ export class SearchMediaFtEps{
   long_title: string
 }
 
-export class SearchMediaFtBadgesColor{
+export interface SearchMediaFtBadgesColor{
   text: string
   text_color: string
   text_color_night:string

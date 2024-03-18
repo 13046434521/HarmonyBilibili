@@ -9,7 +9,7 @@ import { Utils } from '../Utils/Utils';
 export struct HomePage {
   @State message: string = 'Home'
   @State homeBeanData:Array<HomeBeanItem>=[]
-  @State homeSearchBeanData:HomeSearchBean=new HomeSearchBean()
+  @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
   @State homePage: number = 0
   @State isRefreshing: boolean = false
   aboutToAppear(){

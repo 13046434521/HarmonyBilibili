@@ -1,4 +1,4 @@
-export class SearchHotBean{
+export interface SearchHotBean {
 /*  "data": {
     "trackid": "11135390230791623592",
     "list": [],
@@ -10,7 +10,7 @@ export class SearchHotBean{
   hotword_egg_info:string
 }
 
-export class SearchHotBeanItem{
+export interface SearchHotBeanItem{
 /*  {
   "position": 1,
   "keyword": "48岁博士生8年未毕业被劝退",

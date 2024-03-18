@@ -22,7 +22,7 @@
     ]
 }*/
 
-export class PageListBean{
+export interface  PageListBean{
 
 /*  "cid": 1469197725,
   "page": 1,
@@ -49,7 +49,7 @@ export class PageListBean{
   dimension:PageListDimensionBean
 }
 
-export class PageListDimensionBean{
+export interface PageListDimensionBean{
   width:number
   height:number
   rotate:number

@@ -19,7 +19,7 @@ import { LoadingData } from './LoadingData'
 @Component
 export struct SearchDefaultDetails {
   @State message: string = '默认'
-
+  // BiliUser,Video
   aboutToAppear(){
 
     // Api.request()

@@ -25,8 +25,8 @@
 }
 */
 // https://api.bilibili.com/x/web-interface/search/type?search_type=article&keyword=ð©ÀºÇò&page=1
-@Observed
-export class SearchArticleBean{
+
+export interface SearchArticleBean{
   type:string
   id: number
   mid: number

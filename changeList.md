@@ -38,6 +38,10 @@
     使用懒加载+List+Scroll完成直播页面
 #### 11. 减少search页面各Tabs页面嵌套层级
     减少search页面各Tabs页面嵌套层级
+#### 12. 把Bean数据从class改为interface
+    Default页面的各种类数据格式和Video，番剧等一致，改为interface直接implement就能使用
+#### 13. 把各页面的Item抽取
+    将Search页面的Video，番剧，影视，直播间等页面的Item抽取出单独组件，方便后续默认搜索页面（SearchDefault）页面使用
 
 ### 2024-4-18 目前问题：
     番剧页面会报TypeError问题，可能网络申请导致  解决

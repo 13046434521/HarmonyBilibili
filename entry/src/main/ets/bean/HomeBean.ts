@@ -1,4 +1,4 @@
-export default class HomeBean{
+export class HomeBean{
 /*  "item": [],
   "business_card": null,
   "floor_info": [{
@@ -45,7 +45,7 @@ export default class HomeBean{
 }
 
 
-export class HomeBeanItem {
+export interface HomeBeanItem {
   id:number
   bvid:string
   cid:number
@@ -96,9 +96,6 @@ export class HomeBeanItem {
 "enable_vt": 0,
 "vt_display": "",
 "dislike_switch": 1*/
-
-  constructor() {
-  }
 }
 
 class HomeStatBean{
@@ -115,7 +112,7 @@ class HomeStatBean{
 
 }
 
-class HomeOwnerBean{
+interface HomeOwnerBean{
   /*"owner": {
 				"mid": 263090405,
 				"name": "Ã¨²»Àí¿§·È",

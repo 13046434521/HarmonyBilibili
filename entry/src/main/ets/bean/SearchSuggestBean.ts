@@ -1,15 +1,15 @@
-export class SearchSuggestBean {
+export interface SearchSuggestBean {
   exp_str: string
   code: number
   result: SearchSuggestResultBean
   stoken: number
 }
 
-export class SearchSuggestResultBean {
+export interface SearchSuggestResultBean {
   tag: SearchSuggestTagBean[]
 }
 
-export class SearchSuggestTagBean {
+export interface SearchSuggestTagBean {
   value: string
   term: string
   ref: number

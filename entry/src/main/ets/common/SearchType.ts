@@ -10,13 +10,13 @@
 // 相簿：photo
 export enum SearchType {
   ALL = 'all',
-  VIDEO = 'video',
-  MEDIA_BANGUMI = 'media_bangumi',
+  VIDEO = 'video',//视频
+  MEDIA_BANGUMI = 'media_bangumi',//番剧
   MEDIA_FT = 'media_ft', // 影视
-  LIVE_ROOM = 'live_room',
+  LIVE_ROOM = 'live_room',//直播
   LIVE_USER = 'live_user',
-  ARTICLE = 'article',
+  ARTICLE = 'article',//图文
   TOPIC = 'topic',
-  BILI_USER = 'bili_user',
+  BILI_USER = 'bili_user',//用户
   PHOTO = 'photo',
 }

@@ -25,7 +25,7 @@ export struct SearchLiving {
   }
   initPage(){
     this.page = 1
-    Api.getSearchType<SearchLiveRoomBean>(this.searchType,'dota2',this.page).then(response=>{
+    Api.getSearchType<SearchLiveRoomBean>(this.searchType,this.search,this.page).then(response=>{
       this.livingData.pushDataAll(response.result)
       if (response.result!=null&& this.livingData.totalCount()!=0) {
         this.loadingStatus = LoadingStatus.LoadingSuccess
@@ -39,6 +39,7 @@ export struct SearchLiving {
 
   build() {
     LoadingData({loadingStatus :this.loadingStatus,page:this.liveRoomPage.bind(this)})
+      .layoutWeight(1)
   }
 
   @Builder liveRoomPage(){

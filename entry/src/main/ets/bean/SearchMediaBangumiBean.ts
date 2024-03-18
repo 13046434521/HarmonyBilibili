@@ -86,7 +86,7 @@
 * */
 
 //https://api.bilibili.com/x/web-interface/search/type?search_type=media_bangumi&keyword=overlord&page=1
-export class SearchMediaBangumiBean{
+export interface SearchMediaBangumiBean{
   type: string
   media_id: number
   title: string
@@ -126,7 +126,7 @@ export class SearchMediaBangumiBean{
   eps: SearchMediaBangumiEps[]
   badges: SearchMediaBangumiTextColor[]
 }
-export class SearchMediaBangumiEps{
+export interface SearchMediaBangumiEps{
   id: number
   cover: string
   title: number
@@ -136,7 +136,7 @@ export class SearchMediaBangumiEps{
   index_title: number
   long_title: string
 }
-export class SearchMediaBangumiTextColor{
+export interface SearchMediaBangumiTextColor{
   text: string
   text_color: string
   text_color_night:string

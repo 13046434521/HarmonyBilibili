@@ -1,5 +1,5 @@
 // 默认搜索结果：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=%E6%B4%9B%E5%A4%A9%E4%BE%9D&page=1
-export class SearchBaseBean<T>{
+export interface SearchBaseBean<T>{
 /*  "seid": "1871174439078139085",
   "page": 1,
   "pagesize": 20,
@@ -31,7 +31,7 @@ export class SearchBaseBean<T>{
   result:T[]
 }
 
-export class topTlistBean{
+export class  topTlistBean{
   video:number
   bangumi:number
   special:number
@@ -63,7 +63,7 @@ export class topTlistBean{
   "live_master": 1,
   "bili_user": 1000*/
 }
-export class SearchDefaultResultBean{
+export interface SearchDefaultResultBean{
 
 /*  "brand_ad",
   "tips",
@@ -82,7 +82,7 @@ export class SearchDefaultResultBean{
 }
 
 // 搜索综合页面，所有类型（bili_user，video等类型）的数据，全都放在这里，如果没有就解析不出来即可
-export class SearchDefaultALLResultBean{
+export interface SearchDefaultALLResultBean{
   /*------------------------------------------- biliUser用户 --------------------------------------------*/
   /*  "type": "bili_user",
   "mid": 36081646,
@@ -144,7 +144,7 @@ export class SearchDefaultALLResultBean{
   //upic:string
 }
 
-export class  BiliUserItemBean{
+export interface  BiliUserItemBean{
 /*  "aid": 1151130190,
   "bvid": "BV1TZ421y7XX",
   "title": "洛天依 灯火春澜Ver.Q版手办 实物展示",

@@ -51,7 +51,7 @@
     "last_play_cid": 0,
     "view_info": null
   }*/
-export class PlayVideoBean{
+export interface PlayVideoBean{
   from:string
   result:string
   message:string
@@ -71,7 +71,7 @@ export class PlayVideoBean{
   durl:PlayURL[]
   support_formats:PlaySupportFormats[]
 }
-export class PlayURL{
+export interface PlayURL{
   order:number
   length:number
   size:number
@@ -80,7 +80,7 @@ export class PlayURL{
   url:string
   backup_url:object
 }
-export class PlaySupportFormats{
+export interface PlaySupportFormats{
   quality:number
   format:string
   new_description:string

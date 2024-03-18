@@ -41,10 +41,9 @@ export struct SearchMediaFt {
   }
 
   build() {
-    Column() {
-      LoadingData({loadingStatus :this.loadingStatus,page:this.mediaFtPage.bind(this)})
-    }.width('100%')
-    .height('100%')
+    LoadingData({loadingStatus :this.loadingStatus,page:this.mediaFtPage.bind(this)})
+      .width('100%')
+      .height('100%')
   }
 
   @Builder mediaFtPage(){

@@ -25,7 +25,7 @@
             },*/
 
 //https://api.bilibili.com/x/web-interface/search/type?search_type=live_room&keyword=什么&page=1
-export class SearchLiveRoomBean{
+export interface SearchLiveRoomBean{
   type: string
   roomid: number
   short_id: number

@@ -1,10 +1,9 @@
 import axios, {AxiosInstance, AxiosRequestTransformer,
   InternalAxiosRequestConfig} from '@ohos/axios'
-import HomeBean from '../bean/HomeBean';
+import {HomeBean} from '../bean/HomeBean';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { PlayVideoBean } from '../bean/PlayVideoBean';
 import { SearchHotBean } from '../bean/SearchHotBean';
-import { SearchVideoBean, SearchVideoItemBean } from '../bean/SearchVideoBean';
 import { PageListBean } from '../bean/PageListBean';
 import { SearchBaseBean, SearchDefaultResultBean } from '../bean/SearchBaseBean';
 import { SearchType } from '../common/SearchType';
