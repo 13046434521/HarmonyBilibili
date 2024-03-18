@@ -3,13 +3,11 @@ import { Utils } from '../../Utils/Utils'
 
 @Component
 export struct MediaFtItem{
-  @Prop searchMediaFtBean:SearchMediaFtBean
+  item:SearchMediaFtBean
 
   build(){
-    this.mediaFtItem(this.searchMediaFtBean)
+    this.mediaFtItem(this.item)
   }
-
-
 
   @Builder mediaFtItem(item:SearchMediaFtBean){
     Column(){

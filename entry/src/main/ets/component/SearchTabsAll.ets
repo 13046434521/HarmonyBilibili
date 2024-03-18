@@ -60,7 +60,7 @@ export struct SearchTabsAll {
   tabPages() {
     Tabs({ barPosition: BarPosition.Start,controller:this.controller}) {
       TabContent() {
-        SearchDefaultDetails()
+        SearchDefaultDetails({ search: this.search })
       }.tabBar(this.TabBuilder(0, "综合"))
       TabContent() {
         // 视频页面

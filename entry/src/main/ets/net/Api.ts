@@ -9,6 +9,7 @@ import { SearchBaseBean, SearchDefaultResultBean } from '../bean/SearchBaseBean'
 import { SearchType } from '../common/SearchType';
 import { Utils } from '../Utils/Utils';
 import { SearchSuggestBean, SearchSuggestResultBean } from '../bean/SearchSuggestBean';
+import { SearchDefaultBean, SearchDefaultDataBean } from '../bean/SearchDefaultBean';
 
 class Api {
   baseURl = 'https://api.bilibili.com/x'
@@ -114,7 +115,7 @@ class Api {
 
   //  综合搜索：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=洛天依&page=1
   //  需要cookie
-  getSearchDefault(keyword:string,page:number=1): Promise<SearchBaseBean<SearchDefaultResultBean>> {
+  getSearchDefault(keyword:string,page:number=1): Promise<SearchBaseBean<SearchDefaultBean>> {
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}`
     return this.request(url,this.instanceCookie)

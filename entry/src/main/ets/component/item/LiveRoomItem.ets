@@ -5,10 +5,10 @@ import { SearchLiveRoomBean } from '../../bean/SearchLiveRoomBean'
 
 @Component
 export struct LiveRoomItem{
-  @Prop searchLiveRoomBean:SearchLiveRoomBean
+  item:SearchLiveRoomBean
 
   build(){
-    this.liveRoomItem(this.searchLiveRoomBean)
+    this.liveRoomItem(this.item)
   }
 
 

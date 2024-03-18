@@ -45,7 +45,7 @@ export struct SearchLiving {
         List({scroller: this.scrollerController }) {
           LazyForEach(this.livingData,(item:SearchLiveRoomBean)=>{
             ListItem() {
-              LiveRoomItem({ searchLiveRoomBean: item })
+              LiveRoomItem({ item: item })
                 .margin(4)
             }
           },(item:SearchLiveRoomBean)=>item.roomid+item.uname)

@@ -11,7 +11,13 @@ import { SearchVideoBean } from './SearchVideoBean';
 
 // 6合1的数据源
 //https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=overlord&page=1
-export class  SearchDefaultBean implements SearchBiliUserBean,SearchMediaBangumiBean,SearchVideoBean,SearchMediaFtBean,SearchArticleBean,SearchLiveRoomBean{
+export class SearchDefaultBean{
+  result_type:string
+  data:SearchDefaultDataBean[]
+}
+
+export class SearchDefaultDataBean implements SearchBiliUserBean,SearchMediaBangumiBean,SearchVideoBean,SearchMediaFtBean,SearchArticleBean,SearchLiveRoomBean{
+  result_type:string
   media_id: number;
   title: string;
   org_title: string;

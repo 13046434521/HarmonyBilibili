@@ -48,7 +48,7 @@ export struct SearchMediaFt {
     Scroll(this.controller){
       Column() {
         LazyForEach(this.mediaFtData, (item, index) => {
-          MediaFtItem({ searchMediaFtBean: item })
+          MediaFtItem({ item: item })
         }, (item:SearchMediaFtBean) => item.media_id+item.title)
       }.width('100%')
     }.width('100%')

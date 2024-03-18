@@ -69,8 +69,7 @@ export struct SearchVideoDetails {
         }).catch((err => {
           Utils.Toast("视频页面："+err)
         }))
-      }).width('100%')
-      .layoutWeight(1)
+      })
     }.onRefreshing(() => {
       this.page = 1
       Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page).then((response) => {
