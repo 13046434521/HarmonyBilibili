@@ -13,7 +13,7 @@ export enum SearchType {
   VIDEO = 'video',
   MEDIA_BANGUMI = 'media_bangumi',
   MEDIA_FT = 'media_ft', // с╟йс
-  LIVE = 'live',
+  LIVE_ROOM = 'live_room',
   LIVE_USER = 'live_user',
   ARTICLE = 'article',
   TOPIC = 'topic',

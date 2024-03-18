@@ -2,46 +2,27 @@
 @Component
   // 主界面中的我的页面
 export struct MinePage {
-  scroller: Scroller = new Scroller()
-  private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-/*  @Builder banguMiPage(){
-    Scroll(this.scroller){
-      Column(){
-        ForEach(this.arr,(item:number,index)=>{
-          Text("数据:"+item)
-            .height('30%')
-            .width('100%')
-            .borderWidth(2)
-            .borderColor(Color.Black)
-            .borderRadius(2)
-        }, item => item)
-      }.height('100%')
-      .width('100%')
-    }
-    .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
-    .scrollBar(BarState.On)  // 滚动条常驻显示
-    .scrollBarColor(Color.Gray)  // 滚动条颜色
-    .scrollBarWidth(5) // 滚动条宽度
-  }*/
+  @State listPosition: number = 0; // 0代表滚动到List顶部，1代表中间值，2代表滚动到List底部。
+  private arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  private scrollerForScroll: Scroller = new Scroller()
+  private scrollerForList: Scroller = new Scroller()
+
   build() {
-    Column(){
-      Scroll(this.scroller){
-        Column(){
-          ForEach(this.arr,(item:number,index)=>{
-            Text("数据:"+item)
-              .height('30%')
-              .width('30%')
-              .borderWidth(2)
-              .borderColor(Color.Black)
-              .borderRadius(2)
+    Scroll(this.scrollerForScroll) {
+      Column() {
+        List({ space: 20, scroller: this.scrollerForList }) {
+          ForEach(this.arr, (item) => {
+            ListItem() {
+              Text("ListItem" + item)
+                .width("100%").height("100%").borderRadius(15)
+                .fontSize(16).textAlign(TextAlign.Center).backgroundColor(Color.White)
+            }.width("100%").height(100)
           }, item => item)
-        }.width('100%')
-      }.height('100%')
-      .width('100%')
-      .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
-      .scrollBar(BarState.On)  // 滚动条常驻显示
-      .scrollBarColor(Color.Gray)  // 滚动条颜色
-      .scrollBarWidth(30) // 滚动条宽度
-    }
+        }
+        .width("100%")
+        .height("50%")
+        .edgeEffect(EdgeEffect.None)
+      }
+    }.width('100%').height('100%').backgroundColor(0xDCDCDC).padding(20)
   }
 }

@@ -2,14 +2,13 @@ import webview from '@ohos.web.webview'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
 
-@Preview
 @Component
   // 主界面中的购物页面，很可能被去掉
 export struct ShoppingPage {
-  url: string = getContext(this).resourceManager.getStringSync($r('app.string.web_shopping_link'))
-  controller: webview.WebviewController = new webview.WebviewController()
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-
+  controller: webview.WebviewController = new webview.WebviewController()
+  // url: string = getContext(this).resourceManager.getStringSync($r('app.string.web_shopping_link'))
+  url:string='https://m.bilibili.com'
   build() {
     Stack({ alignContent: Alignment.Center }) {
       this.webPage()
