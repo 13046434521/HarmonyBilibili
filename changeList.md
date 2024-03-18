@@ -18,7 +18,21 @@
 #### 4. 完成番剧页面
     番剧页面用Scroll控件保存数据。
 
-### 目前问题：
-    番剧页面会报TypeError问题，可能网络申请导致
-    番剧页面用Scroll控件保存数据，没有下拉刷新功能
+#### 5. Shopping页面改为Web页面
+    Shopping页面改为Web，新增地址为bilibili网址：https://m.bilibili.com/
+    新增loading页面
+
+#### 6. 搜索影视页面
+    新增BasicDataSource,懒加载相关
+    使用Scroll + LazyForEach完成。LazyForEach外层要套一层Colum同时不能设置高度，否则无法滚动
+    MediaFtItem中的@Builder mediaFtItem显示不全，最外层套一层容器组件即可
+#### 7. 新增没有数据的页面
+    在LoadingData组件中新增NoData组件，用于处理没有申请到数据时的逻辑
+#### 8. 解决影视和番剧页面会报TypeError问题
+    原因是，网络申请返回的json数据中，没有result。番剧页面中，进行特殊处理即可
+
+### 2024-4-18 目前问题：
+    番剧页面会报TypeError问题，可能网络申请导致  解决
+    番剧页面用Scroll控件保存数据，没有下拉刷新功能  
     番剧，图文的item控件，没有提取成单独的组件。无法在综合页面使用
+    SearchTabsAll页面 controller不好使

@@ -1,6 +1,7 @@
 import url from '@ohos.url'
 import webview from '@ohos.web.webview'
 import { Loading } from '../component/LoadingComponent'
+import router from '@ohos.router'
 
 @Entry
 @Component

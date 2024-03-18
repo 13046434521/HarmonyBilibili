@@ -27,7 +27,9 @@ struct SearchHotPage {
   build() {
     Column() {
      SearchHeader({title:this.title,placeholder:this.search,change:(value:string)=>{
-       this.search = value
+       if (value!='') {
+         this.search = value
+       }
      },clickEvent:()=>{
         router.pushUrl({url:"pages/SearchPage",params:{keyword:this.search}})
      }})

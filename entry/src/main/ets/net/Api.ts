@@ -150,7 +150,7 @@ class Api {
       instance = axiosInstance
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
       instance.get(url).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
           // 不同的请求，返回的值不一样，正常用data
@@ -159,7 +159,7 @@ class Api {
           if (httpData === undefined) {
             httpData= resp.data.result
           }
-          if (httpData===null) {
+          if (httpData === undefined) {
             Utils.Toast("当前请求返回可以数据为空:"+url)
           }
           console.log("Bilibili:status data:"+url+"  status" + resp.status + "--*--" + JSON.stringify(httpData))
@@ -177,7 +177,11 @@ class Api {
   }
 }
 
+//https://api.live.bilibili.com/room/v1/Room/playUrl?qn=1000&platform=web&cid=23982773
+// 直播间，可以获取直播流：cid为roomid，可用ijkplayer播放
 
+// https://api.bilibili.com/x/web-interface/search/type?search_type=live&keyword=dota2&page=1
+// 搜索直播间
 
 const api: Api = new Api()
 

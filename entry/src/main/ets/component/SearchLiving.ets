@@ -8,7 +8,7 @@ import { LoadingData } from './LoadingData'
 export struct SearchLiving {
   @State message: string = '影视'
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
-  @Prop search:string = "kobe"
+  @Prop search:string = ""
   @State page:number=1
   @State searchBiliUserBeans: SearchBiliUserBean[] = []
 

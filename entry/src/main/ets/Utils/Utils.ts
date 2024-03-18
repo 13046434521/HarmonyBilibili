@@ -68,11 +68,11 @@ export class Utils {
 
   static upRichTextClear(title:string){
     // utf-8编码
-    let coding = title
+    // let coding = title
     // let coding = new util.TextDecoder(title).encoding
 
     //result: string = str.replace(/[^a-zA-Z0-9]/g, '');
-    let msg =  coding.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")
+    let msg =  title.replace(/<em class="keyword">/g,"").replace(/<\/em>/g,"")
       .replace(/&#x27;/g,"'")
     //console.log("rich text:"+msg)
     return msg

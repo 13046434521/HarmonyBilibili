@@ -31,7 +31,10 @@ struct Index {
   @State currentTab :TabIcon = null
 
   build() {
-    Tabs(){
+    Column(){
+      HomePage()
+    }
+/*    Tabs(){
       TabContent(){
         HomePage()
       }.tabBar(new BottomTabBarStyle(this.tabs[0].path, this.tabs[0].text))
@@ -50,10 +53,8 @@ struct Index {
     }
     .barMode(BarMode.Fixed)
     .scrollable(false)
-    .barPosition(BarPosition.End)
+    .barPosition(BarPosition.End)*/
     .layoutWeight(1)
-    .height('100%')
-    .width('100%')
   }
 
   @Builder

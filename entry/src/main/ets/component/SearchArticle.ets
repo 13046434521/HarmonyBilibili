@@ -29,7 +29,11 @@ export struct SearchArticleDetails {
     this.page = 1
     Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page).then(response => {
       this.searchArticleBeans = response.result
-      this.loadingStatus = LoadingStatus.LoadingSuccess
+      if (this.searchArticleBeans!=null&&this.searchArticleBeans.length!=0) {
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
     }).catch(err => {
       this.err = err
       this.loadingStatus = LoadingStatus.LoadingFailure

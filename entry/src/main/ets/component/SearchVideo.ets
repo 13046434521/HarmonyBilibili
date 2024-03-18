@@ -11,7 +11,7 @@ import { LoadingData } from './LoadingData'
 @Component
 export struct SearchVideoDetails {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  @State search: string =" "
+  @Prop search: string =""
   @State page: number = 1
   @State searchDetailsItemBean: Array<SearchVideoItemBean> = []
   @State isRefreshing: boolean = false
@@ -26,8 +26,13 @@ export struct SearchVideoDetails {
   initPage() {
     this.page = 1
     Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page).then((searchDetailsBean) => {
-      this.loadingStatus =LoadingStatus.LoadingSuccess
       this.searchDetailsItemBean = searchDetailsBean.result
+      if (this.searchDetailsItemBean!=null&&this.searchDetailsItemBean.length!=0) {
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
+
     }).catch((err => {
       this.loadingStatus =LoadingStatus.LoadingFailure
       Utils.Toast(err+"")
@@ -150,9 +155,8 @@ export struct SearchVideoDetails {
             this.page++
             this.searchDetailsItemBean = this.searchDetailsItemBean.concat(response.result)
           }
-
         }).catch((err => {
-          Utils.Toast(err)
+          Utils.Toast("视频页面："+err)
         }))
       }).width('100%')
       .layoutWeight(1)
@@ -160,6 +164,11 @@ export struct SearchVideoDetails {
       this.page = 1
       Api.getSearchType<SearchVideoItemBean>(SearchType.VIDEO, this.search, this.page).then((searchDetailsBean) => {
         this.searchDetailsItemBean = searchDetailsBean.result
+        if (this.searchDetailsItemBean!=null&&this.searchDetailsItemBean.length!=0) {
+          this.loadingStatus = LoadingStatus.LoadingSuccess
+        }else{
+          this.loadingStatus = LoadingStatus.LoadingOther
+        }
         this.isRefreshing = false
       }).catch((err => {
         this.isRefreshing = false

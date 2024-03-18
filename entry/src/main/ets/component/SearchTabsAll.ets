@@ -1,5 +1,6 @@
 import { topTlistBean } from '../bean/SearchBaseBean'
 import { LoadingStatus } from '../common/LoadingStatus'
+import { Utils } from '../Utils/Utils'
 import { LoadingData } from './LoadingData'
 import { SearchArticleDetails } from './SearchArticle'
 import { SearchBiliUserDetails } from './SearchBiliUser'
@@ -17,11 +18,12 @@ export struct SearchTabsAll {
   @State liveTitle: string = "直播"
   @State biliUserTitle: string = "用户"
   @State articleTitle: string = "图文"
-  @Link loadingStatus: LoadingStatus
+  @Prop loadingStatus: LoadingStatus
   @Prop search: string
   @Prop @Watch('upDataTitle')topList: topTlistBean = new topTlistBean()
-
   @State currentIndex :number = 0
+  controller:TabsController = new TabsController()
+
   aboutToAppear(){
     console.log("SearchTabsAll 页面刷新了")
   }
@@ -30,9 +32,7 @@ export struct SearchTabsAll {
   }
 
   build() {
-    LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this),extraFailure:"SearchTabsAll",extraSuccess:'SearchTabsAll' })
-      .width('100%')
-      .height('100%')
+    LoadingData({ loadingStatus: this.loadingStatus, page: this.tabPages.bind(this)})
       .layoutWeight(1)
   }
 
@@ -51,12 +51,15 @@ export struct SearchTabsAll {
         .opacity(this.currentIndex === index  ? 1 : 0)
         .width('60%')
     }.width('18%')
-
+    .onClick(()=>{
+      this.currentIndex = index
+      this.controller.changeIndex(this.currentIndex)
+    })
   }
 
   @Builder
   tabPages() {
-    Tabs({ barPosition: BarPosition.Start }) {
+    Tabs({ barPosition: BarPosition.Start,controller:this.controller}) {
       TabContent() {
         SearchDefaultDetails()
       }.tabBar(this.TabBuilder(0, "综合"))
@@ -93,6 +96,7 @@ export struct SearchTabsAll {
     .animationDuration(200)
     .onChange((index: number) => {
       this.currentIndex = index
+      this.controller.changeIndex(this.currentIndex)
     })
   }
 

@@ -27,7 +27,11 @@ export struct SearchBiliUserDetails {
     this.page = 1
     Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
       this.searchBiliUserBeans = response.result
-      this.loadingStatus = LoadingStatus.LoadingSuccess
+      if (this.searchBiliUserBeans!=null&&this.searchBiliUserBeans.length!=0) {
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
     }).catch(err => {
       this.loadingStatus = LoadingStatus.LoadingFailure
     })

@@ -1,43 +1,65 @@
-import { SearchBiliUserBean } from '../bean/SearchBiliUserBean'
+import { SearchMediaFtBean } from '../bean/SearchMediaFtBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
+import { MediaFtData } from '../datasource/MediaFtData'
 import Api from '../net/Api'
+import { Utils } from '../Utils/Utils'
+import { MediaFtItem } from './item/MediaFtItem'
 import { LoadingData } from './LoadingData'
 
 @Component
 export struct SearchMediaFt {
-  @State message: string = '影视'
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
-  @Prop search:string = "kobe"
+  search: string =""
   @State page:number=1
-  @State searchBiliUserBeans: SearchBiliUserBean[] = []
+  @State mediaFtData:MediaFtData =new MediaFtData()
+  controller:Scroller=new Scroller()
+  searchType:SearchType = SearchType.MEDIA_FT
 
-  searchType:SearchType = SearchType.BILI_USER
   aboutToAppear() {
-    console.log("影视 页面刷新了")
     this.initPage()
   }
+  
   aboutToDisappear(){
-    console.log("影视 页面销毁了")
   }
+  
   initPage(){
     this.page = 1
-    // Api.getSearchType<SearchBiliUserBean>(this.searchType,this.search,this.page).then(response=>{
-    //   this.searchBiliUserBeans = response.result
-    //   this.loadingStatus = LoadingStatus.LoadingSuccess
-    // }).catch(err=>{
-    //   this.loadingStatus = LoadingStatus.LoadingFailure
-    // })
+    Api.getSearchType<SearchMediaFtBean>(this.searchType,this.search,this.page).then(response=>{
+      this.mediaFtData.pushDataAll(response.result)
+
+      if (this.mediaFtData.totalCount()!=0) {
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
+
+    }).catch(err=>{
+      this.loadingStatus = LoadingStatus.LoadingFailure
+      Utils.Toast("影视页面:"+err)
+    })
   }
 
   build() {
-    Row() {
-      LoadingData({loadingStatus :this.loadingStatus,page:this.biliUserPage,extraFailure:"Search影视",extraSuccess:'Search影视'})
-    }
+    Column() {
+      LoadingData({loadingStatus :this.loadingStatus,page:this.mediaFtPage.bind(this)})
+    }.width('100%')
     .height('100%')
   }
 
-  @Builder biliUserPage(){
-    Column().layoutWeight(1)
+  @Builder mediaFtPage(){
+    Scroll(this.controller){
+      Column() {
+        LazyForEach(this.mediaFtData, (item, index) => {
+          MediaFtItem({ searchMediaFtBean: item })
+        }, item => item)
+      }.width('100%')
+    }.width('100%')
+    .align(Alignment.Top)
+    .edgeEffect(EdgeEffect.None)
+    .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
+    .scrollBar(BarState.Auto)  // 滚动条常驻显示
+    .scrollBarColor(Color.Gray)  // 滚动条颜色
+    .scrollBarWidth(2) // 滚动条宽度
   }
 }

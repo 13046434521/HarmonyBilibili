@@ -1,66 +1,17 @@
-import { SearchBiliUserBean } from '../bean/SearchBiliUserBean'
-import { SearchMediaBangumiBean } from '../bean/SearchMediaBangumiBean'
-import { LoadingStatus } from '../common/LoadingStatus'
-import { SearchType } from '../common/SearchType'
-import Api from '../net/Api'
-import { Utils } from '../Utils/Utils'
-import { LoadingData } from './LoadingData'
+import { SearchMediaFtBean } from '../../bean/SearchMediaFtBean'
+import { Utils } from '../../Utils/Utils'
 
 @Component
-export struct SearchMediaBangumiDetails {
-  @State loadingStatus:LoadingStatus = LoadingStatus.Loading
-  search: string =""
-  @State page:number=1
-  @State searchMediaBangumiBean: SearchMediaBangumiBean[] = []
-  @State errMessage :string = ''
-  searchType:SearchType = SearchType.MEDIA_BANGUMI
-  scroller: Scroller = new Scroller()
-  aboutToAppear() {
-    console.log("番剧 页面刷新了")
-    this.initPage()
-  }
-  aboutToDisappear(){
-    console.log("番剧 页面销毁了")
-  }
-  initPage(){
-    this.page = 1
-    Api.getSearchType<SearchMediaBangumiBean>(this.searchType,this.search,this.page).then(response=>{
-      this.searchMediaBangumiBean = response.result
-      if (this.searchMediaBangumiBean !=null&&this.searchMediaBangumiBean.length!=0) {
-        this.loadingStatus = LoadingStatus.LoadingSuccess
-      }else{
-        this.loadingStatus = LoadingStatus.LoadingOther
-      }
-    }).catch(err=>{
-      this.loadingStatus = LoadingStatus.LoadingFailure
-      this.errMessage = err
-      Utils.Toast(err+"")
-    })
+export struct MediaFtItem{
+  @Prop searchMediaFtBean:SearchMediaFtBean
+
+  build(){
+    this.mediaFtItem(this.searchMediaFtBean)
   }
 
-  build() {
-    LoadingData({loadingStatus :this.loadingStatus,page:this.banguMiPage.bind(this),extraFailure:this.errMessage})
-  }
 
-  @Builder banguMiPage(){
-    Scroll(this.scroller){
-      Column(){
-        ForEach(this.searchMediaBangumiBean,(item:SearchMediaBangumiBean,index)=>{
-          this.banguMiPageItem(item)
-        }, item => item)
-      }
-      .width('100%')
-    }.height('100%')
-    .width('100%')
-    .align(Alignment.Top)
-    .edgeEffect(EdgeEffect.None)
-    .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
-    .scrollBar(BarState.Auto)  // 滚动条常驻显示
-    .scrollBarColor(Color.Gray)  // 滚动条颜色
-    .scrollBarWidth(2) // 滚动条宽度
-  }
 
-  @Builder banguMiPageItem(item:SearchMediaBangumiBean){
+  @Builder mediaFtItem(item:SearchMediaFtBean){
     Column(){
       Row(){
         Stack(){
@@ -72,32 +23,32 @@ export struct SearchMediaBangumiDetails {
             .borderRadius(5)
             .align(Alignment.BottomEnd)
 
-          if (item.badges!=null){
-            Text(item.badges[0].text)
-              .backgroundColor(item.badges[0].bg_color)
-              .fontColor(item.badges[0].text_color)
-              .borderColor(item.badges[0].border_color)
-              .borderRadius(5)
-              .padding(4)
-              .fontSize(10)
-              .margin(4)
-          }
+          Text(item.season_type_name)
+            .padding(4)
+            .fontSize(10)
+            .backgroundColor($r('app.color.bilibili_theme'))
+            .fontColor($r('app.color.bilibili_text_white'))
+            .borderRadius(5)
+            .borderRadius(5)
+            .padding(4)
+            .fontSize(10)
+            .margin(4)
         }.alignContent(Alignment.TopEnd)
         .margin({left:12,right:12})
         .height('80%')
 
         Column(){
           Row(){
-            Text(item.season_type_name)
-              .borderRadius(5)
-              .padding(4)
-              .fontSize(10)
-              .backgroundColor($r('app.color.bilibili_theme'))
-              .fontColor($r('app.color.bilibili_text_white'))
-              .borderRadius(5)
-              .padding(4)
-              .fontSize(10)
-              .margin({top:4,bottom:4,right:4})
+            if (item.badges!=null) {
+              Text(item.badges[0].text)
+                .backgroundColor(item.badges[0].bg_color)
+                .fontColor(item.badges[0].text_color)
+                .borderColor(item.badges[0].border_color)
+                .borderRadius(5)
+                .padding(4)
+                .fontSize(10)
+                .margin({ top: 4, bottom: 4, right: 4 })
+            }
 
             Text(Utils.upRichTextClear(item.title))
               .fontSize(12)
@@ -159,7 +110,7 @@ export struct SearchMediaBangumiDetails {
               .aspectRatio(1)
               .objectFit(ImageFit.Cover)
 
-            Text("追番")
+            Text("追剧")
               .fontColor($r('app.color.bilibili_theme'))
               .padding(4)
               .textAlign(TextAlign.Center)
@@ -180,7 +131,10 @@ export struct SearchMediaBangumiDetails {
         .margin({right:18})
       }.width('100%')
       .height('22%')
+
+      Divider().width('95%').color($r('app.color.bilibili_divider'))
     }.backgroundColor(Color.White)
-    Divider().width('95%').color($r('app.color.bilibili_divider'))
   }
 }
+
+

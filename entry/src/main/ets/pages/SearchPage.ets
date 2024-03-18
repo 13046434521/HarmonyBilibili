@@ -7,8 +7,8 @@ import { SearchTabsAll } from '../component/SearchTabsAll'
 import { topTlistBean } from '../bean/SearchBaseBean'
 import { Utils } from '../Utils/Utils'
 
-
-@Entry
+let controllerLocalStrorage = new LocalStorage({'tabsController':new TabsController()})
+@Entry(controllerLocalStrorage)
 @Component
 struct SearchPage {
   @State search: string = '搜索视频、番剧或up主'
@@ -18,7 +18,7 @@ struct SearchPage {
   errMessage: string = ''
   placeholder:string = ''
   @State isTitleVisible:boolean = false;
-
+  controllerLocalStrorage = new TabsController()
   aboutToAppear() {
     this.search = router.getParams()['keyword']
     this.placeholder= this.search
@@ -31,7 +31,6 @@ struct SearchPage {
     this.loadingStatus = LoadingStatus.Loading
 
     Api.getSearchDefault(keywords).then(response => {
-      Utils.Toast(this.search+"   "+response.top_tlist.video)
       this.topList = response.top_tlist
       this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch(err => {
@@ -45,8 +44,8 @@ struct SearchPage {
       // 搜索Header
       SearchHeader({ title: this.search,isTitleVisible:this.isTitleVisible,placeholder:this.placeholder, change: (value: string) => {
         this.search = value
-
         this.isNeedSuggest = true
+
       }, clickEvent: (title,placeholder) => {
         if (this.search === "") {
           this.search =placeholder
