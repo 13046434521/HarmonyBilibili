@@ -15,6 +15,7 @@ import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { AllData } from '../datasource/AllData'
 import Api from '../net/Api'
+import { Utils } from '../Utils/Utils'
 import { ArticleItem } from './item/ArticleItem'
 import { BiliUserItem } from './item/BiliUserItem'
 import { LiveRoomItem } from './item/LiveRoomItem'
@@ -67,6 +68,16 @@ export struct SearchDefaultDetails {
       item.aid + item.roomid + item.pub_time+item.mid+item.uname)
     }.width('100%')
     .layoutWeight(1)
+    .onReachEnd(()=>{
+      Api.getSearchDefault(this.search, this.page+1).then((response) => {
+        // 需要特殊处理
+        let temp = this.allData.dealData(response.result)
+        this.allData.pushDataAll(temp)
+        this.page++
+      }).catch(() => {
+        Utils.Toast('综合页面没有数据了')
+      })
+    })
   }
 
   @Builder
