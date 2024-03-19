@@ -27,36 +27,16 @@ import { LoadingData } from './LoadingData'
 @Component
 export struct SearchDefaultDetails {
   @Prop search: string
-  @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  @State allData: AllData = new AllData()
   @State page: number = 1
+  @Consume('defaultData') allData: AllData
 
   aboutToAppear() {
 
-    this.initPage()
   }
 
-  initPage() {
-    this.page = 1
-    Api.getSearchDefault(this.search, this.page).then((response) => {
-      // 需要特殊处理
-      let temp = this.allData.dealData(response.result)
-      this.allData.pushDataAll(temp)
-
-      if (response.result != null && this.allData.totalCount() != 0) {
-        this.loadingStatus = LoadingStatus.LoadingSuccess
-      } else {
-        this.loadingStatus = LoadingStatus.LoadingOther
-      }
-    }).catch(() => {
-      this.loadingStatus = LoadingStatus.LoadingFailure
-    })
-  }
 
   build() {
-    LoadingData({loadingStatus:this.loadingStatus,page:this.defaultPage.bind(this)})
-      .width('100%')
-      .height('100%')
+    this.defaultPage()
   }
 
   @Builder
@@ -94,9 +74,5 @@ export struct SearchDefaultDetails {
     } else if (item.result_type === SearchType.BILI_USER.toString()) {
       BiliUserItem({ item: item })  //mid,uname
     }
-  }
-
-  detailData() {
-
   }
 }

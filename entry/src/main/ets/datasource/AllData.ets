@@ -21,4 +21,13 @@ export class AllData extends BasicDataSource<SearchDefaultDataBean>{
 
     return searchDataBean
   }
+
+  specialData(datas:SearchDefaultBean[]){
+    // 1.生成特殊数据
+    let temp = this.dealData(datas)
+    // 2.清理已存在的所有数据
+    this.cleanData()
+    // 3.将新生成的数据添加至Data中
+    this.pushDataAll(temp)
+  }
 }

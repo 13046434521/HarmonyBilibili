@@ -7,6 +7,7 @@ import { SearchTabsAll } from '../component/SearchTabsAll'
 import { topTlistBean } from '../bean/SearchBaseBean'
 import { Utils } from '../Utils/Utils'
 import { LoadingData } from '../component/LoadingData'
+import { AllData } from '../datasource/AllData'
 
 let controllerLocalStrorage = new LocalStorage({'tabsController':new TabsController()})
 @Entry(controllerLocalStrorage)
@@ -20,6 +21,9 @@ struct SearchPage {
   placeholder:string = ''
   @State isTitleVisible:boolean = false;
   controllerLocalStrorage = new TabsController()
+
+  @Provide('defaultData') allData: AllData = new AllData()
+
   aboutToAppear() {
     this.search = router.getParams()['keyword']
     this.placeholder= this.search
@@ -32,6 +36,9 @@ struct SearchPage {
     this.loadingStatus = LoadingStatus.Loading
 
     Api.getSearchDefault(keywords).then(response => {
+      // 需要特殊处理，将数据传递到searchDefault页面
+      this.allData.specialData(response.result)
+
       this.topList = response.top_tlist
       this.loadingStatus = LoadingStatus.LoadingSuccess
     }).catch(err => {
