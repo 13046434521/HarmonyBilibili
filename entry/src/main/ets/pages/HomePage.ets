@@ -161,8 +161,9 @@ export struct HomePage {
           ListItem(){
             this.HomeItem(item)
           }.margin(3)
-        },(item:HomeBeanItem)=>item.id+item.cid+item.title)
+        },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)
       }.lanes(2)
+      .edgeEffect(EdgeEffect.Fade)
       .onReachEnd(()=>{
         Api.getHomePages(this.homePage+1).then(response=>{
           if (response.item!=undefined) {
@@ -173,7 +174,6 @@ export struct HomePage {
           Utils.Toast("主页面"+err)
         })
       })
-
     }.onRefreshing(()=>{
       Api.getHomePages().then(homebean=>{
         this.homeData.cleanData()

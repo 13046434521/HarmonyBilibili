@@ -3,7 +3,6 @@ import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { ArticleData } from '../datasource/ArticleData'
 import Api from '../net/Api'
-import { Utils } from '../Utils/Utils'
 import { ArticleItem } from './item/ArticleItem'
 import { LoadingData } from './LoadingData'
 

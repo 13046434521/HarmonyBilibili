@@ -1,7 +1,5 @@
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
-import { LoadingData } from '../component/LoadingData'
-import { SearchLiving } from '../component/SearchLiving'
 
 @Component
 // 动态页面

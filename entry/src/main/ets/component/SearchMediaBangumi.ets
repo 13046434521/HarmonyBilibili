@@ -50,7 +50,7 @@ export struct SearchMediaBangumiDetails {
       Column(){
         LazyForEach(this.mediaBangumiData,(item:SearchMediaBangumiBean,index)=>{
           MediaBangumiItem({item:item})
-        }, (item:SearchMediaBangumiBean )=>item.media_id+item.title)
+        }, (item:SearchMediaBangumiBean )=>JSON.stringify(item))
       }
       .width('100%')
     }.height('100%')

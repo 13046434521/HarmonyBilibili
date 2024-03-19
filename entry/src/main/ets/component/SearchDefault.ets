@@ -64,8 +64,7 @@ export struct SearchDefaultDetails {
     List() {
       LazyForEach(this.allData, (item) => {
         this.defaultItem(item)
-      }, (item: SearchDefaultDataBean) => item.result_type+item.media_id + item.season_id +
-      item.aid + item.roomid + item.pub_time+item.mid+item.uname)
+      }, (item: SearchDefaultDataBean,index) => JSON.stringify(item)+index)
     }.width('100%')
     .layoutWeight(1)
     .onReachEnd(()=>{

@@ -8,7 +8,7 @@ export struct ShoppingPage {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   controller: webview.WebviewController = new webview.WebviewController()
   // url: string = getContext(this).resourceManager.getStringSync($r('app.string.web_shopping_link'))
-  url:string='https://m.bilibili.com'
+  url:string='https://space.bilibili.com/6725669/dynamic'//https://m.bilibili.com'
   build() {
     Stack({ alignContent: Alignment.Center }) {
       this.webPage()

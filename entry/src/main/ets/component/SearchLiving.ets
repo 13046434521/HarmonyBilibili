@@ -48,15 +48,14 @@ export struct SearchLiving {
               LiveRoomItem({ item: item })
                 .margin(4)
             }
-          },(item:SearchLiveRoomBean)=>item.roomid+item.uname)
-        }.edgeEffect(EdgeEffect.None)
+          },(item:SearchLiveRoomBean)=>JSON.stringify(item))
+        }
         .lanes(2)
         .width('100%')
         .height('100%')
         }
-    }
+    }.edgeEffect(EdgeEffect.Fade)
     .align(Alignment.Top)
-    .edgeEffect(EdgeEffect.None)
     .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
     .scrollBar(BarState.Auto)  // 滚动条常驻显示
     .scrollBarColor(Color.Gray)  // 滚动条颜色

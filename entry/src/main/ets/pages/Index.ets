@@ -45,7 +45,7 @@ struct Index {
         ShoppingPage()
       }.tabBar(new BottomTabBarStyle(this.tabs[3].path, this.tabs[3].text))
       TabContent(){
-        MinePage()
+        // MinePage()
       }.tabBar(new BottomTabBarStyle(this.tabs[4].path, this.tabs[4].text))
     }
     .barMode(BarMode.Fixed)

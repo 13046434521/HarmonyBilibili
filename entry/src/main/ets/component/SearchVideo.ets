@@ -57,7 +57,7 @@ export struct SearchVideoDetails {
               router.pushUrl({url:'pages/VideoDetailPage',params:{'bvid':item.bvid,'cid':0}})
             })
           }
-        }, (item: SearchVideoBean) =>item.id+item.title)
+        }, (item: SearchVideoBean) =>JSON.stringify(item))
       }
       .onReachEnd(() => {
         Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1)

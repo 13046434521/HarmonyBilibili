@@ -49,7 +49,7 @@ export struct SearchMediaFt {
       Column() {
         LazyForEach(this.mediaFtData, (item, index) => {
           MediaFtItem({ item: item })
-        }, (item:SearchMediaFtBean) => item.media_id+item.title)
+        }, (item:SearchMediaFtBean) => JSON.stringify(item))
       }.width('100%')
     }.width('100%')
     .align(Alignment.Top)

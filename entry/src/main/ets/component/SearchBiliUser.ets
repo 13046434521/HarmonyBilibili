@@ -47,7 +47,7 @@ export struct SearchBiliUserDetails {
           ListItem(){
             BiliUserItem({item:item})
           }
-        },(item:SearchBiliUserBean)=>item.mid+item.uname)
+        },(item:SearchBiliUserBean)=>JSON.stringify(item))
       }.layoutWeight(1)
       .cachedCount(3)
       .onReachEnd(() => {

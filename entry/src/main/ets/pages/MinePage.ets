@@ -1,28 +1,52 @@
-@Preview
+
+import ApiLogin  from '../net/ApiLogin';
+import { Utils } from '../Utils/Utils';
+
 @Component
   // 主界面中的我的页面
 export struct MinePage {
-  @State listPosition: number = 0; // 0代表滚动到List顶部，1代表中间值，2代表滚动到List底部。
-  private arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  private scrollerForScroll: Scroller = new Scroller()
-  private scrollerForList: Scroller = new Scroller()
+  @State url:string = null
+  @State qrcode_key:string= null
 
+  @State responseUrl:string= null
+  @State loginStatus:number= 0
   build() {
-    Scroll(this.scrollerForScroll) {
-      Column() {
-        List({ space: 20, scroller: this.scrollerForList }) {
-          ForEach(this.arr, (item) => {
-            ListItem() {
-              Text("ListItem" + item)
-                .width("100%").height("100%").borderRadius(15)
-                .fontSize(16).textAlign(TextAlign.Center).backgroundColor(Color.White)
-            }.width("100%").height(100)
-          }, item => item)
-        }
-        .width("100%")
-        .height("50%")
-        .edgeEffect(EdgeEffect.None)
+    Column({ space: 5 }) {
+      Button('二维码登录').onClick(()=>{
+        this.generateQrcode()
+      })
+      if (this.url!=null){
+        QRCode(this.url)
+          .width(200).height(200)
       }
-    }.width('100%').height('100%').backgroundColor(0xDCDCDC).padding(20)
+      if (this.responseUrl!=null){
+        Text(this.responseUrl)
+      }
+    }.width('100%').margin({ top: 5 })
+  }
+
+  generateQrcode(){
+    ApiLogin.generateQrcode().then((item)=>{
+      this.qrcode_key = item.qrcode_key
+      this.url = item.url
+
+      //
+      // while (this.loginStatus===0){
+      //   worker.ThreadWorker
+      //   this.login(this.qrcode_key)
+      // }
+    }).catch((err)=>{
+      Utils.Toast("二维码登录：生成二维码"+err)
+    })
+  }
+
+  login(qrcode_key:string){
+    ApiLogin.loginQrcode(qrcode_key).then((item)=>{
+      this.responseUrl = item.url
+      this.loginStatus = 1
+    }).catch((err)=>{
+      Utils.Toast("二维码登录：登录二维码"+err)
+      this.loginStatus = -1
+    })
   }
 }
