@@ -8,7 +8,7 @@
 6. 搜索页面获取和软键盘收起
 6. 默认搜索页面，搜索overlord时，只有3个番剧。不显示其他内容。直言TRIGGER重复显示用户
 7. 主页面崩溃：ObservedPropertySimple value must not be an object---OpenHarmony不会有此bug
-8. 主页面不会默认刷新UI，OpenHarmony不会有此bug
+8. ~~主页面不会默认刷新UI，OpenHarmony不会有此bug~~(2024-4-20解决---新增Splash页面，优先加载数据，传递到Index页面)
 
 ## 项目功能进度
 ### 2024-3-17
@@ -74,3 +74,8 @@
     SeachPage页面数据传递到Default页面。使用@Provider和@Consume来实现，
     减少Default页面重复获取数据，且多嵌套一层Loading页面
 ### 2024-3-20  ---  3:40 <--- 结束
+### 2024-3-20  ---  11:00 <--- 开始
+#### 3. 新增Splash页面
+    主界面不刷新的原因，是因为懒加载造成的。可以研究@ObjectLink和@Observed的使用解决
+    此处使用另一种解决方案。新增Splash页面，数据放到Slash页面中进行加载。将结果直接传递到主界面中。
+    在观感上节省用户等待时间

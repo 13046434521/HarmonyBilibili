@@ -4,18 +4,18 @@ import router from '@ohos.router';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { SearchView } from '../component/HomeSearch';
 import { Utils } from '../Utils/Utils';
-import { HomeData } from '../datasource/HomeData';
 
 @Component
 export struct HomePage {
   @State message: string = 'Home'
-  @State homeData:HomeData = new HomeData()
+  @State homeBeanData:Array<HomeBeanItem>=[]
   @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
   @State homePage: number = 0
   @State isRefreshing: boolean = false
   aboutToAppear(){
-    let homeData_splash = router.getParams()['homeData']
-    this.homeData.pushDataAll(homeData_splash)
+    Api.getHomePages().then(homebean=>{
+      this.homeBeanData = homebean.item
+    })
 
     Api.getHomeSearch().then(homesearchbean=>{
       this.homeSearchBeanData = homesearchbean
@@ -156,34 +156,37 @@ export struct HomePage {
   @Builder Refresh(){
     Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
       List(){
-        LazyForEach(this.homeData,(item:HomeBeanItem)=>{
+        ForEach(this.homeBeanData,(item:HomeBeanItem)=>{
           ListItem(){
             this.HomeItem(item)
           }.margin(3)
-        },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)
+        },(item:HomeBeanItem)=>{
+          return  item.id+item.cid+item.title
+        })
       }.lanes(2)
-      .edgeEffect(EdgeEffect.Fade)
       .onReachEnd(()=>{
         Api.getHomePages(this.homePage+1).then(response=>{
           if (response.item!=undefined) {
             this.homePage++
-            this.homeData.pushDataAll(response.item)
+            this.homeBeanData = this.homeBeanData.concat(response.item)
           }
         }).catch(err=>{
-          Utils.Toast("主页面"+err)
+          Utils.Toast(err)
         })
       })
-    }.onRefreshing(()=>{
+
+    }.onStateChange(state=>{
+      console.log('onStateChange $' + state)
+    }).onRefreshing(()=>{
       Api.getHomePages().then(homebean=>{
-        this.homeData.cleanData()
-        this.homeData.pushDataAll(homebean.item)
+        this.homeBeanData = homebean.item
         this.isRefreshing = false
-        this.homePage = 1
       }).catch(err=>{
         this.isRefreshing = false
       }).finally(()=>{
         this.homePage = 0
       })
+      console.log('onRefreshing $' )
     }).layoutWeight(1)
   }
 }

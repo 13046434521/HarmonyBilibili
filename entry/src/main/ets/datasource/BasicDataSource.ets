@@ -1,4 +1,5 @@
-export abstract  class BasicDataSource<T> implements IDataSource  {
+
+export class BasicDataSource<T> implements IDataSource  {
   private listeners: DataChangeListener[] = []
   private dataArray: T[] = []
 
