@@ -3,6 +3,8 @@ import { MinePage } from './MinePage'
 import { MomentPage } from './MomentPage'
 import { NewPage } from './NewPage'
 import { ShoppingPage } from './ShoppingPage'
+import List from '@ohos.util.List'
+import ArrayList from '@ohos.util.ArrayList'
 
 @Observed
 class TabIcon {
@@ -21,7 +23,6 @@ class TabIcon {
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World'
   @State tabs: Array<TabIcon> = [new TabIcon('首页', $r('app.media.ic_tab_bar_home')),
     new TabIcon('动态', $r('app.media.ic_tab_bar_moments')),
     new TabIcon('', $r('app.media.ic_tab_bar_add')),
@@ -29,6 +30,7 @@ struct Index {
     new TabIcon('我的', $r('app.media.ic_tab_bar_mine'))]
 
   @State currentTab :TabIcon = null
+
 
   build() {
     Tabs(){

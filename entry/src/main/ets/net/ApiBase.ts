@@ -32,13 +32,13 @@ export class ApiBase{
   })
 
   // 请求
-  protected  request<T>(url:string,axiosInstance?:AxiosInstance):Promise<T>{
+  protected async request<T>(url:string,axiosInstance?:AxiosInstance):Promise<T>{
     let instance = this.instance
     if (axiosInstance){
       instance = axiosInstance
     }
 
-    return new Promise<T>((resolve, reject) => {
+    return await new Promise<T>((resolve, reject) => {
       instance.get(url).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
           // 不同的请求，返回的值不一样，正常用data

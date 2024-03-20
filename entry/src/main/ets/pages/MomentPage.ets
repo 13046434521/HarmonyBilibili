@@ -1,8 +1,10 @@
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
+import { Utils } from '../Utils/Utils'
 
 @Component
 // 动态页面
+@Preview
 export struct MomentPage {
   @State message: string = '动态'
 
@@ -11,6 +13,41 @@ export struct MomentPage {
   @State selectedFontColor: string = '#007DFF'
   @State currentIndex: number = 0
   private controller: TabsController = new TabsController()
+
+  aboutToAppear(){
+    this.test()
+
+
+    console.log("我是4")
+  }
+
+  async test(){
+    console.log("我是1")
+
+    await this.test1()
+    await this.test2()
+    console.log("我是3")
+  }
+
+  test1(){
+    return new Promise((resolve)=>{
+      setTimeout(()=>{
+        resolve( console.log("我是2.1"))
+      },3000)
+    }).then(()=>{
+      // Utils.Toast("我是2.1")
+    })
+  }
+
+  test2(){
+    return new Promise((resolve)=>{
+      setTimeout(()=>{
+        resolve(console.log("我是2.2"))
+      },1000)
+    }).then(()=>{
+      // Utils.Toast("我是2.2")
+    })
+  }
 
   @Builder TabBuilder(index: number, name: string) {
     Column() {

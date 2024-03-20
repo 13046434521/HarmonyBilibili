@@ -5,7 +5,7 @@ import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
 import { Utils } from '../Utils/Utils'
 import { PlayVideoBean } from '../bean/PlayVideoBean'
-import {VideoPlay} from '../../../../../player/src/main/ets/component/VideoPlay'
+import { VideoPlay } from '../component/VideoPlay'
 
 @Entry
 @Component
@@ -19,25 +19,25 @@ struct DetailPage {
     ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
     ["Referer", "https://www.bilibili.com"]
   ])
-  aboutToAppear() {
+
+  async aboutToAppear() {
     this.bvid = router.getParams()['bvid']
     this.cid = router.getParams()['cid']
     // cid 为0时，需要单独获取cid
     if (this.cid === 0) {
-      Api.getPageList(this.bvid).then((item)=>{
+      await Api.getPageList(this.bvid).then((item)=>{
         this.cid = item[0].cid
         this.dimension = item[0].dimension
-
-        Utils.Toast("测试一下:"+item[0].dimension.width+" --- "+item[0].dimension.height)
-        // this.loadingPage = LoadingStatus.LoadingSuccess
+        this.loadingPage = LoadingStatus.LoadingSuccess
       }).catch(err=>{
         this.loadingPage = LoadingStatus.LoadingFailure
       })
     }
-    Api.getPlayVideo(this.bvid,this.cid)
+
+    await Api.getPlayVideo(this.bvid,this.cid)
       .then((item:PlayVideoBean)=>{
-        this.loadingPage = LoadingStatus.LoadingSuccess
         this.url = item.durl[0].url
+        this.loadingPage = LoadingStatus.LoadingSuccess
       }).catch(err=>{
       this.loadingPage = LoadingStatus.LoadingFailure
     })
@@ -45,20 +45,7 @@ struct DetailPage {
 
   build() {
     Row() {
-      if (this.loadingPage === LoadingStatus.LoadingSuccess){
-        Column() {
-          Text(`bvid:${this.bvid},cid:${this.cid}\n`)
-            .width('100%')
-          VideoPlay({url:this.url,header:this.header})
-        }.layoutWeight(1)
-      }else if (this.loadingPage === LoadingStatus.Loading){
-        Loading().width('100%')
-          .layoutWeight(1)
-      }else {
-        Text("加载失败")
-        .layoutWeight(1).width('100%')
-      }
-
+      VideoPlay({url:this.url,header:this.header}).layoutWeight(1)
     }.width('100%')
     .height('100%')
   }
