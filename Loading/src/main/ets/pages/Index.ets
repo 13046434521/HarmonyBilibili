@@ -11,6 +11,7 @@ struct Index {
   build() {
     Row() {
       Column() {
+        Text('没有边界的吗？')
         Loading()
       }
     }

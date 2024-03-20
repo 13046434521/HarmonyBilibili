@@ -37,7 +37,7 @@ export struct  Loading{
         this.imgCurrentHeight = this.imgHeight
         this.lastY = 0
       }
-      this.test = this.lastY + '    '+this.imgCurrentHeight+"     " +this.x
+      this.test =target.type.toString()+"     "+ this.lastY + '    '+this.imgCurrentHeight+"     " +this.x
     }).width('100%')
     .height('100%')
     .borderWidth(2)

@@ -14,12 +14,8 @@ export enum IjkPlayerConfigType {
   surface = 'surface',
   component = 'component'
 }
-@Observed
-export class IjkPlayerConfig {
 
-/*  id: 'xcomponentId',
-    type: 'surface',
-    libraryname: 'ijkplayer_napi'*/
+export class IjkPlayerConfig {
 
   id: string = "ijkplayer"
   type: IjkPlayerConfigType = IjkPlayerConfigType.surface
@@ -36,13 +32,6 @@ export class IjkPlayerConfig {
                      libraryName?: string,
                      url?: string,
                      header?: Map<string, string>) {
-
-/*    this.id = id
-    this.type = type
-    this.libraryName = libraryName
-    this.url = url
-    this.headers = header*/
-
   }
 }
 
