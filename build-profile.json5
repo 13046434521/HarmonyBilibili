@@ -6,9 +6,9 @@
         "type": "HarmonyOS",
         "material": {
           "certpath": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.cer",
-          "storePassword": "0000001A09A4F63BB0911CB3FB90713148037BB7EFE391FBE2D1C2AED08CBBC859F0A06B421475B1264C",
+          "storePassword": "0000001A20A307FE6143131264A2AF425A7EB44D764831298929595BBA4CFE85D10E4FBF16105B8301BD",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A5A7676D8AF5EBD4CB00F268BCFBC5C08B37A5CFAFFAD14520CE8CA1AC42DEC01BF88DDB427AD",
+          "keyPassword": "0000001A3D8AB456C8BFEEBAA1C18FCB5B86B74D665907B37CB45236AFEA6FC1DF20C1FA36FA3AEB096C",
           "profile": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p12"

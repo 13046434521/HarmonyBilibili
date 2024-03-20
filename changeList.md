@@ -7,7 +7,8 @@
 5. 直播页面没有做下拉加载
 6. 搜索页面获取和软键盘收起
 6. 默认搜索页面，搜索overlord时，只有3个番剧。不显示其他内容。直言TRIGGER重复显示用户
-
+7. 主页面崩溃：ObservedPropertySimple value must not be an object---OpenHarmony不会有此bug
+8. 主页面不会默认刷新UI，OpenHarmony不会有此bug
 
 ## 项目功能进度
 ### 2024-3-17
