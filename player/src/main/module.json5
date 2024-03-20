@@ -1,27 +1,10 @@
 {
   "module": {
     "name": "player",
-    "type": "feature",
-    "description": "$string:module_desc",
-    "mainElement": "PlayerAbility",
+    "type": "har",
     "deviceTypes": [
       "phone",
       "tablet"
-    ],
-    "deliveryWithInstall": true,
-    "installationFree": false,
-    "pages": "$profile:main_pages",
-    "abilities": [
-      {
-        "name": "PlayerAbility",
-        "srcEntry": "./ets/playerability/PlayerAbility.ts",
-        "description": "$string:PlayerAbility_desc",
-        "icon": "$media:icon",
-        "label": "$string:PlayerAbility_label",
-        "startWindowIcon": "$media:icon",
-        "startWindowBackground": "$color:start_window_background",
-        "exported": true
-      }
     ]
   }
 }

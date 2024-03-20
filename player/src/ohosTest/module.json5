@@ -1,7 +1,7 @@
 {
   "module": {
     "name": "player_test",
-    "type": "feature",
+    "type": "har",
     "description": "$string:module_test_desc",
     "mainElement": "TestAbility",
     "deviceTypes": [

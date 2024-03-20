@@ -1,15 +1,26 @@
 import { IjkPlayer } from '../common/IjkPlayer'
 import { VideoViewModel } from '../VideoViewModel'
 import router from '@ohos.router'
+import promptAction from '@ohos.promptAction'
 
 @Component
 export struct VideoPlay {
   xComponentController:XComponentController = new XComponentController()
   videoViewModel: VideoViewModel = new VideoViewModel()
+  @Link @Watch('upDate') url:string
+  @Link @Watch('upDate') header:Map<string,string>
+  @State context:object =null
+  @State title:string=''
 
-  aboutToAppear() {
-    let url = router.getParams()['url']
-    this.videoViewModel.setUrl(url)
+  aboutToAppear(){
+    this.upDate()
+  }
+
+
+  upDate(){
+    this.title = this.url
+    this.videoViewModel.setUrl(this.url)
+    this.videoViewModel.setHeader(this.header)
   }
 
   build() {
@@ -21,14 +32,13 @@ export struct VideoPlay {
           libraryname: "ijkplayer_napi",
           controller: this.xComponentController
         }).onLoad((context) => {
-          // 初始化
-          this.videoViewModel.init(context)
-          this.videoViewModel.initListener.bind(this)()
-
+          this.context = context
+          this.title = "ok了"
+          promptAction.showToast({message:this.url.toString()})
         }).onDestroy(() => {
 
         }).width('100%')
-
+          .height('100%')
 
         Row() {
           Image(this.videoViewModel.getPlayStateImg())
@@ -68,19 +78,27 @@ export struct VideoPlay {
       .width('100%')
       .aspectRatio(this.videoViewModel.getVideoAspectRatio())
 
-
-      Button('async').onClick(() => {
-        IjkPlayer.getInstance().prepareAsync()
-
+      Button( this.title).onClick(() => {
+        // 初始化
+        this.videoViewModel.initListener()
+        this.videoViewModel.init(this.context)
+        // IjkPlayer.getInstance().prepareAsync()
       })
       Button('start').onClick(() => {
+
+        promptAction.showToast({message:'---------'+this.videoViewModel.viewModel.url})
+
         IjkPlayer.getInstance().start()
       })
       Button('pause').onClick(() => {
+
+        promptAction.showToast({message:'---------'+this.videoViewModel.getUrl()})
+
         IjkPlayer.getInstance().pause()
       })
       Button('height,width').onClick(() => {
-
+        promptAction.showToast({message:'---------'+this.url})
+        this.videoViewModel.setUrl(this.url)
       })
 
       Button('release').onClick(() => {

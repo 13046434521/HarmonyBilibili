@@ -49,18 +49,18 @@
       "name": "ijkplayer",
       "srcPath": "./ijkplayer"
     },
-    {
-      "name": "player",
-      "srcPath": "./player",
-      "targets": [
-        {
-          "name": "default",
-          "applyToProducts": [
-            "default"
-          ]
-        }
-      ]
-    },
+//    {
+//      "name": "player",
+//      "srcPath": "./player",
+//      "targets": [
+//        {
+//          "name": "default",
+//          "applyToProducts": [
+//            "default"
+//          ]
+//        }
+//      ]
+//    },
     {
       "name": "Loading",
       "srcPath": "./Loading",

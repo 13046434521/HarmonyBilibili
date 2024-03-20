@@ -25,6 +25,8 @@ import { PropertiesType } from '../ijkplayer/common/PropertiesType';
 import { LogUtils } from "../ijkplayer/utils/LogUtils";
 import window from '@ohos.window';
 import { IjkPlayerNapi } from "./utils/IjkPlayerNapi";
+import util from '@ohos.util';
+import promptAction from '@ohos.promptAction';
 
 
 export class IjkMediaPlayer {
@@ -73,9 +75,14 @@ export class IjkMediaPlayer {
     if (!!this.ijkplayer_napi)
       this.ijkplayer_napi._setDataSource(url);
   }
-  setDataSourceHeaders(url: string, headers?:Map<string,string>) {
-    console.log("播放地址："+url)
+  setDataSourceHeaders(url: string, header:Map<string,string>) {
+
     var builder = '';
+    let headers = new Map<string,string>([
+    ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
+    ["Referer", "https://www.bilibili.com"]
+  ])
+    promptAction.showToast({message:"headers类型：可以执行的"+headers+"  传递过来的"+header+"  是否一致: "+(headers == header)})
     if (headers) {
       headers.forEach((value, key) => {
         var parm = key.trim() + ": ";
@@ -89,6 +96,7 @@ export class IjkMediaPlayer {
     }
     this.ijkplayer_napi._setDataSource(url);
   }
+
   setDataSourceHeader(headers: Map<string, string>): void {
     if (headers) {
       let builder: string = '';

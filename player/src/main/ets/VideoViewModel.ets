@@ -3,23 +3,19 @@ import { IjkPlayer } from './common/IjkPlayer'
 import { Orientation } from './common/Orientation'
 import { PlayStatus } from './common/PlayStatus'
 import { IPlayer } from './IPlayer'
-import { VideoModel } from './VideoModel'
+
 import promptAction from '@ohos.promptAction'
+import VideoModel from './VideoModel'
 
 
 //VideoPlayer 的 逻辑功能类
-export class VideoViewModel implements IPlayer{
-  viewModel:VideoModel = new VideoModel()
-  context:object
+export class VideoViewModel implements IPlayer {
+  viewModel: VideoModel = new VideoModel()
 
-  constructor(viewModel?:VideoModel){
-    this.viewModel = viewModel
-  }
-
-  init(context?:object) {
+  init(context?: object) {
     // 初始化Player,包括播放
     IjkPlayer.getInstance()
-      .initPlayer(this.context, this.viewModel.ijkConfig, this.viewModel.mOnVideoSizeChangedListener, this.viewModel.mOnPreparedListener, this.viewModel.mOnCompletionListener, this.viewModel.mOnBufferingUpdateListener,
+      .initPlayer(context, this.viewModel.url, this.viewModel.headers, this.viewModel.mOnVideoSizeChangedListener, this.viewModel.mOnPreparedListener, this.viewModel.mOnCompletionListener, this.viewModel.mOnBufferingUpdateListener,
         this.viewModel.mOnSeekCompleteListener, this.viewModel.mOnInfoListener, this.viewModel.mOnErrorListener)
   }
 
@@ -46,19 +42,19 @@ export class VideoViewModel implements IPlayer{
 
     IjkPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
 
-    this.viewModel.currentTime= this.Duration(Math.floor(seekValue / 1000))
+    this.viewModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
   }
 
-  getCurrentTime():string{
+  getCurrentTime(): string {
     return this.viewModel.currentTime
   }
 
   adjustVolume(volume: number) {
     let tempVolume = volume
-    if (tempVolume>100) {
+    if (tempVolume > 100) {
       tempVolume = 100
     }
-    else if (volume<0) {
+    else if (volume < 0) {
       tempVolume = 0
     }
     this.viewModel.volume = tempVolume
@@ -67,10 +63,10 @@ export class VideoViewModel implements IPlayer{
 
   adjustBrightness(brightness: number) {
     let tempBrightness = brightness
-    if (tempBrightness>100) {
+    if (tempBrightness > 100) {
       tempBrightness = 100
     }
-    else if (brightness<0) {
+    else if (brightness <= 0) {
       tempBrightness = 0
     }
     this.viewModel.brightness = tempBrightness
@@ -88,12 +84,24 @@ export class VideoViewModel implements IPlayer{
   reset() {
     IjkPlayer.getInstance().reset()
   }
-  setUrl(url:string) {
-   this.viewModel.url = url
+
+  setUrl(url: string) {
+    this.viewModel.url = url
   }
-  getVideoAspectRatio():number{
-  return 4/3
-}
+
+  getUrl():string{
+    return this.viewModel.url
+  }
+
+
+
+  setHeader(headers: Map<string, string>) {
+    this.viewModel.headers = headers
+  }
+
+  getVideoAspectRatio(): number {
+    return 4 / 3
+  }
 
   getOrientation(): Orientation {
     throw new Error('Method not implemented.')
@@ -112,16 +120,16 @@ export class VideoViewModel implements IPlayer{
   }
 
 
-  upDateViewModel(viewModel:VideoModel){
+  upDateViewModel(viewModel: VideoModel) {
     this.viewModel = viewModel
   }
 
-  getPlayStateImg():Resource{
+  getPlayStateImg(): Resource | string {
     let res = this.viewModel.state === PlayStatus.PLAY ? $r('app.media.ic_detail_video_pause') : $r('app.media.ic_detail_video_play')
     return res
   }
 
-  getTimeContent():string{
+  getTimeContent(): string {
     // return IjkPlayer.getInstance().getDuration()
     return '0:0'
   }
@@ -142,7 +150,6 @@ export class VideoViewModel implements IPlayer{
   // stopProgressTask() {
   //   clearInterval(this.updateProgressTimer);
   // }
-
 
 
   initListener() {
@@ -212,7 +219,7 @@ export class VideoViewModel implements IPlayer{
     let minute: number | string = Math.floor(duration / 60)
     if (second < 10) {
       second = '0' + second.toFixed(0)
-    }else{
+    } else {
       second.toFixed(0)
     }
 

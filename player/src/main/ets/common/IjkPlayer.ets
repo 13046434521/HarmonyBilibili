@@ -15,32 +15,9 @@ export enum IjkPlayerConfigType {
   component = 'component'
 }
 
-export class IjkPlayerConfig {
-
-  id: string = "ijkplayer"
-  type: IjkPlayerConfigType = IjkPlayerConfigType.surface
-  libraryName: string = "ijkplayer_napi"
-  url: string =""
-
-  headers =  new Map<string,string>([
-    ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
-    ["Referer", "https://www.bilibili.com"]
-  ]);
-
-  public constructor(id?: string,
-                     type?: IjkPlayerConfigType,
-                     libraryName?: string,
-                     url?: string,
-                     header?: Map<string, string>) {
-  }
-}
-
-
-
 export class IjkPlayer extends IjkMediaPlayer implements OnVideoSizeChangedListener,OnPreparedListener,OnCompletionListener,
 OnBufferingUpdateListener,OnSeekCompleteListener,OnInfoListener,OnErrorListener {
   private static instance: IjkPlayer
-  ijkPlayerConfig: IjkPlayerConfig
   date :number =Date.now()
 
   private constructor() {
@@ -66,18 +43,17 @@ OnBufferingUpdateListener,OnSeekCompleteListener,OnInfoListener,OnErrorListener 
 
 
   // 初始化Player,不包括播放
-  public initPlayer(context: object, ijkPlayerConfig: IjkPlayerConfig,mOnVideoSizeChangedListener?: OnVideoSizeChangedListener,
+  public initPlayer(context: object, url:string,headers:Map<string,string>,mOnVideoSizeChangedListener?: OnVideoSizeChangedListener,
                     mOnPreparedListener?: OnPreparedListener, mOnCompletionListener?: OnCompletionListener,
                     mOnBufferingUpdateListener?: OnBufferingUpdateListener, mOnSeekCompleteListener?: OnSeekCompleteListener,
                     mOnInfoListener?: OnInfoListener, mOnErrorListener?: OnErrorListener) {
-    this.ijkPlayerConfig = ijkPlayerConfig
+
     this.setContext(context);
     this.setDebug(false)
     // 初始化视频资源
     this.native_setup()
-    console.log("IjkPlayer.getInstance：setDataSource:url:"+this.ijkPlayerConfig.url)
 
-    this.setDataSourceHeaders(this.ijkPlayerConfig.url,this.ijkPlayerConfig.headers)
+    this.setDataSourceHeaders(url,headers)
     // 默认设置
     this.defaultOption()
     // 屏幕常亮
