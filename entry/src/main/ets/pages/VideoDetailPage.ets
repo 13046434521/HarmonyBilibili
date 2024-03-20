@@ -4,8 +4,8 @@ import { PageListDimensionBean } from '../bean/PageListBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading } from '../component/LoadingComponent'
 import { Utils } from '../Utils/Utils'
-import {VideoPlay} from '../../../../../player/src/main/ets/component/VideoPlay'
 import { PlayVideoBean } from '../bean/PlayVideoBean'
+import {VideoPlay} from '../../../../../player/src/main/ets/component/VideoPlay'
 
 @Entry
 @Component
@@ -36,8 +36,8 @@ struct DetailPage {
     }
     Api.getPlayVideo(this.bvid,this.cid)
       .then((item:PlayVideoBean)=>{
-        this.url = item.durl[0].url
         this.loadingPage = LoadingStatus.LoadingSuccess
+        this.url = item.durl[0].url
       }).catch(err=>{
       this.loadingPage = LoadingStatus.LoadingFailure
     })
@@ -47,7 +47,7 @@ struct DetailPage {
     Row() {
       if (this.loadingPage === LoadingStatus.LoadingSuccess){
         Column() {
-          Text(`bvid:${this.bvid},cid:${this.cid}`)
+          Text(`bvid:${this.bvid},cid:${this.cid}\n`)
             .width('100%')
           VideoPlay({url:this.url,header:this.header})
         }.layoutWeight(1)

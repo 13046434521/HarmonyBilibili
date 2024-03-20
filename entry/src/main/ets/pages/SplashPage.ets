@@ -4,7 +4,6 @@ import router from '@ohos.router'
 
 @Entry
 @Component
-@Preview
 struct SplashPage{
   homeBeanData:Array<HomeBeanItem>=null
   @State content:string = "加载中..."
@@ -15,10 +14,15 @@ struct SplashPage{
 
   build(){
     Stack(){
-      Image($r('app.media.ic_splash_default'))
-        .width('100%')
-        .height('100%')
-        .objectFit(ImageFit.Contain)
+      Column(){
+        Image($r('app.media.ic_splash_default'))
+          .width('70%')
+          .height('70%')
+          .objectFit(ImageFit.Contain)
+      }.width('100%')
+      .height('100%')
+      .alignItems(HorizontalAlign.Center)
+      .justifyContent(FlexAlign.Center)
 
       Text(this.content).width('28%')
         .aspectRatio(2.5)
@@ -27,7 +31,6 @@ struct SplashPage{
         .borderColor(Color.Gray)
         .borderRadius(4)
         .margin(8)
-
 
     }.alignContent(Alignment.TopEnd)
   }
