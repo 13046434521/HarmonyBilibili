@@ -7,8 +7,8 @@
     "timelength": 25174,
     "accept_format": "mp4720,mp4",
     "accept_description": [
-      "高清 720P",
-      "流畅 360P"
+      "楂樻竻 720P",
+      "娴佺晠 360P"
     ],
     "accept_quality": [
       64,
@@ -32,7 +32,7 @@
       {
         "quality": 64,
         "format": "mp4720",
-        "new_description": "720P 高清",
+        "new_description": "720P 楂樻竻",
         "display_desc": "720P",
         "superscript": "",
         "codecs": null
@@ -40,7 +40,7 @@
       {
         "quality": 16,
         "format": "mp4",
-        "new_description": "360P 流畅",
+        "new_description": "360P 娴佺晠",
         "display_desc": "360P",
         "superscript": "",
         "codecs": null

@@ -1,6 +1,6 @@
-// »ñÈ¡Ê×Ò³ÊÓÆµÍÆ¼öÁĞ±í£¨web¶Ë£©
+// è·å–é¦–é¡µè§†é¢‘æ¨èåˆ—è¡¨ï¼ˆwebç«¯ï¼‰
 let homeRecommendVideoList = "https://api.bilibili.com/x/web-interface/index/top/rcmd"
-// ¶ÌÊÓÆµÁĞ±í Get
+// çŸ­è§†é¢‘åˆ—è¡¨ Get
 let shortVideoList = "https://app.bilibili.com/x/v2/feed/index"
-// µ¥¸öÊÓÆµ ÍÆ¼öÁĞ±í bvid
+// å•ä¸ªè§†é¢‘ æ¨èåˆ—è¡¨ bvid
 let singleVideoRecommendList =" https://api.bilibili.com/x/web-interface/archive/related?bvid=BV1xx411c7m9"

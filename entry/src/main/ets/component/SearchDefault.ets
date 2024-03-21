@@ -28,10 +28,10 @@ import { LoadingData } from './LoadingData'
 export struct SearchDefaultDetails {
   @Prop search: string
   @State page: number = 1
-  @Consume('defaultData') allData: AllData
+  @Consume('defaultPageData') allData: AllData
 
   aboutToAppear() {
-
+    Utils.Toast(this.allData.getData(2).type+"---"+this.allData.totalCount()+"个数据")
   }
 
 

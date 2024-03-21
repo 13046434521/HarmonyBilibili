@@ -1,4 +1,4 @@
-// Ä¬ÈÏËÑË÷½á¹û£ºhttps://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=%E6%B4%9B%E5%A4%A9%E4%BE%9D&page=1
+// é»˜è®¤æœç´¢ç»“æœï¼šhttps://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=%E6%B4%9B%E5%A4%A9%E4%BE%9D&page=1
 export interface SearchBaseBean<T>{
 /*  "seid": "1871174439078139085",
   "page": 1,
@@ -77,17 +77,17 @@ export interface SearchDefaultResultBean{
   "media_ft",
   "star",
   "video"*/
-  result_type:string // result_typeµÄÖµÊÇshow_module_listÊı×éÖĞµÄÊı¾İ
+  result_type:string // result_typeçš„å€¼æ˜¯show_module_listæ•°ç»„ä¸­çš„æ•°æ®
   data:SearchDefaultALLResultBean[]
 }
 
-// ËÑË÷×ÛºÏÒ³Ãæ£¬ËùÓĞÀàĞÍ£¨bili_user£¬videoµÈÀàĞÍ£©µÄÊı¾İ£¬È«¶¼·ÅÔÚÕâÀï£¬Èç¹ûÃ»ÓĞ¾Í½âÎö²»³öÀ´¼´¿É
+// æœç´¢ç»¼åˆé¡µé¢ï¼Œæ‰€æœ‰ç±»å‹ï¼ˆbili_userï¼Œvideoç­‰ç±»å‹ï¼‰çš„æ•°æ®ï¼Œå…¨éƒ½æ”¾åœ¨è¿™é‡Œï¼Œå¦‚æœæ²¡æœ‰å°±è§£æä¸å‡ºæ¥å³å¯
 export interface SearchDefaultALLResultBean{
-  /*------------------------------------------- biliUserÓÃ»§ --------------------------------------------*/
+  /*------------------------------------------- biliUserç”¨æˆ· --------------------------------------------*/
   /*  "type": "bili_user",
   "mid": 36081646,
-  "uname": "ÂåÌìÒÀ",
-  "usign": "VsingerÆìÏÂĞéÄâ¸èÊÖ£¬ÊÀ½çÊ×Î»ÖĞÎÄV¼ÒĞéÄâ¸èÊÖ£¬Ö÷³ª£¬15Ëê£¬2012Äê7ÔÂ12ÈÕ³öµÀ¡£ºÏ×÷ÁªÏµ£ºshhn@vsinger.com¡£",
+  "uname": "æ´›å¤©ä¾",
+  "usign": "Vsingeræ——ä¸‹è™šæ‹Ÿæ­Œæ‰‹ï¼Œä¸–ç•Œé¦–ä½ä¸­æ–‡Vå®¶è™šæ‹Ÿæ­Œæ‰‹ï¼Œä¸»å”±ï¼Œ15å²ï¼Œ2012å¹´7æœˆ12æ—¥å‡ºé“ã€‚åˆä½œè”ç³»ï¼šshhn@vsinger.comã€‚",
   "fans": 3684870,
   "videos": 223,
   "upic": "//i2.hdslb.com/bfs/face/9583c2c1ddd95e2f3ab4b4ea9b3a1d3200b64fda.webp",
@@ -116,7 +116,7 @@ export interface SearchDefaultALLResultBean{
   is_live:number
   room_id:number
   res:BiliUserItemBean[]
-  /*------------------------------------------- Video ºÍSearchVideoBeanÒ»Ñù --------------------------------------------*/
+  /*------------------------------------------- Video å’ŒSearchVideoBeanä¸€æ · --------------------------------------------*/
   //type:string
   id:number
   author:string
@@ -147,7 +147,7 @@ export interface SearchDefaultALLResultBean{
 export interface  BiliUserItemBean{
 /*  "aid": 1151130190,
   "bvid": "BV1TZ421y7XX",
-  "title": "ÂåÌìÒÀ µÆ»ğ´ºÀ½Ver.Q°æÊÖ°ì ÊµÎïÕ¹Ê¾",
+  "title": "æ´›å¤©ä¾ ç¯ç«æ˜¥æ¾œVer.Qç‰ˆæ‰‹åŠ å®ç‰©å±•ç¤º",
   "pubdate": 1709029507,
   "arcurl": "http://www.bilibili.com/video/av1151130190",
   "pic": "//i1.hdslb.com/bfs/archive/4447f9d5bac26872072fa36497910206092b5d68.png",
@@ -155,7 +155,7 @@ export interface  BiliUserItemBean{
   "dm": 22,
   "coin": 914,
   "fav": 428,
-  "desc": "ÂåÌìÒÀ µÆ»ğ´ºÀ½Ver.Q°æÊÖ°ì ÊµÎïÕ¹Ê¾\n²È×ÅÄêµÄÎ²°Í£¬ÌìÒÀ×£´ó¼ÒÑ§Òµ¡¢¹¤×÷ºÍÉú»î¶¼ºìºì»ğ»ğ¡¢Ë³Ë³ÀûÀûßÕ£¡[ÂåÌìÒÀ¸èĞĞËÄ·½_ßËàê£¡]",
+  "desc": "æ´›å¤©ä¾ ç¯ç«æ˜¥æ¾œVer.Qç‰ˆæ‰‹åŠ å®ç‰©å±•ç¤º\nè¸©ç€å¹´çš„å°¾å·´ï¼Œå¤©ä¾ç¥å¤§å®¶å­¦ä¸šã€å·¥ä½œå’Œç”Ÿæ´»éƒ½çº¢çº¢ç«ç«ã€é¡ºé¡ºåˆ©åˆ©å“’ï¼[æ´›å¤©ä¾æ­Œè¡Œå››æ–¹_å’šåš“ï¼]",
   "duration": "0:54",
   "is_pay": 0,
   "is_union_video": 0,

@@ -3,35 +3,35 @@ export class HomeBean{
   "business_card": null,
   "floor_info": [{
   "id": -1,
-  "name": "ÈüÊÂ",
+  "name": "èµ›äº‹",
   "rows": 1
 }, {
 			"id": 2,
-			"name": "·¬¾ç",
+			"name": "ç•ªå‰§",
 			"rows": 1
 		}, {
 			"id": 4,
-			"name": "¹ú´´",
+			"name": "å›½åˆ›",
 			"rows": 1
 		}, {
 			"id": 28,
-			"name": "Âş»­",
+			"name": "æ¼«ç”»",
 			"rows": 1
 		}, {
 			"id": 27,
-			"name": "¿ÎÌÃ",
+			"name": "è¯¾å ‚",
 			"rows": 1
 		}, {
 			"id": 3,
-			"name": "µçÓ°",
+			"name": "ç”µå½±",
 			"rows": 1
 		}, {
 			"id": 5,
-			"name": "µçÊÓ¾ç",
+			"name": "ç”µè§†å‰§",
 			"rows": 1
 		}, {
 			"id": 7,
-			"name": "¼ÍÂ¼Æ¬",
+			"name": "çºªå½•ç‰‡",
 			"rows": 1
 		}],
 "user_feature": null,
@@ -67,12 +67,12 @@ export interface HomeBeanItem {
   "uri": "https://www.bilibili.com/video/BV1aS421w7Bv",
   "pic": "http://i1.hdslb.com/bfs/archive/915fde9b3d0b1a8b96d5ce07443e04dcefba8cba.jpg",
   "pic_4_3": "http://i0.hdslb.com/bfs/aistory/2024-03-07-18012021841501436171_16_12_6340_crop.jpg",
-  "title": "¡¶Ò»¸öÃÀºÃµÄÔ¸Íû¡·",
+  "title": "ã€Šä¸€ä¸ªç¾å¥½çš„æ„¿æœ›ã€‹",
   "duration": 171,
   "pubdate": 1709805600,
   "owner": {
   "mid": 263090405,
-  "name": "Ã¨²»Àí¿§·È",
+  "name": "çŒ«ä¸ç†å’–å•¡",
   "face": "https://i2.hdslb.com/bfs/face/2f60f753ef27168acf7d2aa8c99033e663073142.jpg"
 },
 "stat": {
@@ -115,7 +115,7 @@ class HomeStatBean{
 interface HomeOwnerBean{
   /*"owner": {
 				"mid": 263090405,
-				"name": "Ã¨²»Àí¿§·È",
+				"name": "çŒ«ä¸ç†å’–å•¡",
 				"face": "https://i2.hdslb.com/bfs/face/2f60f753ef27168acf7d2aa8c99033e663073142.jpg"
 			},*/
   mid:number

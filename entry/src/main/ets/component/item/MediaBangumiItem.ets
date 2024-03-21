@@ -133,6 +133,8 @@ export struct MediaBangumiItem{
       .backgroundColor(Color.White)
 
       Divider().width('95%').color($r('app.color.bilibili_divider'))
-    }
+    }.onClick(()=>{
+      this.item.type
+    })
   }
 }

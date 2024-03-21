@@ -13,8 +13,8 @@ export interface SearchHotBean {
 export interface SearchHotBeanItem{
 /*  {
   "position": 1,
-  "keyword": "48岁博士生8年未毕业被劝退",
-  "show_name": "48岁博士生8年未毕业被劝退",
+  "keyword": "48宀佸崥澹敓8骞存湭姣曚笟琚姖閫�",
+  "show_name": "48宀佸崥澹敓8骞存湭姣曚笟琚姖閫�",
   "word_type": 5,
   "icon": "http://i0.hdslb.com/bfs/activity-plat/static/20221213/eaf2dd702d7cc14d8d9511190245d057/lrx9rnKo24.png",
   "hot_id": 148332,

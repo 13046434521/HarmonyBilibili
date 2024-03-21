@@ -2,11 +2,11 @@
 		"seid": "6798843764758849550",
 		"id": 8951283293016707012,
 		"type": 0,
-		"show_name": "´©Ô½»ğÏß ¡¤51·ÖÖÓÇ°¸üĞÂ",
-		"name": "´©Ô½»ğÏß",
+		"show_name": "ç©¿è¶Šç«çº¿ Â·51åˆ†é’Ÿå‰æ›´æ–°",
+		"name": "ç©¿è¶Šç«çº¿",
 		"goto_type": 0,
 		"goto_value": "",
-		"url": "https://search.bilibili.com/all?keyword=´©Ô½»ğÏß"
+		"url": "https://search.bilibili.com/all?keyword=ç©¿è¶Šç«çº¿"
 	}*/
 
 export class HomeSearchBean{

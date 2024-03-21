@@ -22,7 +22,7 @@ struct SearchPage {
   @State isTitleVisible:boolean = false;
   controllerLocalStrorage = new TabsController()
 
-  @Provide('defaultData') allData: AllData = new AllData()
+  @Provide('defaultPageData') allData: AllData = new AllData()
 
   aboutToAppear() {
     this.search = router.getParams()['keyword']

@@ -1,7 +1,7 @@
 /*  "type": "bili_user",
   "mid": 1273265116,
-  "uname": "ğ©ÀºÇò",
-  "usign": "ºÏ×÷£ºNBAhaolanqiu",
+  "uname": "çš“ç¯®çƒ",
+  "usign": "åˆä½œï¼šNBAhaolanqiu",
   "fans": 649604,
   "videos": 349,
   "upic": "//i0.hdslb.com/bfs/face/c6d30f07b34da86aea69b5289faf48b23fc496f9.jpg",
@@ -16,13 +16,13 @@
   "res": [],
 "official_verify": {
   "type": 0,
-  "desc": "bilibili ÖªÃûUPÖ÷"
+  "desc": "bilibili çŸ¥åUPä¸»"
 },
 "hit_columns": [],
 "is_senior_member": 0*/
 
 
-// https://api.bilibili.com/x/web-interface/search/type?search_type=bili_user&keyword=ğ©ÀºÇò&page=1
+// https://api.bilibili.com/x/web-interface/search/type?search_type=bili_user&keyword=çš“ç¯®çƒ&page=1
 export interface SearchBiliUserBean{
   type :string
   uname :string//?

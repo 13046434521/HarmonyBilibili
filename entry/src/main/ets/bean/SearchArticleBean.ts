@@ -3,8 +3,8 @@
   type": "article",
   "id": 22222610,
   "mid": 1660989969,
-  "title": "ÓĞµãŞÎ£¬Î÷Ä·Ë¹×ÔÆÀ50·Ö£¬¸÷½âËµ·´Ó¦£¡£¨<em class=\"keyword\">ğ©ÀºÇò</em>£¬Ğì¾²Óê£¬´ó±ë¶ù£¬ÔøÁîĞñµÈ£©",
-  "desc": "Î÷Ä·Ë¹µ¥±Û¹Ò¿ğ¿ÛÀº¸÷½âËµµÄ·´Ó¦\n1.ğ©ÀºÇòµ÷Ù©Î÷Ä·Ë¹µô¼Û¡¢Ã»ÓĞ¼¼Êõ¶¯×÷\n00:01 ğ©ÀºÇò\n2.Ğì¾²ÓêÆÀ¼Û´´ÒâÂíÁú²»ÂòÕË£¬Ö»»áÖ±ÉÏÖ±ÏÂ\n02:29 Ğì¾²Óê...",
+  "title": "æœ‰ç‚¹å°¬ï¼Œè¥¿å§†æ–¯è‡ªè¯„50åˆ†ï¼Œå„è§£è¯´ååº”ï¼ï¼ˆ<em class=\"keyword\">çš“ç¯®çƒ</em>ï¼Œå¾é™é›¨ï¼Œå¤§å½ªå„¿ï¼Œæ›¾ä»¤æ—­ç­‰ï¼‰",
+  "desc": "è¥¿å§†æ–¯å•è‡‚æŒ‚ç­æ‰£ç¯®å„è§£è¯´çš„ååº”\n1.çš“ç¯®çƒè°ƒä¾ƒè¥¿å§†æ–¯æ‰ä»·ã€æ²¡æœ‰æŠ€æœ¯åŠ¨ä½œ\n00:01 çš“ç¯®çƒ\n2.å¾é™é›¨è¯„ä»·åˆ›æ„é©¬é¾™ä¸ä¹°è´¦ï¼Œåªä¼šç›´ä¸Šç›´ä¸‹\n02:29 å¾é™é›¨...",
   "template_id": 3,
   "image_urls": [
   "//i2.hdslb.com/bfs/note/ec5babc3fdd2fa042f12844044c40324fd88ca34.jpg",
@@ -14,7 +14,7 @@
   "view": 38,
   "like": 1,
   "reply": 0,
-  "category_name": "È«²¿±Ê¼Ç",
+  "category_name": "å…¨éƒ¨ç¬”è®°",
   "category_id": 42,
   "version": "",
   "sub_type": 0,
@@ -24,7 +24,7 @@
   "rank_offset": 2
 }
 */
-// https://api.bilibili.com/x/web-interface/search/type?search_type=article&keyword=ğ©ÀºÇò&page=1
+// https://api.bilibili.com/x/web-interface/search/type?search_type=article&keyword=çš“ç¯®çƒ&page=1
 
 export interface SearchArticleBean{
   type:string

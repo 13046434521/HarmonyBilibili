@@ -10,7 +10,7 @@ export class ApiBase{
   playURL = 'https://api.bilibili.com/x/player/playurl'
 
   searchPlayURl = 'https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword=harmony&page=1'
-  // /web-interface/search/type?search_type=video&keyword=48Ëê²©Ê¿Éú8ÄêÎ´±ÏÒµ±»È°ÍË&page=1
+  // /web-interface/search/type?search_type=video&keyword=48å²åšå£«ç”Ÿ8å¹´æœªæ¯•ä¸šè¢«åŠé€€&page=1
   instance = axios.create({
     baseURL: this.baseURl,
     timeout: 10000,
@@ -31,7 +31,7 @@ export class ApiBase{
     }
   })
 
-  // ÇëÇó
+  // è¯·æ±‚
   protected async request<T>(url:string,axiosInstance?:AxiosInstance):Promise<T>{
     let instance = this.instance
     if (axiosInstance){
@@ -41,23 +41,23 @@ export class ApiBase{
     return await new Promise<T>((resolve, reject) => {
       instance.get(url).then(resp => {
         if (resp.status == axios.HttpStatusCode.Ok) {
-          // ²»Í¬µÄÇëÇó£¬·µ»ØµÄÖµ²»Ò»Ñù£¬Õı³£ÓÃdata
+          // ä¸åŒçš„è¯·æ±‚ï¼Œè¿”å›çš„å€¼ä¸ä¸€æ ·ï¼Œæ­£å¸¸ç”¨data
           let httpData = resp.data.data
-          // ²»Í¬µÄÇëÇó£¬·µ»ØµÄÖµ²»Ò»Ñù£¬SearchSuggestÊÇresult
+          // ä¸åŒçš„è¯·æ±‚ï¼Œè¿”å›çš„å€¼ä¸ä¸€æ ·ï¼ŒSearchSuggestæ˜¯result
           if (httpData === undefined) {
             httpData= resp.data.result
           }
           if (httpData === undefined) {
-            Utils.Toast("µ±Ç°ÇëÇó·µ»Ø¿ÉÒÔÊı¾İÎª¿Õ:"+url)
+            Utils.Toast("å½“å‰è¯·æ±‚è¿”å›å¯ä»¥æ•°æ®ä¸ºç©º:"+url)
           }
           console.log("Bilibili:status data:"+url+"  status" + resp.status + "--*--" + JSON.stringify(httpData))
           resolve(httpData)
         } else {
-          reject("ÇëÇóÊ§°Ü£º" + resp.status)
+          reject("è¯·æ±‚å¤±è´¥ï¼š" + resp.status)
           Utils.Toast("Bilibili:status err:" + resp.status)
         }
       }).catch(error => {
-        reject("ÇëÇóÊ§°Ü£º" + error)
+        reject("è¯·æ±‚å¤±è´¥ï¼š" + error)
         console.log("Bilibili:status err:" + error)
         Utils.Toast("Bilibili:status err:" + error)
       })

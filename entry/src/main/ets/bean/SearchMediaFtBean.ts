@@ -1,7 +1,7 @@
 import { SearchMediaBangumiEps } from './SearchMediaBangumiBean'
 
-//https://api.bilibili.com/x/web-interface/search/type?search_type=media_ft&keyword=Äê»á²»ÄÜÍ£&page=1
-// Ó°ÊÓµÄ·µ»ØÊı¾İ£¬ºÍ·¬¾çÊÇÒ»ÑùµÄ¡£ÕâÀïÓÃÁ½¸öÀàÀ´½øĞĞÇø·Ö£¬ÒÔÃâºóĞø³öÏÖĞŞ¸Ä
+//https://api.bilibili.com/x/web-interface/search/type?search_type=media_ft&keyword=å¹´ä¼šä¸èƒ½åœ&page=1
+// å½±è§†çš„è¿”å›æ•°æ®ï¼Œå’Œç•ªå‰§æ˜¯ä¸€æ ·çš„ã€‚è¿™é‡Œç”¨ä¸¤ä¸ªç±»æ¥è¿›è¡ŒåŒºåˆ†ï¼Œä»¥å…åç»­å‡ºç°ä¿®æ”¹
 export interface SearchMediaFtBean{
   type: string
   media_id: number
