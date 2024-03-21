@@ -20,7 +20,7 @@ export class VideoViewModel implements IPlayer {
   }
 
   play() {
-    if (this.videoModel.state<= PlayStatus.STOP) {
+    if (this.videoModel.context!=null && this.videoModel.state<= PlayStatus.STOP) {
       IjkMediaPlayer.getInstance().start()
       this.startProgressTask();
       this.videoModel.state = PlayStatus.PLAY
@@ -28,7 +28,7 @@ export class VideoViewModel implements IPlayer {
   }
 
   pause() {
-    if (this.videoModel.state<= PlayStatus.PLAY) {
+    if (this.videoModel.context!=null && this.videoModel.state<= PlayStatus.PLAY) {
       IjkMediaPlayer.getInstance().pause()
       clearInterval(this.updateProgressTimer);
       this.videoModel.state = PlayStatus.PAUSE
@@ -46,7 +46,7 @@ export class VideoViewModel implements IPlayer {
   }
 
   stop() {
-    if (this.videoModel.state<=PlayStatus.STOP) {
+    if (this.videoModel.context!=null && this.videoModel.state<=PlayStatus.STOP) {
       IjkMediaPlayer.getInstance().stop()
       clearInterval(this.updateProgressTimer)
       this.videoModel.state =PlayStatus.STOP
@@ -54,7 +54,7 @@ export class VideoViewModel implements IPlayer {
   }
 
   release() {
-    if (this.videoModel.state<PlayStatus.RELEASE) {
+    if (this.videoModel.context!=null && this.videoModel.state<PlayStatus.RELEASE) {
       IjkMediaPlayer.getInstance().release()
       clearInterval(this.updateProgressTimer)
       this.videoModel.state = PlayStatus.RELEASE
@@ -62,7 +62,7 @@ export class VideoViewModel implements IPlayer {
   }
 
   reset() {
-    if (this.videoModel.context!=null) {
+    if (this.videoModel.context!=null && this.videoModel.context!=null) {
       this.videoModel.state = PlayStatus.INIT
       IjkMediaPlayer.getInstance().reset()
       this.init(this.videoModel.context)

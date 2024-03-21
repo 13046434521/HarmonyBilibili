@@ -33,6 +33,9 @@ export struct VideoPlay {
   }
 
 
+  aboutToDisappear(){
+    this.videoViewModel.release()
+  }
 
   // 等到有url和context完毕时开始初始化
   initPlay() {
@@ -44,32 +47,7 @@ export struct VideoPlay {
   }
 
   build() {
-    Column() {
-      this.VideoPlayer()
-      this.VideoSlider()
-
-      Button('reset').onClick(() => {
-        this.videoViewModel.reset()
-      })
-      Button('start').onClick(() => {
-        this.videoViewModel.play()
-      })
-      Button('pause').onClick(() => {
-        this.videoViewModel.pause()
-      })
-      Button('stop').onClick(() => {
-        this.videoViewModel.stop()
-      })
-      Button('release').onClick(() => {
-        this.videoViewModel.release()
-      })
-
-      Button('state').onClick(() => {
-        Utils.Toast("当前状态：" + this.videoModel.state)
-       this.videoViewModel.changeOrientation();
-      })
-    }.width('100%')
-    .justifyContent(FlexAlign.Start)
+    this.VideoPlayer()
   }
 
   @Builder VideoPlayer(){
@@ -171,7 +149,7 @@ export struct VideoPlay {
           direction: Axis.Horizontal
         })
           .blockColor('#ED6A96')
-          .trackColor('#80000000')
+          .trackColor(Color.Grey)
            .selectedColor("#ED6A96")
         .showTips(false)
         .onChange((value: number, mode: SliderChangeMode) => {

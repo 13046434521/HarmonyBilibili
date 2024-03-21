@@ -40,6 +40,14 @@ struct DetailPage {
     })
   }
 
+  onPageHide(){
+    this.videoViewModel.pause()
+  }
+
+  onPageShow(){
+    this.videoViewModel.play()
+  }
+
   build() {
     Column() {
       VideoPlay({url:this.url,videoModel:this.videoViewModel.videoModel,videoViewModel:this.videoViewModel}).layoutWeight(1)
