@@ -1,3 +1,4 @@
+import { Utils } from '../Utils/Utils'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
 
 
@@ -5,7 +6,10 @@ import { VideoViewModel } from '../viewModel/VideoViewModel'
 export struct VideoPlay {
   xComponentController:XComponentController = new XComponentController()
   videoViewModel: VideoViewModel = new VideoViewModel()
-  @Link header:Map<string,string>
+  header:Map<string,string>= new Map<string,string>([
+    ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
+    ["Referer", "https://www.bilibili.com"]
+  ])
   @State title:string=''
 
   @Link @Watch('initPlay') url:string
@@ -19,6 +23,17 @@ export struct VideoPlay {
   // 等到有url和context完毕时开始初始化
   initPlay(){
     if (this.url!=='') {
+      var builder = 'Header的值：';
+      if (this.header) {
+        this.header.forEach((value, key) => {
+          var parm = key.trim() + ": ";
+          if (value)
+            parm += value.trim();
+          parm += "\r\n";
+          builder += parm;
+        });
+      }
+      Utils.Toast(builder)
       this.videoViewModel.setUrl(this.url)
       this.videoViewModel.setHeader(this.header)
       this.videoViewModel.init(this.context)

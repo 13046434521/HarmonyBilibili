@@ -16,49 +16,54 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
-    // Main window is created, set main page for this ability
-    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
-
-    windowStage.loadContent('pages/SplashPage', (err, data) => {
+    // 开发者可以在适当的时机，如主窗口上按钮点击事件等，创建子窗口。并不一定需要在onWindowStageCreate调用，这里仅作展示
+    // 1.获取应用主窗口。
+    let windowClass = null;
+    windowStage.getMainWindow((err, data) => {
       if (err.code) {
-        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
+        console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
         return;
       }
-      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
-    });
+      windowClass = data;
+      console.info('Succeeded in obtaining the main window. Data: ' + JSON.stringify(data));
 
-//     windowStage.getMainWindow().then((data) => {
-//       try {
-//         let SystemBarProperties = {
-//           statusBarColor: '#ffffff',
-//           navigationBarColor: '#fffff1',
-//           //�����������Դ�API Version8��ʼ֧��
-//           statusBarContentColor:'#000000',
-//           navigationBarContentColor:'#000000'
-//         };
-//         let promise = data.setWindowSystemBarProperties(SystemBarProperties);
-//         promise.then(()=> {
-//           console.info('Succeeded in setting the system bar properties.');
-//         }).catch((err)=>{
-//           console.error('Failed to set the system bar properties. Cause: ' + JSON.stringify(err));
-//         });
-//       } catch (exception) {
-//         console.error('Failed to set the system bar properties. Cause: ' + JSON.stringify(exception));
-//       }
-//       // data.setWindowSystemBarEnable(['navigation'])
-// /*      let names:Array<string>= ['navigation']
-//       try {
-//         data.setWindowSystemBarEnable(names, (err) => {
-//           if (err.code) {
-//             console.error('Failed to set the system bar to be invisible. Cause:' + JSON.stringify(err));
-//             return;
-//           }
-//           console.info('Succeeded in setting the system bar to be invisible.');
-//         });
-//       } catch (exception) {
-//         console.error('Failed to set the system bar to be invisible. Cause:' + JSON.stringify(exception));
-//       }*/
-//     })
+      // 2.实现沉浸式效果：设置导航栏、状态栏不显示。
+      let names = [];
+      windowClass.setWindowSystemBarEnable(names, (err) => {
+        if (err.code) {
+          console.error('Failed to set the system bar to be visible. Cause:' + JSON.stringify(err));
+          return;
+        }
+        console.info('Succeeded in setting the system bar to be visible.');
+      });
+    })
+    // 导航栏设置颜色
+    // try {
+    //   let SystemBarProperties = {
+    //     statusBarColor: '#ffffff',
+    //     navigationBarColor: '#fffff1',
+    //     //以下两个属性从API Version8开始支持
+    //     statusBarContentColor: '#000000',
+    //     navigationBarContentColor: '#000000'
+    //   };
+    //   let promise = data.setWindowSystemBarProperties(SystemBarProperties);
+    //   promise.then(() => {
+    //     console.info('Succeeded in setting the system bar properties.');
+    //   }).catch((err) => {
+    //     console.error('Failed to set the system bar properties. Cause: ' + JSON.stringify(err));
+    //   });
+    // } catch (exception) {
+    //   console.error('Failed to set the system bar properties. Cause: ' + JSON.stringify(exception));
+    // }
+
+    // 3.为沉浸式窗口加载对应的目标页面。
+    windowStage.loadContent("pages/SplashPage", (err) => {
+      if (err.code) {
+        console.error('Failed to load the content. Cause:' + JSON.stringify(err));
+        return;
+      }
+      console.info('Succeeded in loading the content.');
+    });
   }
 
   onWindowStageDestroy() {

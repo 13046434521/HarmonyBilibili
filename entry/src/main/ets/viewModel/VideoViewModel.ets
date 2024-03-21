@@ -17,7 +17,6 @@ export class VideoViewModel implements IPlayer {
     this.initListener()
     // 初始化Player,包括播放
     this.initPlayer(context, this.viewModel.url, this.viewModel.headers)
-
   }
 
   // 直接播放

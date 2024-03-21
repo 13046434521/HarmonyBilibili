@@ -9,6 +9,8 @@
 6. 默认搜索页面，搜索overlord时，只有3个番剧。不显示其他内容。直言TRIGGER重复显示用户
 7. 主页面崩溃：ObservedPropertySimple value must not be an object---OpenHarmony不会有此bug
 8. ~~主页面不会默认刷新UI，OpenHarmony不会有此bug~~(2024-4-20解决---新增Splash页面，优先加载数据，传递到Index页面)
+9. 搜索页面，搜索内容不能有%
+10. 平板上，导航栏重叠了
 
 ## 项目功能进度
 ### 2024-3-17

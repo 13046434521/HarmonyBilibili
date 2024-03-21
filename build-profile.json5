@@ -45,10 +45,10 @@
         }
       ]
     },
-    {
-      "name": "ijkplayer",
-      "srcPath": "./ijkplayer"
-    },
+//    {
+//      "name": "ijkplayer",
+//      "srcPath": "./ijkplayer"
+//    },
 //    {
 //      "name": "player",
 //      "srcPath": "./player",

@@ -15,10 +15,6 @@ struct DetailPage {
   @State loadingPage:LoadingStatus = LoadingStatus.Loading;
   @State dimension :PageListDimensionBean = null
   @State url :string=''
-  @State header:Map<string,string>= new Map<string,string>([
-    ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
-    ["Referer", "https://www.bilibili.com"]
-  ])
 
   async aboutToAppear() {
     this.bvid = router.getParams()['bvid']
@@ -45,7 +41,7 @@ struct DetailPage {
 
   build() {
     Row() {
-      VideoPlay({url:this.url,header:this.header}).layoutWeight(1)
+      VideoPlay({url:this.url}).layoutWeight(1)
     }.width('100%')
     .height('100%')
   }
