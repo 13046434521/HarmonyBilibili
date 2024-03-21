@@ -4,44 +4,35 @@ import { IPlayer } from './IPlayer'
 import promptAction from '@ohos.promptAction'
 import VideoModel from './VideoModel'
 import { PlayStatus } from '../common/PlayStatus'
-import { Orientation } from '../common/Orientation'
-import { DisplayInfo } from '../common/DisplayInfo'
 import { IjkMediaPlayer } from '@ohos/ijkplayer'
-
+import window from '@ohos.window'
 
 //VideoPlayer 的 逻辑功能类
 export class VideoViewModel implements IPlayer {
-  viewModel: VideoModel = new VideoModel()
+  videoModel: VideoModel = new VideoModel()
+
 
   init(context: object) {
+    this.videoModel.context = context
     this.initListener()
     // 初始化Player,包括播放
-    this.initPlayer(context, this.viewModel.url, this.viewModel.headers)
-  }
-
-  // 直接播放
-  prepareAsync  (){
-    IjkMediaPlayer.getInstance().prepareAsync()
+    this.initPlayer(context, this.videoModel.url, this.videoModel.headers)
   }
 
   play() {
-    this.viewModel.state = (this.viewModel.state === PlayStatus.PLAY ? PlayStatus.PAUSE : PlayStatus.PLAY)
-
-    switch (this.viewModel.state) {
-      case PlayStatus.PAUSE: {
-        this.pause()
-        break
-      }
-      case PlayStatus.PLAY: {
-        IjkMediaPlayer.getInstance().start()
-        break
-      }
+    if (this.videoModel.state<= PlayStatus.STOP) {
+      IjkMediaPlayer.getInstance().start()
+      this.startProgressTask();
+      this.videoModel.state = PlayStatus.PLAY
     }
   }
 
   pause() {
-    this.viewModel.state = PlayStatus.PAUSE
-    IjkMediaPlayer.getInstance().pause()
+    if (this.videoModel.state<= PlayStatus.PLAY) {
+      IjkMediaPlayer.getInstance().pause()
+      clearInterval(this.updateProgressTimer);
+      this.videoModel.state = PlayStatus.PAUSE
+    }
   }
 
   moveProgress(progress: number) {
@@ -49,11 +40,39 @@ export class VideoViewModel implements IPlayer {
 
     IjkMediaPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
 
-    this.viewModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
+    this.videoModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
+
+    this.startProgressTask()
+  }
+
+  stop() {
+    if (this.videoModel.state<=PlayStatus.STOP) {
+      IjkMediaPlayer.getInstance().stop()
+      clearInterval(this.updateProgressTimer)
+      this.videoModel.state =PlayStatus.STOP
+    }
+  }
+
+  release() {
+    if (this.videoModel.state<PlayStatus.RELEASE) {
+      IjkMediaPlayer.getInstance().release()
+      clearInterval(this.updateProgressTimer)
+      this.videoModel.state = PlayStatus.RELEASE
+    }
+  }
+
+  reset() {
+    if (this.videoModel.context!=null) {
+      this.videoModel.state = PlayStatus.INIT
+      IjkMediaPlayer.getInstance().reset()
+      this.init(this.videoModel.context)
+      this.videoModel.currentTime = '00:00'
+      clearInterval(this.updateProgressTimer)
+    }
   }
 
   getCurrentTime(): string {
-    return this.viewModel.currentTime
+    return this.videoModel.currentTime
   }
 
   adjustVolume(volume: number) {
@@ -64,7 +83,7 @@ export class VideoViewModel implements IPlayer {
     else if (volume < 0) {
       tempVolume = 0
     }
-    this.viewModel.volume = tempVolume
+    this.videoModel.volume = tempVolume
     IjkMediaPlayer.getInstance().setVolume(volume.toFixed(0.1),volume.toFixed(0.1))
   }
 
@@ -76,92 +95,105 @@ export class VideoViewModel implements IPlayer {
     else if (brightness <= 0) {
       tempBrightness = 0
     }
-    this.viewModel.brightness = tempBrightness
+    this.videoModel.brightness = tempBrightness
     // IjkMediaPlayer.getInstance().set()
   }
 
-  stop() {
-    IjkMediaPlayer.getInstance().stop()
-  }
-
-  release() {
-    IjkMediaPlayer.getInstance().release()
-  }
-
-  reset() {
-    IjkMediaPlayer.getInstance().reset()
-  }
-
   setUrl(url: string) {
-    this.viewModel.url = url
+    this.videoModel.url = url
   }
 
   getUrl():string{
-    return this.viewModel.url
+    return this.videoModel.url
   }
-
-
 
   setHeader(headers: Map<string, string>) {
-    this.viewModel.headers = headers
+    this.videoModel.headers = headers
   }
   getHeader() {
-    return this.viewModel.headers
+    return this.videoModel.headers
   }
   getVideoAspectRatio(): number {
-    return this.viewModel.videoAspectRatio
+    return this.videoModel.videoAspectRatio
   }
 
-  getOrientation(): Orientation {
-    throw new Error('Method not implemented.')
+  getOrientation(): window.Orientation {
+    if (this.videoModel.orientation===null) {
+      globalThis.windowStage.getMainWindow((err, data) => {
+        if (err.code) {
+          console.error(JSON.stringify(err))
+          return null
+        }
+        this.videoModel.orientation = this.getOrientation()
+      })
+    }
+
+    return this.videoModel.orientation
   }
 
-  setOrientation(orientation: Orientation) {
-    throw new Error('Method not implemented.')
+  setOrientation(orientation: window.Orientation) {
+    if (globalThis.windowStage != undefined) {
+      globalThis.windowStage.getMainWindow((err, data) => {
+        if (err.code) {
+          console.error('IjkPlayer changeWindowDirection Failed to change the window: ' + JSON.stringify(err))
+          return
+        }
+        data.setPreferredOrientation(orientation);
+        this.videoModel.orientation = orientation
+      })
+    }
   }
 
-  setDisplayInfo(display: DisplayInfo) {
-    throw new Error('Method not implemented.')
+  changeOrientation(){
+    if (globalThis.windowStage != undefined) {
+      globalThis.windowStage.getMainWindow((err, data) => {
+        if (err.code) {
+          console.error('IjkPlayer changeWindowDirection Failed to change the window: ' + JSON.stringify(err))
+          return
+        }
+        let temp = this.getOrientation()===window.Orientation.LANDSCAPE?window.Orientation.PORTRAIT:window.Orientation.LANDSCAPE
+        data.setPreferredOrientation(temp);
+        this.videoModel.orientation = temp
+      })
+    }
   }
 
-  getDisplayInfo(): DisplayInfo {
-    throw new Error('Method not implemented.')
-  }
-
-
-  upDateViewModel(viewModel: VideoModel) {
-    this.viewModel = viewModel
+  upDateVideoModel(videoModel: VideoModel) {
+    this.videoModel = videoModel
   }
 
   getPlayStateImg(): Resource | string {
-    let res = this.viewModel.state === PlayStatus.PLAY ? $r('app.media.ic_detail_video_pause') : $r('app.media.ic_detail_video_play')
+    let res = this.videoModel.state === PlayStatus.PLAY ? $r('app.media.ic_detail_video_pause') : $r('app.media.ic_detail_video_play')
     return res
   }
 
   getTimeContent(): string {
-    // return IjkMediaPlayer.getInstance().getDuration()
-    return '0:0'
+    return this.videoModel.currentTime
   }
 
-  // startProgressTask() {
-  //   this.updateProgressTimer = setInterval(() => {
-  //     if (IjkMediaPlayer.getInstance().isPlaying()) {
-  //       let duration = IjkMediaPlayer.getInstance().getDuration()
-  //       let current = IjkMediaPlayer.getInstance().getCurrentPosition()
-  //       if (duration>0) {
-  //         this.sliderStep = current/duration *100;
-  //       }
-  //       this.currentTime = this.Duration(Math.floor(current/1000))
-  //     }
-  //   }, 300);
-  // }
-  //
-  // stopProgressTask() {
-  //   clearInterval(this.updateProgressTimer);
-  // }
+  getTimeTotal(): string {
+    return this.videoModel.timeTotal
+  }
 
+  updateProgressTimer:number = 0
 
+  startProgressTask() {
+    this.updateProgressTimer = setInterval(() => {
+      if (IjkMediaPlayer.getInstance().isPlaying()) {
+        let duration = IjkMediaPlayer.getInstance().getDuration()
+        let current = IjkMediaPlayer.getInstance().getCurrentPosition()
+        if (duration>0) {
+          this.videoModel.sliderStep = current/duration *100;
+        }
+        this.videoModel.currentTime = this.Duration(Math.floor(current/1000))
+      }
+    }, 300);
+  }
 
+  stopProgressTask() {
+    clearInterval(this.updateProgressTimer);
+    this.videoModel.sliderStep = 0
+  }
 
   // 视频时常，转换处理
   Duration(duration: number): string {
@@ -197,79 +229,75 @@ export class VideoViewModel implements IPlayer {
 
     IjkMediaPlayer.getInstance().prepareAsync()
   }
+
   initListener() {
     //设置获取视频宽高回调监听
-    this.viewModel.mOnVideoSizeChangedListener = {
+    this.videoModel.mOnVideoSizeChangedListener = {
       onVideoSizeChanged: (width: number, height: number, sar_num: number, sar_den: number) => {
         promptAction.showToast({ message: width + "---" + height })
-        this.viewModel.videoAspectRatio = width / height
+        this.videoModel.videoAspectRatio = width / height
       }
     }
     //设置视频准备就绪回调监听
-    this.viewModel.mOnPreparedListener = {
+    this.videoModel.mOnPreparedListener = {
       onPrepared: () => {
-        this.viewModel.state = PlayStatus.PLAY
-        promptAction.showToast({
-          message: "准备好了"
-        })
-        // this.startProgressTask.bind(this)()
-        // promptAction.showToast({
-        //   message: IjkMediaPlayer.getInstance().getVideoWidth() + "--**--" + IjkMediaPlayer.getInstance()
-        //     .getVideoHeight()
-        // })
+        this.videoModel.state = PlayStatus.PLAY
+        this.videoModel.videoWidth = IjkMediaPlayer.getInstance().getVideoWidth()
+        this.videoModel.videoHeight = IjkMediaPlayer.getInstance().getVideoWidth()
+        this.videoModel.videoAspectRatio =   this.videoModel.videoWidth/this.videoModel.videoHeight
+        this.videoModel.timeTotal = this.Duration(Math.floor(IjkMediaPlayer.getInstance().getDuration() / 1000))
+
+        this.startProgressTask();
       }
     }
     //设置字幕回调监听
-    this.viewModel.mOnTimedTextListener = {
+    this.videoModel.mOnTimedTextListener = {
       onTimedText: () => {
       }
     }
     //设置播放完成回调监听
-    this.viewModel.mOnCompletionListener = {
+    this.videoModel.mOnCompletionListener = {
       onCompletion: () => {
-        this.viewModel.state = PlayStatus.STOP
-        promptAction.showToast({
-          message: "播完了"
-        })
+        this.videoModel.state = PlayStatus.STOP
+        this.videoModel.sliderStep = 0
+        this.videoModel.currentTime = '00:00'
+        clearInterval(this.updateProgressTimer)
       }
     }
     //设置buffer缓冲回调监听
-    this.viewModel.mOnBufferingUpdateListener = {
+    this.videoModel.mOnBufferingUpdateListener = {
       onBufferingUpdate: (percent: number) => {
       }
     }
     //	设置快进后退回调监听
-    this.viewModel.mOnSeekCompleteListener = {
+    this.videoModel.mOnSeekCompleteListener = {
       onSeekComplete: () => {
       }
     }
 
     //设置播放器的各种状态回调监听
-    this.viewModel.mOnInfoListener = {
+    this.videoModel.mOnInfoListener = {
       onInfo: (what: number, extra: number) => {
-        promptAction.showToast({
-          message: "mOnInfo"
-        })
       }
     }
     //	设置播放异常回调监听
-    this.viewModel.mOnErrorListener = {
+    this.videoModel.mOnErrorListener = {
       onError: (what: number, extra: number) => {
-        this.viewModel.state = PlayStatus.STOP
+        this.videoModel.state = PlayStatus.STOP
         promptAction.showToast({
           message: `亲，bilibili error ：${what}`
         });
       }
     }
 
-    IjkMediaPlayer.getInstance().setOnCompletionListener(this.viewModel.mOnCompletionListener);
-    IjkMediaPlayer.getInstance().setOnPreparedListener(this.viewModel.mOnPreparedListener);
-    IjkMediaPlayer.getInstance().setOnTimedTextListener(this.viewModel.mOnTimedTextListener);
-    IjkMediaPlayer.getInstance().setOnVideoSizeChangedListener(this.viewModel.mOnVideoSizeChangedListener);
-    IjkMediaPlayer.getInstance().setOnBufferingUpdateListener(this.viewModel.mOnBufferingUpdateListener);
-    IjkMediaPlayer.getInstance().setOnSeekCompleteListener(this.viewModel.mOnSeekCompleteListener);
-    IjkMediaPlayer.getInstance().setOnInfoListener(this.viewModel.mOnInfoListener);
-    IjkMediaPlayer.getInstance().setOnErrorListener(this.viewModel.mOnErrorListener);
+    IjkMediaPlayer.getInstance().setOnCompletionListener(this.videoModel.mOnCompletionListener);
+    IjkMediaPlayer.getInstance().setOnPreparedListener(this.videoModel.mOnPreparedListener);
+    IjkMediaPlayer.getInstance().setOnTimedTextListener(this.videoModel.mOnTimedTextListener);
+    IjkMediaPlayer.getInstance().setOnVideoSizeChangedListener(this.videoModel.mOnVideoSizeChangedListener);
+    IjkMediaPlayer.getInstance().setOnBufferingUpdateListener(this.videoModel.mOnBufferingUpdateListener);
+    IjkMediaPlayer.getInstance().setOnSeekCompleteListener(this.videoModel.mOnSeekCompleteListener);
+    IjkMediaPlayer.getInstance().setOnInfoListener(this.videoModel.mOnInfoListener);
+    IjkMediaPlayer.getInstance().setOnErrorListener(this.videoModel.mOnErrorListener);
   }
   // 播放器的一些默认设置
   private defaultOption() {

@@ -1,47 +1,72 @@
 import { Utils } from '../Utils/Utils'
+
+// objectLinkNestedObjects.ets
+let NextID: number = 1;
+
+@Observed
+class ClassA {
+  public id: number;
+  public c: number;
+
+  constructor(c: number) {
+    this.id = NextID++;
+    this.c = c;
+  }
+}
+
+@Observed
+class ClassB {
+  public a: ClassA;
+
+  constructor(a: ClassA) {
+    this.a = a;
+  }
+}
+@Component
+struct ViewA {
+  label: string = 'ViewA1';
+  @ObjectLink a: ClassA;
+
+  build() {
+    Row() {
+      Button(`ViewA [${this.label}] this.a.c=${this.a.c} +1`)
+        .onClick(() => {
+          this.a.c += 1;
+        })
+    }
+  }
+}
 @Preview
 @Component
 export struct NewPage {
-  @State isShow :boolean = true
 
-  headers = new Map<string,string>([
-    ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
-    ["Referer", "https://www.bilibili.com"]
-  ])
+  @State b: ClassB = new ClassB(new ClassA(0));
 
-  @State tttt:string=''
-  build(){
-
-    Column(){
-      Button("test")
-        .onClick(()=>{
-          this.setDataSource("url: string", this.headers)
+  build() {
+    Column() {
+      // in low version,DevEco may throw a warning,but it does not matter.
+      // you can still compile and run.
+      // ViewA({ label: 'ViewA #1', a: this.b.a })
+      //       // ViewA({ label: 'ViewA #2', a: this.b.a })
+      Image($r('app.media.ic_svg_all_screen'))
+        .objectFit(ImageFit.Contain)
+        .width('100%')
+        .height('100%')
+        .fillColor($r('app.color.bilibili_text_black'))
+      Button(`ViewB: this.b.a.c+= 1`)
+        .onClick(() => {
+          this.b.a.c += 1;
         })
-        .width('20%')
-        .width(50)
-      Text(this.tttt)
-    }.width('100%')
-    .height('100%')
-    .justifyContent(FlexAlign.Center)
-    // Video({src:'https://d1--ov-gotcha07.bilivideo.com/live-bvc/665206/live_1388514638_9387369_4000.flv?expires=1710737906&len=0&oi=922436117&pt=web&qn=1000&trid=100014386918d4d7495eae95fb9445ef297e&sigparams=cdn,expires,len,oi,pt,qn,trid&cdn=ov-gotcha07&sign=e83deee76033c3fed0401133cbe9ae24&sk=df739001013e4655328c9a3da73fc4ac&p2p_type=0&sl=10&free_type=0&mid=0&pp=rtmp&source=one&trace=0&site=1032247946f1df79785af88cfb9c5383&order=1'})
-    //   .autoPlay(true)
-    //   .width('100%')
-    //   .aspectRatio(4/3)
-    // Text(Utils.timestampToDate(1547619147)).height('20%').width('100%').visibility(this.isShow?Visibility.Visible:Visibility.Hidden)
-  }
+      Button(`ViewB: this.b.a = new ClassA(0)`)
+        .onClick(() => {
+          this.b.a = new ClassA(0);
+        })
+      Button(`ViewB: this.b = new ClassB(ClassA(0))`)
+        .onClick(() => {
+          this.b = new ClassB(new ClassA(0));
+        })
 
 
-  setDataSource(url: string, headers?:Map<string,string>) {
-    var builder = 'builder:';
-    if (headers) {
-      headers.forEach((value, key) => {
-        var parm = key.trim() + ": ";
-        if (value)
-          parm += value.trim();
-        parm += "\r\n";
-        builder += parm;
-      });
     }
-    this.tttt = builder
   }
 }

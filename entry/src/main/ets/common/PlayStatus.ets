@@ -14,11 +14,11 @@
  */
 
 export enum PlayStatus {
-  INIT, //'初始化'
-  LOADING, //'加载中'
-  PLAY, //'播放'
-  PAUSE, //'暂停'
-  STOP, //'结束'
-  RELEASE, //'释放'
-  ERR //'错误'
+  INIT, //'初始化' 0
+  LOADING, //'加载中' 1
+  PLAY, //'播放' 2
+  PAUSE, //'暂停' 3
+  STOP, //'结束' 4
+  RELEASE, //'释放' 5
+  ERR //'错误' 6
 }

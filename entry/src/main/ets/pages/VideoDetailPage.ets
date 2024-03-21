@@ -6,6 +6,7 @@ import { Loading } from '../component/LoadingComponent'
 import { Utils } from '../Utils/Utils'
 import { PlayVideoBean } from '../bean/PlayVideoBean'
 import { VideoPlay } from '../component/VideoPlay'
+import { VideoViewModel } from '../viewModel/VideoViewModel'
 
 @Entry
 @Component
@@ -15,7 +16,7 @@ struct DetailPage {
   @State loadingPage:LoadingStatus = LoadingStatus.Loading;
   @State dimension :PageListDimensionBean = null
   @State url :string=''
-
+  @State videoViewModel: VideoViewModel = new VideoViewModel()
   async aboutToAppear() {
     this.bvid = router.getParams()['bvid']
     this.cid = router.getParams()['cid']
@@ -40,9 +41,10 @@ struct DetailPage {
   }
 
   build() {
-    Row() {
-      VideoPlay({url:this.url}).layoutWeight(1)
+    Column() {
+      VideoPlay({url:this.url,videoModel:this.videoViewModel.videoModel,videoViewModel:this.videoViewModel}).layoutWeight(1)
     }.width('100%')
     .height('100%')
+    .justifyContent(FlexAlign.Start)
   }
 }

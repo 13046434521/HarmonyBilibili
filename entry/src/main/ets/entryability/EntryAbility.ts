@@ -16,6 +16,7 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
+    globalThis.windowStage = windowStage;
     // 开发者可以在适当的时机，如主窗口上按钮点击事件等，创建子窗口。并不一定需要在onWindowStageCreate调用，这里仅作展示
     // 1.获取应用主窗口。
     let windowClass = null;

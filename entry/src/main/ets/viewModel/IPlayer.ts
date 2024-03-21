@@ -1,5 +1,4 @@
-import { DisplayInfo } from '../common/DisplayInfo'
-import { Orientation } from '../common/Orientation'
+import window from '@ohos.window'
 
 export interface IPlayer{
   init(context:object)
@@ -20,11 +19,7 @@ export interface IPlayer{
 
   reset()
 
-  getOrientation():Orientation
+  getOrientation():window.Orientation
 
-  setOrientation(orientation:Orientation)
-
-  setDisplayInfo(display:DisplayInfo)
-
-  getDisplayInfo():DisplayInfo
+  setOrientation(orientation:window.Orientation)
 }
