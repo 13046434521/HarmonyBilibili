@@ -71,11 +71,11 @@ export class IjkMediaPlayer {
     }
   }
 
-  setDataSource(url: string): void {
-    if (!!this.ijkplayer_napi)
-      this.ijkplayer_napi._setDataSource(url);
-  }
-  setDataSourceHeaders(url: string, header:Map<string,string>) {
+  // setDataSource(url: string): void {
+  //   if (!!this.ijkplayer_napi)
+  //     this.ijkplayer_napi._setDataSource(url);
+  // }
+  setDataSource(url: string, header:Map<string,string>) {
 
     var builder = '';
     let headers = new Map<string,string>([

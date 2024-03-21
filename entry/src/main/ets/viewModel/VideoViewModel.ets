@@ -17,7 +17,7 @@ export class VideoViewModel implements IPlayer {
     this.initListener()
     // 初始化Player,包括播放
     this.initPlayer(context, this.viewModel.url, this.viewModel.headers)
-    this.initListener()
+
   }
 
   // 直接播放
@@ -162,6 +162,42 @@ export class VideoViewModel implements IPlayer {
   // }
 
 
+
+
+  // 视频时常，转换处理
+  Duration(duration: number): string {
+    let second: number | string = (duration % 60)
+    let minute: number | string = Math.floor(duration / 60)
+    if (second < 10) {
+      second = '0' + second.toFixed(0)
+    } else {
+      second.toFixed(0)
+    }
+
+    //console.log("duration:"+duration+"---"+minute+'---'+second)
+    return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
+  }
+
+  // 初始化Player,不包括播放
+  public initPlayer(context: object, url:string,headers:Map<string,string>) {
+
+    IjkMediaPlayer.getInstance().setContext(context);
+    IjkMediaPlayer.getInstance().setDebug(false)
+    // 初始化视频资源
+    IjkMediaPlayer.getInstance().native_setup()
+
+    IjkMediaPlayer.getInstance().setDataSource(url,headers)
+    // 默认设置
+    this.defaultOption()
+    // 屏幕常亮
+    IjkMediaPlayer.getInstance().setScreenOnWhilePlaying(true);
+    // 给Listener赋值，IjkMediaPlayer内部进行了判空，因此不用担心传入为null
+    this.initListener()
+    // 将前面的Listener进行设置
+    IjkMediaPlayer.getInstance().setMessageListener()
+
+    IjkMediaPlayer.getInstance().prepareAsync()
+  }
   initListener() {
     //设置获取视频宽高回调监听
     this.viewModel.mOnVideoSizeChangedListener = {
@@ -174,6 +210,9 @@ export class VideoViewModel implements IPlayer {
     this.viewModel.mOnPreparedListener = {
       onPrepared: () => {
         this.viewModel.state = PlayStatus.PLAY
+        promptAction.showToast({
+          message: "准备好了"
+        })
         // this.startProgressTask.bind(this)()
         // promptAction.showToast({
         //   message: IjkMediaPlayer.getInstance().getVideoWidth() + "--**--" + IjkMediaPlayer.getInstance()
@@ -209,7 +248,9 @@ export class VideoViewModel implements IPlayer {
     //设置播放器的各种状态回调监听
     this.viewModel.mOnInfoListener = {
       onInfo: (what: number, extra: number) => {
-
+        promptAction.showToast({
+          message: "mOnInfo"
+        })
       }
     }
     //	设置播放异常回调监听
@@ -221,42 +262,16 @@ export class VideoViewModel implements IPlayer {
         });
       }
     }
+
+    IjkMediaPlayer.getInstance().setOnCompletionListener(this.viewModel.mOnCompletionListener);
+    IjkMediaPlayer.getInstance().setOnPreparedListener(this.viewModel.mOnPreparedListener);
+    IjkMediaPlayer.getInstance().setOnTimedTextListener(this.viewModel.mOnTimedTextListener);
+    IjkMediaPlayer.getInstance().setOnVideoSizeChangedListener(this.viewModel.mOnVideoSizeChangedListener);
+    IjkMediaPlayer.getInstance().setOnBufferingUpdateListener(this.viewModel.mOnBufferingUpdateListener);
+    IjkMediaPlayer.getInstance().setOnSeekCompleteListener(this.viewModel.mOnSeekCompleteListener);
+    IjkMediaPlayer.getInstance().setOnInfoListener(this.viewModel.mOnInfoListener);
+    IjkMediaPlayer.getInstance().setOnErrorListener(this.viewModel.mOnErrorListener);
   }
-
-  // 视频时常，转换处理
-  Duration(duration: number): string {
-    let second: number | string = (duration % 60)
-    let minute: number | string = Math.floor(duration / 60)
-    if (second < 10) {
-      second = '0' + second.toFixed(0)
-    } else {
-      second.toFixed(0)
-    }
-
-    //console.log("duration:"+duration+"---"+minute+'---'+second)
-    return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
-  }
-
-  // 初始化Player,不包括播放
-  public initPlayer(context: object, url:string,headers:Map<string,string>) {
-
-    IjkMediaPlayer.getInstance().setContext(context);
-    IjkMediaPlayer.getInstance().setDebug(false)
-    // 初始化视频资源
-    IjkMediaPlayer.getInstance().native_setup()
-
-    IjkMediaPlayer.getInstance().setDataSourceHeaders(url,headers)
-    // 默认设置
-    this.defaultOption()
-    // 屏幕常亮
-    IjkMediaPlayer.getInstance().setScreenOnWhilePlaying(true);
-    // 给Listener赋值，IjkMediaPlayer内部进行了判空，因此不用担心传入为null
-    // 将前面的Listener进行设置
-    IjkMediaPlayer.getInstance().setMessageListener()
-
-    IjkMediaPlayer.getInstance().prepareAsync()
-  }
-
   // 播放器的一些默认设置
   private defaultOption() {
     // 使用精确寻帧 例如，拖动播放后，会寻找最近的关键帧进行播放，很有可能关键帧的位置不是拖动后的位置，而是较前的位置.可以设置这个参数来解决问题
