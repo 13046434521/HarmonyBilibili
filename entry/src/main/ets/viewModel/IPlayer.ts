@@ -16,7 +16,7 @@ export interface IPlayer{
 
   stop()
 
-  destroy()
+  release()
 
   reset()
 

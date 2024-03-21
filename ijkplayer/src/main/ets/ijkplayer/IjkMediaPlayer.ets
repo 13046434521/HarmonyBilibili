@@ -30,16 +30,16 @@ import promptAction from '@ohos.promptAction';
 
 
 export class IjkMediaPlayer {
-  private static instances: IjkMediaPlayer;
+  private static instance: IjkMediaPlayer;
 
   constructor() {
   };
 
-  public static getInstances(): IjkMediaPlayer {
-    if (!IjkMediaPlayer.instances) {
-      IjkMediaPlayer.instances = new IjkMediaPlayer();
+  public static getInstance(): IjkMediaPlayer {
+    if (!IjkMediaPlayer.instance) {
+      IjkMediaPlayer.instance = new IjkMediaPlayer();
     }
-    return IjkMediaPlayer.instances;
+    return IjkMediaPlayer.instance;
   }
 
   public static OPT_CATEGORY_FORMAT: string = "1";

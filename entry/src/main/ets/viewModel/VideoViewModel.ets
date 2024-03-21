@@ -4,26 +4,25 @@ import { IPlayer } from './IPlayer'
 import promptAction from '@ohos.promptAction'
 import VideoModel from './VideoModel'
 import { PlayStatus } from '../common/PlayStatus'
-import { IjkPlayer } from '../common/IjkPlayer'
 import { Orientation } from '../common/Orientation'
 import { DisplayInfo } from '../common/DisplayInfo'
+import { IjkMediaPlayer } from '@ohos/ijkplayer'
 
 
-//VideoPlayer �� �߼�������
+//VideoPlayer 的 逻辑功能类
 export class VideoViewModel implements IPlayer {
   viewModel: VideoModel = new VideoModel()
 
   init(context: object) {
     this.initListener()
-    // ��ʼ��Player,��������
-    IjkPlayer.getInstance()
-      .initPlayer(context, this.viewModel.url, this.viewModel.headers, this.viewModel.mOnVideoSizeChangedListener, this.viewModel.mOnPreparedListener, this.viewModel.mOnCompletionListener, this.viewModel.mOnBufferingUpdateListener,
-        this.viewModel.mOnSeekCompleteListener, this.viewModel.mOnInfoListener, this.viewModel.mOnErrorListener)
+    // 初始化Player,包括播放
+    this.initPlayer(context, this.viewModel.url, this.viewModel.headers)
+    this.initListener()
   }
 
-  // ֱ�Ӳ���
+  // 直接播放
   prepareAsync  (){
-    IjkPlayer.getInstance().prepareAsync()
+    IjkMediaPlayer.getInstance().prepareAsync()
   }
 
   play() {
@@ -35,7 +34,7 @@ export class VideoViewModel implements IPlayer {
         break
       }
       case PlayStatus.PLAY: {
-        IjkPlayer.getInstance().start()
+        IjkMediaPlayer.getInstance().start()
         break
       }
     }
@@ -43,13 +42,13 @@ export class VideoViewModel implements IPlayer {
 
   pause() {
     this.viewModel.state = PlayStatus.PAUSE
-    IjkPlayer.getInstance().pause()
+    IjkMediaPlayer.getInstance().pause()
   }
 
   moveProgress(progress: number) {
-    let seekValue = progress * (IjkPlayer.getInstance().getDuration() / 100);
+    let seekValue = progress * (IjkMediaPlayer.getInstance().getDuration() / 100);
 
-    IjkPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
+    IjkMediaPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
 
     this.viewModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
   }
@@ -67,7 +66,7 @@ export class VideoViewModel implements IPlayer {
       tempVolume = 0
     }
     this.viewModel.volume = tempVolume
-    IjkPlayer.getInstance().setVolume(volume.toFixed(0.1),volume.toFixed(0.1))
+    IjkMediaPlayer.getInstance().setVolume(volume.toFixed(0.1),volume.toFixed(0.1))
   }
 
   adjustBrightness(brightness: number) {
@@ -79,19 +78,19 @@ export class VideoViewModel implements IPlayer {
       tempBrightness = 0
     }
     this.viewModel.brightness = tempBrightness
-    // IjkPlayer.getInstance().set()
+    // IjkMediaPlayer.getInstance().set()
   }
 
   stop() {
-    IjkPlayer.getInstance().stop()
+    IjkMediaPlayer.getInstance().stop()
   }
 
-  destroy() {
-    IjkPlayer.getInstance().release()
+  release() {
+    IjkMediaPlayer.getInstance().release()
   }
 
   reset() {
-    IjkPlayer.getInstance().reset()
+    IjkMediaPlayer.getInstance().reset()
   }
 
   setUrl(url: string) {
@@ -141,15 +140,15 @@ export class VideoViewModel implements IPlayer {
   }
 
   getTimeContent(): string {
-    // return IjkPlayer.getInstance().getDuration()
+    // return IjkMediaPlayer.getInstance().getDuration()
     return '0:0'
   }
 
   // startProgressTask() {
   //   this.updateProgressTimer = setInterval(() => {
-  //     if (IjkPlayer.getInstance().isPlaying()) {
-  //       let duration = IjkPlayer.getInstance().getDuration()
-  //       let current = IjkPlayer.getInstance().getCurrentPosition()
+  //     if (IjkMediaPlayer.getInstance().isPlaying()) {
+  //       let duration = IjkMediaPlayer.getInstance().getDuration()
+  //       let current = IjkMediaPlayer.getInstance().getCurrentPosition()
   //       if (duration>0) {
   //         this.sliderStep = current/duration *100;
   //       }
@@ -164,67 +163,67 @@ export class VideoViewModel implements IPlayer {
 
 
   initListener() {
-    //���û�ȡ��Ƶ���߻ص�����
+    //设置获取视频宽高回调监听
     this.viewModel.mOnVideoSizeChangedListener = {
       onVideoSizeChanged: (width: number, height: number, sar_num: number, sar_den: number) => {
         promptAction.showToast({ message: width + "---" + height })
         this.viewModel.videoAspectRatio = width / height
       }
     }
-    //������Ƶ׼�������ص�����
+    //设置视频准备就绪回调监听
     this.viewModel.mOnPreparedListener = {
       onPrepared: () => {
         this.viewModel.state = PlayStatus.PLAY
         // this.startProgressTask.bind(this)()
         // promptAction.showToast({
-        //   message: IjkPlayer.getInstance().getVideoWidth() + "--**--" + IjkPlayer.getInstance()
+        //   message: IjkMediaPlayer.getInstance().getVideoWidth() + "--**--" + IjkMediaPlayer.getInstance()
         //     .getVideoHeight()
         // })
       }
     }
-    //������Ļ�ص�����
+    //设置字幕回调监听
     this.viewModel.mOnTimedTextListener = {
       onTimedText: () => {
       }
     }
-    //���ò�����ɻص�����
+    //设置播放完成回调监听
     this.viewModel.mOnCompletionListener = {
       onCompletion: () => {
         this.viewModel.state = PlayStatus.STOP
         promptAction.showToast({
-          message: "������"
+          message: "播完了"
         })
       }
     }
-    //����buffer����ص�����
+    //设置buffer缓冲回调监听
     this.viewModel.mOnBufferingUpdateListener = {
       onBufferingUpdate: (percent: number) => {
       }
     }
-    //	���ÿ�����˻ص�����
+    //	设置快进后退回调监听
     this.viewModel.mOnSeekCompleteListener = {
       onSeekComplete: () => {
       }
     }
 
-    //���ò������ĸ���״̬�ص�����
+    //设置播放器的各种状态回调监听
     this.viewModel.mOnInfoListener = {
       onInfo: (what: number, extra: number) => {
 
       }
     }
-    //	���ò����쳣�ص�����
+    //	设置播放异常回调监听
     this.viewModel.mOnErrorListener = {
       onError: (what: number, extra: number) => {
         this.viewModel.state = PlayStatus.STOP
         promptAction.showToast({
-          message: `�ף�bilibili error ��${what}`
+          message: `亲，bilibili error ：${what}`
         });
       }
     }
   }
 
-  // ��Ƶʱ����ת������
+  // 视频时常，转换处理
   Duration(duration: number): string {
     let second: number | string = (duration % 60)
     let minute: number | string = Math.floor(duration / 60)
@@ -236,5 +235,56 @@ export class VideoViewModel implements IPlayer {
 
     //console.log("duration:"+duration+"---"+minute+'---'+second)
     return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
+  }
+
+  // 初始化Player,不包括播放
+  public initPlayer(context: object, url:string,headers:Map<string,string>) {
+
+    IjkMediaPlayer.getInstance().setContext(context);
+    IjkMediaPlayer.getInstance().setDebug(false)
+    // 初始化视频资源
+    IjkMediaPlayer.getInstance().native_setup()
+
+    IjkMediaPlayer.getInstance().setDataSourceHeaders(url,headers)
+    // 默认设置
+    this.defaultOption()
+    // 屏幕常亮
+    IjkMediaPlayer.getInstance().setScreenOnWhilePlaying(true);
+    // 给Listener赋值，IjkMediaPlayer内部进行了判空，因此不用担心传入为null
+    // 将前面的Listener进行设置
+    IjkMediaPlayer.getInstance().setMessageListener()
+
+    IjkMediaPlayer.getInstance().prepareAsync()
+  }
+
+  // 播放器的一些默认设置
+  private defaultOption() {
+    // 使用精确寻帧 例如，拖动播放后，会寻找最近的关键帧进行播放，很有可能关键帧的位置不是拖动后的位置，而是较前的位置.可以设置这个参数来解决问题
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", "1");
+    // 预读数据的缓冲区大小
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size", "102400");
+    // 停止预读的最小帧数
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "min-frames", "100");
+    // 启动预加载
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", "1");
+    // 设置无缓冲，这是播放器的缓冲区，有数据就播放
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", "0");
+    // 跳帧处理,放CPU处理较慢时，进行跳帧处理，保证播放流程，画面和声音同步
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", "5");
+    // 最大缓冲cache是3s， 有时候网络波动，会突然在短时间内收到好几秒的数据
+    // 因此需要播放器丢包，才不会累积延时
+    // 这个和第三个参数packet-buffering无关。
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max_cached_duration", "3000");
+    // 无限制收流
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", "1");
+    // IjkMediaPlayer.getInstance().setOptionLong(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", "1")
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "opensles", "1");
+
+    // 设置超时
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "timeout", "10000000");
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "connect_timeout", "10000000");
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "listen_timeout", "10000000");
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "addrinfo_timeout", "10000000");
+    IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "dns_cache_timeout", "10000000");
   }
 }

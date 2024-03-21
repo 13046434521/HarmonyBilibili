@@ -1,9 +1,5 @@
-import { IjkPlayer } from '../common/IjkPlayer'
-import router from '@ohos.router'
-import promptAction from '@ohos.promptAction'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
-import { Utils } from '../Utils/Utils'
-import util from '@ohos.util'
+
 
 @Component
 export struct VideoPlay {
@@ -41,7 +37,7 @@ export struct VideoPlay {
           this.context = context
 
         }).onDestroy(() => {
-          this.videoViewModel.destroy()
+          this.videoViewModel.release()
         }).width('100%')
           .height('100%')
 
@@ -50,16 +46,16 @@ export struct VideoPlay {
       }
       .width('100%')
       .aspectRatio(this.videoViewModel.getVideoAspectRatio())
-
+      .backgroundColor(Color.Black)
       Button('start').onClick(() => {
-        IjkPlayer.getInstance().start()
+        this.videoViewModel.play()
       })
       Button('pause').onClick(() => {
-        IjkPlayer.getInstance().pause()
+        this.videoViewModel.pause()
       })
 
       Button('release').onClick(() => {
-        IjkPlayer.getInstance().release()
+        this.videoViewModel.release()
       })
     }.width('100%')
     .height('100%')

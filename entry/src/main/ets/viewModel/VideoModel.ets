@@ -24,7 +24,7 @@ export default  class VideoModel {
   timeTotal: string = '00:00'
   currentTime: string = '00:00'
 
-  // ¸÷ÖÖListener
+  // å„ç§Listener
   mOnVideoSizeChangedListener: OnVideoSizeChangedListener = null
   mOnPreparedListener: OnPreparedListener = null
   mOnTimedTextListener: OnTimedTextListener = null
