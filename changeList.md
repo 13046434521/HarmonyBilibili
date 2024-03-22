@@ -14,6 +14,7 @@
 11. VideoPlay seekTo移动时，没想好逻辑。以及播放完毕时，重新播放的逻辑
 12. VideoPlay 连续快速操作，ijkplayer库会报错
 13. VideoPlay 播放此间无双的鞠婧祎的视频，会出现变形:分辨率是1280*544.
+14. ~~搜索默认页面，在HarmonyOS4上不显示数据，OpenHarmony4.0上正常~~ 原因是ListView中的布局。必须用ListItem包裹。否则容易出bug
 ## 项目功能进度
 ### 2024-3-17
     图文页面，最下部缺失，无法全屏

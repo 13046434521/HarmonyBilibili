@@ -27,8 +27,8 @@ export default  class VideoModel {
   sliderStep: number = 0
   videoWidth:number=0
   videoHeight: number = 0
-  timeTotal: string = '00:00'
-  currentTime: string = '00:00'
+  timeTotal: string = '0:00'
+  currentTime: string = '0:00'
   context:object =null
   // 各种Listener
   mOnVideoSizeChangedListener: OnVideoSizeChangedListener = null

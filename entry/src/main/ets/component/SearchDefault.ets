@@ -23,6 +23,8 @@ import { MediaBangumiItem } from './item/MediaBangumiItem'
 import { MediaFtItem } from './item/MediaFtItem'
 import { VideoItem } from './item/VideoItem'
 import { LoadingData } from './LoadingData'
+import router from '@ohos.router'
+import { PageManager } from '../common/PageManager'
 
 @Component
 export struct SearchDefaultDetails {
@@ -42,8 +44,10 @@ export struct SearchDefaultDetails {
   @Builder
   defaultPage() {
     List() {
-      LazyForEach(this.allData, (item) => {
-        this.defaultItem(item)
+      LazyForEach(this.allData, (item:SearchDefaultDataBean) => {
+        ListItem(){
+          this.defaultItem(item)
+        }
       }, (item: SearchDefaultDataBean,index) => JSON.stringify(item)+index)
     }.width('100%')
     .layoutWeight(1)
@@ -64,7 +68,9 @@ export struct SearchDefaultDetails {
     if (item.result_type === SearchType.MEDIA_BANGUMI.toString()) {
       MediaBangumiItem({ item: item })// media_id season_id
     } else if (item.result_type === SearchType.VIDEO.toString()) {
-      VideoItem({ item: item })//aid
+      VideoItem({ item: item }).onClick(()=>{
+        PageManager.routerVideoDetail(item.bvid)
+      })
     } else if (item.result_type === SearchType.LIVE_ROOM.toString()) {
       LiveRoomItem({ item: item })//roomid
     } else if (item.result_type === SearchType.ARTICLE.toString()) {

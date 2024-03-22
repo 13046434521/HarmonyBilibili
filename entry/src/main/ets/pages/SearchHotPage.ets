@@ -42,7 +42,9 @@ struct SearchHotPage {
 
       List() {
         LazyForEach(this.hotSearchData, (item: SearchHotBeanItem) => {
-          this.SearchHotItem(item.show_name, item.icon)
+          ListItem(){
+            this.SearchHotItem(item.show_name, item.icon)
+          }
         })
       }.lanes(2)
     }

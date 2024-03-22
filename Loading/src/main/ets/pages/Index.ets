@@ -1,34 +1,72 @@
-import { Loading } from './Loading'
+import promptAction from '@ohos.promptAction'
 
+@Observed
+class Person{
+  age:number
+  name:string
+  child:Person
+
+  constructor(age:number,name:string,child?:Person) {
+    this.age = age
+    this.name = name
+    this.child = child
+  }
+}
+// 嵌套类中的数据不会变化
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World'
-  private settings: RenderingContextSettings = new RenderingContextSettings(true)
-  private context: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.settings)
-  private offContext: OffscreenCanvasRenderingContext2D = new OffscreenCanvasRenderingContext2D(600, 600, this.settings)
-
+  child: Person = new Person(1,'小孩子')
+  @State jtl: Person = new Person(31,'贾天龙',this.child)
   build() {
     Row() {
       Column() {
-        Text('没有边界的吗？')
-        Loading()
+        Text(this.jtl.child.name+"  "+this.jtl.child.age)
+
+        Child({person:this.jtl.child})
+
+        Button("输出").onClick(()=>{
+          this.jtl.child.name = this.jtl.child.name + 'bb'
+          promptAction.showToast({message:"数据变没变啊："+this.jtl.child.name +"  "+this.jtl.child.age})
+        })
       }
     }
   }
+}
 
-  @Builder test(){
-    Canvas(this.context)
-      .backgroundColor('#ffff00')
-      .onReady(() =>{
-        this.offContext.arc(100, 75, 50, 0, 6.28)
-        // this.offContext.setLineDash([10,20])
-        this.offContext.lineDashOffset = 10.0
-        this.offContext.stroke()
-        var image = this.offContext.transferToImageBitmap()
-        this.context.transferFromImageBitmap(image)
-      }).borderRadius(10000)
-      .width('100%')
-      .aspectRatio(1)
+@Component
+struct Child{
+  @ObjectLink person:Person
+
+  aboutToAppear(){
+    // if (this.person.child instanceof undefined) {
+    //   promptAction.showToast({message:"数据类型：undefined"})
+    // }
+    //
+    // if (this.person.child instanceof null) {
+    //   promptAction.showToast({message:"数据类型：null"})
+    // }
+    //
+    // if (this.person.child instanceof Person) {
+    //   promptAction.showToast({message:"数据类型：Person"})
+    // }
+    //
+    // if (typeof this.person.child =="undefined") {
+    //   promptAction.showToast({message:"数据类型 typeof：undefined"})
+    // }
+  }
+
+  build(){
+    Column(){
+      Button(this.person.name+"  "+this.person.age)
+        .onClick(()=>{
+          this.person.age++
+        })
+
+      Button(this.person.name+"  "+this.person.age)
+        .onClick(()=>{
+          this.person.name = this.person.name + 'a'
+        })
+    }
   }
 }
