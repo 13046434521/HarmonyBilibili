@@ -47,79 +47,61 @@ export struct VideoPlay {
   }
 
   build() {
-    // this.VideoPlayerer()
     this.VideoPlayer()
   }
 
   @Builder VideoPlayer(){
     Stack() {
-      Stack({alignContent:Alignment.TopStart}){
-        Stack({ alignContent: Alignment.Bottom }){
-          Row() {
-            XComponent({
-              id: "xcomponentId",
-              type: 'surface',
-              libraryname: "ijkplayer_napi",
-              controller: this.xComponentController
-            })
-              .onLoad((context) => {
-                this.context = context
-
-              })
-              .onDestroy(() => {
-                this.videoViewModel.release()
-              })
-              .width('100%')
-              .height('100%')
-              .aspectRatio(this.videoModel.videoAspectRatio)
-          }.justifyContent(FlexAlign.Center)
-          if (this.isShow){
-            Row(){
-              this.VideoSlider()
-              Image($r('app.media.ic_full_screen'))
-                .onClick(()=>{
-                  this.videoViewModel.changeOrientation()
-                })  .objectFit(ImageFit.Contain)
-                .height('100%')
-                .aspectRatio(1)
-                .margin(8)
-            }.width('100%')
-            .aspectRatio(16)
-            .justifyContent(FlexAlign.SpaceBetween)
-            .alignItems(VerticalAlign.Center)
-            .linearGradient({
-              colors: [["#00000000", 0.0], ["#aa000000", 1.0]]
-            })
-          }
-        }.width('100%')
-        if (this.isShow){
-          Row(){
-            Image($r('app.media.ic_common_back_white')).onClick(()=>{
-              router.back()
-            }).btnImageStyle()
-
-            Image($r('app.media.biliplayer_ic_topbar_back')).onClick(()=>{
-              router.replaceUrl({
-                url: 'pages/Index' // 目标url
-              }, router.RouterMode.Single)
-            }).btnImageStyle()
-
-          }.width('100%')
-          .aspectRatio(16)
-          .linearGradient({
-            colors: [["#aa000000", 0.0],["#00000000", 1.0]]
-          })
-          .height('100%')
-        }
-
-      }
+      Column(){
+        XComponentPlayer()
+      }.alignItems(HorizontalAlign.Center)
+      .justifyContent(FlexAlign.Center)
       .width('100%')
       .height('100%')
+
+      if (this.isShow){
+        Row(){
+          this.VideoSlider()
+          Image($r('app.media.ic_full_screen'))
+            .onClick(()=>{
+              this.videoViewModel.changeOrientation()
+            })  .objectFit(ImageFit.Contain)
+            .height('100%')
+            .aspectRatio(1)
+            .margin(8)
+        }.width('100%')
+        .aspectRatio(16)
+        .justifyContent(FlexAlign.SpaceBetween)
+        .alignItems(VerticalAlign.Center)
+        .linearGradient({
+          colors: [["#00000000", 0.0], ["#aa000000", 1.0]]
+        })
+      }
 
       if (this.videoModel.state<=PlayStatus.LOADING){
         Loading()
       }
-    }.alignContent(Alignment.Center)
+
+      if (this.isShow){
+        Row(){
+          Image($r('app.media.ic_common_back_white')).onClick(()=>{
+            router.back()
+          }).btnImageStyle()
+
+          Image($r('app.media.biliplayer_ic_topbar_back')).onClick(()=>{
+            router.replaceUrl({
+              url: 'pages/Index' // 目标url
+            }, router.RouterMode.Single)
+          }).btnImageStyle()
+
+        }.width('100%')
+        .aspectRatio(16)
+        .position({x:0,y:0})
+        .linearGradient({
+          colors: [["#aa000000", 0.0],["#00000000", 1.0]]
+        })
+      }
+    }.alignContent(Alignment.BottomStart)
     .width('100%')
     .aspectRatio(this.defaultAspectRatio)
     .backgroundColor(Color.Black)
@@ -169,34 +151,6 @@ export struct VideoPlay {
     .justifyContent(FlexAlign.Start)
     .height('100%')
   }
-
-
-  @Builder
-  VideoPlayerer(){
-    RelativeContainer(){
-      XComponent({
-        id: "xcomponentId",
-        type: 'surface',
-        libraryname: "ijkplayer_napi",
-        controller: this.xComponentController
-      })
-        .id('video')
-        .onLoad((context) => {
-          this.context = context
-        })
-        .onDestroy(() => {
-          this.videoViewModel.release()
-        })
-        .width('100%')
-        .height('100%')
-        .aspectRatio(this.videoModel.videoAspectRatio)
-
-      if (this.videoModel.state<=PlayStatus.LOADING){
-        Loading()
-      }
-    }.width('100%')
-    .aspectRatio(this.defaultAspectRatio)
-  }
 }
 
 @Extend(Image)
@@ -206,4 +160,39 @@ function btnImageStyle(){
   .aspectRatio(1)
   .margin(16)
 }
+
+@Builder function  XComponentPlayer(){
+  if (this.videoModel.videoAspectRatio>0){
+    XComponent({
+      id: "xcomponentId",
+      type: 'surface',
+      libraryname: "ijkplayer_napi",
+      controller: this.xComponentController
+    })
+      .onLoad((context) => {
+        this.context = context
+
+      })
+      .onDestroy(() => {
+        this.videoViewModel.release()
+      }) .width('100%')
+      .aspectRatio(this.videoModel.videoAspectRatio)
+  }else{
+    XComponent({
+      id: "xcomponentId",
+      type: 'surface',
+      libraryname: "ijkplayer_napi",
+      controller: this.xComponentController
+    })
+      .onLoad((context) => {
+        this.context = context
+
+      })
+      .onDestroy(() => {
+        this.videoViewModel.release()
+      }) .height('100%')
+      .aspectRatio(this.videoModel.videoAspectRatio)
+  }
+}
+
 
