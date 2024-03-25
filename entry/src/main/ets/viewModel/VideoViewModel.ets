@@ -11,7 +11,6 @@ import window from '@ohos.window'
 export class VideoViewModel implements IPlayer {
   videoModel: VideoModel = new VideoModel()
 
-
   init(context: object) {
     this.videoModel.context = context
     this.initListener()
@@ -22,7 +21,6 @@ export class VideoViewModel implements IPlayer {
   play() {
     if (this.videoModel.context!=null && this.videoModel.state<= PlayStatus.STOP) {
       IjkMediaPlayer.getInstance().start()
-      this.startProgressTask();
       this.videoModel.state = PlayStatus.PLAY
     }
   }
@@ -30,25 +28,25 @@ export class VideoViewModel implements IPlayer {
   pause() {
     if (this.videoModel.context!=null && this.videoModel.state<= PlayStatus.PLAY) {
       IjkMediaPlayer.getInstance().pause()
-      clearInterval(this.updateProgressTimer);
       this.videoModel.state = PlayStatus.PAUSE
     }
   }
 
   moveProgress(progress: number) {
-    let seekValue = progress * (IjkMediaPlayer.getInstance().getDuration() / 100);
+    if (this.videoModel.context!=null ) {
+      this.videoModel.state = PlayStatus.LOADING
 
-    IjkMediaPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
+      let seekValue = progress * (IjkMediaPlayer.getInstance().getDuration() / 100);
 
-    this.videoModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
+      this.videoModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
 
-    this.startProgressTask()
+      IjkMediaPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
+    }
   }
 
   stop() {
     if (this.videoModel.context!=null && this.videoModel.state<=PlayStatus.STOP) {
       IjkMediaPlayer.getInstance().stop()
-      clearInterval(this.updateProgressTimer)
       this.videoModel.state =PlayStatus.STOP
     }
   }
@@ -56,8 +54,8 @@ export class VideoViewModel implements IPlayer {
   release() {
     if (this.videoModel.context!=null && this.videoModel.state<PlayStatus.RELEASE) {
       IjkMediaPlayer.getInstance().release()
-      clearInterval(this.updateProgressTimer)
       this.videoModel.state = PlayStatus.RELEASE
+      this.stopProgressTask()
     }
   }
 
@@ -67,7 +65,6 @@ export class VideoViewModel implements IPlayer {
       IjkMediaPlayer.getInstance().reset()
       this.init(this.videoModel.context)
       this.videoModel.currentTime = '00:00'
-      clearInterval(this.updateProgressTimer)
     }
   }
 
@@ -96,7 +93,6 @@ export class VideoViewModel implements IPlayer {
       tempBrightness = 0
     }
     this.videoModel.brightness = tempBrightness
-    // IjkMediaPlayer.getInstance().set()
   }
 
   setUrl(url: string) {
@@ -177,9 +173,9 @@ export class VideoViewModel implements IPlayer {
 
   updateProgressTimer:number = 0
 
-  startProgressTask() {
+  private startProgressTask() {
     this.updateProgressTimer = setInterval(() => {
-      if (IjkMediaPlayer.getInstance().isPlaying()) {
+      if (IjkMediaPlayer.getInstance().isPlaying() && this.videoModel.state=== PlayStatus.PLAY) {
         let duration = IjkMediaPlayer.getInstance().getDuration()
         let current = IjkMediaPlayer.getInstance().getCurrentPosition()
         if (duration>0) {
@@ -188,11 +184,15 @@ export class VideoViewModel implements IPlayer {
         this.videoModel.currentTime = this.Duration(Math.floor(current/1000))
       }
     }, 300);
+
+    console.log('app_log startProgressTask')
   }
 
-  stopProgressTask() {
+  private stopProgressTask() {
     clearInterval(this.updateProgressTimer);
     this.videoModel.sliderStep = 0
+
+    console.log('app_log stopProgressTask')
   }
 
   // 视频时常，转换处理
@@ -236,6 +236,7 @@ export class VideoViewModel implements IPlayer {
       onVideoSizeChanged: (width: number, height: number, sar_num: number, sar_den: number) => {
         promptAction.showToast({ message: width + "---" + height })
         this.videoModel.videoAspectRatio = width / height
+        console.log('app_log mOnVideoSizeChangedListener:width:'+width+"  height:"+height)
       }
     }
     //设置视频准备就绪回调监听
@@ -246,7 +247,7 @@ export class VideoViewModel implements IPlayer {
         this.videoModel.videoHeight = IjkMediaPlayer.getInstance().getVideoWidth()
         this.videoModel.videoAspectRatio =   this.videoModel.videoWidth/this.videoModel.videoHeight
         this.videoModel.timeTotal = this.Duration(Math.floor(IjkMediaPlayer.getInstance().getDuration() / 1000))
-
+        console.log('app_log mOnPreparedListener')
         this.startProgressTask();
       }
     }
@@ -261,23 +262,32 @@ export class VideoViewModel implements IPlayer {
         this.videoModel.state = PlayStatus.STOP
         this.videoModel.sliderStep = 0
         this.videoModel.currentTime = '00:00'
-        clearInterval(this.updateProgressTimer)
+        console.log('app_log mOnCompletionListener:percent')
       }
     }
+
     //设置buffer缓冲回调监听
-    this.videoModel.mOnBufferingUpdateListener = {
-      onBufferingUpdate: (percent: number) => {
+    if (this.videoModel.mOnBufferingUpdateListener===null){
+      this.videoModel.mOnBufferingUpdateListener = {
+        onBufferingUpdate: (percent: number) => {
+          console.log('app_log mOnBufferingUpdateListener:percent:'+percent)
+        }
       }
     }
+
     //	设置快进后退回调监听
-    this.videoModel.mOnSeekCompleteListener = {
-      onSeekComplete: () => {
+    if (this.videoModel.mOnSeekCompleteListener===null){
+      this.videoModel.mOnSeekCompleteListener = {
+        onSeekComplete: () => {
+          console.log('app_log onSeekComplete')
+        }
       }
     }
 
     //设置播放器的各种状态回调监听
     this.videoModel.mOnInfoListener = {
       onInfo: (what: number, extra: number) => {
+        // console.log('app_log mOnInfoListener:what:'+what+"   extra:"+extra)
       }
     }
     //	设置播放异常回调监听
@@ -309,7 +319,7 @@ export class VideoViewModel implements IPlayer {
     IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "min-frames", "100");
     // 启动预加载
     IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "start-on-prepared", "1");
-    // 设置无缓冲，这是播放器的缓冲区，有数据就播放
+    // 设置无缓冲，这是播放器的缓冲区，有数据就播放,0为无缓冲，1为有缓冲
     IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "packet-buffering", "0");
     // 跳帧处理,放CPU处理较慢时，进行跳帧处理，保证播放流程，画面和声音同步
     IjkMediaPlayer.getInstance().setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", "5");

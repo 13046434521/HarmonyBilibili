@@ -48,6 +48,10 @@ struct DetailPage {
     this.videoViewModel.play()
   }
 
+  aboutToDisappear(){
+    this.videoViewModel.release()
+  }
+
   build() {
     Column() {
       VideoPlay({url:this.url,videoModel:this.videoViewModel.videoModel,videoViewModel:this.videoViewModel}).layoutWeight(1)

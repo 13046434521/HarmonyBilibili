@@ -18,6 +18,22 @@ export struct VideoPlay {
   @State isShow :boolean = true
   aboutToAppear() {
     // = this.videoViewModel.viewModel
+
+    //设置buffer缓冲回调监听
+    this.videoModel.mOnBufferingUpdateListener = {
+      onBufferingUpdate: (percent: number) => {
+        console.log('app_log mOnBufferingUpdateListener:percent:'+percent)
+      }
+    }
+
+    //	设置快进后退回调监听
+    this.videoModel.mOnSeekCompleteListener = {
+      onSeekComplete: () => {
+        // this.videoModel.state = PlayStatus.PLAY
+        this.videoViewModel.play()
+        console.log('app_log onSeekComplete:percent')
+      }
+    }
   }
   sliderShowTime :number = 0
   sliderShowHide(){
@@ -123,6 +139,8 @@ export struct VideoPlay {
             this.videoViewModel.pause()
           } else if (this.videoModel.state < PlayStatus.STOP) {
             this.videoViewModel.play()
+          }else if (this.videoModel.state === PlayStatus.STOP) {
+            this.videoViewModel.reset()
           }
         })
         .margin(4)
@@ -137,7 +155,11 @@ export struct VideoPlay {
         .showTips(false)
         .onChange((value: number, mode: SliderChangeMode) => {
           // value/100 是百分比  getDuration获取的是总时长
-          this.videoViewModel.moveProgress(value)
+          // 移动结束时，设置moveProgress
+          if (mode == SliderChangeMode.End) {
+            this.videoViewModel.pause()
+            this.videoViewModel.moveProgress(value)
+          }
         })
         .width('70%')
         .opacity(1)
@@ -186,7 +208,6 @@ function btnImageStyle(){
     })
       .onLoad((context) => {
         this.context = context
-
       })
       .onDestroy(() => {
         this.videoViewModel.release()
