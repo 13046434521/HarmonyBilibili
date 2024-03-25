@@ -17,7 +17,7 @@ export class PageManager{
   }
 
   // 影视页面
-  static routerMediaFt(avid:number,cid:number){
-    router.pushUrl({url:'pages/MediaFt/MediaFt',params:{'avid':avid,'cid':cid}})
+  static routerMediaFt(season_id:number){
+    router.pushUrl({url:'pages/MediaFt/MediaFtPage',params:{'seasonId':season_id}})
   }
 }

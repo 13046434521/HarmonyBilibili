@@ -134,8 +134,7 @@ export struct MediaFtItem{
       Divider().width('95%').color($r('app.color.bilibili_divider'))
     }.backgroundColor(Color.White)
     .onClick(()=>{
-      PageManager.routerMediaFt( item.media_id,item.media_id)
-
+      PageManager.routerMediaFt(item.season_id)
     })
   }
 }

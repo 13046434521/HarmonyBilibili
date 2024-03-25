@@ -10,14 +10,14 @@ export class ApiLogin extends ApiBase{
   // 生成二维码
   generateQrcode():Promise<QrcodeGenerateBean>{
     let url = 'https://passport.bilibili.com/x/passport-login/web/qrcode/generate'
-    return this.request<QrcodeGenerateBean>(url,axios)
+    return this.request<QrcodeGenerateBean>(url,this.instanceAxios)
   }
 
   //https://passport.bilibili.com/x/passport-login/web/qrcode/poll?qrcode_key=d7a23f1b2d7196d7970a5b8428e0fed5
   // 登录获取Cookie
   loginQrcode(qrcode_key:string):Promise<QrcodeLoginBean>{
     let url = `https://passport.bilibili.com/x/passport-login/web/qrcode/poll?qrcode_key=${qrcode_key}`
-    return this.request<QrcodeLoginBean>(url,axios)
+    return this.request<QrcodeLoginBean>(url,this.instanceAxios)
   }
 }
 

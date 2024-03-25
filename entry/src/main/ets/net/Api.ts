@@ -13,18 +13,6 @@ import { ApiBase } from './ApiBase';
 export class Api extends ApiBase{
   constructor() {
     super();
-    this.instance.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
-      console.log(`拦截器：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
-      // for (const element of value.headers) {
-      //    console.log(`拦截器：header:${element.toString()}`)
-      // }
-      return value
-    })
-
-    this.instanceCookie.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
-      console.log(`拦截器:cookie的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
-      return value
-    })
   }
 
   getHomePages(page: number = 0): Promise<HomeBean> {
@@ -72,7 +60,7 @@ export class Api extends ApiBase{
   getSearchSuggest(suggest:string): Promise<SearchSuggestResultBean>{
     let keyword = suggest.replace(/ /g,`%20`)
     let url = `https://s.search.bilibili.com/main/suggest?term=${keyword}&main_ver=v1&highlight=""`
-    return this.request<SearchSuggestResultBean>(url,axios)
+    return this.request<SearchSuggestResultBean>(url,this.instanceAxios)
   }
   // getSearchHot(): Promise<BaseResponse<SearchHotBean>> {
   // 20个热搜
