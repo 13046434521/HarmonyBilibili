@@ -5,6 +5,7 @@
     "pages/SearchHotPage",
     "pages/VideoDetailPage",
     "pages/SearchPage",
-    "pages/SearchWebPage"
+    "pages/SearchWebPage",
+    "pages/Live/LivePage"
   ]
 }

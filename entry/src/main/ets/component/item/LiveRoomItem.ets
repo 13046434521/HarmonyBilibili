@@ -2,6 +2,7 @@ import { SearchMediaFtBean } from '../../bean/SearchMediaFtBean'
 import { Utils } from '../../Utils/Utils'
 import router from '@ohos.router'
 import { SearchLiveRoomBean } from '../../bean/SearchLiveRoomBean'
+import { PageManager } from '../../common/PageManager'
 
 @Component
 export struct LiveRoomItem{
@@ -61,6 +62,7 @@ export struct LiveRoomItem{
     .backgroundColor($r('app.color.bilibili_background_grey'))
     .onClick(event=>{
         Utils.Toast('roomid:'+item.roomid+"")
+      PageManager.routerLiving(item.roomid)
     }).width('100%')
   }
 }

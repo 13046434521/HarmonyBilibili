@@ -9,6 +9,7 @@ export struct SearchHeader {
   placeholder: string = ''
   clickEvent? = (title?: string, placeholder?: string) => {}
   change? = (value: string) => {}
+  controller:SearchController = new SearchController()
 
   build() {
     Row() {
@@ -21,7 +22,18 @@ export struct SearchHeader {
         .onClick(() => {
           router.back()
         })
-      Search({ value: this.isTitleVisible ? this.title : null, placeholder: this.placeholder })
+      // TextInput({placeholder: this.placeholder,text: this.isTitleVisible ? this.title : null})
+      //   .onChange((value: string) => {
+      //     this.change(value)
+      //   })
+      //   .type(InputType.Normal)
+      //   .enterKeyType(EnterKeyType.Search)
+      //   .onSubmit((enterKey: EnterKeyType)=>{
+      //     if (enterKey === EnterKeyType.Search) {
+      //       this.clickEvent(this.title, this.placeholder)
+      //     }
+      // }).layoutWeight(1)
+      Search({ value: this.isTitleVisible ? this.title : null, placeholder: this.placeholder ,controller:this.controller})
         .onChange((value: string) => {
           this.change(value)
         }).onSubmit((value: string) => {
@@ -30,13 +42,16 @@ export struct SearchHeader {
         .layoutWeight(1)
 
       Button('搜索')
+        .id('search_btn')
         .fontColor($r('app.color.bilibili_theme'))
         .fontSize(14)
         .margin({ right: 2})
         .width(80)
         .onClick(() => {
           this.clickEvent(this.title, this.placeholder)
+          //focusControl.requestFocus('search_btn')
         })
+        .defaultFocus(true)
         .backgroundColor(Color.White)
 
     }.width('100%')

@@ -1,6 +1,5 @@
 {
   "apiType": "stageMode",
-
   "targets": [
     {
       "name": "default",
@@ -9,5 +8,12 @@
     {
       "name": "ohosTest",
     }
-  ]
+  ],
+  "buildOption": {
+    "sourceOption": {
+      "workers": [
+//        './src/main/ets/workers/LivePage.ts'
+      ]
+    }
+  }
 }

@@ -5,7 +5,7 @@ import { VideoViewModel } from '../viewModel/VideoViewModel'
 import { Loading } from './LoadingComponent'
 import router from '@ohos.router'
 
-
+@Preview
 @Component
 export struct VideoPlay {
   xComponentController: XComponentController = new XComponentController()
@@ -47,6 +47,7 @@ export struct VideoPlay {
   }
 
   build() {
+    // this.VideoPlayerer()
     this.VideoPlayer()
   }
 
@@ -167,6 +168,34 @@ export struct VideoPlay {
     }
     .justifyContent(FlexAlign.Start)
     .height('100%')
+  }
+
+
+  @Builder
+  VideoPlayerer(){
+    RelativeContainer(){
+      XComponent({
+        id: "xcomponentId",
+        type: 'surface',
+        libraryname: "ijkplayer_napi",
+        controller: this.xComponentController
+      })
+        .id('video')
+        .onLoad((context) => {
+          this.context = context
+        })
+        .onDestroy(() => {
+          this.videoViewModel.release()
+        })
+        .width('100%')
+        .height('100%')
+        .aspectRatio(this.videoModel.videoAspectRatio)
+
+      if (this.videoModel.state<=PlayStatus.LOADING){
+        Loading()
+      }
+    }.width('100%')
+    .aspectRatio(this.defaultAspectRatio)
   }
 }
 

@@ -65,8 +65,6 @@ export struct NewPage {
         .onClick(() => {
           this.b = new ClassB(new ClassA(0));
         })
-
-
     }
   }
 }

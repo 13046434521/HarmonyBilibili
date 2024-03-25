@@ -83,11 +83,12 @@ export struct HomePage {
         .fontSize(14)
         .letterSpacing(1)
         .width('100%')
-        .aspectRatio(3/1)
         .padding(8)
         .fontColor($r('app.color.bilibili_text_black'))
         .lineHeight(20)
         .alignSelf(ItemAlign.Start)
+        .height(48)
+        .margin({top:2,bottom:2})
 
       Row(){
         Image($r('app.media.icon_playlist_upper'))

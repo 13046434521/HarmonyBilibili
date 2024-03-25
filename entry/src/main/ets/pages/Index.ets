@@ -3,8 +3,6 @@ import { MinePage } from './MinePage'
 import { MomentPage } from './MomentPage'
 import { NewPage } from './NewPage'
 import { ShoppingPage } from './ShoppingPage'
-import List from '@ohos.util.List'
-import ArrayList from '@ohos.util.ArrayList'
 
 @Observed
 class TabIcon {
