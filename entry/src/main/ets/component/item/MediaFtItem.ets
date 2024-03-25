@@ -1,4 +1,5 @@
 import { SearchMediaFtBean } from '../../bean/SearchMediaFtBean'
+import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 
 @Component
@@ -132,6 +133,10 @@ export struct MediaFtItem{
 
       Divider().width('95%').color($r('app.color.bilibili_divider'))
     }.backgroundColor(Color.White)
+    .onClick(()=>{
+      PageManager.routerMediaFt( item.media_id,item.media_id)
+
+    })
   }
 }
 

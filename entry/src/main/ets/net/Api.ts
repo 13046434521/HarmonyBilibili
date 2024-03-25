@@ -101,6 +101,7 @@ export class Api extends ApiBase{
   // "video" |"media_bangumi" |"media_ft" |"live" |"live_room" |"live_user" |"article" |"topic" |"bili_user" |"photo"
   // 详细搜索，type:只能是上列的值
   // 需要cookie
+  // https://api.bilibili.com/x/web-interface/search/type?search_type=media_ft&keyword='年会不能停'&page=1
   getSearchType<T>(search_type:SearchType, keyword?: string, page?: number): Promise<SearchBaseBean<T>> {
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}`
@@ -111,12 +112,6 @@ export class Api extends ApiBase{
 
   // https://passport.bilibili.com/x/passport-login/web/qrcode/generate
 }
-
-//https://api.live.bilibili.com/room/v1/Room/playUrl?qn=1000&platform=web&cid=23982773
-// 直播间，可以获取直播流：cid为roomid，可用ijkplayer播放
-
-// https://api.bilibili.com/x/web-interface/search/type?search_type=live&keyword=dota2&page=1
-// 搜索直播间
 
 const api: Api = new Api()
 

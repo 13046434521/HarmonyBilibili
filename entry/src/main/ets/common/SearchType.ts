@@ -1,22 +1,22 @@
-// 视频：video
-// 番剧：media_bangumi
-// 影视：media_ft
-// 直播间及主播：live
-// 直播间：live_room
-// 主播：live_user
-// 图文：article
-// 话题：topic
-// 用户：bili_user
-// 相簿：photo
+// 瑙嗛锛歷ideo
+// 鐣墽锛歮edia_bangumi
+// 褰辫锛歮edia_ft
+// 鐩存挱闂村強涓绘挱锛歭ive
+// 鐩存挱闂达細live_room
+// 涓绘挱锛歭ive_user
+// 鍥炬枃锛歛rticle
+// 璇濋锛歵opic
+// 鐢ㄦ埛锛歜ili_user
+// 鐩哥翱锛歱hoto
 export enum SearchType {
   ALL = 'all',
-  VIDEO = 'video',//视频
-  MEDIA_BANGUMI = 'media_bangumi',//番剧
-  MEDIA_FT = 'media_ft', // 影视
-  LIVE_ROOM = 'live_room',//直播
+  VIDEO = 'video',//瑙嗛
+  MEDIA_BANGUMI = 'media_bangumi',//鐣墽
+  MEDIA_FT = 'media_ft', // 褰辫
+  LIVE_ROOM = 'live_room',//鐩存挱
   LIVE_USER = 'live_user',
-  ARTICLE = 'article',//图文
+  ARTICLE = 'article',//鍥炬枃
   TOPIC = 'topic',
-  BILI_USER = 'bili_user',//用户
+  BILI_USER = 'bili_user',//鐢ㄦ埛
   PHOTO = 'photo',
 }

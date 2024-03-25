@@ -10,4 +10,14 @@ export class PageManager{
   static routerLiving(roomId:number){
     router.pushUrl({url:'pages/Live/LivePage',params:{'roomId':roomId}})
   }
+
+  // 番剧页面
+  static routerMediaBanggumi(roomId:number){
+    router.pushUrl({url:'pages/Live/LivePage',params:{'roomId':roomId}})
+  }
+
+  // 影视页面
+  static routerMediaFt(avid:number,cid:number){
+    router.pushUrl({url:'pages/MediaFt/MediaFt',params:{'avid':avid,'cid':cid}})
+  }
 }

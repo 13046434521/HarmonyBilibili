@@ -1,4 +1,3 @@
-import { SearchBiliUserBean } from '../bean/SearchBiliUserBean'
 import { SearchMediaBangumiBean } from '../bean/SearchMediaBangumiBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'

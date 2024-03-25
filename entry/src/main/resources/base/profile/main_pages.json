@@ -6,6 +6,7 @@
     "pages/VideoDetailPage",
     "pages/SearchPage",
     "pages/SearchWebPage",
-    "pages/Live/LivePage"
+    "pages/Live/LivePage",
+    "pages/MediaFt/MediaFt"
   ]
 }
