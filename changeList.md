@@ -17,6 +17,7 @@
 14. ~~搜索默认页面，在HarmonyOS4上不显示数据，OpenHarmony4.0上正常~~ 原因是ListView中的布局。必须用ListItem包裹。否则容易出bug
 15. VideoPlay控件，在播放之后，seekTo，退出再进入，必然崩溃
 16. SearchSuggest页面 获取焦点问题
+17. ~~二维码登录，无法观看大会员视频~~ 通过二维码登录大会员账号，获取Cookie。将SESSION_DATA中的,换成%2C后就能看大会员视频了。(2024-3-26解决)
 
 ## 项目功能进度
 ### 2024-3-17
@@ -122,3 +123,6 @@
 
 #### 4. SearchHeader中的Search换成TextInput
      SearchHeader中的Search换成TextInput，软键盘搜索后自动缩起。软键盘设置成search键
+
+#### 5. 二维码登录获取Cookie
+     通过二维码登录大会员账号，获取Cookie。将SESSION_DATA中的,换成%2C后就能看大会员视频了。

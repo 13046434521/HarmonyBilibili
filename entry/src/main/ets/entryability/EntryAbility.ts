@@ -5,8 +5,12 @@ import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
 import { UiWindow } from '@ohos.UiTest';
 import colorSpaceManager from '@ohos.graphics.colorSpaceManager';
+import Constants from '../common/Constants';
+import { Utils } from '../Utils/Utils';
 
 export default class EntryAbility extends UIAbility {
+
+
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }

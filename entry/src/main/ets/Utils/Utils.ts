@@ -12,6 +12,13 @@ export class Utils {
     return views.toString()
   }
 
+  static CookieDeal(url:string):string{
+    let arr:Array<string>= url.split('?')
+    let tempCookie = arr[1]
+
+    return tempCookie.replace(/&/g,';').replace(/,/g,'%2C')
+  }
+
   static TimeDeal(duration: string): string {
     if (!duration) {
       return duration

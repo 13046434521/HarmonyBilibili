@@ -1,15 +1,19 @@
 import { HomeBeanItem } from '../bean/HomeBean'
 import Api from '../net/Api'
 import router from '@ohos.router'
+import Constants from '../common/Constants'
+import { Utils } from '../Utils/Utils'
 
+PersistentStorage.PersistProp('bilibili_cookie', Constants.COOKIE)
 @Entry
 @Component
 struct SplashPage{
   homeBeanData:Array<HomeBeanItem>=null
   @State content:string = "加载中..."
-
+  @StorageLink('bilibili_cookie') biliCookie:string  =''
   aboutToAppear(){
     this.update()
+    this.cookie()
   }
 
   build(){
@@ -48,5 +52,11 @@ struct SplashPage{
         }
       }, router.RouterMode.Single)
     })
+  }
+
+  cookie(){
+    console.log('app_log  cookie:' + this.biliCookie)
+    Utils.Toast(this.biliCookie+'')
+    Constants.COOKIE_NAME = this.biliCookie
   }
 }

@@ -31,26 +31,30 @@ export class ApiBase{
     timeout: 10000,
     headers: {
       "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-      "Cookie": Constants.COOKIE,
+      "Cookie": Constants.SEARCH_COOKIE,
       "Referer": "https://www.bilibili.com"
     }
   })
   constructor() {
     this.instance.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
       console.log(`拦截器：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
-      // for (const element of value.headers) {
-      //    console.log(`拦截器：header:${element.toString()}`)
-      // }
+
       return value
     })
 
     this.instanceCookie.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
-      console.log(`拦截器:cookie的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
+      console.log(`拦截器:search_cookie的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
+      for (const element of value.headers) {
+        console.log(`拦截器:search_cookie的的：header:${element.toString()}`)
+      }
       return value
     })
 
     this.instanceAxios.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
-      console.log(`拦截器:没有baseUrl的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
+      console.log(`拦截器:登录cookie的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
+      for (const element of value.headers) {
+        console.log(`拦截器:登录cookie的：header:${element.toString()}`)
+      }
       return value
     })
   }

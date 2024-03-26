@@ -1,3 +1,4 @@
+import { Utils } from '../Utils/Utils'
 import { HomePage } from './HomePage'
 import { MinePage } from './MinePage'
 import { MomentPage } from './MomentPage'
@@ -28,7 +29,10 @@ struct Index {
     new TabIcon('我的', $r('app.media.ic_tab_bar_mine'))]
 
   @State currentTab :TabIcon = null
-
+  @StorageLink('bilibili_cookie') cookie: string = ''
+  aboutToAppear(){
+    Utils.Toast(this.cookie)
+  }
 
   build() {
     Tabs(){
