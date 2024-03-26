@@ -19,7 +19,6 @@ export struct SearchSuggest {
     Api.getSearchSuggest(this.keywords).then((response: SearchSuggestResultBean) => {
       this.suggestTags = []
       this.suggestTags = this.suggestTags.concat(response.tag)
-      Utils.Toast(this.keywords + " --- " + this.suggestTags[0].value)
     }).catch(err => {
       Utils.Toast(err)
     })

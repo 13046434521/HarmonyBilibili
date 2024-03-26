@@ -16,7 +16,7 @@
 13. ~~VideoPlay 播放此间无双的鞠婧祎的视频，会出现变形:分辨率是1280*544.~~ 修改布局，减少Stack层级(2024-3-26解决)
 14. ~~搜索默认页面，在HarmonyOS4上不显示数据，OpenHarmony4.0上正常~~ 原因是ListView中的布局。必须用ListItem包裹。否则容易出bug
 15. VideoPlay控件，在播放之后，seekTo，退出再进入，必然崩溃
-
+16. SearchSuggest页面 获取焦点问题
 
 ## 项目功能进度
 ### 2024-3-17
@@ -119,3 +119,6 @@
 /*------------------------------------------- 2024-3-26  11:36 START --------------------------------------------*/
 #### 3. VideoPlay 抽取子组件，方便@ObjectLink使用
      VideoPlay 抽取子组件，方便@ObjectLink使用
+
+#### 4. SearchHeader中的Search换成TextInput
+     SearchHeader中的Search换成TextInput，软键盘搜索后自动缩起。软键盘设置成search键

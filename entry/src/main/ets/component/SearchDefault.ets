@@ -33,7 +33,7 @@ export struct SearchDefaultDetails {
   @Consume('defaultPageData') allData: AllData
 
   aboutToAppear() {
-    Utils.Toast(this.allData.getData(2).type+"---"+this.allData.totalCount()+"个数据")
+
   }
 
 

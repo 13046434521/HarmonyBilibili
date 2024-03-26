@@ -8,21 +8,22 @@ import { topTlistBean } from '../bean/SearchBaseBean'
 import { Utils } from '../Utils/Utils'
 import { LoadingData } from '../component/LoadingData'
 import { AllData } from '../datasource/AllData'
+import promptAction from '@ohos.promptAction'
 
 let controllerLocalStrorage = new LocalStorage({'tabsController':new TabsController()})
 @Entry(controllerLocalStrorage)
 @Component
 struct SearchPage {
-  @State search: string = '搜索视频、番剧或up主'
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  @State isNeedSuggest: boolean = false
   @State topList: topTlistBean = new topTlistBean()
   errMessage: string = ''
-  placeholder:string = ''
-  @State isTitleVisible:boolean = false;
   controllerLocalStrorage = new TabsController()
-
   @Provide('defaultPageData') allData: AllData = new AllData()
+
+  placeholder:string = '' // search为空时，显示的数据
+  @State search: string = '搜索视频、番剧或up主' // 搜索内容
+  @State isTitleVisible:boolean = false; // searchHeader中的textInput，显示search还是显示placeholder
+  @State isNeedSuggest: boolean = false // 是否弹出建议页面
 
   aboutToAppear() {
     this.search = router.getParams()['keyword']
@@ -51,9 +52,11 @@ struct SearchPage {
     Column() {
       // 搜索Header
       SearchHeader({ title: this.search,isTitleVisible:this.isTitleVisible,placeholder:this.placeholder, change: (value: string) => {
+        if (this.search!==value) {
+          this.isNeedSuggest = true
+        }
         this.search = value
-        this.isNeedSuggest = true
-
+        this.isTitleVisible = true
       }, clickEvent: (title,placeholder) => {
         if (this.search === "") {
           this.search =placeholder
@@ -69,10 +72,9 @@ struct SearchPage {
 
   @Builder
   SearchTabs(){
-    if (this.isNeedSuggest && this.search != "") {
+    if (this.isNeedSuggest && this.search !== "") {
       SearchSuggest({ keywords: this.search, click: (value: string) => {
         this.search = value
-        this.isTitleVisible = true
         this.searchPage(this.search)
       } })
     } else {

@@ -1,7 +1,9 @@
 import { Utils } from '../Utils/Utils'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
+import Constants from '../common/Constants'
 
+@Preview
 @Component
 export struct SearchHeader {
   @Prop title: string
@@ -22,35 +24,36 @@ export struct SearchHeader {
         .onClick(() => {
           router.back()
         })
-      // TextInput({placeholder: this.placeholder,text: this.isTitleVisible ? this.title : null})
-      //   .onChange((value: string) => {
-      //     this.change(value)
-      //   })
-      //   .type(InputType.Normal)
-      //   .enterKeyType(EnterKeyType.Search)
-      //   .onSubmit((enterKey: EnterKeyType)=>{
-      //     if (enterKey === EnterKeyType.Search) {
-      //       this.clickEvent(this.title, this.placeholder)
-      //     }
-      // }).layoutWeight(1)
-      Search({ value: this.isTitleVisible ? this.title : null, placeholder: this.placeholder ,controller:this.controller})
+      TextInput({placeholder: this.placeholder,text: this.isTitleVisible ? this.title : null})
         .onChange((value: string) => {
           this.change(value)
-        }).onSubmit((value: string) => {
-        this.change(value)
         })
-        .layoutWeight(1)
+        .type(InputType.Normal)
+        .enterKeyType(EnterKeyType.Search)
+        .onSubmit((enterKey: EnterKeyType)=>{
+          if (enterKey === EnterKeyType.Search) {
+            this.clickEvent(this.title, this.placeholder)
+          }
+      }).layoutWeight(1)
+      // Search({ value: this.isTitleVisible ? this.title : null, placeholder: this.placeholder ,controller:this.controller})
+      //   .onChange((value: string) => {
+      //     this.change(value)
+      //   }).onSubmit((value: string) => {
+      //   this.change(value)
+      //   })
+      //   .layoutWeight(1)
 
       Button('搜索')
-        .id('search_btn')
+        .id(Constants.SEARCH_FOCUS_ID)
+        .key(Constants.SEARCH_FOCUS_ID)
         .fontColor($r('app.color.bilibili_theme'))
         .fontSize(14)
         .margin({ right: 2})
         .width(80)
         .onClick(() => {
           this.clickEvent(this.title, this.placeholder)
-          // focusControl.requestFocus('search_btn')
         })
+        .focusOnTouch(true)
         .defaultFocus(true)
         .backgroundColor(Color.White)
 
