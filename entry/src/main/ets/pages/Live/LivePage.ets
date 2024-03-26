@@ -2,7 +2,6 @@ import router from '@ohos.router'
 import { LiveBean, LiveUrlBean } from '../../bean/Live/LiveBean'
 import { VideoPlay } from '../../component/VideoPlay'
 import  ApiLiving  from '../../net/ApiLiving'
-import VideoModel from '../../viewModel/VideoModel'
 import { VideoViewModel } from '../../viewModel/VideoViewModel'
 
 @Entry
@@ -22,7 +21,7 @@ struct LivePage {
   }
   build() {
     Column() {
-      VideoPlay({videoViewModel:this.videoViewModel,videoModel:this.videoViewModel.videoModel,url:this.url})
+      VideoPlay({videoViewModel:this.videoViewModel,url:this.url})
         .layoutWeight(1)
     }
     .width('100%')

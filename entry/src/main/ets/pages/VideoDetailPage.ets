@@ -2,8 +2,6 @@ import router from '@ohos.router'
 import Api from '../net/Api'
 import { PageListDimensionBean } from '../bean/PageListBean'
 import { LoadingStatus } from '../common/LoadingStatus'
-import { Loading } from '../component/LoadingComponent'
-import { Utils } from '../Utils/Utils'
 import { PlayVideoBean } from '../bean/PlayVideoBean'
 import { VideoPlay } from '../component/VideoPlay'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
@@ -54,9 +52,8 @@ struct DetailPage {
 
   build() {
     Column() {
-      VideoPlay({url:this.url,videoModel:this.videoViewModel.videoModel,videoViewModel:this.videoViewModel}).layoutWeight(1)
+      VideoPlay({url:this.url,videoViewModel:this.videoViewModel})
     }.width('100%')
-    .height('100%')
     .justifyContent(FlexAlign.Start)
   }
 }

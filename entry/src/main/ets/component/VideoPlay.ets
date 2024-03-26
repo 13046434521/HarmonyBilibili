@@ -1,28 +1,61 @@
 import { PlayStatus } from '../common/PlayStatus'
-import { Utils } from '../Utils/Utils'
 import VideoModel from '../viewModel/VideoModel'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
 import { Loading } from './LoadingComponent'
 import router from '@ohos.router'
+import Constants from '../common/Constants'
 
-@Preview
 @Component
 export struct VideoPlay {
-  xComponentController: XComponentController = new XComponentController()
-  @ObjectLink videoModel: VideoModel
   @Link videoViewModel: VideoViewModel
-  @State defaultAspectRatio: number = 16 / 9
-  @State videoAspectRatio: number = 16 / 9
   @Link @Watch('initPlay') url: string
   @State @Watch('initPlay') context: object = undefined
-  @State isShow :boolean = true
-  aboutToAppear() {
-    // = this.videoViewModel.viewModel
 
+  aboutToDisappear() {
+    this.videoViewModel.release()
+  }
+
+  // 等到有url和context完毕时开始初始化
+  initPlay() {
+    if (this.url !== '' && this.context!==undefined) {
+      this.videoViewModel.setUrl(this.url)
+      this.videoViewModel.init(this.context)
+    }
+  }
+
+  build() {
+    VideoPlayer({
+      videoModel: this.videoViewModel.videoModel,
+      videoViewModel: this.videoViewModel,
+      mOnPlayerCompleteListener: (context: object) => {
+        this.context = context
+      }
+    }).width('100%')
+  }
+}
+
+@Extend(Image)
+function btnImageStyle() {
+  .objectFit(ImageFit.Contain)
+  .height('50%')
+  .aspectRatio(1)
+  .margin(16)
+}
+
+@Component
+struct VideoPlayer {
+  @State defaultAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
+  @State videoAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
+  @State isShow: boolean = true
+  @Link videoViewModel: VideoViewModel
+  @ObjectLink videoModel: VideoModel
+  mOnPlayerCompleteListener: (context: object) => void
+
+  aboutToAppear() {
     //设置buffer缓冲回调监听
     this.videoModel.mOnBufferingUpdateListener = {
       onBufferingUpdate: (percent: number) => {
-        console.log('app_log mOnBufferingUpdateListener:percent:'+percent)
+        console.log('app_log mOnBufferingUpdateListener:percent:' + percent)
       }
     }
 
@@ -35,57 +68,29 @@ export struct VideoPlay {
       }
     }
   }
-  sliderShowTime :number = 0
-  sliderShowHide(){
-    if (this.isShow){
-      this.videoModel
-      this.sliderShowTime = setTimeout(()=>{
-        this.isShow = false
-      },3000)
-    }else{
-      this.isShow = false
-      clearTimeout(this.sliderShowTime)
-    }
-  }
-
-
-  aboutToDisappear(){
-    this.videoViewModel.release()
-  }
-
-  // 等到有url和context完毕时开始初始化
-  initPlay() {
-    if (this.url !== '') {
-      this.videoViewModel.setUrl(this.url)
-      //this.videoViewModel.setHeader(this.header)
-      this.videoViewModel.init(this.context)
-    }
-  }
 
   build() {
-    this.VideoPlayer()
-  }
-
-  @Builder VideoPlayer(){
     Stack() {
-      Column(){
-        XComponentPlayer()
+      Column() {
+        this.XComponentPlayer()
       }.alignItems(HorizontalAlign.Center)
       .justifyContent(FlexAlign.Center)
       .width('100%')
       .height('100%')
 
-      if (this.isShow){
-        Row(){
+      if (this.isShow) {
+        Row() {
           this.VideoSlider()
           Image($r('app.media.ic_full_screen'))
-            .onClick(()=>{
+            .onClick(() => {
               this.videoViewModel.changeOrientation()
-            })  .objectFit(ImageFit.Contain)
+            })
+            .objectFit(ImageFit.Contain)
             .height('100%')
             .aspectRatio(1)
             .margin(8)
-        }.width('100%')
+        }
+        .width('100%')
         .aspectRatio(16)
         .justifyContent(FlexAlign.SpaceBetween)
         .alignItems(VerticalAlign.Center)
@@ -94,17 +99,17 @@ export struct VideoPlay {
         })
       }
 
-      if (this.videoModel.state<=PlayStatus.LOADING){
+      if (this.videoModel.state <= PlayStatus.LOADING) {
         Loading()
       }
 
-      if (this.isShow){
-        Row(){
-          Image($r('app.media.ic_common_back_white')).onClick(()=>{
+      if (this.isShow) {
+        Row() {
+          Image($r('app.media.ic_common_back_white')).onClick(() => {
             router.back()
           }).btnImageStyle()
 
-          Image($r('app.media.biliplayer_ic_topbar_back')).onClick(()=>{
+          Image($r('app.media.biliplayer_ic_topbar_back')).onClick(() => {
             router.replaceUrl({
               url: 'pages/Index' // 目标url
             }, router.RouterMode.Single)
@@ -112,18 +117,20 @@ export struct VideoPlay {
 
         }.width('100%')
         .aspectRatio(16)
-        .position({x:0,y:0})
+        .position({ x: 0, y: 0 })
         .linearGradient({
-          colors: [["#aa000000", 0.0],["#00000000", 1.0]]
+          colors: [["#aa000000", 0.0], ["#00000000", 1.0]]
         })
       }
-    }.alignContent(Alignment.BottomStart)
+    }
+    .alignContent(Alignment.BottomStart)
     .width('100%')
     .aspectRatio(this.defaultAspectRatio)
     .backgroundColor(Color.Black)
-    .onClick(()=>{
-      this.isShow =!this.isShow
-    })
+    .onClick(() => {
+      this.isShow = !this.isShow
+    }).width('100%')
+    .height('100%')
   }
 
   @Builder
@@ -139,19 +146,19 @@ export struct VideoPlay {
             this.videoViewModel.pause()
           } else if (this.videoModel.state < PlayStatus.STOP) {
             this.videoViewModel.play()
-          }else if (this.videoModel.state === PlayStatus.STOP) {
+          } else if (this.videoModel.state === PlayStatus.STOP) {
             this.videoViewModel.reset()
           }
         })
         .margin(4)
-        Slider({
-          value: this.videoModel.sliderStep,
-          style: SliderStyle.OutSet,
-          direction: Axis.Horizontal
-        })
-          .blockColor('#ED6A96')
-          .trackColor(Color.Grey)
-           .selectedColor("#ED6A96")
+      Slider({
+        value: this.videoModel.sliderStep,
+        style: SliderStyle.OutSet,
+        direction: Axis.Horizontal
+      })
+        .blockColor('#ED6A96')
+        .trackColor(Color.Grey)
+        .selectedColor("#ED6A96")
         .showTips(false)
         .onChange((value: number, mode: SliderChangeMode) => {
           // value/100 是百分比  getDuration获取的是总时长
@@ -173,46 +180,36 @@ export struct VideoPlay {
     .justifyContent(FlexAlign.Start)
     .height('100%')
   }
-}
 
-@Extend(Image)
-function btnImageStyle(){
-  .objectFit(ImageFit.Contain)
-  .height('50%')
-  .aspectRatio(1)
-  .margin(16)
-}
-
-@Builder function  XComponentPlayer(){
-  if (this.videoModel.videoAspectRatio>0){
-    XComponent({
-      id: "xcomponentId",
-      type: 'surface',
-      libraryname: "ijkplayer_napi",
-      controller: this.xComponentController
-    })
-      .onLoad((context) => {
-        this.context = context
-
+  @Builder
+  XComponentPlayer() {
+    if (this.videoModel.videoAspectRatio > 0) {
+      XComponent({
+        id: "xcomponentId",
+        type: 'surface',
+        libraryname: "ijkplayer_napi",
       })
-      .onDestroy(() => {
-        this.videoViewModel.release()
-      }) .width('100%')
-      .aspectRatio(this.videoModel.videoAspectRatio)
-  }else{
-    XComponent({
-      id: "xcomponentId",
-      type: 'surface',
-      libraryname: "ijkplayer_napi",
-      controller: this.xComponentController
-    })
-      .onLoad((context) => {
-        this.context = context
+        .onLoad((context) => {
+          this.mOnPlayerCompleteListener(context)
+        })
+        .onDestroy(() => {
+          this.videoViewModel.release()
+        }).width('100%')
+        .aspectRatio(this.videoModel.videoAspectRatio)
+    } else {
+      XComponent({
+        id: "xcomponentId",
+        type: 'surface',
+        libraryname: "ijkplayer_napi",
       })
-      .onDestroy(() => {
-        this.videoViewModel.release()
-      }) .height('100%')
-      .aspectRatio(this.videoModel.videoAspectRatio)
+        .onLoad((context) => {
+          this.mOnPlayerCompleteListener(context)
+        })
+        .onDestroy(() => {
+          this.videoViewModel.release()
+        }).height('100%')
+        .aspectRatio(this.videoModel.videoAspectRatio)
+    }
   }
 }
 

@@ -1,7 +1,6 @@
 import router from '@ohos.router'
 import { MediaFtBean } from '../../bean/mediaFt/MediaFtBean'
 import { MediaFtUrlBean } from '../../bean/mediaFt/MediaFtUrlBean'
-import { PlayVideoBean } from '../../bean/PlayVideoBean'
 import Constants from '../../common/Constants'
 import { VideoPlay } from '../../component/VideoPlay'
 import ApiMediaFt from '../../net/ApiMediaFt'
@@ -17,7 +16,6 @@ struct MediaFtPage {
   @State url :string=''
   aboutToAppear(){
     this.seasonId = router.getParams()['seasonId']
-    Utils.Toast('MediaFtPage(番剧播放页面):'+this.seasonId)
     this.getData(this.seasonId,this.qn)
   }
 
@@ -36,7 +34,7 @@ struct MediaFtPage {
 
   build() {
     Column() {
-      VideoPlay({videoViewModel:this.videoViewModel,videoModel:this.videoViewModel.videoModel,url:this.url})
+      VideoPlay({videoViewModel:this.videoViewModel,url:this.url})
         .layoutWeight(1)
     }
     .width('100%')

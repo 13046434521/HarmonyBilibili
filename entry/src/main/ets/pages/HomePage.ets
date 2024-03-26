@@ -14,8 +14,10 @@ export struct HomePage {
   @State homePage: number = 0
   @State isRefreshing: boolean = false
   aboutToAppear(){
-    let homeData_splash = router.getParams()['homeData']
-    this.homeData.pushDataAll(homeData_splash)
+    if (router.getParams()!==undefined){
+      let homeData_splash = router.getParams()['homeData']
+      this.homeData.pushDataAll(homeData_splash)
+    }
 
     Api.getHomeSearch().then(homesearchbean=>{
       this.homeSearchBeanData = homesearchbean
