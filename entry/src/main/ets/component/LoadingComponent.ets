@@ -17,13 +17,13 @@ export struct Loading {
     Column(){
       Column(){
         ImageAnimator().images([{
-          src: $r('app.media.phone_common_pull_loading_1')
+          src: $r('app.media.mall_asyn_loading_anim_img01')
         }, {
-          src: $r('app.media.phone_common_pull_loading_2')
+          src: $r('app.media.mall_asyn_loading_anim_img02')
         }, {
-          src: $r('app.media.phone_common_pull_loading_3')
+          src: $r('app.media.mall_asyn_loading_anim_img03')
         }, {
-          src: $r('app.media.phone_common_pull_loading_4')
+          src: $r('app.media.mall_asyn_loading_anim_img04')
         },
         ]).iterations(-1)
           .duration(2000)
