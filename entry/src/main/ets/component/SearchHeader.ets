@@ -49,7 +49,7 @@ export struct SearchHeader {
         .width(80)
         .onClick(() => {
           this.clickEvent(this.title, this.placeholder)
-          //focusControl.requestFocus('search_btn')
+          // focusControl.requestFocus('search_btn')
         })
         .defaultFocus(true)
         .backgroundColor(Color.White)
