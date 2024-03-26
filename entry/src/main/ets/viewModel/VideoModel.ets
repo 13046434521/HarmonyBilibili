@@ -10,6 +10,7 @@ import {
 } from '@ohos/ijkplayer'
 import { PlayStatus } from '../common/PlayStatus'
 import window from '@ohos.window'
+import Constants from '../common/Constants'
 
 @Observed
 export default  class VideoModel {
@@ -20,7 +21,8 @@ export default  class VideoModel {
   ])
   bvid: string
   cid: number
-  videoAspectRatio: number = 16 / 9
+  videoAspectRatio: number = Constants.VIDEO_ASPECT_RATIO
+  defaultAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
   state: PlayStatus = PlayStatus.INIT
   volume:number=0
   brightness:number=0

@@ -2,7 +2,6 @@ import { HomeBeanItem } from '../bean/HomeBean'
 import Api from '../net/Api'
 import router from '@ohos.router'
 import Constants from '../common/Constants'
-import { Utils } from '../Utils/Utils'
 
 PersistentStorage.PersistProp('bilibili_cookie', Constants.COOKIE)
 @Entry
@@ -13,7 +12,6 @@ struct SplashPage{
   @StorageLink('bilibili_cookie') biliCookie:string  =''
   aboutToAppear(){
     this.update()
-    this.cookie()
   }
 
   build(){
@@ -43,8 +41,8 @@ struct SplashPage{
     Api.getHomePages().then(homebean=>{
       this.homeBeanData = homebean.item
     }).finally(()=>{
+      this.cookie()
       this.content =this.homeBeanData!==null?`加载成功:${this.homeBeanData.length}`:'加载失败'
-
       router.replaceUrl({
         url: 'pages/Index',
         params: {
@@ -55,8 +53,7 @@ struct SplashPage{
   }
 
   cookie(){
+    Constants.COOKIE = this.biliCookie
     console.log('app_log  cookie:' + this.biliCookie)
-    Utils.Toast(this.biliCookie+'')
-    Constants.COOKIE_NAME = this.biliCookie
   }
 }

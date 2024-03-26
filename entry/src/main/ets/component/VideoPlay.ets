@@ -81,14 +81,6 @@ struct VideoPlayer {
       if (this.isShow) {
         Row() {
           this.VideoSlider()
-          Image($r('app.media.ic_full_screen'))
-            .onClick(() => {
-              this.videoViewModel.changeOrientation()
-            })
-            .objectFit(ImageFit.Contain)
-            .height('100%')
-            .aspectRatio(1)
-            .margin(8)
         }
         .width('100%')
         .aspectRatio(16)
@@ -168,7 +160,7 @@ struct VideoPlayer {
             this.videoViewModel.moveProgress(value)
           }
         })
-        .width('70%')
+        .layoutWeight(1)
         .opacity(1)
 
       Text(this.videoModel.currentTime + "/" + this.videoModel.timeTotal)
@@ -176,6 +168,15 @@ struct VideoPlayer {
         .maxLines(1)
         .margin(4)
         .fontColor(Color.White)
+
+      Image($r('app.media.ic_full_screen'))
+        .onClick(() => {
+          this.videoViewModel.changeOrientation()
+        })
+        .objectFit(ImageFit.Cover)
+        .height('100%')
+        .aspectRatio(1)
+        .margin(8)
     }
     .justifyContent(FlexAlign.Start)
     .height('100%')
@@ -183,7 +184,7 @@ struct VideoPlayer {
 
   @Builder
   XComponentPlayer() {
-    if (this.videoModel.videoAspectRatio > 0) {
+    if (this.videoModel.videoAspectRatio >= Constants.DEFAULT_ASPECT_RATIO) {
       XComponent({
         id: "xcomponentId",
         type: 'surface',

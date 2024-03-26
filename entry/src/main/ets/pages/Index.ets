@@ -5,10 +5,10 @@ import { MomentPage } from './MomentPage'
 import { NewPage } from './NewPage'
 import { ShoppingPage } from './ShoppingPage'
 
-@Observed
+
 class TabIcon {
   text: string
-  num: number
+  index: number
   path: Resource
 
   constructor(text: string, path: Resource) {
@@ -28,58 +28,65 @@ struct Index {
     new TabIcon('会员购', $r('app.media.ic_tab_bar_shopping')),
     new TabIcon('我的', $r('app.media.ic_tab_bar_mine'))]
 
-  @State currentTab :TabIcon = null
-  @StorageLink('bilibili_cookie') cookie: string = ''
+  @State currentTab :TabIcon = this.tabs[0]
   aboutToAppear(){
-    Utils.Toast(this.cookie)
   }
 
   build() {
     Tabs(){
+      // TabContent(){
+      //   HomePage()
+      // }.tabBar(new BottomTabBarStyle(this.tabs[0].path, this.tabs[0].text))
+      // TabContent(){
+      //   MomentPage()
+      // }.tabBar(new BottomTabBarStyle(this.tabs[1].path, this.tabs[1].text))
+      // TabContent(){
+      //   NewPage()
+      // }.tabBar(new BottomTabBarStyle(this.tabs[2].path, this.tabs[2].text))
+      // TabContent(){
+      //   ShoppingPage()
+      // }.tabBar(new BottomTabBarStyle(this.tabs[3].path, this.tabs[3].text))
+      // TabContent(){
+      //   MinePage()
+      // }.tabBar(new BottomTabBarStyle(this.tabs[4].path, this.tabs[4].text))
+
       TabContent(){
         HomePage()
-      }.tabBar(new BottomTabBarStyle(this.tabs[0].path, this.tabs[0].text))
+      }.tabBar(this.TabBuilder(0))
       TabContent(){
         MomentPage()
-      }.tabBar(new BottomTabBarStyle(this.tabs[1].path, this.tabs[1].text))
+      }.tabBar(this.TabBuilder(1))
       TabContent(){
         NewPage()
-      }.tabBar(new BottomTabBarStyle(this.tabs[2].path, this.tabs[2].text))
+      }.tabBar(this.TabBuilder(2))
       TabContent(){
         ShoppingPage()
-      }.tabBar(new BottomTabBarStyle(this.tabs[3].path, this.tabs[3].text))
+      }.tabBar(this.TabBuilder(3))
       TabContent(){
         MinePage()
-      }.tabBar(new BottomTabBarStyle(this.tabs[4].path, this.tabs[4].text))
+      }.tabBar(this.TabBuilder(4))
     }
     .barMode(BarMode.Fixed)
     .scrollable(false)
     .barPosition(BarPosition.End)
     .layoutWeight(1)
+    .onChange((index)=>{
+      this.currentTab = this.tabs[index]
+    })
   }
-
-  @Builder
-  NavigationToolbar() {
-    RelativeContainer()
-    Row() {
-      ForEach(this.tabs, item => {
-        Column() {
-          Image(item.path)
-            .width(28)
-            .height(28)
-
-          Text(item.text)
-            .fontColor(this.currentTab == item ? '#007DFF' : '#182431')
-            .fontSize(this.currentTab == item?14:12)
-            .lineHeight(14)
-            .fontWeight(500)
-            .margin({ top: 8 })
-        }.width('20%')
-        .height(64)
-        .onClick(() => {
-          this.currentTab = item
-        })
-      })
-    }.justifyContent(FlexAlign.SpaceEvenly)
+  @Builder TabBuilder(index: number) {
+    Column() {
+      Image(this.currentTab.text === this.tabs[index].text ? this.tabs[index].path : this.tabs[index].path)
+        .width(24)
+        .height(24)
+        .margin({ bottom: 4 })
+        .fillColor(this.currentTab.text === this.tabs[index].text ?$r('app.color.bilibili_theme'):Color.Black)
+        .objectFit(ImageFit.Contain)
+      Text(this.tabs[index].text)
+        .fontColor(this.currentTab.text === this.tabs[index].text ?$r('app.color.bilibili_theme') : $r('app.color.bilibili_text_black'))
+        .fontSize(10)
+        .fontWeight(500)
+        .lineHeight(14)
+    }.width('100%')
   }
 }

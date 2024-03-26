@@ -12,10 +12,11 @@ export class Utils {
     return views.toString()
   }
 
+  // 让登录获取的cookie可以获取大会员的资源（影视番剧等）
   static CookieDeal(url:string):string{
     let arr:Array<string>= url.split('?')
     let tempCookie = arr[1]
-
+    // tempCookie = decodeURIComponent(tempCookie)
     return tempCookie.replace(/&/g,';').replace(/,/g,'%2C')
   }
 

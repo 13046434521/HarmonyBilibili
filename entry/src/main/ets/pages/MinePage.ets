@@ -25,6 +25,10 @@ export struct MinePage {
       }
 
       Text(this.message)
+
+      Button('获取当前cookie').onClick(()=>{
+        this.message = this.biliCookie
+      })
     }.width('100%').height('100%').margin({ top: 5 })
 
 
@@ -58,7 +62,7 @@ export struct MinePage {
             this.biliCookie = Utils.CookieDeal(item.url)
             this.message = "二维码登录：url  "+item.url +"\n二维码登录：refresh_token   "+item.refresh_token+
               "\n二维码登录：code  "+item.code+"\n二维码登录：timestamp  "+item.timestamp+"\n二维码登录：message  "+item.message+"\n 处理后的Cookie："+this.biliCookie
-
+            Constants.COOKIE = this.biliCookie
             clearInterval(interval)
             Utils.Toast('二维码登录：登录二维码成功')
             console.log("二维码登录成功:"+this.biliCookie)

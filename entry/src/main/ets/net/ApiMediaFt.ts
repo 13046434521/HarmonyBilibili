@@ -31,7 +31,7 @@ export class ApiMediaFt extends ApiBase{
   // 此接口和getMediaFtUrl 都能获取URL，选用一个即可
   getMediaFtPlayUrl(avid: number, cid: number,qn:number=116): Promise<PlayVideoBean> {
     let url = `/player/playurl?avid=${avid}&cid=${cid}&qn=${qn}`
-    return this.request(url)
+    return this.request(url,this.instanceAxios)
   }
 }
 
