@@ -3,10 +3,6 @@ import hilog from '@ohos.hilog';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
-import { UiWindow } from '@ohos.UiTest';
-import colorSpaceManager from '@ohos.graphics.colorSpaceManager';
-import Constants from '../common/Constants';
-import { Utils } from '../Utils/Utils';
 
 export default class EntryAbility extends UIAbility {
 

@@ -1,50 +1,26 @@
-import webview from '@ohos.web.webview'
-import { LoadingStatus } from '../common/LoadingStatus'
-import { Loading } from '../component/LoadingComponent'
+import Constants from '../common/Constants'
+import StorageManager from '../common/StorageManager'
 
 @Component
-  // 主界面中的购物页面，很可能被去掉
 export struct ShoppingPage {
-  @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  controller: webview.WebviewController = new webview.WebviewController()
-  // url: string = getContext(this).resourceManager.getStringSync($r('app.string.web_shopping_link'))
-  url:string='https://space.bilibili.com/6725669/dynamic'//https://m.bilibili.com'
+  @State msg:string = "内容"
+  num = 1
   build() {
-    Stack({ alignContent: Alignment.Center }) {
-      this.webPage()
-      if (this.loadingStatus==LoadingStatus.Loading){
-        Loading().layoutWeight(1).backgroundColor(Color.White)
-      }
-    }.width('100%')
-    .height('100%')
-  }
-
-  @Builder
-  webPage() {
-    Web({ src: this.url, controller: this.controller })
-      .javaScriptAccess(true)
-      .width('100%')
-      .height('100%')
-      .layoutWeight(1)
-      .onPageBegin((url) => {
-        console.log('jtlurl:onPageBegin：'+url )
-        this.loadingStatus = LoadingStatus.LoadingSuccess
-      })
-      .onPageEnd((url) => {
-        console.log('jtlurl:onPageEnd：'+url )
-        this.loadingStatus = LoadingStatus.LoadingSuccess
+    Column() {
+      Text(this.msg)
+      Button('getCookie').onClick(()=>{
+        this.msg = StorageManager.getCookie()
       })
 
-      .onErrorReceive(() => {
-        //加载错误时的回调
-        this.loadingStatus = LoadingStatus.LoadingFailure
+      Button('setCookie').onClick(()=>{
+        StorageManager.loginCookie(""+this.num++)
       })
-      .onRefreshAccessedHistory((event) => {
-        this.loadingStatus = LoadingStatus.Loading
-        console.log('jtlurl:' + event.url + ' isReload:' + event.isRefreshed)
+      Button('isLogin').onClick(()=>{
+        this.msg ="AppStorage:isLogin:"+ StorageManager.isLogin()
       })
-      .onProgressChange((event) => {
-        console.log('jtlurlnewProgress:' + event.newProgress)
+      Button('setLogin').onClick(()=>{
+        StorageManager.setLogin(true)
       })
+    }
   }
 }

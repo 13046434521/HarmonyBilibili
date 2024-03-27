@@ -1,6 +1,7 @@
 import axios from '@ohos/axios';
 import { QrcodeGenerateBean } from '../bean/login/QrcodeGenerateBean';
 import Constants from '../common/Constants';
+import StorageManager from '../common/StorageManager';
 import ApiLogin from '../net/ApiLogin';
 import { Utils } from '../Utils/Utils';
 
@@ -13,7 +14,6 @@ export struct MinePage {
   @State responseUrl: string = ''
   @State loginStatus: number = -1
   @State message: string = '登录即可体验完整功能'
-  @StorageLink('bilibili_cookie') biliCookie: string = ''
 
   build() {
     Column() {
@@ -35,6 +35,16 @@ export struct MinePage {
       }.height('10%')
       .justifyContent(FlexAlign.End)
 
+      Column() {
+        Button('获取当前cookie')
+          .width('60%')
+          .backgroundColor($r('app.color.bilibili_theme'))
+          .onClick(() => {
+            this.message = StorageManager.getCookie()
+          })
+      }.height('10%')
+      .justifyContent(FlexAlign.End)
+
       if (this.url != undefined) {
         Column() {
           QRCode(this.url)
@@ -43,16 +53,6 @@ export struct MinePage {
         .margin('10%')
         .justifyContent(FlexAlign.Center)
       }
-
-      Column() {
-        Button('获取当前cookie')
-          .width('60%')
-          .backgroundColor($r('app.color.bilibili_theme'))
-          .onClick(() => {
-            this.message = this.biliCookie
-          })
-      }.height('10%')
-      .justifyContent(FlexAlign.End)
       Blank().layoutWeight(1)
     }.width('100%')
     .height('100%')
@@ -85,13 +85,12 @@ export struct MinePage {
           console.log("二维码登录：message  " + item.message)
           if (item.code === 0) {
             this.loginStatus = 1
-            this.biliCookie = Utils.CookieDeal(item.url)
-            Constants.COOKIE = this.biliCookie
+            let temp = Utils.CookieDeal(item.url)
+            StorageManager.loginCookie(temp)
 
             clearInterval(interval)
-
             Utils.Toast('二维码登录：登录二维码成功')
-            console.log("二维码登录成功:" + this.biliCookie)
+            console.log("二维码登录成功:" + StorageManager.getCookie())
           }
         }).catch((err) => {
           console.log("二维码登录：登录二维码" + err)

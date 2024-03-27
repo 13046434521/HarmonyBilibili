@@ -1,9 +1,6 @@
-import { Utils } from '../Utils/Utils'
 import router from '@ohos.router'
-import promptAction from '@ohos.promptAction'
 import Constants from '../common/Constants'
 
-@Preview
 @Component
 export struct SearchHeader {
   @Prop title: string

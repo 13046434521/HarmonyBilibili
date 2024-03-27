@@ -48,7 +48,7 @@ struct VideoPlayer {
   @State videoAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
   @State isShow: boolean = true
   @Link videoViewModel: VideoViewModel
-  @ObjectLink videoModel: VideoModel
+  @Prop videoModel: VideoModel
   mOnPlayerCompleteListener: (context: object) => void
 
   aboutToAppear() {

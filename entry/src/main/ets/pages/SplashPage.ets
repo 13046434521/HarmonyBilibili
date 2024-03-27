@@ -2,14 +2,19 @@ import { HomeBeanItem } from '../bean/HomeBean'
 import Api from '../net/Api'
 import router from '@ohos.router'
 import Constants from '../common/Constants'
+import ApiLogin from '../net/ApiLogin'
+import { LoginNavBean } from '../bean/login/LoginNavBean'
 
-PersistentStorage.PersistProp('bilibili_cookie', Constants.COOKIE)
+
 @Entry
 @Component
 struct SplashPage{
   homeBeanData:Array<HomeBeanItem>=null
+
+  loginNavData:LoginNavBean = null
+
   @State content:string = "加载中..."
-  @StorageLink('bilibili_cookie') biliCookie:string  =''
+  // @StorageLink('bilibili_cookie') biliCookie:string  =''
   aboutToAppear(){
     this.update()
   }
@@ -41,7 +46,6 @@ struct SplashPage{
     Api.getHomePages().then(homebean=>{
       this.homeBeanData = homebean.item
     }).finally(()=>{
-      this.cookie()
       this.content =this.homeBeanData!==null?`加载成功:${this.homeBeanData.length}`:'加载失败'
       router.replaceUrl({
         url: 'pages/Index',
@@ -50,10 +54,9 @@ struct SplashPage{
         }
       }, router.RouterMode.Single)
     })
-  }
 
-  cookie(){
-    Constants.COOKIE = this.biliCookie
-    console.log('app_log  cookie:' + this.biliCookie)
+    ApiLogin.loginNav().then(response=>{
+      response.isLogin
+    })
   }
 }

@@ -1,30 +1,51 @@
-import url from '@ohos.url'
 import webview from '@ohos.web.webview'
 import { Loading } from '../component/LoadingComponent'
-import router from '@ohos.router'
+import { LoadingStatus } from '../common/LoadingStatus'
 
 @Entry
 @Component
-// ÍêÕûµÄÈÈËÑÒ³Ãæ
+// å®Œæ•´çš„çƒ­æœé¡µé¢
 struct SearchWebPage {
   url: string = getContext(this).resourceManager.getStringSync($r('app.string.web_searchhot_link'))
+  @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   controller: webview.WebviewController = new webview.WebviewController()
-  @State loadingPage:boolean = false
+
   build() {
-
-    Stack({alignContent:Alignment.Center}) {
-      if (!this.loadingPage){
-        Loading().layoutWeight(1)
+    Stack({ alignContent: Alignment.Center }) {
+      this.webPage()
+      if (this.loadingStatus==LoadingStatus.Loading){
+        Loading().layoutWeight(1).backgroundColor(Color.White)
       }
-      Web({ src: this.url, controller: this.controller })
-        .javaScriptAccess(true)
-        .width('100%')
-        .layoutWeight(1)
-        .onPageEnd(()=>{
-          this.loadingPage = true
-        }).width('100%').height('100%')
-
     }.width('100%')
     .height('100%')
+  }
+
+  @Builder
+  webPage() {
+    Web({ src: this.url, controller: this.controller })
+      .javaScriptAccess(true)
+      .width('100%')
+      .height('100%')
+      .layoutWeight(1)
+      .onPageBegin((url) => {
+        console.log('jtlurl:onPageBeginï¼š'+url )
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      })
+      .onPageEnd((url) => {
+        console.log('jtlurl:onPageEndï¼š'+url )
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      })
+
+      .onErrorReceive(() => {
+        //åŠ è½½é”™è¯¯æ—¶çš„å›žè°ƒ
+        this.loadingStatus = LoadingStatus.LoadingFailure
+      })
+      .onRefreshAccessedHistory((event) => {
+        this.loadingStatus = LoadingStatus.Loading
+        console.log('jtlurl:' + event.url + ' isReload:' + event.isRefreshed)
+      })
+      .onProgressChange((event) => {
+        console.log('jtlurlnewProgress:' + event.newProgress)
+      })
   }
 }

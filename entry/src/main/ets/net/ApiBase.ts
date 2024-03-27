@@ -3,22 +3,22 @@ import Constants from '../common/Constants'
 import { Utils } from '../Utils/Utils'
 
 export class ApiBase{
-  baseURl = 'https://api.bilibili.com/x'
-  defaultURL = 'https://api.bilibili.com/x/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=1&feed_version=undefined'
+  protected baseURl = 'https://api.bilibili.com/x'
+  protected defaultURL = 'https://api.bilibili.com/x/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=1&feed_version=undefined'
 
-  instanceAxios = axios.create({
+  protected instanceAxios = axios.create({
     baseURL:'',
     timeout: 10000,
     headers: {
       "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-      "Cookie": Constants.COOKIE,
+      "Cookie": Constants.getCookie(),
       "Referer": "https://www.bilibili.com"
     }
   })
 
 
   // /web-interface/search/type?search_type=video&keyword=48岁博士生8年未毕业被劝退&page=1
-  instance = axios.create({
+  protected instance = axios.create({
     baseURL: this.baseURl,
     timeout: 10000,
     headers: {
@@ -26,7 +26,7 @@ export class ApiBase{
       "Referer": "https://www.bilibili.com",
     }
   })
-  instanceCookie = axios.create({
+  protected instanceCookie = axios.create({
     baseURL: this.baseURl,
     timeout: 10000,
     headers: {
