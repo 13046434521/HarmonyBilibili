@@ -25,18 +25,8 @@ export default class EntryAbility extends UIAbility {
         console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
         return;
       }
-      windowClass = data;
-      console.info('Succeeded in obtaining the main window. Data: ' + JSON.stringify(data));
-
       // 2.实现沉浸式效果：设置导航栏、状态栏不显示。
-      let names = [];
-      windowClass.setWindowSystemBarEnable(names, (err) => {
-        if (err.code) {
-          console.error('Failed to set the system bar to be visible. Cause:' + JSON.stringify(err));
-          return;
-        }
-        console.info('Succeeded in setting the system bar to be visible.');
-      });
+      data.setWindowSystemBarEnable(['navigation'])
     })
     // 导航栏设置颜色
     // try {

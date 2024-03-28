@@ -10,7 +10,8 @@
       "phone"
     ],
     "requestPermissions": [
-      {"name": 'ohos.permission.INTERNET'}
+      {"name": 'ohos.permission.INTERNET'},
+      {"name": 'ohos.permission.MODIFY_AUDIO_SETTINGS'}
     ],
     "deliveryWithInstall": true,
     "installationFree": false,

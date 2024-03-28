@@ -6,14 +6,15 @@ import VideoModel from './VideoModel'
 import { PlayStatus } from '../common/PlayStatus'
 import { IjkMediaPlayer } from '@ohos/ijkplayer'
 import window from '@ohos.window'
+import Constants from '../common/Constants'
+import audio from '@ohos.multimedia.audio'
 
 //VideoPlayer 的 逻辑功能类
 export class VideoViewModel implements IPlayer {
   videoModel: VideoModel = new VideoModel()
-
+  volumeManager = audio.getAudioManager().getVolumeManager();
   init(context: object) {
     this.videoModel.context = context
-    this.initListener()
     // 初始化Player,包括播放
     this.initPlayer(context, this.videoModel.url, this.videoModel.headers)
   }
@@ -37,13 +38,26 @@ export class VideoViewModel implements IPlayer {
       this.videoModel.state = PlayStatus.LOADING
 
       let seekValue = progress * (IjkMediaPlayer.getInstance().getDuration() / 100);
-
-      this.videoModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
-
       IjkMediaPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
+      this.videoModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
     }
   }
+  updateProgressTimer:number = 0
 
+  private startProgressTask() {
+    this.updateProgressTimer = setInterval(() => {
+      if (IjkMediaPlayer.getInstance().isPlaying() && this.videoModel.state === PlayStatus.PLAY) {
+        let duration = IjkMediaPlayer.getInstance().getDuration()
+        let current = IjkMediaPlayer.getInstance().getCurrentPosition()
+        if (duration>0) {
+          this.videoModel.sliderStep = current/duration *100;
+        }
+        this.videoModel.currentTime = this.Duration(Math.floor(current/1000))
+      }
+    }, 300);
+
+    console.log('app_log startProgressTask')
+  }
   stop() {
     if (this.videoModel.context!=null && this.videoModel.state<=PlayStatus.STOP) {
       IjkMediaPlayer.getInstance().stop()
@@ -51,7 +65,8 @@ export class VideoViewModel implements IPlayer {
     }
   }
 
-  release() {
+  release(msg?:string) {
+    console.log('app_log:release:'+msg)
     if (this.videoModel.context!=null && this.videoModel.state<PlayStatus.RELEASE) {
       IjkMediaPlayer.getInstance().release()
       this.videoModel.state = PlayStatus.RELEASE
@@ -72,27 +87,55 @@ export class VideoViewModel implements IPlayer {
     return this.videoModel.currentTime
   }
 
-  adjustVolume(volume: number) {
-    let tempVolume = volume
-    if (tempVolume > 1) {
-      tempVolume = 1
-    }
-    else if (volume < 0) {
-      tempVolume = 0
-    }
-    this.videoModel.volume = tempVolume
-    IjkMediaPlayer.getInstance().setVolume(volume.toFixed(0.1),volume.toFixed(0.1))
+  setFullScreen(){
+    window.getLastWindow(getContext(this), (err: object, data: window.Window) => {
+      data.setWindowLayoutFullScreen(true)
+    });
   }
 
+  // 屏幕亮度范围 0~1
   adjustBrightness(brightness: number) {
-    let tempBrightness = brightness
-    if (tempBrightness > 100) {
-      tempBrightness = 100
+    window.getLastWindow(getContext(this), (err: object, data: window.Window) => {
+      let tempBrightness = brightness
+      if (tempBrightness > 1) {
+        tempBrightness = 1
+      }
+      else if (brightness <= 0) {
+        tempBrightness = 0
+      }
+      data.setWindowBrightness(tempBrightness)
+    });
+  }
+
+  getBright():Promise<number>{
+    return new Promise<number>((resolve, reject) => {
+      window.getLastWindow(getContext(this), (err: object, data: window.Window) => {
+        resolve(data.getWindowProperties().brightness)
+      })
+    })
+  }
+
+
+  // 声音设置0-15
+  adjustVolume(volume: number) {
+    if (volume>15) {
+      volume = 15
+    }else if(volume<0){
+      volume = 0
     }
-    else if (brightness <= 0) {
-      tempBrightness = 0
-    }
-    this.videoModel.brightness = tempBrightness
+    audio.getAudioManager().setVolume(audio.AudioVolumeType.MEDIA,volume)
+  }
+
+  getVolume():Promise<number> {
+    return audio.getAudioManager().getVolume(audio.AudioVolumeType.MEDIA)
+  }
+
+  setSpeed(speed:string){
+    IjkMediaPlayer.getInstance().setSpeed(speed)
+  }
+
+  getSpeed():number{
+    return IjkMediaPlayer.getInstance().getSpeed()
   }
 
   setUrl(url: string) {
@@ -110,7 +153,20 @@ export class VideoViewModel implements IPlayer {
     return this.videoModel.headers
   }
   getVideoAspectRatio(): number {
-    return this.videoModel.videoAspectRatio
+    return this.videoModel.videoWidth/this.videoModel.videoHeight
+    // return this.videoModel.videoAspectRatio
+  }
+
+  setVideoAspectRatio(videoAspectRatio:number) {
+    this.videoModel.videoAspectRatio = videoAspectRatio
+  }
+
+  setVideoWidth(videoWidth:number) {
+    this.videoModel.videoWidth = videoWidth
+  }
+
+  setVideoHeight(videoHeight:number) {
+    this.videoModel.videoHeight = videoHeight
   }
 
   getOrientation(): window.Orientation {
@@ -163,7 +219,7 @@ export class VideoViewModel implements IPlayer {
     return res
   }
 
-  getTimeContent(): string {
+  getTimeCurrent(): string {
     return this.videoModel.currentTime
   }
 
@@ -171,21 +227,8 @@ export class VideoViewModel implements IPlayer {
     return this.videoModel.timeTotal
   }
 
-  updateProgressTimer:number = 0
-
-  private startProgressTask() {
-    this.updateProgressTimer = setInterval(() => {
-      if (IjkMediaPlayer.getInstance().isPlaying() && this.videoModel.state=== PlayStatus.PLAY) {
-        let duration = IjkMediaPlayer.getInstance().getDuration()
-        let current = IjkMediaPlayer.getInstance().getCurrentPosition()
-        if (duration>0) {
-          this.videoModel.sliderStep = current/duration *100;
-        }
-        this.videoModel.currentTime = this.Duration(Math.floor(current/1000))
-      }
-    }, 300);
-
-    console.log('app_log startProgressTask')
+  getPlayState(){
+    return this.videoModel.state
   }
 
   private stopProgressTask() {
@@ -230,24 +273,37 @@ export class VideoViewModel implements IPlayer {
     IjkMediaPlayer.getInstance().prepareAsync()
   }
 
-  initListener() {
+  private initListener() {
     //设置获取视频宽高回调监听
     this.videoModel.mOnVideoSizeChangedListener = {
       onVideoSizeChanged: (width: number, height: number, sar_num: number, sar_den: number) => {
+        if (width!==this.videoModel.videoWidth||height!==this.videoModel.videoHeight) {
+          this.videoModel.videoWidth = width
+          this.videoModel.videoHeight = height
+          this.videoModel.videoAspectRatio = this.videoModel.videoWidth/this.videoModel.videoHeight
+        }
+
         promptAction.showToast({ message: width + "---" + height })
-        this.videoModel.videoAspectRatio = width / height
         console.log('app_log mOnVideoSizeChangedListener:width:'+width+"  height:"+height)
       }
     }
     //设置视频准备就绪回调监听
     this.videoModel.mOnPreparedListener = {
       onPrepared: () => {
-        this.videoModel.state = PlayStatus.PLAY
         this.videoModel.videoWidth = IjkMediaPlayer.getInstance().getVideoWidth()
-        this.videoModel.videoHeight = IjkMediaPlayer.getInstance().getVideoWidth()
-        this.videoModel.videoAspectRatio =   this.videoModel.videoWidth/this.videoModel.videoHeight
+        this.videoModel.videoHeight = IjkMediaPlayer.getInstance().getVideoHeight()
+
+        if (this.videoModel.videoAspectRatio>Constants.VIDEO_ASPECT_RATIO) {
+          this.videoModel.xComponentWidth = '100%'
+          this.videoModel.xComponentHeight = undefined
+        }else{
+          this.videoModel.xComponentWidth = undefined
+          this.videoModel.xComponentHeight = '100%'
+        }
+        this.videoModel.videoAspectRatio = this.videoModel.videoWidth/this.videoModel.videoHeight
         this.videoModel.timeTotal = this.Duration(Math.floor(IjkMediaPlayer.getInstance().getDuration() / 1000))
-        console.log('app_log mOnPreparedListener')
+        console.log('app_log mOnPreparedListener:'+this.videoModel.videoWidth+" --- "+this.videoModel.videoHeight +" --- "+this.videoModel.videoAspectRatio )
+        this.videoModel.state = PlayStatus.PLAY
         this.startProgressTask();
       }
     }
@@ -267,20 +323,17 @@ export class VideoViewModel implements IPlayer {
     }
 
     //设置buffer缓冲回调监听
-    if (this.videoModel.mOnBufferingUpdateListener===null){
-      this.videoModel.mOnBufferingUpdateListener = {
-        onBufferingUpdate: (percent: number) => {
-          console.log('app_log mOnBufferingUpdateListener:percent:'+percent)
-        }
+    this.videoModel.mOnBufferingUpdateListener = {
+      onBufferingUpdate: (percent: number) => {
+        console.log('app_log mOnBufferingUpdateListener:percent:'+percent)
       }
     }
 
     //	设置快进后退回调监听
-    if (this.videoModel.mOnSeekCompleteListener===null){
-      this.videoModel.mOnSeekCompleteListener = {
-        onSeekComplete: () => {
-          console.log('app_log onSeekComplete')
-        }
+    this.videoModel.mOnSeekCompleteListener = {
+      onSeekComplete: () => {
+        this.play()
+        console.log('app_log onSeekComplete：'+this.videoModel.sliderStep)
       }
     }
 

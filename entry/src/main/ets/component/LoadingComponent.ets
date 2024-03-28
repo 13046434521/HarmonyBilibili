@@ -26,7 +26,7 @@ export struct Loading {
           src: $r('app.media.mall_asyn_loading_anim_img04')
         },
         ]).iterations(-1)
-          .duration(2000)
+          .duration(1000)
           .width('15%')
           .aspectRatio(1)
           .state(this.state)

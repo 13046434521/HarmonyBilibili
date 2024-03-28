@@ -5,6 +5,7 @@ import { LoadingStatus } from '../common/LoadingStatus'
 import { PlayVideoBean } from '../bean/PlayVideoBean'
 import { VideoPlay } from '../component/VideoPlay'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
+import window from '@ohos.window'
 
 @Entry
 @Component
@@ -15,27 +16,31 @@ struct DetailPage {
   @State dimension :PageListDimensionBean = null
   @State url :string=''
   @State videoViewModel: VideoViewModel = new VideoViewModel()
-  async aboutToAppear() {
+  aboutToAppear() {
     this.bvid = router.getParams()['bvid']
     this.cid = router.getParams()['cid']
     // cid 为0时，需要单独获取cid
     if (this.cid === 0) {
-      await Api.getPageList(this.bvid).then((item)=>{
+      Api.getPageList(this.bvid).then((item)=>{
         this.cid = item[0].cid
         this.dimension = item[0].dimension
+
+        return Api.getPlayVideo(this.bvid,this.cid)
+      }).then((item:PlayVideoBean)=>{
+        this.url = item.durl[0].url
         this.loadingPage = LoadingStatus.LoadingSuccess
       }).catch(err=>{
         this.loadingPage = LoadingStatus.LoadingFailure
       })
+    }else{
+      Api.getPlayVideo(this.bvid,this.cid)
+        .then((item:PlayVideoBean)=>{
+          this.url = item.durl[0].url
+          this.loadingPage = LoadingStatus.LoadingSuccess
+        }).catch(err=>{
+          this.loadingPage = LoadingStatus.LoadingFailure
+        })
     }
-
-    await Api.getPlayVideo(this.bvid,this.cid)
-      .then((item:PlayVideoBean)=>{
-        this.url = item.durl[0].url
-        this.loadingPage = LoadingStatus.LoadingSuccess
-      }).catch(err=>{
-      this.loadingPage = LoadingStatus.LoadingFailure
-    })
   }
 
   onPageHide(){
@@ -47,12 +52,46 @@ struct DetailPage {
   }
 
   aboutToDisappear(){
-    this.videoViewModel.release()
+    this.videoViewModel.release('VideoDetailPage')
   }
-
+@State volume:number = 0
   build() {
     Column() {
       VideoPlay({url:this.url,videoViewModel:this.videoViewModel})
+
+      Button('亮度255').onClick(()=>{
+        window.getLastWindow(getContext(this), (err: object, data: window.Window) => {
+          data.setWindowBrightness(1)
+        });
+
+      })
+
+      Button("亮度0").onClick(()=>{
+        window.getLastWindow(getContext(this), (err: object, data: window.Window) => {
+          data.setWindowBrightness(0)
+        });
+      })
+
+      Button("亮度:"+ this.volume).onClick(()=>{
+        window.getLastWindow(getContext(this), (err: object, data: window.Window) => {
+          this.volume = data.getWindowProperties().brightness
+        });
+      })
+
+      Button('声音15').onClick(()=>{
+        this.videoViewModel.adjustVolume(15)
+      })
+
+      Button("声音0").onClick(()=>{
+        this.videoViewModel.adjustVolume(0)
+      })
+
+      Button("声音:"+ this.volume).onClick(()=>{
+        this.videoViewModel.getVolume().then((num)=>{
+          this.volume = num
+        })
+      })
+
     }.width('100%')
     .justifyContent(FlexAlign.Start)
   }

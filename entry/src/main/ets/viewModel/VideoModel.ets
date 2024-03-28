@@ -21,17 +21,21 @@ export default  class VideoModel {
   ])
   bvid: string
   cid: number
+  videoWidth:number=0 // 视频宽高
+  videoHeight: number = 0// 视频宽高
+  xComponentWidth = '100%' //xComponent的宽，根据VIDEO_ASPECT_RATIO的值来确定
+  xComponentHeight = undefined //xComponent的高
   videoAspectRatio: number = Constants.VIDEO_ASPECT_RATIO
   defaultAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
   state: PlayStatus = PlayStatus.INIT
-  volume:number=0
-  brightness:number=0
+  volume:number=-100
+  brightness:number=-100
   sliderStep: number = 0
-  videoWidth:number=0
-  videoHeight: number = 0
+
   timeTotal: string = '0:00'
   currentTime: string = '0:00'
   context:object =null
+  orientation:window.Orientation = null
   // 各种Listener
   mOnVideoSizeChangedListener: OnVideoSizeChangedListener = null
   mOnPreparedListener: OnPreparedListener = null
@@ -42,5 +46,4 @@ export default  class VideoModel {
   mOnInfoListener: OnInfoListener = null
   mOnErrorListener: OnErrorListener = null
   updateProgressTimer: number = 0
-  orientation:window.Orientation = null
 }

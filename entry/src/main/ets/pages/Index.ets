@@ -4,7 +4,7 @@ import { MinePage } from './MinePage'
 import { MomentPage } from './MomentPage'
 import { NewPage } from './NewPage'
 import { ShoppingPage } from './ShoppingPage'
-
+import deviceInfo from '@ohos.deviceInfo';
 
 class TabIcon {
   text: string
@@ -30,6 +30,8 @@ struct Index {
 
   @State currentTab :TabIcon = this.tabs[0]
   aboutToAppear(){
+    Utils.Toast("型号："+deviceInfo.deviceType + "系统版本："+ deviceInfo.osFullName+ "  SDKApi："+deviceInfo.sdkApiVersion)
+
   }
 
   build() {
