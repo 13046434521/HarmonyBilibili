@@ -1,3 +1,4 @@
+import Constants from '../common/Constants';
 import { Utils } from '../Utils/Utils'
 
 // objectLinkNestedObjects.ets
@@ -34,6 +35,7 @@ struct ViewA {
           this.a.c += 1;
         })
     }
+    // .backgroundColor(Constants.BACKGROUND_COLOR)
   }
 }
 @Preview

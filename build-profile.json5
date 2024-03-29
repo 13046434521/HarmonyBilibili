@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.cer",
-          "storePassword": "0000001A542542E908B4A8F9FC7D671607C67E4CB77DEBF0EC55B1CA670DD4744C11F8D9ADB06558451D",
+          "certpath": "/Users/haohao/.ohos/config/auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.cer",
+          "storePassword": "0000001B7ADF485CC8161FE2FD24F47306D9A0C206441DC1CADDE43EF8E2B3B8744288433F6730BFBB35AC",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A6023816386B7ABC8CB1AD8EEB6B7316AB18D2F28122063E17AA0867B906F53DA8C50BB1C44A6",
-          "profile": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p7b",
+          "keyPassword": "0000001B363947306869A9DD8E197846F962B9A15009B0F28379AE3A9837ADDE1D24093C861E354408F13E",
+          "profile": "/Users/haohao/.ohos/config/auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p12"
+          "storeFile": "/Users/haohao/.ohos/config/auto_debug_HarmonyBilibili_com.jtl.harmonybilibili_35038775.p12"
         }
       }
     ],
@@ -45,22 +45,10 @@
         }
       ]
     },
-//    {
-//      "name": "ijkplayer",
-//      "srcPath": "./ijkplayer"
-//    },
-//    {
-//      "name": "player",
-//      "srcPath": "./player",
-//      "targets": [
 //        {
-//          "name": "default",
-//          "applyToProducts": [
-//            "default"
-//          ]
-//        }
-//      ]
-//    },
+//          "name": "ijkplayer",
+//          "srcPath": "./ijkplayer"
+//        },
     {
       "name": "Loading",
       "srcPath": "./Loading",

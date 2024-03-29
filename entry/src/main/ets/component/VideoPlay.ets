@@ -61,7 +61,6 @@ function btnImageStyle() {
 
 @Component
 struct VideoPlayer {
-  @State defaultAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
   @State videoAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
   @Link videoViewModel: VideoViewModel
   @ObjectLink videoModel: VideoModel
@@ -71,6 +70,7 @@ struct VideoPlayer {
   @State isVolumeBrightShow: boolean = false
   @State volumeBrightStatus: VolumeBrightStatus = VolumeBrightStatus.VOLUME
   @State volumeBrightValue: number = 0
+  @State isFullScreen:number = Constants.DEFAULT_ASPECT_RATIO
   aboutToAppear() {
   }
   lastPosition = 0
@@ -106,7 +106,6 @@ struct VideoPlayer {
         Row() {
           Blank("亮度")
             .layoutWeight(1)
-
             .gesture(GestureGroup(GestureMode.Exclusive,
               PanGesture({direction:PanDirection.Vertical})
                 .onActionStart((event?:GestureEvent)=>{
@@ -193,13 +192,12 @@ struct VideoPlayer {
     }
     .alignContent(Alignment.BottomStart)
     .width('100%')
-    .aspectRatio(this.defaultAspectRatio)
+    .height('100%')
+    .aspectRatio(undefined)
     .backgroundColor(Color.Black)
     .onClick(() => {
       this.isShow = !this.isShow
     })
-    .width('100%')
-    .height('100%')
   }
 
   @Builder
@@ -254,6 +252,11 @@ struct VideoPlayer {
         .onClick(() => {
           // this.videoViewModel.setFullScreen()
           this.videoViewModel.changeOrientation()
+          if (this.videoModel.orientation===window.Orientation.LANDSCAPE) {
+            this.isFullScreen = undefined
+          }else{
+            this.isFullScreen = this.videoModel.defaultAspectRatio
+          }
         })
         .objectFit(ImageFit.Cover)
         .height('100%')

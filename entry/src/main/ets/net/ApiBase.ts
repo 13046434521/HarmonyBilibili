@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from '@ohos/axios'
 import Constants from '../common/Constants'
+import StorageManager from '../common/StorageManager'
 import { Utils } from '../Utils/Utils'
 
 export class ApiBase{
@@ -11,7 +12,7 @@ export class ApiBase{
     timeout: 10000,
     headers: {
       "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-      "Cookie": Constants.getCookie(),
+      "Cookie": StorageManager.getCookie(),
       "Referer": "https://www.bilibili.com"
     }
   })

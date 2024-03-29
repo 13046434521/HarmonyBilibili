@@ -5,6 +5,7 @@ import { MomentPage } from './MomentPage'
 import { NewPage } from './NewPage'
 import { ShoppingPage } from './ShoppingPage'
 import deviceInfo from '@ohos.deviceInfo';
+import Constants from '../common/Constants'
 
 @Observed
 export class TabIcon {
@@ -31,6 +32,7 @@ struct Index {
 
   @State currentTab :TabIcon = this.tabs[0]
   controller:TabsController = new TabsController()
+  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
     Utils.Toast("型号："+deviceInfo.deviceType + "系统版本："+ deviceInfo.osFullName+ "  SDKApi："+deviceInfo.sdkApiVersion)
   }
@@ -67,6 +69,7 @@ struct Index {
         this.currentTab = this.tabs[index]
       })
     }
+    .backgroundColor(this.backgroundColors)
   }
   @Builder TabBuilder(index: number) {
     Column() {
@@ -74,13 +77,14 @@ struct Index {
         .width(24)
         .height(24)
         .margin({ bottom: 4 })
-        .fillColor(this.currentTab.text === this.tabs[index].text ?$r('app.color.bilibili_theme'):Color.Black)
+        .fillColor(this.currentTab.text === this.tabs[index].text ?$r('app.color.bilibili_theme'):$r('app.color.bilibili_text_black_middle'))
         .objectFit(ImageFit.Contain)
       Text(this.tabs[index].text)
-        .fontColor(this.currentTab.text === this.tabs[index].text ?$r('app.color.bilibili_theme') : $r('app.color.bilibili_text_black'))
+        .fontColor(this.currentTab.text === this.tabs[index].text ?$r('app.color.bilibili_theme') : $r('app.color.bilibili_text_black_middle'))
         .fontSize(10)
         .fontWeight(500)
         .lineHeight(14)
     }.width('100%')
+    .backgroundColor(this.backgroundColors)
   }
 }

@@ -2,10 +2,7 @@ import { HomeBeanItem } from '../bean/HomeBean'
 import Api from '../net/Api'
 import router from '@ohos.router'
 import ApiLogin from '../net/ApiLogin'
-import { LoginNavBean } from '../bean/login/LoginNavBean'
-import StorageManager from '../common/StorageManager'
 import { Utils } from '../Utils/Utils'
-import Constants from '../common/Constants'
 
 
 @Entry
@@ -15,7 +12,7 @@ struct SplashPage {
   @State content: string = "加载中..."
 
   @StorageLink('isLogin') isLogin:boolean = false
-  @StorageLink('login_img_url') vipImageUrl :string = ''
+  @StorageLink('login_img_url') loginIcon :string = ''
 
   aboutToAppear() {
     this.update()
@@ -34,7 +31,7 @@ struct SplashPage {
       .justifyContent(FlexAlign.Center)
 
       Button(this.content)
-        .width('24%')
+        .width('16%')
         .aspectRatio(4)
         .fontSize(14)
         .fontColor($r('app.color.bilibili_text_white'))
@@ -42,7 +39,6 @@ struct SplashPage {
         .backgroundColor($r('app.color.bilibili_theme'))
         .borderRadius(24)
         .margin(8)
-
     }.alignContent(Alignment.TopEnd)
   }
 
@@ -50,7 +46,7 @@ struct SplashPage {
     ApiLogin.loginNav()
       .then(response => {
         this.isLogin = response.isLogin
-        this.vipImageUrl = response.face
+        this.loginIcon = response.face
         return Api.getHomePages()
       })
       .then(response => {

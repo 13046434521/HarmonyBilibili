@@ -6,6 +6,7 @@ import { PlayVideoBean } from '../bean/PlayVideoBean'
 import { VideoPlay } from '../component/VideoPlay'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
 import window from '@ohos.window'
+import Constants from '../common/Constants'
 
 @Entry
 @Component
@@ -16,6 +17,7 @@ struct DetailPage {
   @State dimension :PageListDimensionBean = null
   @State url :string=''
   @State videoViewModel: VideoViewModel = new VideoViewModel()
+  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   aboutToAppear() {
     this.bvid = router.getParams()['bvid']
     this.cid = router.getParams()['cid']
@@ -94,5 +96,6 @@ struct DetailPage {
 
     }.width('100%')
     .justifyContent(FlexAlign.Start)
+    .backgroundColor(this.backgroundColors)
   }
 }

@@ -7,7 +7,7 @@ class Constants{
   // COOKIE:string = 'DedeUserID=68406011;DedeUserID__ckMd5=ecb0ad5cd0bcd251;Expires=1726995029;SESSDATA=3cd4e8a3,1726995029,2c018*31CjDoM1Zr4KPtkw7itX5UpWdKtyd_PclBy8Dew0oMYwOABq7vQwq_XMrcC3_ALgqsIVgSVnR6NTBXMTBCV0IxWmxCMEN4VV9EUkVrNGlnQ0cxczdTal9IQkFHZnhUVGU3R09HU09CQTRqdXU1QnZ6T3ZaUnUyUVRjMklXTnlFR3VCV2liZVVSVkNBIIEC;bili_jct=5a92cb28818fcbe9d658f0792cf28a7f;gourl=httpswww.bilibili.com'
 
   SEARCH_COOKIE="i-wanna-go-back=-1; buvid3=0C23069F-5200-3EAB-546E-3FB8CDF833EB74930infoc;"
-  // COOKIE = StorageManager.getCookie()
+  COOKIE = StorageManager.getCookie()
   // COOKIE:string = 'DedeUserID=68406011;DedeUserID__ckMd5=ecb0ad5cd0bcd251;Expires=1726995029;SESSDATA=3cd4e8a3%2C1726995029%2C2c018*31CjDoM1Zr4KPtkw7itX5UpWdKtyd_PclBy8Dew0oMYwOABq7vQwq_XMrcC3_ALgqsIVgSVnR6NTBXMTBCV0IxWmxCMEN4VV9EUkVrNGlnQ0cxczdTal9IQkFHZnhUVGU3R09HU09CQTRqdXU1QnZ6T3ZaUnUyUVRjMklXTnlFR3VCV2liZVVSVkNBIIEC;bili_jct=5a92cb28818fcbe9d658f0792cf28a7f;gourl=httpswww.bilibili.com'
 
   DEFAULT_ASPECT_RATIO = 16/9
@@ -15,6 +15,10 @@ class Constants{
   SEARCH_FOCUS_ID = "search_focus" // SearchHeader准备获取焦距的
   COOKIE_NAME ='bilibili_cookie'
 
+  BACKGROUND_NIGHT = '#17181A'
+  BACKGROUND_DAY = '#FFFFFF'
+  BACKGROUND_COLOR = '#17181A'
+  BACKGROUND_HOME_COLOR = '#F2F3F5'
   /*------------------------------------------- AppStorage --------------------------------------------*/
   Login_Data:string = 'Bilibili_Login'
   Home_Data:string = 'Bilibili_Home'

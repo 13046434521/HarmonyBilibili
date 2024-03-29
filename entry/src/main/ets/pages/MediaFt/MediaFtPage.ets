@@ -14,6 +14,7 @@ struct MediaFtPage {
   qn:number = Constants.QN
   @State videoViewModel:VideoViewModel = new VideoViewModel()
   @State url :string=''
+  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
     this.seasonId = router.getParams()['seasonId']
     this.getData(this.seasonId,this.qn)
@@ -38,5 +39,6 @@ struct MediaFtPage {
         .layoutWeight(1)
     }
     .width('100%')
+    .backgroundColor(this.backgroundColors)
   }
 }

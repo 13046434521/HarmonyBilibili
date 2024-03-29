@@ -1,160 +1,168 @@
 # ChangeList
-## Ŀǰ���⣨bug�嵥����
-1. ~~����ҳ��ᱨTypeError���⣬�����������뵼��~~ (2024-3-18���)
-4. ~~SearchTabsAllҳ�� controller����ʹ~~ (2024-3-18���)
-3. ~~���磬ͼ�ĵ�item�ؼ���û����ȡ�ɵ�����������޷����ۺ�ҳ��ʹ��~~(2024-3-18���)
-2. ����ҳ����Scroll�ؼ��������ݣ�û������ˢ�¹���
-5. ֱ��ҳ��û������������
-6. ����ҳ���ȡ������������
-6. Ĭ������ҳ�棬����overlordʱ��ֻ��3�����硣����ʾ�������ݡ�ֱ��TRIGGER�ظ���ʾ�û�
-7. ��ҳ�������ObservedPropertySimple value must not be an object---OpenHarmony�����д�bug
-8. ~~��ҳ�治��Ĭ��ˢ��UI��OpenHarmony�����д�bug~~(2024-4-20���---����Splashҳ�棬���ȼ������ݣ����ݵ�Indexҳ��)
-9. ����ҳ�棬�������ݲ�����%
-10. ƽ���ϣ��������ص���
-11. VideoPlay seekTo�ƶ�ʱ��û����߼����Լ��������ʱ�����²��ŵ��߼�
-12. VideoPlay �������ٲ�����ijkplayer��ᱨ��
-13. ~~VideoPlay ���Ŵ˼���˫�ľ�溵t����Ƶ������ֱ���:�ֱ�����1280*544.~~ �޸Ĳ��֣�����Stack�㼶(2024-3-26���)
-14. ~~����Ĭ��ҳ�棬��HarmonyOS4�ϲ���ʾ���ݣ�OpenHarmony4.0������~~ ԭ����ListView�еĲ��֡�������ListItem�������������׳�bug
-15. VideoPlay�ؼ����ڲ���֮��seekTo���˳��ٽ��룬��Ȼ����
-16. SearchSuggestҳ�� ��ȡ��������
-17. ~~��ά���¼���޷��ۿ����Ա��Ƶ~~ ͨ����ά���¼���Ա�˺ţ���ȡCookie����SESSION_DATA�е�,����%2C����ܿ����Ա��Ƶ�ˡ�(2024-3-26���)
-
-## ��Ŀ���ܽ���
+## 目前问题（bug清单）：
+1. ~~番剧页面会报TypeError问题，可能网络申请导致~~ (2024-3-18解决)
+4. ~~SearchTabsAll页面 controller不好使~~ (2024-3-18解决)
+3. ~~番剧，图文的item控件，没有提取成单独的组件。无法在综合页面使用~~(2024-3-18解决)
+2. 番剧页面用Scroll控件保存数据，没有下拉刷新功能
+5. 直播页面没有做下拉加载
+6. 搜索页面获取和软键盘收起
+6. 默认搜索页面，搜索overlord时，只有3个番剧。不显示其他内容。直言TRIGGER重复显示用户
+7. 主页面崩溃：ObservedPropertySimple value must not be an object---OpenHarmony不会有此bug
+8. ~~主页面不会默认刷新UI，OpenHarmony不会有此bug~~(2024-3-20解决---新增Splash页面，优先加载数据，传递到Index页面)
+9. 搜索页面，搜索内容不能有%
+10. 平板上，导航栏重叠了
+11. VideoPlay seekTo移动时，没想好逻辑。以及播放完毕时，重新播放的逻辑
+12. VideoPlay 连续快速操作，ijkplayer库会报错
+13. ~~VideoPlay 播放此间无双的鞠婧祎的视频，会出现变形:分辨率是1280*544.~~ 修改布局，减少Stack层级(2024-3-26解决)
+14. ~~搜索默认页面，在HarmonyOS4上不显示数据，OpenHarmony4.0上正常~~ 原因是ListView中的布局。必须用ListItem包裹。否则容易出bug
+15. VideoPlay控件，在播放之后，seekTo，退出再进入，必然崩溃
+16. SearchSuggest页面 获取焦点问题
+17. ~~二维码登录，无法观看大会员视频~~ 通过二维码登录大会员账号，获取Cookie。将SESSION_DATA中的,换成%2C后就能看大会员视频了。(2024-3-26解决)
+18. VideoPlay全屏有问题
+## 项目功能进度
 ### 2024-3-17
-    ͼ��ҳ�棬���²�ȱʧ���޷�ȫ��
+    图文页面，最下部缺失，无法全屏
 
 ### 2024-3-18
-#### 1. ���ͼ��ҳ�棬���²�ȱʧ����
-    ���ͼ��ҳ�棬���²�ȱʧ���⣬ͨ����SearchTabsAll��LoadingData����.layoutWeight(1)
-    �������
+#### 1. 解决图文页面，最下部缺失问题
+    解决图文页面，最下部缺失问题，通过给SearchTabsAll的LoadingData设置.layoutWeight(1)
+    解决问题
 
-#### 2. ���BiliUserҳ������TikTok������item��undefined����
-    ����2�����ݣ����»�ֱ��ִ��onReachEnd�еĴ��룬�����ٴ������������ݣ����ں�̨һ���������ݣ�
-    �����ٴ����벻�����ݣ������쳣���ݣ������޷������������ػ�ʱ����undifined����
+#### 2. 解决BiliUser页面搜索TikTok美国，item报undefined问题
+    返回2个数据，导致会直接执行onReachEnd中的代码，导致再次网络申请数据，由于后台一共两个数据，
+    所以再次申请不到数据，返回异常数据，最终无法解析，布局重绘时都是undifined数据
 
-#### 3. ���ͼ��ҳ��
+#### 3. 完成图文页面
 
 
-#### 4. ��ɷ���ҳ��
-    ����ҳ����Scroll�ؼ��������ݡ�
+#### 4. 完成番剧页面
+    番剧页面用Scroll控件保存数据。
 
-#### 5. Shoppingҳ���ΪWebҳ��
-    Shoppingҳ���ΪWeb��������ַΪbilibili��ַ��https://m.bilibili.com/
-    ����loadingҳ��
+#### 5. Shopping页面改为Web页面
+    Shopping页面改为Web，新增地址为bilibili网址：https://m.bilibili.com/
+    新增loading页面
 
-#### 6. ����Ӱ��ҳ��
-    ����BasicDataSource,���������
-    ʹ��Scroll + LazyForEach��ɡ�LazyForEach���Ҫ��һ��Columͬʱ�������ø߶ȣ������޷�����
-    MediaFtItem�е�@Builder mediaFtItem��ʾ��ȫ���������һ�������������
-#### 7. ����û�����ݵ�ҳ��
-    ��LoadingData���������NoData��������ڴ���û�����뵽����ʱ���߼�
-#### 8. ���Ӱ�Ӻͷ���ҳ��ᱨTypeError����
-    ԭ���ǣ��������뷵�ص�json�����У�û��result������ҳ���У��������⴦������
+#### 6. 搜索影视页面
+    新增BasicDataSource,懒加载相关
+    使用Scroll + LazyForEach完成。LazyForEach外层要套一层Colum同时不能设置高度，否则无法滚动
+    MediaFtItem中的@Builder mediaFtItem显示不全，最外层套一层容器组件即可
+#### 7. 新增没有数据的页面
+    在LoadingData组件中新增NoData组件，用于处理没有申请到数据时的逻辑
+#### 8. 解决影视和番剧页面会报TypeError问题
+    原因是，网络申请返回的json数据中，没有result。番剧页面中，进行特殊处理即可
 
-#### 9. ���ֱ��ҳ��ֻ��ʾһ��Item����
-    ԭ���ǣ�itemƥ��ʱ��ʹ����item=>item�����¼��Ϊͬһ��item��û�н��м���
+#### 9. 解决直播页面只显示一个Item问题
+    原因是，item匹配时，使用了item=>item。导致检测为同一个item，没有进行加载
 
-#### 10. ���ֱ��ҳ��
-    ʹ��������+List+Scroll���ֱ��ҳ��
-#### 11. ����searchҳ���Tabsҳ��Ƕ�ײ㼶
-    ����searchҳ���Tabsҳ��Ƕ�ײ㼶
+#### 10. 完成直播页面
+    使用懒加载+List+Scroll完成直播页面
+#### 11. 减少search页面各Tabs页面嵌套层级
+    减少search页面各Tabs页面嵌套层级
 
 ### 2024-3-19
-#### 1. ��Bean���ݴ�class��Ϊinterface
-    Defaultҳ��ĸ��������ݸ�ʽ��Video�������һ�£���Ϊinterfaceֱ��implement����ʹ��
-#### 2. �Ѹ�ҳ���Item��ȡ
-    ��Searchҳ���Video�����磬Ӱ�ӣ�ֱ�����ҳ���Item��ȡ������������������Ĭ������ҳ�棨SearchDefault��ҳ��ʹ��
+#### 1. 把Bean数据从class改为interface
+    Default页面的各种类数据格式和Video，番剧等一致，改为interface直接implement就能使用
+#### 2. 把各页面的Item抽取
+    将Search页面的Video，番剧，影视，直播间等页面的Item抽取出单独组件，方便后续默认搜索页面（SearchDefault）页面使用
 
-#### 3. ���е�����ҳ������������
-    ��ForEach��ΪLazyForEach���������
-#### 4. �Ѹ���ҳ������ҳ�����������أ�����KeyGenerator 
-    ������������ҳ�涼������KeyGenerator�������ظ���Ⱦ���˷�����
-#### 5. Ĭ��ҳ��������
-    Ĭ��ҳ�������ʾ�������ͣ����������Ҫ�������ò��ܸ���֮ǰ��
-    ʵ�ּ��ع���
+#### 3. 所有的搜索页面做成懒加载
+    从ForEach改为LazyForEach，提高性能
+#### 4. 把各主页面热搜页面做成懒加载，新增KeyGenerator 
+    把所有懒加载页面都增加了KeyGenerator，以免重复渲染，浪费性能
+#### 5. 默认页面懒加载
+    默认页面可以显示各种类型，个别界面需要重新设置不能复用之前的
+    实现加载功能
 ### 2024-3-19 4:28 -----------------------------------
-#### 6. MINEҳ���ά�빦��
-    ʵ�ֶ�ά���¼���߼����ܣ�����û��UI
+#### 6. MINE页面二维码功能
+    实现二维码登录的逻辑功能，但是没有UI
 
-### 2024-3-20 --- 0:00 ---> ��ʼ
-#### 1. �о�������ˢ��
-    ˢ�µ�ͼ���ƶ������Ը���onTouch��position���޸�ͼ�길������height��ʵ��
-#### 2. SeachPageҳ�����ݴ��ݵ�Defaultҳ��
-    SeachPageҳ�����ݴ��ݵ�Defaultҳ�档ʹ��@Provider��@Consume��ʵ�֣�
-    ����Defaultҳ���ظ���ȡ���ݣ��Ҷ�Ƕ��һ��Loadingҳ��
-### 2024-3-20  ---  3:40 <--- ����
-### 2024-3-20  ---  11:00 <--- ��ʼ
-#### 3. ����Splashҳ��
-    �����治ˢ�µ�ԭ������Ϊ��������ɵġ������о�@ObjectLink��@Observed��ʹ�ý��
-    �˴�ʹ����һ�ֽ������������Splashҳ�棬���ݷŵ�Slashҳ���н��м��ء������ֱ�Ӵ��ݵ��������С�
-    �ڹ۸��Ͻ�ʡ�û��ȴ�ʱ��
+### 2024-3-20 --- 0:00 ---> 开始
+#### 1. 研究了下拉刷新
+    刷新的图标移动，可以根据onTouch的position和修改图标父容器的height来实现
+#### 2. SeachPage页面数据传递到Default页面
+    SeachPage页面数据传递到Default页面。使用@Provider和@Consume来实现，
+    减少Default页面重复获取数据，且多嵌套一层Loading页面
+### 2024-3-20  ---  3:40 <--- 结束
+### 2024-3-20  ---  11:00 <--- 开始
+#### 3. 新增Splash页面
+    主界面不刷新的原因，是因为懒加载造成的。可以研究@ObjectLink和@Observed的使用解决
+    此处使用另一种解决方案。新增Splash页面，数据放到Slash页面中进行加载。将结果直接传递到主界面中。
+    在观感上节省用户等待时间
 
 ### 2024-3-21
-#### 1. VideoPlay���Բ���
-    ����ijkplayer�ⲻ�ܲ���ԭ��
-    �޸�VideoPlay���Բ���
+#### 1. VideoPlay可以播放
+    查找ijkplayer库不能播放原因。
+    修改VideoPlay可以播放
 
 ### 2024-3-22
-#### 1. VideoPlayҳ��
-     VideoPlay�����������������Ű�ť��loading��ť����ת��ť�����ذ������Լ��ص������水��
+#### 1. VideoPlay页面
+     VideoPlay新增，进度条，播放按钮，loading按钮，旋转按钮，返回按键，以及回到主界面按键
 
-#### 2. ���ذ�����home����
-     �����޸��������������ķֱ��ʡ�
+#### 2. 返回按键和home按键
+     重新修改了这两个按键的分辨率。
 
-#### 3. �������棬��ͣ��Ƶ���ص����򣬼�������
-     �������棬��ͣ��Ƶ���ص����򣬼�������
+#### 3. 返回桌面，暂停视频。回到程序，继续播放
+     返回桌面，暂停视频。回到程序，继续播放
 
 ### 2024-3-25
-#### 1. ֱ��ҳ��
-    ֱ��ҳ�棬���Թۿ�
+#### 1. 直播页面
+    直播页面，可以观看
 
 ### 2024-3-26
-#### 1. Ӱ��ҳ��
-    Ӱ�ӿ��Թۿ�
+#### 1. 影视页面
+    影视可以观看
 
-#### 2. VideoPlay�����޸�
-    �޸Ĳ���VideoPlay�����޸ģ�����Stack�㼶���޸�bug13
+#### 2. VideoPlay布局修改
+    修改布局VideoPlay布局修改，减少Stack层级。修复bug13
 
 /*------------------------------------------- 2024-3-26  3:05 END --------------------------------------------*/
 
 /*------------------------------------------- 2024-3-26  11:36 START --------------------------------------------*/
-#### 3. VideoPlay ��ȡ�����������@ObjectLinkʹ��
-     VideoPlay ��ȡ�����������@ObjectLinkʹ��
+#### 3. VideoPlay 抽取子组件，方便@ObjectLink使用
+     VideoPlay 抽取子组件，方便@ObjectLink使用
 
-#### 4. SearchHeader�е�Search����TextInput
-     SearchHeader�е�Search����TextInput���������������Զ��������������ó�search��
+#### 4. SearchHeader中的Search换成TextInput
+     SearchHeader中的Search换成TextInput，软键盘搜索后自动缩起。软键盘设置成search键
 
-#### 5. ��ά���¼��ȡCookie
-     ͨ����ά���¼���Ա�˺ţ���ȡCookie����SESSION_DATA�е�,����%2C����ܿ����Ա��Ƶ�ˡ�
+#### 5. 二维码登录获取Cookie
+     通过二维码登录大会员账号，获取Cookie。将SESSION_DATA中的,换成%2C后就能看大会员视频了。
 
-#### 6. ��Ƶ���߱�����
-     �����Ƶ���߱�����
+#### 6. 视频宽高比问题
+     解决视频宽高比问题
 /*------------------------------------------- 2024-3-27 --------------------------------------------*/
-#### 1. Index�����Tab
-     Index�����TabIcon��ɫ�޸ĳ�Bilibili����ɫ
+#### 1. Index界面的Tab
+     Index界面的TabIcon颜色修改成Bilibili主题色
 
-#### 2. �޸�Mineҳ���Լ�����login���api
-     ��ά���¼ҳ��Ui���Լ�����login��apiΪmineҳ����׼��
+#### 2. 修改Mine页面以及部分login相关api
+     二维码登录页面Ui，以及部分login的api为mine页面做准备
 /*------------------------------------------- 2024-3-27 2:24  END--------------------------------------------*/
 /*------------------------------------------- 2024-3-27 11:25  START--------------------------------------------*/
 #### 3. AppStorage
-     StorageManager��PersistentStorage��������cookie��isLogin
+     StorageManager和PersistentStorage，来保存cookie和isLogin
 
 /*------------------------------------------- 2024-3-28 START--------------------------------------------*/
-#### 1. �޸�VideoPlay�����߼����޸�����XComponent������ɵ�bug
-     XComponent�������٣���ִ��һЩ�����߼��������޸�
+#### 1. 修改VideoPlay整体逻辑，修改由于XComponent创建造成的bug
+     XComponent创建销毁，会执行一些错误逻辑。进行修改
 
-#### 2. �޸�VideoPlay��seekTo�޸ı���������Զ�����
-     ����@prop��@ObjectLink�����𣬵���valueֵû�б�UI���¡����ó�@ObjectLink�ͺ���
+#### 2. 修改VideoPlay的seekTo修改崩溃及返回远点错误
+     由于@prop和@ObjectLink的区别，导致value值没有被UI更新。设置成@ObjectLink就好了
 
 /*------------------------------------------- 2024-3-28 END--------------------------------------------*/
 /*------------------------------------------- 2024-3-29 START--------------------------------------------*/
-#### 1. ���Ե���Harmony������������
-     ���Ⱥ�������ȡ�Լ����õĴ��롣���ȴ�СΪ0-1��������СΪ0-15
+#### 1. 测试调整Harmony的音量和亮度
+     亮度和音量获取以及设置的代码。亮度大小为0-1。音量大小为0-15
 
-#### 2. �޸�VideoPlay��UI�������߼�
-    �������������ȵ������UI���ִ�е����������ұ�ִ�е�������
+#### 2. 修改VideoPlay的UI并设置逻辑
+    创建声音和亮度的组件。UI左边执行调整音量，右边执行调整亮度
 
-#### 3. ��¼���漰UI
-    �޸ĵ�¼���漰UI
+#### 3. 登录界面及UI
+    修改登录界面及UI
 /*------------------------------------------- 2024-3-29 END--------------------------------------------*/
+/*------------------------------------------- 2024-3-30 START--------------------------------------------*/
+#### 1. Mine界面获取UI逻辑
+     无法获取数据，原因为网络申请时不是登陆获取的cookie
+#### 2. 主题页面
+    增加夜晚模式
+#### 3. VideoPlay
+    全屏
+/*------------------------------------------- 2024-3-30 END--------------------------------------------*/

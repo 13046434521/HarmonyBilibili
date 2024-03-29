@@ -15,14 +15,17 @@ import { UserStateBean } from '../bean/login/UserStateBean';
 
 export struct MinePage {
   @StorageLink('isLogin') isLogin :boolean = false
+  @StorageLink('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear() {
   }
 
   build() {
     if (this.isLogin) {
       MineInfoPage()
+        .backgroundColor(this.backgroundColors)
     } else {
       LoginPage()
+        .backgroundColor(this.backgroundColors)
     }
   }
 }
@@ -31,28 +34,29 @@ export struct MinePage {
 struct MineInfoPage {
   @State loginNavData:LoginNavBean = new LoginNavBean()
   @StorageLink('isLogin') isLogin :boolean = false
-  @StorageLink('login_img_url') vipImageUrl :string = ''
-  @State loginIcon: string = undefined
+  @StorageLink('login_img_url') loginIcon :string = ''
+  @StorageLink('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
+  @StorageLink('day_night') daynight: 'day'|'night' = 'day'
+  @State vipImageUrl :string = ''
   @State dynamic_count: string = "-"
   @State fans: string = "-"
   @State following: string = "-"
   @State bcoin: number = 0
   @State userName: string = "bilibili_user"
 
-  async  aboutToAppear() {
+    aboutToAppear() {
     // 是否登录相关数据
     // 第一次登录时，loginNavData中只有isLogin这一个数据，其他为null，因此需要重新获取
-    if (!this.isLogin){
-      await ApiLogin.loginNav().then(response=>{
-        this.loginNavData = response
-        this.vipImageUrl = response.vip.label.img_label_uri_hans_static
-        this.bcoin = response.wallet.bcoin_balance
-        this.loginIcon = this.loginNavData.face
-      })
-    }
 
-    await ApiLogin.getUserState().then(response=>{
-      Utils.Toast(response+"")
+     ApiLogin.loginNav().then(response=>{
+      this.loginNavData = response
+      this.vipImageUrl = response.vip.label.img_label_uri_hans_static
+      this.bcoin = response.wallet.bcoin_balance
+      this.loginIcon = this.loginNavData.face
+      this.userName = this.loginNavData.uname
+      return  ApiLogin.getUserState()
+    }).then(response=>{
+       Utils.Toast(response+"")
       if (response!==undefined) {
         this.dynamic_count = response.dynamic_count.toString()
         this.fans = response.follower.toString()
@@ -64,16 +68,21 @@ struct MineInfoPage {
       Utils.Toast(err+"---Mine页面")
     })
 
-    this.userName = this.loginNavData.uname
   }
 
   build() {
     Column() {
       Row() {
-        Image($r('app.media.ic_mine_daynight_night'))
+        Image(this.daynight==='day'?$r('app.media.ic_mine_daynight_night'):$r('app.media.ic_mine_daynight_day'))
           .height('50%')
           .aspectRatio(1)
+          .objectFit(ImageFit.Cover)
+          .interpolation(ImageInterpolation.High)
           .margin('2%')
+          .onClick(()=>{
+            this.daynight = this.daynight ==='day'?'night':'day'
+            this.backgroundColors = this.daynight?Constants.BACKGROUND_DAY:Constants.BACKGROUND_NIGHT
+          })
       }.rowItemStyle()
       .justifyContent(FlexAlign.End)
       .height('6%')
@@ -131,6 +140,7 @@ struct MineInfoPage {
       }.rowItemStyle()
     }.width('100%') 
     .height('100%')
+    .backgroundColor(this.backgroundColors)
   }
 
   @Builder
@@ -171,12 +181,13 @@ function columnStyle(){
   .height('100%')
   .layoutWeight(1)
 }
+
 @Extend(Row)
 function rowItemStyle(){
   .alignItems(VerticalAlign.Center)
-  .height('8%')
+  .height('6%')
   .width('100%')
-  .margin({top:'1%'})
+  .margin({top:'0.5%'})
 }
 
 @Component
@@ -188,10 +199,12 @@ struct ItemContent{
       Blank().layoutWeight(2)
       Text(this.state)
         .fontColor($r('app.color.bilibili_text_black_middle'))
-        .fontSize(16)
+        .fontSize(20)
         .fontWeight(FontWeight.Bold)
         .maxLines(1)
-        .height('40%')
+        .height('50%')
+        .textAlign(TextAlign.Center)
+
       Text(this.content)
         .fontColor($r('app.color.bilibili_text_grey_light'))
         .fontSize(14)
@@ -199,7 +212,7 @@ struct ItemContent{
         .height('30%')
       Blank().layoutWeight(2)
     }.alignItems(HorizontalAlign.Center)
-    .justifyContent(FlexAlign.Center)
+    .justifyContent(FlexAlign.Start)
     .columnStyle()
   }
 }

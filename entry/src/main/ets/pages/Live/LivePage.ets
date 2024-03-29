@@ -1,5 +1,6 @@
 import router from '@ohos.router'
 import { LiveBean, LiveUrlBean } from '../../bean/Live/LiveBean'
+import Constants from '../../common/Constants'
 import { VideoPlay } from '../../component/VideoPlay'
 import  ApiLiving  from '../../net/ApiLiving'
 import { VideoViewModel } from '../../viewModel/VideoViewModel'
@@ -11,6 +12,7 @@ struct LivePage {
   @State liveUrl:LiveUrlBean = new LiveUrlBean()
   @State videoViewModel:VideoViewModel = new VideoViewModel()
   @State url :string=''
+  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
     this.roomId = router.getParams()['roomId']
 
@@ -23,7 +25,7 @@ struct LivePage {
     Column() {
       VideoPlay({videoViewModel:this.videoViewModel,url:this.url})
         .layoutWeight(1)
-    }
+    }.backgroundColor(this.backgroundColors)
     .width('100%')
   }
 }

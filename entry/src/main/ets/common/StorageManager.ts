@@ -1,6 +1,8 @@
 PersistentStorage.PersistProp<string>('bilibili_cookie','当前无cookie')
-AppStorage.SetOrCreate('isLogin', false);
+PersistentStorage.PersistProp<string>('background_color','#FFFFFF')
+PersistentStorage.PersistProp<string>('day_night','day')
 
+AppStorage.SetOrCreate('isLogin', false);
 export class StorageManager{
   private loginLink: SubscribedAbstractProperty<boolean> = AppStorage.Link('isLogin');
   private cookieLink: SubscribedAbstractProperty<string> = AppStorage.Link('bilibili_cookie');

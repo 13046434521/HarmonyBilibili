@@ -5,10 +5,7 @@ import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { SearchView } from '../component/HomeSearch';
 import { Utils } from '../Utils/Utils';
 import { HomeData } from '../datasource/HomeData';
-import { Loading } from '../component/LoadingComponent';
-import { LoginNavBean } from '../bean/login/LoginNavBean';
-import { TabIcon } from './Index';
-import StorageManager from '../common/StorageManager';
+import Constants from '../common/Constants';
 
 @Component
 export struct HomePage {
@@ -19,8 +16,9 @@ export struct HomePage {
   @State isRefreshing: boolean = false
 
   @State loginIcon:string = ''
-  @StorageLink('isLogin') isLogin :boolean = false
+  @StorageLink('isLogin') isLogin:boolean = false
   @StorageLink('login_img_url') vipImageUrl :string = ''
+  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   onLoginClick:()=>void
   aboutToAppear(){
     if (router.getParams()!==undefined){
@@ -43,7 +41,7 @@ export struct HomePage {
       .width('100%')
     }
     .height('100%')
-    .backgroundColor($r('app.color.bilibili_background_grey'))
+    .backgroundColor(this.backgroundColors)
   }
 
   @Builder HomeItem(homeBeanItem:HomeBeanItem){

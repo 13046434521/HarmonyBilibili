@@ -5,16 +5,28 @@ import StorageManager from '../common/StorageManager'
 export struct ShoppingPage {
   @State msg:string = "123"
   @StorageLink('isLogin') isLogin:boolean = false
+  @StorageLink('login_img_url') vipImageUrl :string = ''
+  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
+  @State isLoginImg:boolean = false
   num = 1
   build() {
     Column() {
 
       Button("测试啊").onClick(()=>{
         this.isLogin=!this.isLogin
+        this.isLoginImg= this.isLogin
+        this.vipImageUrl = 'https://img1.baidu.com/it/u=3825090768,663587812&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1711904400&t=ed4de14b0f10fce34b16aad9ab781b2e'
       })
 
       Text(this.isLogin ?"true":"false")
 
+      Image(this.isLogin?$r('app.media.bili_nologin_avatar'):'https://img1.baidu.com/it/u=3825090768,663587812&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1711904400&t=ed4de14b0f10fce34b16aad9ab781b2e').width(100).height(100)
+      Image(this.isLogin?$r('app.media.bili_nologin_avatar'):$r('app.media.test')).width(100).height(100)
+      Image(!this.isLogin?$r('app.media.bili_nologin_avatar'):'https://img1.baidu.com/it/u=3825090768,663587812&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1711904400&t=ed4de14b0f10fce34b16aad9ab781b2e').width(100).height(100)
+
+      Image(this.isLoginImg?$r('app.media.bili_nologin_avatar'):$r('app.media.test')).width(100).height(100)
+      Image(this.isLoginImg?$r('app.media.bili_nologin_avatar'):this.vipImageUrl).width(100).height(100)
+      Image(this.isLoginImg?$r('app.media.bili_nologin_avatar'):this.vipImageUrl).width(100).height(100)
       Text(this.msg)
       Button('getCookie').onClick(()=>{
         this.msg = StorageManager.getCookie()

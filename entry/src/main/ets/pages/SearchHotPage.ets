@@ -1,5 +1,6 @@
 import router from '@ohos.router'
 import { SearchHotBeanItem } from '../bean/SearchHotBean'
+import Constants from '../common/Constants'
 import { SearchHeader} from '../component/SearchHeader'
 import { HotSearchData } from '../datasource/HotSearchData'
 
@@ -11,7 +12,7 @@ struct SearchHotPage {
   @State title: string = '搜索视频、番剧或up主'
   @State search: string = '搜索视频、番剧或up主'
   @State hotSearchData: HotSearchData = new HotSearchData()
-
+  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   aboutToAppear() {
     // 传搜索栏的值
     let param = router.getParams()['title']
@@ -51,6 +52,7 @@ struct SearchHotPage {
     }
     .width('100%')
     .height('100%')
+    .backgroundColor(this.backgroundColors)
   }
 
   // 热搜

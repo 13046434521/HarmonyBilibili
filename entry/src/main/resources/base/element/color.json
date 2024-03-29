@@ -7,6 +7,9 @@
     {
       "name": "bilibili_background_white",
       "value": "#FFFFFF"
+    },{
+      "name": "bilibili_background_black",
+      "value": "#17181A"
     },
     {
       "name": "bilibili_divider",
@@ -67,8 +70,6 @@
     {
       "name": "color_orange",
       "value": "#F98D40"
-    },
-
-
+    }
   ]
 }

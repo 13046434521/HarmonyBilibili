@@ -1,9 +1,11 @@
 // 登录相关
+import axios from '@ohos/axios'
 import { LoginNavBean } from '../bean/login/LoginNavBean'
 import { LoginUserInfoBean } from '../bean/login/LoginUserInfoBean'
 import { QrcodeGenerateBean } from '../bean/login/QrcodeGenerateBean'
 import { QrcodeLoginBean } from '../bean/login/QrcodeLoginBean'
 import { UserStateBean } from '../bean/login/UserStateBean'
+import StorageManager from '../common/StorageManager'
 import { ApiBase } from './ApiBase'
 
 
@@ -27,6 +29,7 @@ export class ApiLogin extends ApiBase{
   // 同时可以根据这个来判断是否需要重新登录
   loginNav():Promise<LoginNavBean>{
     let url = "https://api.bilibili.com/x/web-interface/nav"
+    this.instanceAxios.defaults.headers['Cookie'] = StorageManager.getCookie();
     return this.request<LoginNavBean>(url,this.instanceAxios)
   }
 
