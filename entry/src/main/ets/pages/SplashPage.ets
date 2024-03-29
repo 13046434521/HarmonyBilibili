@@ -12,10 +12,11 @@ import Constants from '../common/Constants'
 @Component
 struct SplashPage {
   homeBeanData: Array<HomeBeanItem> = null
-  loginNavData: LoginNavBean = null
   @State content: string = "加载中..."
 
-  // @StorageLink('bilibili_cookie') biliCookie:string  =''
+  @StorageLink('isLogin') isLogin:boolean = false
+  @StorageLink('login_img_url') vipImageUrl :string = ''
+
   aboutToAppear() {
     this.update()
   }
@@ -48,13 +49,12 @@ struct SplashPage {
   update() {
     ApiLogin.loginNav()
       .then(response => {
-        this.loginNavData = response
-        StorageManager.setData(Constants.Login_Data, response)
+        this.isLogin = response.isLogin
+        this.vipImageUrl = response.face
         return Api.getHomePages()
       })
       .then(response => {
         this.homeBeanData = response.item
-        StorageManager.setData(Constants.Home_Data, response.item)
       })
       .catch(e => {
         Utils.Toast(e)
@@ -65,7 +65,6 @@ struct SplashPage {
           url: 'pages/Index',
           params: {
             'homeData': this.homeBeanData,
-            'loginData': this.loginNavData
           }
         }, router.RouterMode.Single)
       })

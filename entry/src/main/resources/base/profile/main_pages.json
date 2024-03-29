@@ -7,6 +7,7 @@
     "pages/SearchPage",
     "pages/SearchWebPage",
     "pages/Live/LivePage",
-    "pages/MediaFt/MediaFtPage"
+    "pages/MediaFt/MediaFtPage",
+    "pages/TestPage"
   ]
 }

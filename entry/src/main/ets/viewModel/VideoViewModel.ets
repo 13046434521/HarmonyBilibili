@@ -46,7 +46,7 @@ export class VideoViewModel implements IPlayer {
 
   private startProgressTask() {
     this.updateProgressTimer = setInterval(() => {
-      if (IjkMediaPlayer.getInstance().isPlaying() && this.videoModel.state === PlayStatus.PLAY) {
+      if (this.videoModel.state === PlayStatus.PLAY && this.videoModel.context!=null&&IjkMediaPlayer.getInstance().isPlaying()) {
         let duration = IjkMediaPlayer.getInstance().getDuration()
         let current = IjkMediaPlayer.getInstance().getCurrentPosition()
         if (duration>0) {
@@ -75,7 +75,7 @@ export class VideoViewModel implements IPlayer {
   }
 
   reset() {
-    if (this.videoModel.context!=null && this.videoModel.context!=null) {
+    if (this.videoModel.context!=null) {
       this.videoModel.state = PlayStatus.INIT
       IjkMediaPlayer.getInstance().reset()
       this.init(this.videoModel.context)

@@ -7,6 +7,8 @@ import { Utils } from '../Utils/Utils';
 import { HomeData } from '../datasource/HomeData';
 import { Loading } from '../component/LoadingComponent';
 import { LoginNavBean } from '../bean/login/LoginNavBean';
+import { TabIcon } from './Index';
+import StorageManager from '../common/StorageManager';
 
 @Component
 export struct HomePage {
@@ -16,18 +18,15 @@ export struct HomePage {
   @State homePage: number = 0
   @State isRefreshing: boolean = false
 
-  @State loginNavData:LoginNavBean = undefined
-  @State isLogin:boolean = false
   @State loginIcon:string = ''
+  @StorageLink('isLogin') isLogin :boolean = false
+  @StorageLink('login_img_url') vipImageUrl :string = ''
+  onLoginClick:()=>void
   aboutToAppear(){
     if (router.getParams()!==undefined){
       // 主页数据
       let homeData_splash = router.getParams()['homeData']
       this.homeData.pushDataAll(homeData_splash)
-      // 是否登录相关数据
-      this.loginNavData = router.getParams()['loginData']
-      this.isLogin = this.loginNavData.isLogin
-      this.loginIcon = this.loginNavData.face
     }
 
     Api.getHomeSearch().then(homesearchbean=>{
@@ -133,13 +132,14 @@ export struct HomePage {
 
   @Builder HomeHeader(){
     Row(){
-      Image(this.isLogin?this.loginIcon:$r('app.media.bili_nologin_avatar'))
+      Image(this.isLogin?this.vipImageUrl:$r('app.media.bili_nologin_avatar'))
         .imageBtnStyle()
         .borderRadius(100)
         .onClick(()=>{
           if (!this.isLogin) {
-            Utils.Toast('还没有登录')
+            Utils.Toast('账号未登录，请登录')
           }
+          this.onLoginClick()
         })
       SearchView({title:this.homeSearchBeanData.show_name})
         .height('50%').onClick(event=>{

@@ -8,133 +8,14 @@ import { Utils } from '../Utils/Utils'
 @Preview
 export struct MomentPage {
   @State message: string = '动态'
-
-@State loadingStatus:LoadingStatus = LoadingStatus.Loading
-  @State fontColor: string = '#182431'
-  @State selectedFontColor: string = '#007DFF'
-  @State currentIndex: number = 0
-  @State asp:number = 1
-  @State @Watch('ttt')aheight:string = '100%'
-  @State awidth:string = undefined
-  private controller: TabsController = new TabsController()
-
-  aboutToAppear(){
-    this.test()
-
-    console.log("我是4")
-  }
-
-  async test(){
-    console.log("我是1")
-
-    await this.test1()
-    await this.test2()
-    console.log("我是3")
-  }
-
-  test1(){
-    return new Promise((resolve)=>{
-      setTimeout(()=>{
-        resolve( console.log("我是2.1"))
-      },3000)
-    }).then(()=>{
-      // Utils.Toast("我是2.1")
-    })
-  }
-
-  test2(){
-    return new Promise((resolve)=>{
-      setTimeout(()=>{
-        resolve(console.log("我是2.2"))
-      },1000)
-    }).then(()=>{
-      // Utils.Toast("我是2.2")
-    })
-  }
-ttt(){
-  Utils.Toast(this.awidth+'----'+this.aheight+'   '+this.asp)
-}
-
-  @State bb:number = 60
-  build() {
-    Column() {
-      Button( this.message).onClick(()=>{
-        if (this.asp===16/9) {
-          this.asp =9/16
-          this.awidth=undefined
-          this.aheight='100%'
-        }else{
-          this.asp=16/9
-          this.awidth='100%'
-          this.aheight=undefined
-        }
-        this.message = this.asp+''
+  @StorageLink('isLogin') isLogin:boolean = false
+  build(){
+    Column(){
+      Button().onClick(()=>{
+        this.isLogin=true
       })
-      Text("测试一下")
-        .height(this.aheight)
-        .width(this.awidth)
-        .aspectRatio(this.asp)
-        .borderWidth(2)
-        .borderColor(Color.Orange)
-      // VolumeBrightness({value:this.bb})
-      //   .width(100)
-      //   .height(100)
 
-
-    }.width('100%')
-    .height('40%')
-  }
-
-
-
-  @Builder Tab(){
-
-
-    Tabs({ barPosition: BarPosition.Start, controller: this.controller }) {
-      TabContent() {
-        Column(){
-          Loading()
-
-        }.width('100%').height('100%').backgroundColor('#00CB87')
-      }.tabBar(this.TabBuilder(0, 'green'))
-
-      TabContent() {
-        Column().width('100%').height('100%').backgroundColor('#007DFF')
-      }.tabBar(this.TabBuilder(1, 'blue'))
-
-      TabContent() {
-        Column().width('100%').height('100%').backgroundColor('#FFBF00')
-      }.tabBar(this.TabBuilder(2, 'yellow'))
-
-      TabContent() {
-        Column().width('100%').height('100%').backgroundColor('#E67C92')
-      }.tabBar(this.TabBuilder(3, 'pink'))
+      Text(this.isLogin ?"true":"false")
     }
-    .vertical(false)
-    .barMode(BarMode.Fixed)
-    .barWidth(360)
-    .barHeight(56)
-    .animationDuration(400)
-    .onChange((index: number) => {
-      this.currentIndex = index
-    })
-    .width(360)
-    .height(296)
-    .margin({ top: 52 })
-    .backgroundColor('#F1F3F5')
-  }
-  @Builder TabBuilder(index: number, name: string) {
-    Column() {
-      Text(name)
-        .fontColor(this.currentIndex === index ? this.selectedFontColor : this.fontColor)
-        .fontSize(16)
-        .fontWeight(this.currentIndex === index ? 500 : 400)
-        .lineHeight(22)
-        .margin({ top: 17, bottom: 7 })
-      Divider()
-        .strokeWidth(2)
-        .color('#007DFF')
-        .opacity(this.currentIndex === index ? 1 : 0)
-    }.width('100%')
   }
 }

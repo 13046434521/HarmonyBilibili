@@ -14,6 +14,7 @@ export struct SearchHeader {
     Row() {
       Image($r('app.media.ic_common_back_gray'))
         .objectFit(ImageFit.Auto)
+        .interpolation(ImageInterpolation.High)
         .renderMode(ImageRenderMode.Original)
         .width(24)
         .margin({ left: 10, right: 10 })

@@ -109,7 +109,7 @@
  * */
 // https://api.bilibili.com/x/web-interface/nav
 // 可以通过cookie获取当前登录状态
-export interface LoginNavBean {
+export class LoginNavBean {
   isLogin: boolean
   email_verified: number
   face: string

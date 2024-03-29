@@ -25,12 +25,24 @@
       "value": "#F2F3F5"
     },
     {
+      "name": "bilibili_text_grey_light",
+      "value": "#A2A2A2"
+    },
+    {
       "name": "bilibili_text_grey_bold",
       "value": "#94999D"
     },
     {
       "name": "bilibili_text_black",
       "value": "#18191D"
+    },
+    {
+      "name": "bilibili_text_black_middle",
+      "value": "#383838"
+    },
+    {
+      "name": "bilibili_text_black_light",
+      "value": "#575862"
     },
     {
       "name": "bilibili_text_white",
@@ -55,6 +67,8 @@
     {
       "name": "color_orange",
       "value": "#F98D40"
-    }
+    },
+
+
   ]
 }

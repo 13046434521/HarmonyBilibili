@@ -6,7 +6,8 @@ import { NewPage } from './NewPage'
 import { ShoppingPage } from './ShoppingPage'
 import deviceInfo from '@ohos.deviceInfo';
 
-class TabIcon {
+@Observed
+export class TabIcon {
   text: string
   index: number
   path: Resource
@@ -29,35 +30,43 @@ struct Index {
     new TabIcon('我的', $r('app.media.ic_tab_bar_mine'))]
 
   @State currentTab :TabIcon = this.tabs[0]
+  controller:TabsController = new TabsController()
   aboutToAppear(){
     Utils.Toast("型号："+deviceInfo.deviceType + "系统版本："+ deviceInfo.osFullName+ "  SDKApi："+deviceInfo.sdkApiVersion)
   }
 
+  onLoginClick:()=>void =()=>{
+    this.currentTab = this.tabs[4]
+    this.controller.changeIndex(4)
+  }
+
   build() {
-    Tabs(){
-      TabContent(){
-        HomePage()
-      }.tabBar(this.TabBuilder(0))
-      TabContent(){
-        MomentPage()
-      }.tabBar(this.TabBuilder(1))
-      TabContent(){
-        NewPage()
-      }.tabBar(this.TabBuilder(2))
-      TabContent(){
-        ShoppingPage()
-      }.tabBar(this.TabBuilder(3))
-      TabContent(){
-        MinePage()
-      }.tabBar(this.TabBuilder(4))
+    Column(){
+      Tabs({controller:this.controller}){
+        TabContent(){
+          HomePage({onLoginClick:this.onLoginClick.bind(this)})
+        }.tabBar(this.TabBuilder(0))
+        TabContent(){
+          MomentPage()
+        }.tabBar(this.TabBuilder(1))
+        TabContent(){
+          NewPage()
+        }.tabBar(this.TabBuilder(2))
+        TabContent(){
+          ShoppingPage()
+        }.tabBar(this.TabBuilder(3))
+        TabContent(){
+          MinePage()
+        }.tabBar(this.TabBuilder(4))
+      }
+      .barMode(BarMode.Fixed)
+      .scrollable(false)
+      .barPosition(BarPosition.End)
+      .layoutWeight(1)
+      .onChange((index)=>{
+        this.currentTab = this.tabs[index]
+      })
     }
-    .barMode(BarMode.Fixed)
-    .scrollable(false)
-    .barPosition(BarPosition.End)
-    .layoutWeight(1)
-    .onChange((index)=>{
-      this.currentTab = this.tabs[index]
-    })
   }
   @Builder TabBuilder(index: number) {
     Column() {

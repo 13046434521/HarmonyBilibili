@@ -1,33 +1,22 @@
-import { LoginNavBean } from '../bean/login/LoginNavBean';
-
 PersistentStorage.PersistProp<string>('bilibili_cookie','当前无cookie')
 AppStorage.SetOrCreate('isLogin', false);
 
 export class StorageManager{
-  private link: SubscribedAbstractProperty<boolean> = AppStorage.Link('isLogin');
+  private loginLink: SubscribedAbstractProperty<boolean> = AppStorage.Link('isLogin');
+  private cookieLink: SubscribedAbstractProperty<string> = AppStorage.Link('bilibili_cookie');
 
   init(){
     console.log('StorageManager init')
   }
 
   loginCookie(cookie:string){
-    AppStorage.Set<string>('bilibili_cookie',cookie)
+    this.cookieLink.set(cookie)
     console.log('StorageManager loginCookie:'+cookie)
   }
 
   getCookie():string{
     console.log('StorageManager getCookie')
-    return AppStorage.Get<string>('bilibili_cookie')
-  }
-
-  isLogin():boolean{
-    console.log('StorageManager isLogin')
-   return this.link.get()
-  }
-
-  setLogin(login:boolean){
-    console.log('StorageManager setLogin:'+login)
-    this.link.set(login)
+    return this.cookieLink.get()
   }
 
   setData<T>(key:string,data:T){
