@@ -5,12 +5,12 @@ export struct SearchView{
   build(){
     Row(){
       Image($r('app.media.ic_home_search'))
-        .height(24)
-        .width(24)
-        .margin(16)
-        .objectFit(ImageFit.Cover)
+        .width('8%')
+        .aspectRatio(1)
+        .margin({left:'3%',right:'3%',top:'1%',bottom:'1%'})
+        .objectFit(ImageFit.Auto)
       Text(this.title)
-        .height(24)
+        .height('100%')
         .layoutWeight(1)
         .fontSize(14)
         .maxLines(1)
@@ -18,8 +18,8 @@ export struct SearchView{
     }.height('100%')
     .width('100%')
     .backgroundColor(Color.White)
-    .borderWidth(1)
+    .borderWidth(2)
     .borderRadius(50)
-    .borderColor(Color.Gray)
+    .borderColor($r('app.color.color_gray'))
   }
 }

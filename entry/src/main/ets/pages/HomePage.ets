@@ -5,6 +5,8 @@ import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { SearchView } from '../component/HomeSearch';
 import { Utils } from '../Utils/Utils';
 import { HomeData } from '../datasource/HomeData';
+import { Loading } from '../component/LoadingComponent';
+import { LoginNavBean } from '../bean/login/LoginNavBean';
 
 @Component
 export struct HomePage {
@@ -13,10 +15,19 @@ export struct HomePage {
   @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
   @State homePage: number = 0
   @State isRefreshing: boolean = false
+
+  @State loginNavData:LoginNavBean = undefined
+  @State isLogin:boolean = false
+  @State loginIcon:string = ''
   aboutToAppear(){
     if (router.getParams()!==undefined){
+      // 主页数据
       let homeData_splash = router.getParams()['homeData']
       this.homeData.pushDataAll(homeData_splash)
+      // 是否登录相关数据
+      this.loginNavData = router.getParams()['loginData']
+      this.isLogin = this.loginNavData.isLogin
+      this.loginIcon = this.loginNavData.face
     }
 
     Api.getHomeSearch().then(homesearchbean=>{
@@ -122,33 +133,29 @@ export struct HomePage {
 
   @Builder HomeHeader(){
     Row(){
-      Image($r('app.media.test'))
-        .objectFit(ImageFit.Auto)
-        .width(24)
-        .height(24)
-        .margin({left:10})
-      Row(){
-        SearchView({title:this.homeSearchBeanData.show_name})
-          .height(30)
-      }.onClick(event=>{
+      Image(this.isLogin?this.loginIcon:$r('app.media.bili_nologin_avatar'))
+        .imageBtnStyle()
+        .borderRadius(100)
+        .onClick(()=>{
+          if (!this.isLogin) {
+            Utils.Toast('还没有登录')
+          }
+        })
+      SearchView({title:this.homeSearchBeanData.show_name})
+        .height('50%').onClick(event=>{
         router.pushUrl({url:'pages/SearchHotPage',params:{
           title:this.homeSearchBeanData.show_name
         }})
       }).layoutWeight(1)
-
-      .margin({left:10,right:10})
+      .margin({left:'2%',right:'4%'})
       Image($r('app.media.ic_home_game_center'))
-        .objectFit(ImageFit.Auto)
-        .interpolation(ImageInterpolation.High)
-        .height(24)
-        .aspectRatio(1)
-        .margin({left:10,right:10})
+        .imageBtnStyle()
+        .padding('1%')
+        .height('40%')
       Image($r('app.media.ic_home_message'))
-        .objectFit(ImageFit.Auto)
-        .interpolation(ImageInterpolation.High)
-        .height(24)
-        .aspectRatio(1)
-        .margin({left:10,right:10})
+        .imageBtnStyle()
+        .height('40%')
+        .padding('1%')
     }.width("100%")
     .height('8%')
     .backgroundColor($r('app.color.bilibili_background_white'))
@@ -177,15 +184,14 @@ export struct HomePage {
         })
       })
     }.onRefreshing(()=>{
-      Api.getHomePages().then(homebean=>{
-        this.homeData.cleanData()
-        this.homeData.pushDataAll(homebean.item)
-        this.isRefreshing = false
-        this.homePage = 1
-      }).catch(err=>{
-        this.isRefreshing = false
+      Api.getHomePages(this.homePage+1).then(response=>{
+        if (response.item!=undefined) {
+          this.homeData.cleanData()
+          this.homeData.addDataAll(response.item)
+          this.homePage++
+        }
       }).finally(()=>{
-        this.homePage = 0
+        this.isRefreshing = false
       })
     }).layoutWeight(1)
   }
@@ -195,4 +201,13 @@ export struct HomePage {
   .height(20)
   .fontSize(11)
   .fontColor(Color.White)
+}
+
+@Extend(Image)
+function imageBtnStyle() {
+  .interpolation(ImageInterpolation.High)
+  .objectFit(ImageFit.Contain)
+  .height('50%')
+  .aspectRatio(1)
+  .margin({left:'2%',right:'2%'})
 }

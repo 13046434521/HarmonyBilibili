@@ -106,8 +106,7 @@ struct VideoPlayer {
         Row() {
           Blank("亮度")
             .layoutWeight(1)
-            .borderWidth(1)
-            .borderColor(Color.Orange)
+
             .gesture(GestureGroup(GestureMode.Exclusive,
               PanGesture({direction:PanDirection.Vertical})
                 .onActionStart((event?:GestureEvent)=>{
@@ -145,13 +144,11 @@ struct VideoPlayer {
             }
           }.layoutWeight(1)
           .width('100%')
-          .borderWidth(1)
-          .borderColor(Color.Yellow)
+
 
           Blank('声音')
             .layoutWeight(1)
-            .borderWidth(1)
-            .borderColor(Color.Blue)
+
             .gesture(GestureGroup(GestureMode.Exclusive,
               PanGesture({direction:PanDirection.Vertical})
                 .onActionStart((event?:GestureEvent)=>{

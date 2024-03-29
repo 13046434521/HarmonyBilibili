@@ -31,27 +31,10 @@ struct Index {
   @State currentTab :TabIcon = this.tabs[0]
   aboutToAppear(){
     Utils.Toast("型号："+deviceInfo.deviceType + "系统版本："+ deviceInfo.osFullName+ "  SDKApi："+deviceInfo.sdkApiVersion)
-
   }
 
   build() {
     Tabs(){
-      // TabContent(){
-      //   HomePage()
-      // }.tabBar(new BottomTabBarStyle(this.tabs[0].path, this.tabs[0].text))
-      // TabContent(){
-      //   MomentPage()
-      // }.tabBar(new BottomTabBarStyle(this.tabs[1].path, this.tabs[1].text))
-      // TabContent(){
-      //   NewPage()
-      // }.tabBar(new BottomTabBarStyle(this.tabs[2].path, this.tabs[2].text))
-      // TabContent(){
-      //   ShoppingPage()
-      // }.tabBar(new BottomTabBarStyle(this.tabs[3].path, this.tabs[3].text))
-      // TabContent(){
-      //   MinePage()
-      // }.tabBar(new BottomTabBarStyle(this.tabs[4].path, this.tabs[4].text))
-
       TabContent(){
         HomePage()
       }.tabBar(this.TabBuilder(0))

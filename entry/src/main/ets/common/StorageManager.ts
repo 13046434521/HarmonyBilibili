@@ -1,11 +1,12 @@
+import { LoginNavBean } from '../bean/login/LoginNavBean';
 
 PersistentStorage.PersistProp<string>('bilibili_cookie','当前无cookie')
 AppStorage.SetOrCreate('isLogin', false);
+
 export class StorageManager{
   private link: SubscribedAbstractProperty<boolean> = AppStorage.Link('isLogin');
 
   init(){
-
     console.log('StorageManager init')
   }
 
@@ -27,6 +28,14 @@ export class StorageManager{
   setLogin(login:boolean){
     console.log('StorageManager setLogin:'+login)
     this.link.set(login)
+  }
+
+  setData<T>(key:string,data:T){
+    AppStorage.SetOrCreate(key, data);
+  }
+
+  getData<T>(key:string){
+    return AppStorage.Get<T>(key)
   }
 }
 

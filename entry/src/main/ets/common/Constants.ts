@@ -15,6 +15,9 @@ class Constants{
   SEARCH_FOCUS_ID = "search_focus" // SearchHeader准备获取焦距的
   COOKIE_NAME ='bilibili_cookie'
 
+  /*------------------------------------------- AppStorage --------------------------------------------*/
+  Login_Data:string = 'Bilibili_Login'
+  Home_Data:string = 'Bilibili_Home'
   getCookie():string{
     return StorageManager.getCookie()
   }

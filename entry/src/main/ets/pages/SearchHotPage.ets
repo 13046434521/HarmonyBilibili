@@ -40,6 +40,7 @@ struct SearchHotPage {
         router.pushUrl({url:"pages/SearchWebPage"})
       })
 
+
       List() {
         LazyForEach(this.hotSearchData, (item: SearchHotBeanItem) => {
           ListItem(){

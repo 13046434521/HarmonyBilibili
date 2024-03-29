@@ -28,6 +28,16 @@ export class BasicDataSource<T> implements IDataSource  {
     }
   }
 
+  public addDataAll(data: T[]): void {
+    if (data!=null) {
+      // this.dataArray = data.concat(this.dataArray)
+      for (const temp of data) {
+        this.dataArray.unshift(temp)
+      }
+      this.notifyDataAdd(this.dataArray.length - 1)
+    }
+  }
+
   public cleanData(): void {
     this.dataArray =[]
     this.listeners =[]

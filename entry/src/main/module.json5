@@ -11,7 +11,7 @@
     ],
     "requestPermissions": [
       {"name": 'ohos.permission.INTERNET'},
-      {"name": 'ohos.permission.MODIFY_AUDIO_SETTINGS'}
+      {"name" :'ohos.permission.ACCESS_NOTIFICATION_POLICY'}
     ],
     "deliveryWithInstall": true,
     "installationFree": false,
