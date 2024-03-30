@@ -186,6 +186,28 @@ struct VideoPlayer {
           .linearGradient({
             colors: [["#00000000", 0.0], ["#aa000000", 1.0]]
           })
+        }else{
+          Row(){
+            Row()
+              .width(`${this.videoModel.sliderStep}%`)
+              .backgroundColor($r('app.color.bilibili_theme'))
+              .height('100%')
+          }.justifyContent(FlexAlign.Start)
+          .alignItems(VerticalAlign.Bottom)
+            .width('100%')
+            .height('0.5%')
+            .backgroundColor($r('app.color.bilibili_text_grey_light'))
+/*          Slider({
+            value: this.videoModel.sliderStep,
+            style: SliderStyle.OutSet,
+            direction: Axis.Horizontal
+          })
+            .blockColor($r('app.color.bilibili_theme'))
+            .trackColor($r('app.color.bilibili_text_grey_light'))
+            .selectedColor($r('app.color.bilibili_theme'))
+            .showTips(false)
+            .width('100%')
+            .height('2%')*/
         }
       }.width('100%')
       .height('100%')
@@ -223,9 +245,9 @@ struct VideoPlayer {
         style: SliderStyle.OutSet,
         direction: Axis.Horizontal
       })
-        .blockColor('#ED6A96')
-        .trackColor(Color.Grey)
-        .selectedColor("#ED6A96")
+        .blockColor($r('app.color.bilibili_theme'))
+        .trackColor($r('app.color.bilibili_text_grey_light'))
+        .selectedColor($r('app.color.bilibili_theme'))
         .showTips(false)
         .onChange((value: number, mode: SliderChangeMode) => {
           // value/100 是百分比  getDuration获取的是总时长
@@ -250,7 +272,6 @@ struct VideoPlayer {
 
       Image($r('app.media.ic_full_screen'))
         .onClick(() => {
-          // this.videoViewModel.setFullScreen()
           this.videoViewModel.changeOrientation()
           if (this.videoModel.orientation===window.Orientation.LANDSCAPE) {
             this.isFullScreen = undefined

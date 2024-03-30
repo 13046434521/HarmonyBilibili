@@ -15,24 +15,25 @@ export struct Loading {
   }
   build() {
     Column(){
-      Column(){
-        ImageAnimator().images([{
-          src: $r('app.media.mall_asyn_loading_anim_img01')
-        }, {
-          src: $r('app.media.mall_asyn_loading_anim_img02')
-        }, {
-          src: $r('app.media.mall_asyn_loading_anim_img03')
-        }, {
-          src: $r('app.media.mall_asyn_loading_anim_img04')
-        },
-        ]).iterations(-1)
-          .duration(1000)
-          .width('15%')
-          .aspectRatio(1)
-          .state(this.state)
-        Text('加载中...')
-          .fontSize(16)
-      }
+      ImageAnimator().images([{
+        src: $r('app.media.mall_asyn_loading_anim_img01')
+      }, {
+        src: $r('app.media.mall_asyn_loading_anim_img02')
+      }, {
+        src: $r('app.media.mall_asyn_loading_anim_img03')
+      }, {
+        src: $r('app.media.mall_asyn_loading_anim_img04')
+      },
+      ]).iterations(-1)
+        .duration(1000)
+        .width('50%')
+        .aspectRatio(1)
+        .state(this.state)
+      Text('正在加载数据...')
+        .width('100%')
+        .fontSize(20)
+        .textAlign(TextAlign.Center)
+        .fontColor($r('app.color.bilibili_text_grey_light'))
     }.width('100%')
     .height('100%')
     .alignItems(HorizontalAlign.Center)
