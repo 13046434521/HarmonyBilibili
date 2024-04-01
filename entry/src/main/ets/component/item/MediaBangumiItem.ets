@@ -1,4 +1,5 @@
 import { SearchMediaBangumiBean } from '../../bean/SearchMediaBangumiBean'
+import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 
 @Component
@@ -133,7 +134,7 @@ export struct MediaBangumiItem{
 
       Divider().width('95%').color($r('app.color.bilibili_divider'))
     }.onClick(()=>{
-      this.item.type
+      PageManager.routerMediaFt(this.item.season_id)
     })
   }
 }
