@@ -1,8 +1,16 @@
 import { SearchBiliUserBean } from '../../bean/SearchBiliUserBean'
+import deviceInfo from '@ohos.deviceInfo'
 
 @Component
 export struct BiliUserItem{
   item: SearchBiliUserBean
+  deviceType = 'phone'
+  userHeight = 100
+  aboutToAppear(){
+    this.deviceType = deviceInfo.deviceType
+
+    this.userHeight = this.deviceType==="phone"?80:100
+  }
   build(){
     this.biliUserItem(this.item)
   }
@@ -53,7 +61,7 @@ export struct BiliUserItem{
         .fontSize(14)
     }
     .width('100%')
-    .aspectRatio(25 / 6)
+    .height(this.userHeight)
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
   }

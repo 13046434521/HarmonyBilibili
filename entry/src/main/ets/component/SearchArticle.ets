@@ -49,8 +49,7 @@ export struct SearchArticleDetails {
       LazyForEach(this.articleData, (item: SearchArticleBean) => {
         ListItem() {
           ArticleItem({item:item})
-        }.width('100%')
-        .aspectRatio(3.5)
+        }
       },(item: SearchArticleBean) =>item.mid+item.title)
     }.divider({
       strokeWidth: 1,

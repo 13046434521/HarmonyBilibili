@@ -49,7 +49,7 @@ export struct SearchTabsAll {
         .color($r('app.color.bilibili_theme'))
         .opacity(this.currentIndex === index  ? 1 : 0)
         .width('60%')
-    }.width('10%')
+    }.width('15%')
     .onClick(()=>{
       this.currentIndex = index
       this.controller.changeIndex(this.currentIndex)
@@ -92,7 +92,7 @@ export struct SearchTabsAll {
     .scrollable(true)
     .barWidth('100%')
     .barMode(BarMode.Scrollable)
-    .animationDuration(100)
+    .animationDuration(200)
     .onChange((index: number) => {
       this.currentIndex = index
       this.controller.changeIndex(this.currentIndex)

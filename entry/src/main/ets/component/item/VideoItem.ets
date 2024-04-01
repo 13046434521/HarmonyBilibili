@@ -1,10 +1,18 @@
 import { SearchVideoBean } from '../../bean/SearchVideoBean'
 import Constants from '../../common/Constants'
 import { Utils } from '../../Utils/Utils'
+import deviceInfo from '@ohos.deviceInfo'
 
 @Component
 export struct VideoItem {
   item: SearchVideoBean
+  deviceType = 'phone'
+  imgHeight = 100
+  aboutToAppear(){
+    this.deviceType = deviceInfo.deviceType
+
+    this.imgHeight = this.deviceType==="phone"?100:150
+  }
 
   build() {
     Column() {
@@ -50,7 +58,7 @@ export struct VideoItem {
           Blank().layoutWeight(1)
 
           Row() {
-            Image($r('app.media.icon_playlist_upper'))
+            Image($r('app.media.ic_playlist_up_label'))
               .imageStyle()
             Text(this.item.author)
               .textStyle()
@@ -89,14 +97,14 @@ export struct VideoItem {
 
       }.justifyContent(FlexAlign.Start)
       .width('100%')
-      .height(100)
+      .height(this.imgHeight)
     }
   }
 }
 
 @Extend(Image)
 function imageStyle() {
-  .height('22%')
+  .height('15%')
   .aspectRatio(1)
   .objectFit(ImageFit.Cover)
   .interpolation(ImageInterpolation.High)

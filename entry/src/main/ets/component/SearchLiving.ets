@@ -46,13 +46,15 @@ export struct SearchLiving {
           LazyForEach(this.livingData,(item:SearchLiveRoomBean)=>{
             ListItem() {
               LiveRoomItem({ item: item })
-                .margin(4)
+                .margin('4%')
             }
           },(item:SearchLiveRoomBean)=>JSON.stringify(item))
         }
         .lanes(2)
         .width('100%')
         .height('100%')
+        .padding('2%')
+        .backgroundColor($r('app.color.bilibili_background_grey'))
         }
     }.edgeEffect(EdgeEffect.Fade)
     .align(Alignment.Top)

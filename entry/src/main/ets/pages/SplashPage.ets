@@ -31,8 +31,8 @@ struct SplashPage {
       .justifyContent(FlexAlign.Center)
 
       Button(this.content)
-        .width('16%')
-        .aspectRatio(4)
+        .width(120)
+        .aspectRatio(3)
         .fontSize(14)
         .fontColor($r('app.color.bilibili_text_white'))
         .borderColor($r('app.color.bilibili_background_grey'))

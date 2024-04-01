@@ -91,6 +91,7 @@ export class Api extends ApiBase{
   // 需要cookie
   // https://api.bilibili.com/x/web-interface/search/type?search_type=media_ft&keyword='年会不能停'&page=1
   getSearchType<T>(search_type:SearchType, keyword?: string, page?: number): Promise<SearchBaseBean<T>> {
+    keyword = '终结者'
     let key = keyword.replace(/ /g,`%20`)
     let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}`
     return this.request(url,this.instanceCookie)
