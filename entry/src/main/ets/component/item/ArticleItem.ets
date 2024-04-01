@@ -1,4 +1,5 @@
 import { SearchArticleBean } from '../../bean/SearchArticleBean'
+import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 
 @Component
@@ -63,5 +64,8 @@ export struct ArticleItem{
     .height('100%')
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
+    .onClick(()=>{
+      PageManager.routerArticle(this.item.id)
+    })
   }
 }

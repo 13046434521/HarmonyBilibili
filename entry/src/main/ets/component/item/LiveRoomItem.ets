@@ -61,7 +61,6 @@ export struct LiveRoomItem{
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
     .backgroundColor($r('app.color.bilibili_background_grey'))
     .onClick(event=>{
-        Utils.Toast('roomid:'+item.roomid+"")
       PageManager.routerLiving(item.roomid)
     }).width('100%')
   }

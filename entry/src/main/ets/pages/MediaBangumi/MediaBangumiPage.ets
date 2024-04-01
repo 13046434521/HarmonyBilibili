@@ -10,7 +10,7 @@ import { VideoViewModel } from '../../viewModel/VideoViewModel'
 
 @Entry
 @Component
-struct MediaFtPage {
+struct MediaBangumiPage {
   seasonId:number
   qn:number = Constants.QN
   @State videoViewModel:VideoViewModel = new VideoViewModel()
@@ -19,8 +19,8 @@ struct MediaFtPage {
   aboutToAppear(){
     if (router.getParams()!=null) {
       this.seasonId = router.getParams()[RouterConstants.SEASON_ID]
+      this.getData(this.seasonId,this.qn)
     }
-    this.getData(this.seasonId,this.qn)
   }
 
   getData(seasonId:number,qn:number){
@@ -32,7 +32,7 @@ struct MediaFtPage {
     }).then((response:MediaFtUrlBean)=>{
       this.url = response.durl[0].url
     }).catch(err=>{
-      Utils.Toast('MediaFtPage(影视播放页面):'+err)
+      Utils.Toast('MediaFtPage(番剧播放页面):'+err)
     })
   }
 

@@ -7,7 +7,6 @@ export struct MediaBangumiItem{
 
   build(){
     this.banguMiPageItem(this.item)
-
   }
 
   @Builder banguMiPageItem(item:SearchMediaBangumiBean){
