@@ -24,7 +24,6 @@ struct SplashPage {
       Column() {
         Image($r('app.media.ic_splash_default'))
           .width('50%')
-          .height('50%')
           .objectFit(ImageFit.Cover)
       }.width('100%')
       .height('100%')

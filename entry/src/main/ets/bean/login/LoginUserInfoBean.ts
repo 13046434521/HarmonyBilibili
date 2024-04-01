@@ -287,7 +287,10 @@ export class LoginUserCardBean {
     tv_due_date: number
     avatar_icon: {
       icon_type: number
-      icon_resource: {}
+      icon_resource: {
+        type: number
+        url: string
+      }
     }
     vipType: number
     vipStatus: number

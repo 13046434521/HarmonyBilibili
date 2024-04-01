@@ -38,11 +38,13 @@ struct MineInfoPage {
   @StorageLink('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   @StorageLink('day_night') daynight: 'day'|'night' = 'day'
   @State vipImageUrl :string = ''
+  @State vipBageUrl: string = undefined
   @State dynamic_count: string = "-"
   @State fans: string = "-"
   @State following: string = "-"
   @State bcoin: number = 0
   @State userName: string = "bilibili_user"
+   mid: number = 0
 
     aboutToAppear() {
     // 是否登录相关数据
@@ -54,20 +56,18 @@ struct MineInfoPage {
       this.bcoin = response.wallet.bcoin_balance
       this.loginIcon = this.loginNavData.face
       this.userName = this.loginNavData.uname
+       this.mid = response.mid
       return  ApiLogin.getUserState()
     }).then(response=>{
-       Utils.Toast(response+"")
-      if (response!==undefined) {
-        this.dynamic_count = response.dynamic_count.toString()
-        this.fans = response.follower.toString()
-        this.following = response.following.toString()
-      }
-
-      // return ApiLogin.loginUserInfo(430281002)
-    }).catch((err)=>{
+       this.dynamic_count = response.dynamic_count.toString()
+       this.fans = response.follower.toString()
+       this.following = response.following.toString()
+      return ApiLogin.loginUserInfo(this.mid)
+    }).then(response=>{
+        this.vipBageUrl = response.card.vip.avatar_icon.icon_resource.url
+     }).catch((err)=>{
       Utils.Toast(err+"---Mine页面")
     })
-
   }
 
   build() {
@@ -88,13 +88,27 @@ struct MineInfoPage {
       .height('6%')
 
       Row() {
-        Image(this.loginIcon)
-          .height('100%')
-          .aspectRatio(1)
-          .alt($r('app.media.ic_default_avatar'))
-          .borderRadius(100)
-          .margin("2%")
-
+        Column(){
+          Image(this.loginIcon)
+            .height('100%')
+            .aspectRatio(1)
+            .alt($r('app.media.ic_default_avatar'))
+            .borderRadius(100)
+          if (this.vipBageUrl!==undefined){
+            Image(this.vipBageUrl)
+              .height('30%')
+              .position({x:'75%',y:'75%'})
+              .aspectRatio(1)
+              .alt($r('app.media.ic_default_avatar'))
+              .borderRadius(100)
+              .interpolation(ImageInterpolation.High)
+              .objectFit(ImageFit.Cover)
+              .borderWidth(2)
+              .borderColor(Color.White)
+          }
+        }.height('100%')
+        .aspectRatio(1)
+        .margin("2%")
         Column(){
           Row(){
             Text(this.userName)
@@ -122,7 +136,6 @@ struct MineInfoPage {
       }
       .rowItemStyle()
 
-
       Row(){
         ItemContent({state:this.dynamic_count,content:"动态"})
         Divider()
@@ -144,6 +157,7 @@ struct MineInfoPage {
   }
 
   @Builder
+  // 离线缓存+历史记录+我的收藏+稍后再看
   ImageItemComponent(res:Resource,content:string){
     Column(){
       Blank().layoutWeight(2)
@@ -167,30 +181,8 @@ struct MineInfoPage {
     })
   }
 }
-
-@Extend(Divider)
-function dividerStyle(){
-  .strokeWidth(2)
-    .vertical(true)
-    .height("30%")
-    .color($r('app.color.bilibili_divider'))
-}
-
-@Extend(Column)
-function columnStyle(){
-  .height('100%')
-  .layoutWeight(1)
-}
-
-@Extend(Row)
-function rowItemStyle(){
-  .alignItems(VerticalAlign.Center)
-  .height('6%')
-  .width('100%')
-  .margin({top:'0.5%'})
-}
-
 @Component
+  // 动态+关注+粉丝
 struct ItemContent{
   @Prop state:string
   @Prop content:string
@@ -217,6 +209,27 @@ struct ItemContent{
   }
 }
 
+@Extend(Divider)
+function dividerStyle(){
+  .strokeWidth(2)
+    .vertical(true)
+    .height("30%")
+    .color($r('app.color.bilibili_divider'))
+}
+
+@Extend(Column)
+function columnStyle(){
+  .height('100%')
+  .layoutWeight(1)
+}
+
+@Extend(Row)
+function rowItemStyle(){
+  .alignItems(VerticalAlign.Center)
+  .height('6%')
+  .width('100%')
+  .margin({top:'0.5%'})
+}
 
 @Component
 struct LoginPage {

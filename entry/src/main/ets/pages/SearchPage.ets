@@ -10,8 +10,7 @@ import { LoadingData } from '../component/LoadingData'
 import { AllData } from '../datasource/AllData'
 import promptAction from '@ohos.promptAction'
 
-let controllerLocalStrorage = new LocalStorage({'tabsController':new TabsController()})
-@Entry(controllerLocalStrorage)
+@Entry
 @Component
 struct SearchPage {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading

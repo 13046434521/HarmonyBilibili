@@ -38,10 +38,9 @@ export class ApiLogin extends ApiBase{
   // https://api.bilibili.com/x/web-interface/card?mid=68406011
   // 用户名片信息 Cookie（SESSDATA）
   loginUserInfo(mid:number):Promise<LoginUserInfoBean>{
-    let url = `https://api.bilibili.com/x/web-interface/card?mid=${mid}}`
+    let url = `https://api.bilibili.com/x/web-interface/card?mid=${mid}`
     return this.request<LoginUserInfoBean>(url,this.instanceAxios)
   }
-
 
   getUserState():Promise<UserStateBean>{
     let url = "https://api.bilibili.com/x/web-interface/nav/stat"
