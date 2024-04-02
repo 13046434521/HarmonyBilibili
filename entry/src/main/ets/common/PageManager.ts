@@ -36,6 +36,10 @@ export class PageManager {
   static routerArticle(article_id: number) {
     router.pushUrl({ url: 'pages/Article/ArticlePage', params: { 'articleId': article_id } })
   }
+
+  static routerBiliUser(mid: number) {
+    router.pushUrl({ url: 'pages/BiliUser/BiliUserPage', params: { 'mid': mid } })
+  }
 }
 
 export class RouterConstants {
@@ -47,4 +51,5 @@ export class RouterConstants {
   static ROOM_ID = 'roomId' // 直播间
   static BVID = 'bvid' // 视频详情页面
   static CID = 'cid' // 视频详情页面
+  static MID = 'mid' // 视频详情页面
 }

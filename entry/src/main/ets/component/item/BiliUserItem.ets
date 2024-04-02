@@ -1,5 +1,6 @@
 import { SearchBiliUserBean } from '../../bean/SearchBiliUserBean'
 import deviceInfo from '@ohos.deviceInfo'
+import { PageManager } from '../../common/PageManager'
 
 @Component
 export struct BiliUserItem{
@@ -64,6 +65,9 @@ export struct BiliUserItem{
     .height(this.userHeight)
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
+    .onClick(()=>{
+      PageManager.routerBiliUser(this.item.mid)
+    })
   }
 
   userLevel(level: number): Resource {

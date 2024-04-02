@@ -2,6 +2,7 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig } from '@ohos/axios'
 import Constants from '../common/Constants'
 import StorageManager from '../common/StorageManager'
 import { Utils } from '../Utils/Utils'
+import cryptoFramework from '@ohos.security.cryptoFramework'
 
 export class ApiBase{
   protected baseURl = 'https://api.bilibili.com/x'

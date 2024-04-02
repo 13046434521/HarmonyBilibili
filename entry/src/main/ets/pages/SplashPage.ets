@@ -3,6 +3,7 @@ import Api from '../net/Api'
 import router from '@ohos.router'
 import ApiLogin from '../net/ApiLogin'
 import { Utils } from '../Utils/Utils'
+import StorageManager from '../common/StorageManager'
 
 
 @Entry
@@ -47,6 +48,7 @@ struct SplashPage {
       .then(response => {
         this.isLogin = response.isLogin
         this.loginIcon = response.face
+        StorageManager.setKey(response.wbi_img.img_url,response.wbi_img.sub_url)
         return Api.getHomePages()
       })
       .then(response => {

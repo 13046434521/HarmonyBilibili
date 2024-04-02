@@ -1,13 +1,10 @@
-import axios from '@ohos/axios';
 import { LoginNavBean } from '../bean/login/LoginNavBean';
 import { QrcodeGenerateBean } from '../bean/login/QrcodeGenerateBean';
 import Constants from '../common/Constants';
 import StorageManager from '../common/StorageManager';
 import ApiLogin from '../net/ApiLogin';
 import { Utils } from '../Utils/Utils';
-import router from '@ohos.router';
-import { LoginUserCardBean } from '../bean/login/LoginUserInfoBean';
-import { UserStateBean } from '../bean/login/UserStateBean';
+import ApiBiliUser from '../net/ApiBiliUser';
 
 @Preview
 @Component
@@ -57,12 +54,12 @@ struct MineInfoPage {
       this.loginIcon = this.loginNavData.face
       this.userName = this.loginNavData.uname
        this.mid = response.mid
-      return  ApiLogin.getUserState()
+      return  ApiBiliUser.getUserState()
     }).then(response=>{
        this.dynamic_count = response.dynamic_count.toString()
        this.fans = response.follower.toString()
        this.following = response.following.toString()
-      return ApiLogin.loginUserInfo(this.mid)
+      return ApiBiliUser.loginUserInfo(this.mid)
     }).then(response=>{
         this.vipBageUrl = response.card.vip.avatar_icon.icon_resource.url
      }).catch((err)=>{
