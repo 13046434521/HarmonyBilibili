@@ -6,19 +6,16 @@ import deviceInfo from '@ohos.deviceInfo'
 @Component
 export struct VideoItem {
   item: SearchVideoBean
-  deviceType = 'phone'
-  imgHeight = 100
+  deviceType = 'tablet'
+  imgHeight = 150
   aboutToAppear(){
     this.deviceType = deviceInfo.deviceType
 
-    this.imgHeight = this.deviceType==="phone"?100:150
+    this.imgHeight = this.deviceType==="tablet"?150:100
   }
 
   build() {
     Column() {
-      Divider().color($r('app.color.bilibili_divider'))
-        .margin({ left: '1%', right: '1%' })
-        .strokeWidth(1)
       Row() {
         Stack() {
           Image(`https:${this.item.pic}`)
@@ -98,6 +95,10 @@ export struct VideoItem {
       }.justifyContent(FlexAlign.Start)
       .width('100%')
       .height(this.imgHeight)
+
+      Divider().color($r('app.color.bilibili_divider'))
+        .margin({ left: '1%', right: '1%' })
+        .strokeWidth(1)
     }
   }
 }

@@ -4,12 +4,12 @@ import deviceInfo from '@ohos.deviceInfo'
 @Component
 export struct BiliUserItem{
   item: SearchBiliUserBean
-  deviceType = 'phone'
-  userHeight = 100
+  deviceType = 'tablet'
+  userHeight = 150
   aboutToAppear(){
     this.deviceType = deviceInfo.deviceType
 
-    this.userHeight = this.deviceType==="phone"?80:100
+    this.userHeight = this.deviceType==="tablet"?100:80
   }
   build(){
     this.biliUserItem(this.item)

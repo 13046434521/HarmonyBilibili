@@ -13,12 +13,12 @@ export struct LoadingData{
   build(){
     if (this.loadingStatus === LoadingStatus.Loading){
       Loading({extra:this.extraSuccess})
-        .width('50%').layoutWeight(1)
+        .width('100%').layoutWeight(1)
     }else if (this.loadingStatus === LoadingStatus.LoadingSuccess){
       this.page()
     }else if (this.loadingStatus === LoadingStatus.LoadingFailure){
       Failure({extra:this.extraFailure})
-        .width('50%')
+        .width('100%')
         .layoutWeight(1)
     }else{
       NoData()

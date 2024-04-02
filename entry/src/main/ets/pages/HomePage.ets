@@ -93,12 +93,10 @@ export struct HomePage {
         .fontSize(16)
         .letterSpacing(1)
         .width('100%')
-        .padding(8)
         .fontColor($r('app.color.bilibili_text_black'))
-        .lineHeight(20)
         .alignSelf(ItemAlign.Start)
-        .height(48)
-        .margin({top:2,bottom:2})
+        .height('8%')
+        .margin({top:'1%',bottom:'1%'})
 
       Row(){
         // Image($r('app.media.icon_playlist_upper'))
@@ -199,6 +197,7 @@ export struct HomePage {
         this.isRefreshing = false
       })
     }).layoutWeight(1)
+    .backgroundColor($r('app.color.bilibili_background_grey'))
   }
 }
 
