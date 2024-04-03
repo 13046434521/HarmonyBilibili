@@ -31,7 +31,87 @@ import NetEncryption from './NetEncryption'
      let url = "https://api.bilibili.com/x/web-interface/nav/stat"
      return this.request<UserStateBean>(url,this.instanceAxios)
    }
-}
+
+   // https://api.bilibili.com/x/relation/followings?vmid=11474631
+   // 查看用户关注列表，（隐藏的无法查看）
+
+   // https://api.bilibili.com/x/relation/tags
+   // 获取关注分组,每组数量以及分组id。没有详细内容
+
+   // https://api.bilibili.com/x/relation/tag?tagid=-10&order_type=&ps=2&pn=1
+   // 根据分组id，获取对应的关注列表  ps为返回个数，pn为页数  order_type:attention(常访问排序)，''或者不填写(默认排序)
+
+    // https://api.bilibili.com/x/space/top/arc?vmid=17920281
+   // 查询置顶视频
+
+   // https://api.bilibili.com/x/space/masterpiece?vmid=17920281
+   // 查询代表作视频
+
+   // https://api.bilibili.com/x/space/notice?mid=17920281
+   // 个人空间公告
+
+   // https://api.bilibili.com/x/space/like/video?vmid=17920281
+   // 点赞的视频
+
+   // https://api.bilibili.com/x/space/coin/video?vmid=17920281
+   // 投币的视频
+
+   // https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=68406011
+   // 查询用户收藏夹列表
+
+   //https://space.bilibili.com/ajax/Bangumi/getList?mid=68406011&type=1&ps=2&pn=1
+   // 查询用户追番列表
+
+   // https://api.bilibili.com/x/space/bangumi/follow/list?vmid=68406011&type=1&ps=2&pn=1
+   // 查询用户追番明细 (type=1：追番  2：追剧)
+
+   // https://space.bilibili.com/ajax/tags/getSubList?mid=68406011&type=1&ps=2&pn=1
+   // 查询用户关注话题
+
+   // https://api.bilibili.com/x/space/upstat?mid=430426421
+   // 获取播放量和获赞
+
+   // https://api.bilibili.com/x/relation/stat?vmid=430426421
+   // 获取用户关注和粉丝数
+
+   // https://api.bilibili.com/x/v3/fav/folder/collected/list?pn=1&ps=20&up_mid=68406011&platform=web
+   // 我的收藏和订阅文件夹（我的收藏页面-》我创建的收藏文件夹下面）
+
+
+   //https://api.bilibili.com/x/v3/fav/resource/list?media_id=101882111&pn=1&ps=20&keyword=&order=mtime&type=0&tid=0&platform=web
+   //收藏文件夹中的内容
+
+   // https://api.bilibili.com/x/space/navnum?mid=68406011
+   // 用户页面各种类型数量（番剧多少，投稿多少）
+
+   // https://api.bilibili.com/x/space/wbi/arc/search?mid=430426421&pn=1&ps=25&index=1&order=pubdate&order_avoided=true&platform=web&w_rid=6ed1f11e18291a9f155072385322452a&wts=1712057502
+   // https://api.bilibili.com/x/space/wbi/arc/search?mid=68406011&pn=1&ps=25&index=1&order=pubdate&order_avoided=true&w_rid=3f00e9fd28a90211c77b040d9d2859ae&wts=1712059082
+   // https://api.bilibili.com/x/space/wbi/arc/search?mid=68406011&pn=1&ps=25&order=&keyword=&tid=0
+   // 主页->我的视频 ----不能用  tid：分区筛选，默认为0不进行分区筛选，	order:默认为pubdate最新发布：pubdate最多播放：click多收藏：stow
+
+   // https://api.bilibili.com/x/space/coin/video?vmid=68406011&gaia_source=main_web&web_location=333.999&w_rid=e06f116942a6a9ff58f08647f9320666&wts=1712059082
+   // 主页->最近投币视频
+
+   //https://api.bilibili.com/x/space/like/video?vmid=68406011&gaia_source=main_web&web_location=333.999&w_rid=e06f116942a6a9ff58f08647f9320666&wts=1712059082
+   //主页->最近点赞视频
+
+   //https://api.bilibili.com/x/v3/fav/folder/created/list?pn=1&ps=10&up_mid=68406011
+   //主页->我的收藏夹（只有收藏夹名字和里面的数量，没有详细信息
+
+   //https://api.bilibili.com/x/space/bangumi/follow/list?vmid=68406011&type=1
+  // 主页->订阅的番剧(有seasonid和mediaid)type可能是番剧和影视切换
+
+   //https://api.bilibili.com/x/polymer/web-space/home/seasons_series?mid=68406011&page_num=1&page_size=10
+   //主页->我的合集和视频列表(有aid，bid等)
+
+   // https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?offset=&host_mid=68406011&timezone_offset=-480&platform=web&features=itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote&web_location=333.999&w_rid=eb7961909fd3914d26043aa99684dcf3&wts=1712058933
+   // 我的动态
+
+   // https://api.bilibili.com/x/space/bangumi/follow/list?type=1&follow_status=0&pn=1&ps=15&vmid=68406011&ts=1712058829031
+   // 我的追番内容
+
+
+ }
 
 const biliUser = new ApiBiliUser()
 export default biliUser as ApiBiliUser

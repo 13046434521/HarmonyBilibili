@@ -1,5 +1,6 @@
 import router from '@ohos.router'
 import { HomeBeanItem } from '../bean/HomeBean'
+import WebConstants from './WebConstants'
 
 export class PageManager {
   // 视频详情页面
@@ -40,6 +41,14 @@ export class PageManager {
   static routerBiliUser(mid: number) {
     router.pushUrl({ url: 'pages/BiliUser/BiliUserPage', params: { 'mid': mid } })
   }
+
+  static routerFollowWeb(mid: number,type:'fans'|'follow') {
+    router.pushUrl({ url: 'pages/Mine/MineWebPage', params: { 'mine_web_url': WebConstants.getFollow(mid,type)} })
+  }
+
+  static routerMineWeb(url:string) {
+    router.pushUrl({ url: 'pages/Mine/MineWebPage', params: { 'mine_web_url':url} })
+  }
 }
 
 export class RouterConstants {
@@ -51,5 +60,7 @@ export class RouterConstants {
   static ROOM_ID = 'roomId' // 直播间
   static BVID = 'bvid' // 视频详情页面
   static CID = 'cid' // 视频详情页面
-  static MID = 'mid' // 视频详情页面
+  static MID = 'mid' // 用户页面
+  /*------------------------------------------- Mine页面相关 --------------------------------------------*/
+  static MINE_WEB_URL = 'mine_web_url' //  Mine的web页面
 }

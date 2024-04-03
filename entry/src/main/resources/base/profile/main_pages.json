@@ -10,6 +10,7 @@
     "pages/MediaFt/MediaFtPage",
     "pages/MediaBangumi/MediaBangumiPage",
     "pages/Article/ArticlePage",
-    "pages/BiliUser/BiliUserPage"
+    "pages/BiliUser/BiliUserPage",
+    "pages/Mine/MineWebPage"
   ]
 }

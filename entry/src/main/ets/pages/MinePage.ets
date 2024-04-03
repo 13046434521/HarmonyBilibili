@@ -5,20 +5,22 @@ import StorageManager from '../common/StorageManager';
 import ApiLogin from '../net/ApiLogin';
 import { Utils } from '../Utils/Utils';
 import ApiBiliUser from '../net/ApiBiliUser';
+import { PageManager } from '../common/PageManager';
+import { MineItem, MineViewModel } from '../viewModel/MineViewModel';
 
 @Preview
 @Component
   // 主界面中的我的页面
-
 export struct MinePage {
   @StorageLink('isLogin') isLogin :boolean = false
   @StorageLink('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
+  mineViewModel :MineViewModel = new MineViewModel()
   aboutToAppear() {
   }
 
   build() {
     if (this.isLogin) {
-      MineInfoPage()
+      MineInfoPage({mineViewModel:this.mineViewModel})
         .backgroundColor(this.backgroundColors)
     } else {
       LoginPage()
@@ -41,9 +43,15 @@ struct MineInfoPage {
   @State following: string = "-"
   @State bcoin: number = 0
   @State userName: string = "bilibili_user"
-   mid: number = 0
+  mid: number = 0
+  mineViewModel :MineViewModel = new MineViewModel()
 
-    aboutToAppear() {
+/*
+  [RecommendItem{'name':'直播中心','img':$r('app.media.ic_mine_live_center')},{'name':'免流量服务','img':$r('app.media.ic_mine_freedata')},
+{'name':'会员购物中心','img':$r('app.media.ic_mine_mall')},{'name':'我的钱包','img':$r('app.media.ic_mine_wallet')}]
+*/
+
+aboutToAppear() {
     // 是否登录相关数据
     // 第一次登录时，loginNavData中只有isLogin这一个数据，其他为null，因此需要重新获取
 
@@ -134,13 +142,16 @@ struct MineInfoPage {
       .rowItemStyle()
 
       Row(){
-        ItemContent({state:this.dynamic_count,content:"动态"})
+        ItemContent({state:this.dynamic_count,content:"动态",mid:this.mid})
+
         Divider()
           .dividerStyle()
-        ItemContent({state:this.following,content:"关注"})
+        ItemContent({state:this.following,content:"关注",mid:this.mid})
+
         Divider()
           .dividerStyle()
-        ItemContent({state:this.fans,content:"粉丝"})
+        ItemContent({state:this.fans,content:"粉丝",mid:this.mid})
+
       }.rowItemStyle()
       Row(){
         this.ImageItemComponent($r('app.media.ic_mine_offline'),"离线缓存")
@@ -148,6 +159,46 @@ struct MineInfoPage {
         this.ImageItemComponent($r('app.media.ic_mine_favorite'),"我的收藏")
         this.ImageItemComponent($r('app.media.ic_mine_watchlater'),"稍后再看")
       }.rowItemStyle()
+
+      Text('创作服务')
+        .fontWeight(FontWeight.Bold)
+        .fontSize(16)
+        .width('100%')
+        .margin({left:"4%",bottom:'1%',top:'1.5%'})
+        .textAlign(TextAlign.Start)
+
+      GridRow({columns:4}){
+        ForEach(this.mineViewModel.getCreateCenter(),(item:MineItem,index)=>{
+          GridCol() {
+            this.MineChildItem(item)
+          }.height('6%')
+        },item=>item)
+      }.direction(Direction.Ltr)
+
+      Text('推荐服务')
+        .fontWeight(FontWeight.Bold)
+        .fontSize(16)
+        .width('100%')
+        .margin({left:"4%",bottom:'1%',top:'1.5%'})
+        .textAlign(TextAlign.Start)
+      // Grid(){
+      //   ForEach(this.mineViewModel.recommendData,(item:RecommendItem,index)=>{
+      //     GridItem() {
+      //       this.RecommendItemComponent(item.img,item.name)
+      //     }.borderColor(Color.Orange).borderWidth(2).height('6%').width('25%')
+      //   },item=>item)
+      // }
+
+      GridRow({columns:4}){
+        ForEach(this.mineViewModel.getRecommendData(),(item:MineItem,index)=>{
+          GridCol() {
+            this.MineChildItem(item)
+          }.height('6%')
+        },item=>item)
+      }.direction(Direction.Ltr)
+
+
+
     }.width('100%') 
     .height('100%')
     .backgroundColor(this.backgroundColors)
@@ -163,10 +214,11 @@ struct MineInfoPage {
         .interpolation(ImageInterpolation.High)
         .height("40%")
         .aspectRatio(1)
+      Blank().layoutWeight(1)
       Text(content)
         .fontColor($r('app.color.bilibili_text_black_light'))
         .fontSize(14)
-        .height('40%')
+        .height('50%')
         .maxLines(1)
         .textAlign(TextAlign.Center)
       Blank().layoutWeight(2)
@@ -177,12 +229,44 @@ struct MineInfoPage {
       Utils.Toast(content+"功能未完成")
     })
   }
+
+  @Builder
+  // 创作中心，推荐服务 中的子元素
+  MineChildItem(item:MineItem){
+    Column(){
+      Blank().layoutWeight(2)
+      Image(item.img)
+        .objectFit(ImageFit.Cover)
+        .interpolation(ImageInterpolation.High)
+        .height("50%")
+        .aspectRatio(1)
+        .fillColor($r('app.color.bilibili_theme'))
+      Blank().layoutWeight(1)
+      Text(item.name)
+        .fontColor($r('app.color.bilibili_text_black_light'))
+        .fontSize(14)
+        .height('40%')
+        .maxLines(1)
+        .textAlign(TextAlign.Center)
+      Blank().layoutWeight(2)
+    }.alignItems(HorizontalAlign.Center)
+    .justifyContent(FlexAlign.Center)
+    .columnStyle()
+    .onClick(()=>{
+      if (item.url !== undefined) {
+        PageManager.routerMineWeb(item.url)
+      }else{
+        Utils.Toast(item.name+"功能暂不进行开发")
+      }
+    })
+  }
 }
 @Component
   // 动态+关注+粉丝
 struct ItemContent{
   @Prop state:string
   @Prop content:string
+  @Prop mid:number
   build(){
     Column(){
       Blank().layoutWeight(2)
@@ -202,7 +286,15 @@ struct ItemContent{
       Blank().layoutWeight(2)
     }.alignItems(HorizontalAlign.Center)
     .justifyContent(FlexAlign.Start)
-    .columnStyle()
+    .columnStyle().onClick(()=>{
+      if (this.content==='关注') {
+        PageManager.routerFollowWeb(this.mid,'follow')
+      }else if (this.content==='粉丝') {
+        PageManager.routerFollowWeb(this.mid, 'fans')
+      }else{
+        PageManager.routerBiliUser(this.mid)
+      }
+    })
   }
 }
 

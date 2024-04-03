@@ -32,7 +32,8 @@ export class ApiLogin extends ApiBase{
     this.instanceAxios.defaults.headers['Cookie'] = StorageManager.getCookie();
     return this.request<LoginNavBean>(url,this.instanceAxios)
   }
-
+  //https://passport.bilibili.com/account/security#/home
+  // 账号安全评分
   // https://passport.bilibili.com/login/exit/v2
   // 退出账号，后台会让当前cookie失效
 }
