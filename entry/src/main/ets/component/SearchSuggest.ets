@@ -33,7 +33,7 @@ export struct SearchSuggest {
               .fontSize(14)
               .margin({ left:8,right:8 })
               .width('100%')
-              .aspectRatio(8/1)
+              .height('5%')
           }.onClick(()=>{
             this.click(Utils.upRichTextClear(item.value))
           })

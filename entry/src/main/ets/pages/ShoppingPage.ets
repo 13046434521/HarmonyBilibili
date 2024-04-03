@@ -1,56 +1,48 @@
+import webview from '@ohos.web.webview'
 import Constants from '../common/Constants'
-import { JLog } from '../common/JLog'
-import StorageManager from '../common/StorageManager'
-import NetEncryption from '../net/NetEncryption'
 import { Utils } from '../Utils/Utils'
 
 @Component
 export struct ShoppingPage {
-  @State msg:string = "123"
-  @State msg1:string = "123"
-  @StorageLink('isLogin') isLogin:boolean = false
-  @StorageLink('login_img_url') vipImageUrl :string = ''
-  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
-  @State isLoginImg:boolean = false
-  @State url:string='https://www.bilibili.com/read/mobile?id=1110920'
-  num = 1
+  url: string = 'https://m.bilibili.com/'
+  controller: webview.WebviewController = new webview.WebviewController()
+  @State title:string=''
+  aboutToAppear() {
+
+  }
+
   build() {
     Column() {
-
-      Button("测试啊").onClick(()=>{
-        StorageManager.setKey('https://i0.hdslb.com/bfs/wbi/7cd084941338484aae1ad9425b84077c.png','https://i0.hdslb.com/bfs/wbi/4932caff0ff746eab6f01bf08b70ac45.png')
-        let temp = StorageManager.getData<string>('img_key')
-        let temp2 = StorageManager.getData<string>('sub_key')
-        let num='123456789'
-
-        NetEncryption.test().then(data=>{
-          Utils.Toast(data)
+      Web({ src: this.url, controller: this.controller })
+        .javaScriptAccess(true)
+        .width('100%')
+        .layoutWeight(1)
+        .onTitleReceive((event) => {
+          // this.title = event.title
         })
-      })
-
-      Text(this.msg1)
-
-      Image(this.isLogin?$r('app.media.bili_nologin_avatar'):'https://img1.baidu.com/it/u=3825090768,663587812&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1711904400&t=ed4de14b0f10fce34b16aad9ab781b2e').width(100).height(100)
-      Image(this.isLogin?$r('app.media.bili_nologin_avatar'):$r('app.media.test')).width(100).height(100)
-      Image(!this.isLogin?$r('app.media.bili_nologin_avatar'):'https://img1.baidu.com/it/u=3825090768,663587812&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1711904400&t=ed4de14b0f10fce34b16aad9ab781b2e').width(100).height(100)
-
-      Image(this.isLoginImg?$r('app.media.bili_nologin_avatar'):$r('app.media.test')).width(100).height(100)
-      Image(this.isLoginImg?$r('app.media.bili_nologin_avatar'):this.vipImageUrl).width(100).height(100)
-      Image(this.isLoginImg?$r('app.media.bili_nologin_avatar'):this.vipImageUrl).width(100).height(100)
-      Text(this.msg)
-      Button('getCookie').onClick(()=>{
-        this.msg = StorageManager.getCookie()
-      })
-
-      Button('setCookie').onClick(()=>{
-        StorageManager.loginCookie(""+this.num++)
-      })
-      Button('isLogin').onClick(()=>{
-        // this.msg ="AppStorage:isLogin:"+ StorageManager.isLogin()
-      })
-      Button('setLogin').onClick(()=>{
-        // StorageManager.setLogin(true)
-      })
+        .userAgent(Constants.PHONE_USER_AGENT)
+        .onRequestSelected(()=>{
+          console.log('jtlurl:onRequestSelected：' + this.url)
+        })
+        .onPageBegin((url) => {
+          console.log('jtlurl:onPageBegin：' + url)
+        })
+        .onPageEnd((url) => {
+          console.log('jtlurl:onPageEnd：' + url)
+        })
+        .onErrorReceive(() => {
+          //加载错误时的回调
+        })
+        .onProgressChange((event) => {
+          console.log('jtlurlnewProgress:' + event.newProgress)
+        })
     }
   }
 }
+function setCookie(url:string){
+  let temp = AppStorage.Get<string>('bilibili_cookie')
+  let arr = temp.split(';')
+  for (let index = 0; index < arr.length; index++) {
+    const element = arr[index];
+    webview.WebCookieManager.setCookie(url, element)
+  }}
