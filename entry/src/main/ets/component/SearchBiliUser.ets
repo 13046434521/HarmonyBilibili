@@ -49,7 +49,7 @@ export struct SearchBiliUserDetails {
           }
         },(item:SearchBiliUserBean)=>JSON.stringify(item))
       }.layoutWeight(1)
-      .cachedCount(3)
+      .cachedCount(12)
       .onReachEnd(() => {
         Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page + 1).then(response => {
           if (response.result!=undefined) {

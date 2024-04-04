@@ -1,5 +1,7 @@
 import webview from '@ohos.web.webview'
 import Constants from '../common/Constants'
+import {SwipeRefreshLayout} from '@ohos/loading'
+import Api from '../net/Api'
 import { Utils } from '../Utils/Utils'
 
 @Component
@@ -13,32 +15,43 @@ export struct ShoppingPage {
 
   build() {
     Column() {
-      Web({ src: this.url, controller: this.controller })
-        .javaScriptAccess(true)
-        .width('100%')
-        .layoutWeight(1)
-        .onTitleReceive((event) => {
-          // this.title = event.title
+
+      SwipeRefreshLayout({refresh:()=>{
+        Api.getSearchHot().then((DATA)=>{
+            Utils.Toast(DATA.list.length+DATA.list[0].keyword)
         })
-        .userAgent(Constants.PHONE_USER_AGENT)
-        .onRequestSelected(()=>{
-          console.log('jtlurl:onRequestSelected：' + this.url)
-        })
-        .onPageBegin((url) => {
-          console.log('jtlurl:onPageBegin：' + url)
-        })
-        .onPageEnd((url) => {
-          console.log('jtlurl:onPageEnd：' + url)
-        })
-        .onErrorReceive(() => {
-          //加载错误时的回调
-        })
-        .onProgressChange((event) => {
-          console.log('jtlurlnewProgress:' + event.newProgress)
-        })
+      },childLayout:this.getText.bind(this)})
     }
   }
+
+  @Builder
+  getText(){
+    Web({ src: this.url, controller: this.controller })
+      .javaScriptAccess(true)
+      .width('100%')
+      .layoutWeight(1)
+      .onTitleReceive((event) => {
+        // this.title = event.title
+      })
+      .userAgent(Constants.PHONE_USER_AGENT)
+      .onRequestSelected(()=>{
+        console.log('jtlurl:onRequestSelected：' + this.url)
+      })
+      .onPageBegin((url) => {
+        console.log('jtlurl:onPageBegin：' + url)
+      })
+      .onPageEnd((url) => {
+        console.log('jtlurl:onPageEnd：' + url)
+      })
+      .onErrorReceive(() => {
+        //加载错误时的回调
+      })
+      .onProgressChange((event) => {
+        console.log('jtlurlnewProgress:' + event.newProgress)
+      })
+  }
 }
+
 function setCookie(url:string){
   let temp = AppStorage.Get<string>('bilibili_cookie')
   let arr = temp.split(';')

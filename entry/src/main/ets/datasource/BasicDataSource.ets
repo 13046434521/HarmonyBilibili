@@ -34,13 +34,14 @@ export class BasicDataSource<T> implements IDataSource  {
       for (const temp of data) {
         this.dataArray.unshift(temp)
       }
-      this.notifyDataAdd(this.dataArray.length - 1)
+      this.notifyDataReload()
     }
   }
 
   public cleanData(): void {
     this.dataArray =[]
     this.listeners =[]
+    this.notifyDataReload()
   }
 
   registerDataChangeListener(listener: DataChangeListener): void {

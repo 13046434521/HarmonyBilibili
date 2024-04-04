@@ -2,9 +2,9 @@
   "license": "",
   "devDependencies": {},
   "author": "",
-  "name": "loading",
   "description": "Please describe the basic information.",
-  "main": "",
+  "main": "Index.ets",
   "version": "1.0.0",
-  "dependencies": {}
+  "dependencies": {},
+  "name": "@ohos/loading"
 }

@@ -1,16 +1,16 @@
 {
   "module": {
     "name": "Loading",
-    "type": "feature",
+    "type": "har",
     "description": "$string:module_desc",
     "mainElement": "LoadingAbility",
     "deviceTypes": [
       "phone",
       "tablet"
     ],
-    "deliveryWithInstall": true,
+    //"deliveryWithInstall": true,
     "installationFree": false,
-    "pages": "$profile:main_pages",
+    //"pages": "$profile:main_pages",
     "abilities": [
       {
         "name": "LoadingAbility",

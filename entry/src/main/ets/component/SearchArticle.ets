@@ -51,7 +51,7 @@ export struct SearchArticleDetails {
           ArticleItem({item:item})
         }
       },(item: SearchArticleBean) =>item.mid+item.title)
-    }.divider({
+    }.cachedCount(12).divider({
       strokeWidth: 1,
       color: $r('app.color.bilibili_divider'),
       startMargin: 8,

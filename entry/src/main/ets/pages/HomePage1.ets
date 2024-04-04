@@ -6,7 +6,6 @@ import { SearchView } from '../component/HomeSearch';
 import { Utils } from '../Utils/Utils';
 import { HomeData } from '../datasource/HomeData';
 import Constants from '../common/Constants';
-import { SwipeRefreshList } from '../../../../../Loading/src/main/ets/pages/SwipeRefreshList';
 
 @Component
 export struct HomePage {
@@ -21,12 +20,10 @@ export struct HomePage {
   @StorageLink('login_img_url') vipImageUrl :string = ''
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   onLoginClick:()=>void
-  @State homeBeanItem:HomeBeanItem[] =[]
   aboutToAppear(){
     if (router.getParams()!==undefined){
       // 主页数据
       let homeData_splash = router.getParams()['homeData']
-      this.homeBeanItem = homeData_splash
       this.homeData.pushDataAll(homeData_splash)
     }
 
@@ -39,7 +36,6 @@ export struct HomePage {
     Row() {
       Column() {
         this.HomeHeader()
-        // this.RefreshList()
         this.Refresh()
       }
       .width('100%')
@@ -168,20 +164,7 @@ export struct HomePage {
     .margin({top:0,bottom:0})
     .justifyContent(FlexAlign.SpaceEvenly)
   }
-  @Builder RefreshList(){
-    SwipeRefreshList({data:this.homeBeanItem,refresh:()=>{
-      Api.getHomePages(this.homePage+1).then(response=>{
-        if (response.item!=undefined) {
-          this.homePage++
-          this.homeBeanItem =  this.homeBeanItem.concat(response.item)
-        }
-      }).catch(err=>{
-        Utils.Toast("主页面"+err)
-      })
-    },itemChildLayout:this.HomeItem.bind(this)})
-      .width('100%')
-      .layoutWeight(1)
-  }
+
   @Builder Refresh(){
     Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
       List(){
@@ -189,7 +172,8 @@ export struct HomePage {
           ListItem(){
             this.HomeItem(item)
           }.margin(3)
-        },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)}.lanes(2)
+        },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)
+      }.lanes(2)
       .edgeEffect(EdgeEffect.Fade)
       .cachedCount(12)
       .onReachEnd(()=>{
@@ -205,6 +189,7 @@ export struct HomePage {
     }.onRefreshing(()=>{
       Api.getHomePages(this.homePage+1).then(response=>{
         if (response.item!=undefined) {
+          this.homeData.cleanData()
           this.homeData.addDataAll(response.item)
           this.homePage++
         }

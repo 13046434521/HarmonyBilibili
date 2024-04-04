@@ -7,6 +7,7 @@ import { Utils } from '../Utils/Utils';
 import ApiBiliUser from '../net/ApiBiliUser';
 import { PageManager } from '../common/PageManager';
 import { MineItem, MineViewModel } from '../viewModel/MineViewModel';
+import { SwipeRefreshLayout } from '../../../../../Loading/src/main/ets/pages/SwipeRefreshLayout';
 
 @Preview
 @Component
@@ -160,50 +161,57 @@ aboutToAppear() {
         this.ImageItemComponent($r('app.media.ic_mine_watchlater'),"稍后再看")
       }.rowItemStyle()
 
-      Text('创作服务')
-        .fontWeight(FontWeight.Bold)
-        .fontSize(16)
-        .width('100%')
-        .margin({left:"4%",bottom:'1%',top:'1.5%'})
-        .textAlign(TextAlign.Start)
-
-      GridRow({columns:4}){
-        ForEach(this.mineViewModel.getCreateCenter(),(item:MineItem,index)=>{
-          GridCol() {
-            this.MineChildItem(item)
-          }.height('6%')
-        },item=>item)
-      }.direction(Direction.Ltr)
-
-      Text('推荐服务')
-        .fontWeight(FontWeight.Bold)
-        .fontSize(16)
-        .width('100%')
-        .margin({left:"4%",bottom:'1%',top:'1.5%'})
-        .textAlign(TextAlign.Start)
-      // Grid(){
-      //   ForEach(this.mineViewModel.recommendData,(item:RecommendItem,index)=>{
-      //     GridItem() {
-      //       this.RecommendItemComponent(item.img,item.name)
-      //     }.borderColor(Color.Orange).borderWidth(2).height('6%').width('25%')
-      //   },item=>item)
-      // }
-
-      GridRow({columns:4}){
-        ForEach(this.mineViewModel.getRecommendData(),(item:MineItem,index)=>{
-          GridCol() {
-            this.MineChildItem(item)
-          }.height('6%')
-        },item=>item)
-      }.direction(Direction.Ltr)
-
-
-
+      SwipeRefreshLayout({refresh:()=>{
+        ApiLogin.loginNav().then(data=>{
+          Utils.Toast(data.mid+'  '+data.uname)
+        })
+      }}) {
+        this.otherFeatures()
+      }
     }.width('100%') 
     .height('100%')
     .backgroundColor(this.backgroundColors)
   }
 
+  @Builder
+  otherFeatures(){
+    Text('创作服务')
+      .fontWeight(FontWeight.Bold)
+      .fontSize(16)
+      .width('100%')
+      .margin({left:"4%",bottom:'1%',top:'1.5%'})
+      .textAlign(TextAlign.Start)
+
+    GridRow({columns:4}){
+      ForEach(this.mineViewModel.getCreateCenter(),(item:MineItem,index)=>{
+        GridCol() {
+          this.MineChildItem(item)
+        }.height('6%')
+      },item=>item)
+    }.direction(Direction.Ltr)
+
+    Text('推荐服务')
+      .fontWeight(FontWeight.Bold)
+      .fontSize(16)
+      .width('100%')
+      .margin({left:"4%",bottom:'1%',top:'1.5%'})
+      .textAlign(TextAlign.Start)
+    // Grid(){
+    //   ForEach(this.mineViewModel.recommendData,(item:RecommendItem,index)=>{
+    //     GridItem() {
+    //       this.RecommendItemComponent(item.img,item.name)
+    //     }.borderColor(Color.Orange).borderWidth(2).height('6%').width('25%')
+    //   },item=>item)
+    // }
+
+    GridRow({columns:4}){
+      ForEach(this.mineViewModel.getRecommendData(),(item:MineItem,index)=>{
+        GridCol() {
+          this.MineChildItem(item)
+        }.height('6%')
+      },item=>item)
+    }.direction(Direction.Ltr)
+  }
   @Builder
   // 离线缓存+历史记录+我的收藏+稍后再看
   ImageItemComponent(res:Resource,content:string){

@@ -59,6 +59,7 @@ export struct SearchVideoDetails {
           }
         }, (item: SearchVideoBean) =>JSON.stringify(item))
       }
+      .cachedCount(12)
       .onReachEnd(() => {
         Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1)
           .then((response) => {
