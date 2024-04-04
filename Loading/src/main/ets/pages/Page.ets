@@ -1,26 +1,27 @@
 import prompt from '@ohos.prompt'
+import promptAction from '@ohos.promptAction';
+import { Loading } from './Loading';
+import { SwipeRefreshLayout } from './SwipeRefreshLayout';
 
 
-  PersistentStorage.PersistProp('aProp', 47);
-
+PersistentStorage.PersistProp('aProp', 47);
   @Entry
   @Component
   struct Page {
-  @State message: string = 'Hello World'
-  @StorageLink('aProp') aProp: number = 48
+  @State listPosition: number = 0; // 0代表滚动到List顶部，1代表中间值，2代表滚动到List底部。
+  private arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  private scrollerForScroll: Scroller = new Scroller()
+  private scrollerForList: Scroller = new Scroller()
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-        // 应用退出时会保存当前结果。重新启动后，会显示上一次的保存结果
-        Text(`${this.aProp}`)
-          .onClick(() => {
-            this.aProp += 1;
-          }).width(200).width(200)
-      }.height('100%').width('100%')
-      .justifyContent(FlexAlign.Center)
-      .alignItems(HorizontalAlign.Center)
-    }.width('100%')
+    Column(){
+      SwipeRefreshLayout({refresh:()=>{
+        promptAction.showToast({message:'刷新了'})
+      }}){
+        Text("ceshi")
+          .borderWidth(2)
+          .borderColor(Color.Orange)
+      }
+    }
   }
 }
