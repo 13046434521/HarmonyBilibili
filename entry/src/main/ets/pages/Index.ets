@@ -34,7 +34,7 @@ struct Index {
   controller:TabsController = new TabsController()
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
-    Utils.Toast("型号："+deviceInfo.deviceType + "系统版本："+ deviceInfo.osFullName+ "  SDKApi："+deviceInfo.sdkApiVersion)
+    Utils.Toast("型号："+deviceInfo.deviceType + "  系统版本："+ deviceInfo.osFullName+ "  SDKApi："+deviceInfo.sdkApiVersion)
   }
 
   onLoginClick:()=>void =()=>{

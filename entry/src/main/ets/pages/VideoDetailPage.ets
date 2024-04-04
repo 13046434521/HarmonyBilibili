@@ -7,6 +7,7 @@ import { VideoPlay } from '../component/VideoPlay'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
 import window from '@ohos.window'
 import Constants from '../common/Constants'
+import { RouterConstants } from '../common/PageManager'
 
 @Entry
 @Component
@@ -19,8 +20,11 @@ struct DetailPage {
   @State videoViewModel: VideoViewModel = new VideoViewModel()
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   aboutToAppear() {
-    this.bvid = router.getParams()['bvid']
-    this.cid = router.getParams()['cid']
+    if (router.getParams()!=null) {
+      this.bvid = router.getParams()[RouterConstants.BVID]
+      this.cid = router.getParams()[RouterConstants.CID]
+    }
+
     // cid 为0时，需要单独获取cid
     if (this.cid === 0) {
       Api.getPageList(this.bvid).then((item)=>{

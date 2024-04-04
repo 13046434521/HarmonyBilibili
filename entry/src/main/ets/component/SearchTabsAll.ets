@@ -49,7 +49,7 @@ export struct SearchTabsAll {
         .color($r('app.color.bilibili_theme'))
         .opacity(this.currentIndex === index  ? 1 : 0)
         .width('60%')
-    }.width('18%')
+    }.width('15%')
     .onClick(()=>{
       this.currentIndex = index
       this.controller.changeIndex(this.currentIndex)
@@ -58,7 +58,7 @@ export struct SearchTabsAll {
 
   @Builder
   tabPages() {
-    Tabs({ barPosition: BarPosition.Start,controller:this.controller}) {
+    Tabs({ barPosition: BarPosition.Start,controller:this.controller,index:0}) {
       TabContent() {
         SearchDefaultDetails({ search: this.search })
       }.tabBar(this.TabBuilder(0, "综合"))

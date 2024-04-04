@@ -1,8 +1,17 @@
 import { SearchBiliUserBean } from '../../bean/SearchBiliUserBean'
+import deviceInfo from '@ohos.deviceInfo'
+import { PageManager } from '../../common/PageManager'
 
 @Component
 export struct BiliUserItem{
   item: SearchBiliUserBean
+  deviceType = 'tablet'
+  userHeight = 150
+  aboutToAppear(){
+    this.deviceType = deviceInfo.deviceType
+
+    this.userHeight = this.deviceType==="tablet"?100:80
+  }
   build(){
     this.biliUserItem(this.item)
   }
@@ -53,9 +62,12 @@ export struct BiliUserItem{
         .fontSize(14)
     }
     .width('100%')
-    .aspectRatio(25 / 6)
+    .height(this.userHeight)
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
+    .onClick(()=>{
+      PageManager.routerBiliUser(this.item.mid)
+    })
   }
 
   userLevel(level: number): Resource {

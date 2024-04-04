@@ -1,6 +1,7 @@
 import webview from '@ohos.web.webview'
 import { Loading } from '../component/LoadingComponent'
 import { LoadingStatus } from '../common/LoadingStatus'
+import { Utils } from '../Utils/Utils'
 
 @Entry
 @Component
@@ -40,10 +41,10 @@ struct SearchWebPage {
         //加载错误时的回调
         this.loadingStatus = LoadingStatus.LoadingFailure
       })
-      .onRefreshAccessedHistory((event) => {
-        this.loadingStatus = LoadingStatus.Loading
-        console.log('jtlurl:' + event.url + ' isReload:' + event.isRefreshed)
-      })
+      // .onRefreshAccessedHistory((event) => {
+      //   this.loadingStatus = LoadingStatus.Loading
+      //   console.log('jtlurl:' + event.url + ' isReload:' + event.isRefreshed)
+      // })
       .onProgressChange((event) => {
         console.log('jtlurlnewProgress:' + event.newProgress)
       })

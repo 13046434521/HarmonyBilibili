@@ -36,32 +36,24 @@ export struct LiveRoomItem{
       Text(Utils.upRichTextClear(item.title))
         .fontSize(14)
         .fontColor($r('app.color.bilibili_text_black'))
-        .textTitleStyle()
+        .textStyle()
 
-      Row(){
-        Text(Utils.upRichTextClear(item.cate_name))
-          .fontSize(10)
-          .fontColor($r('app.color.bilibili_text_grey_bold'))
-          .textOverflow({ overflow:TextOverflow.Ellipsis})
-          .maxLines(1)
-          .margin({left:4})
+      Text(Utils.upRichTextClear(item.cate_name))
+        .fontSize(13)
+        .fontColor($r('app.color.bilibili_text_grey_bold'))
+        .textStyle()
+        .height('3%')
 
-
-        Text(item.live_time)
-          .fontSize(10)
-          .fontColor($r('app.color.bilibili_text_grey_bold'))
-          .textOverflow({ overflow:TextOverflow.Ellipsis})
-          .maxLines(1)
-          .margin({right:4})
-      }.width('100%')
-      .aspectRatio(8)
-      .justifyContent(FlexAlign.SpaceBetween)
+      Text(item.live_time)
+        .fontSize(13)
+        .fontColor($r('app.color.bilibili_text_grey_bold'))
+        .textStyle()
+        .height('3%')
 
     }
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
-    .backgroundColor($r('app.color.bilibili_background_grey'))
+    .backgroundColor(Color.White)
     .onClick(event=>{
-        Utils.Toast('roomid:'+item.roomid+"")
       PageManager.routerLiving(item.roomid)
     }).width('100%')
   }
@@ -74,11 +66,11 @@ export struct LiveRoomItem{
   .fontColor(Color.White)
 }
 
-@Extend(Text) function textTitleStyle(){
+@Extend(Text) function textStyle(){
   .textOverflow({ overflow:TextOverflow.Ellipsis})
   .maxLines(1)
   .margin({left:4})
   .width('100%')
-  .aspectRatio(6/1)
+  .height('5%')
   .alignSelf(ItemAlign.Start)
 }

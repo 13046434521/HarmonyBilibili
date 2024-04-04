@@ -2,5 +2,5 @@ export enum LoadingStatus{
   Loading=0,
   LoadingSuccess =1,
   LoadingFailure = -1,
-  LoadingOther = '会显示其他自定义页面，比如加载成功，但是没有数据'
+  LoadingOther = '浼氭樉绀哄叾浠栬嚜瀹氫箟椤甸潰锛屾瘮濡傚姞杞芥垚鍔燂紝浣嗘槸娌℃湁鏁版嵁'
 }

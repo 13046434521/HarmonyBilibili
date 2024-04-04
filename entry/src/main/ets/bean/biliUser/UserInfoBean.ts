@@ -102,8 +102,8 @@
     }*/
 //https://api.bilibili.com/x/web-interface/card?mid=68406011
 
-export class LoginUserInfoBean {
-  card: LoginUserCardBean
+export class UserInfoBean {
+  card: UserCardBean
   following: boolean
   archive_count: number
   article_count: number
@@ -111,7 +111,7 @@ export class LoginUserInfoBean {
   like_num: number
 }
 
-export class LoginUserCardBean {
+export class UserCardBean {
   /*
     mid:68406011
       name:可乐儿加冰
@@ -287,7 +287,10 @@ export class LoginUserCardBean {
     tv_due_date: number
     avatar_icon: {
       icon_type: number
-      icon_resource: {}
+      icon_resource: {
+        type: number
+        url: string
+      }
     }
     vipType: number
     vipStatus: number

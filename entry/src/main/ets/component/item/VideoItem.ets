@@ -1,68 +1,74 @@
 import { SearchVideoBean } from '../../bean/SearchVideoBean'
+import Constants from '../../common/Constants'
 import { Utils } from '../../Utils/Utils'
+import deviceInfo from '@ohos.deviceInfo'
 
 @Component
 export struct VideoItem {
   item: SearchVideoBean
+  deviceType = 'tablet'
+  imgHeight = 150
+  aboutToAppear(){
+    this.deviceType = deviceInfo.deviceType
+
+    this.imgHeight = this.deviceType==="tablet"?150:100
+  }
 
   build() {
     Column() {
-      Divider().color($r('app.color.bilibili_divider'))
-        .margin({ left: 5, right: 5 })
       Row() {
         Stack() {
           Image(`https:${this.item.pic}`)
             .width('100%')
             .height('100%')
-            .objectFit(ImageFit.Auto)
+            .objectFit(ImageFit.Cover)
             .borderRadius(5)
             .alt($r('app.media.ic_placeholder'))
+            .interpolation(ImageInterpolation.High)
+
           Text(Utils.TimeDeal(this.item.duration))
             .maxLines(1)
-            .margin({ bottom: 4, right: 8 })
+            .margin({ bottom: '1%', right:  '2%' })
             .fontSize(12)
             .backgroundColor(Color.Grey)
             .fontColor(Color.White)
-            .borderRadius(4)
-            .padding(4)
+            .borderRadius(5)
+            .padding('1%')
             .opacity(0.8)
 
-        }.width('50%')
-        .padding(12)
+        }.height('100%')
+        .aspectRatio(Constants.DEFAULT_ASPECT_RATIO)
+        .padding('1%')
         .align(Alignment.BottomEnd)
 
         Column() {
           Text(Utils.upRichTextClear(this.item.title))
             .maxLines(2)
-            .fontColor(Color.Black)
+            .fontColor($r("app.color.bilibili_text_black_light"))
             .fontSize(14)
             .letterSpacing(1)
             .maxFontSize(16)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .width('90%')
-            .margin({ left: 8 })
-            .align(Alignment.TopStart)
             .fontWeight(FontWeight.Bold)
 
           Blank().layoutWeight(1)
-            .margin(15)
+
           Row() {
-            Image($r('app.media.icon_playlist_upper'))
+            Image($r('app.media.ic_playlist_up_label'))
               .imageStyle()
             Text(this.item.author)
               .textStyle()
-          }.margin({ left: 8, bottom: 4 })
+          }.margin({bottom:'1%'})
 
           Row() {
             Image($r('app.media.ic_detail_play'))
               .imageStyle()
-
             Text(Utils.Views(this.item.play))
               .textStyle()
-
             Image($r("app.media.ic_danmakus_dark"))
               .imageStyle()
-              .margin({ left: 8, right: 8 })
+              .margin({ left: '2%' })
             Text(Utils.Views(this.item.danmaku))
               .textStyle()
             Blank()
@@ -80,26 +86,29 @@ export struct VideoItem {
                   }
                 )
               })
-
-          }.margin({ left: 8, bottom: 8, top: 4 })
+          }
         }
         .alignItems(HorizontalAlign.Start)
-        .margin({ top: 12, bottom: 4 })
+        .padding('1%')
         .layoutWeight(1)
 
-      }.justifyContent(FlexAlign.SpaceBetween)
+      }.justifyContent(FlexAlign.Start)
       .width('100%')
-      .aspectRatio(16 / 5)
+      .height(this.imgHeight)
+
+      Divider().color($r('app.color.bilibili_divider'))
+        .margin({ left: '1%', right: '1%' })
+        .strokeWidth(1)
     }
   }
 }
 
 @Extend(Image)
 function imageStyle() {
-  .height(14)
-  .width(14)
-  .margin({ right: 8 })
-  .objectFit(ImageFit.Auto)
+  .height('15%')
+  .aspectRatio(1)
+  .objectFit(ImageFit.Cover)
+  .interpolation(ImageInterpolation.High)
 }
 
 @Extend(Text)
@@ -108,4 +117,5 @@ function textStyle() {
   .fontColor(Color.Grey)
   .maxLines(1)
   .textOverflow({ overflow: TextOverflow.Ellipsis })
+  .margin({ left: '1%' })
 }

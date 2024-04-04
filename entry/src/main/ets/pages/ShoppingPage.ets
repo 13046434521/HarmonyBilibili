@@ -1,24 +1,34 @@
 import Constants from '../common/Constants'
+import { JLog } from '../common/JLog'
 import StorageManager from '../common/StorageManager'
+import NetEncryption from '../net/NetEncryption'
+import { Utils } from '../Utils/Utils'
 
 @Component
 export struct ShoppingPage {
   @State msg:string = "123"
+  @State msg1:string = "123"
   @StorageLink('isLogin') isLogin:boolean = false
   @StorageLink('login_img_url') vipImageUrl :string = ''
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   @State isLoginImg:boolean = false
+  @State url:string='https://www.bilibili.com/read/mobile?id=1110920'
   num = 1
   build() {
     Column() {
 
       Button("测试啊").onClick(()=>{
-        this.isLogin=!this.isLogin
-        this.isLoginImg= this.isLogin
-        this.vipImageUrl = 'https://img1.baidu.com/it/u=3825090768,663587812&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1711904400&t=ed4de14b0f10fce34b16aad9ab781b2e'
+        StorageManager.setKey('https://i0.hdslb.com/bfs/wbi/7cd084941338484aae1ad9425b84077c.png','https://i0.hdslb.com/bfs/wbi/4932caff0ff746eab6f01bf08b70ac45.png')
+        let temp = StorageManager.getData<string>('img_key')
+        let temp2 = StorageManager.getData<string>('sub_key')
+        let num='123456789'
+
+        NetEncryption.test().then(data=>{
+          Utils.Toast(data)
+        })
       })
 
-      Text(this.isLogin ?"true":"false")
+      Text(this.msg1)
 
       Image(this.isLogin?$r('app.media.bili_nologin_avatar'):'https://img1.baidu.com/it/u=3825090768,663587812&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1711904400&t=ed4de14b0f10fce34b16aad9ab781b2e').width(100).height(100)
       Image(this.isLogin?$r('app.media.bili_nologin_avatar'):$r('app.media.test')).width(100).height(100)
