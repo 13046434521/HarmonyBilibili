@@ -71,9 +71,9 @@ export class Api extends ApiBase{
 
   //  综合搜索：https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=洛天依&page=1
   //  需要cookie
-  getSearchDefault(keyword:string,page:number=1): Promise<SearchBaseBean<SearchDefaultBean>> {
+  getSearchDefault(keyword:string,page:number=1,order:'totalrank'|'click'|'pubdate'|'dm' = 'totalrank'): Promise<SearchBaseBean<SearchDefaultBean>> {
     let key = keyword.replace(/ /g,`%20`)
-    let url = `/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}`
+    let url = `/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}&order=${order}`
     return this.request(url,this.instanceCookie)
   }
 /*  视频：video
@@ -90,10 +90,10 @@ export class Api extends ApiBase{
   // 详细搜索，type:只能是上列的值
   // 需要cookie
   // https://api.bilibili.com/x/web-interface/search/type?search_type=media_ft&keyword='年会不能停'&page=1
-  getSearchType<T>(search_type:SearchType, keyword?: string, page?: number): Promise<SearchBaseBean<T>> {
+  getSearchType<T>(search_type:SearchType, keyword?: string, page?: number,order:'totalrank'|'click'|'pubdate'|'dm' = 'totalrank'): Promise<SearchBaseBean<T>> {
     // keyword = '终结者'
     let key = keyword.replace(/ /g,`%20`)
-    let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}`
+    let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}&order=${order}`
     return this.request(url,this.instanceCookie)
   }
   // https://api.bilibili.com/x/article/viewinfo?id=2265901

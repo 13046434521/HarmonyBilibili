@@ -25,20 +25,70 @@ import { VideoItem } from './item/VideoItem'
 import { LoadingData } from './LoadingData'
 import router from '@ohos.router'
 import { PageManager } from '../common/PageManager'
+import { SearchVideoBean } from '../bean/SearchVideoBean'
+import { VideoData } from '../datasource/VideoData'
 
 @Component
 export struct SearchDefaultDetails {
   @Prop search: string
   @State page: number = 1
   @Consume('defaultPageData') allData: AllData
-
+  @State loadingStatus: LoadingStatus = LoadingStatus.LoadingSuccess
+  @State videoData:VideoData = new VideoData()
+  @State isRefreshing: boolean = false
+  // 综合排序：totalrank
+  // 最多点击：click
+  // 最新发布：pubdate
+  // 最多弹幕：dm
+  @State orderType:'totalrank'|'click'|'pubdate'|'dm' = 'totalrank';
   aboutToAppear() {
 
   }
 
 
   build() {
-    this.defaultPage()
+    Column(){
+      this.OrderTitle()
+      LoadingData({ loadingStatus: this.loadingStatus, page: this.allPage.bind(this)})
+        .width('100%')
+        .layoutWeight(1)
+    }
+  }
+  @Builder
+  OrderTitle(){
+    Row(){
+      Text("默认排序")
+        .orderTitleStyle(this.orderType==='totalrank')
+        .onClick(()=>{
+          this.orderRequest(this.search,'totalrank')
+        })
+      Text("新发布")
+        .orderTitleStyle(this.orderType==='pubdate')
+        .onClick(()=>{
+          this.orderRequest(this.search,'pubdate')
+        })
+      Text("播放多")
+        .orderTitleStyle(this.orderType==='click')
+        .onClick(()=>{
+          this.orderRequest(this.search,'click')
+        })
+      Text("弹幕多")
+        .orderTitleStyle(this.orderType==='dm')
+        .onClick(()=>{
+          this.orderRequest(this.search,'dm')
+        })
+      Blank().layoutWeight(1)
+    }.height('5%')
+    .width('100%')
+    .margin({left:"1%"})
+  }
+  @Builder
+  allPage(){
+    if ( this.orderType==='totalrank'){
+      this.defaultPage()
+    }else{
+      this.biliVideo()
+    }
   }
 
   @Builder
@@ -50,6 +100,7 @@ export struct SearchDefaultDetails {
         }
       }, (item: SearchDefaultDataBean,index) => JSON.stringify(item)+index)
     }.width('100%')
+    .cachedCount(24)
     .layoutWeight(1)
     .onReachEnd(()=>{
       Api.getSearchDefault(this.search, this.page+1).then((response) => {
@@ -61,6 +112,49 @@ export struct SearchDefaultDetails {
         Utils.Toast('综合页面没有数据了')
       })
     })
+  }
+
+  @Builder
+  biliVideo() {
+    Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
+      List() {
+        LazyForEach(this.videoData, (item: SearchVideoBean) => {
+          ListItem() {
+            VideoItem({ item:item }).onClick(()=>{
+              router.pushUrl({url:'pages/VideoDetailPage',params:{'bvid':item.bvid,'cid':0}})
+            })
+          }
+        }, (item: SearchVideoBean,index) =>JSON.stringify(item)+index)
+      }
+      .cachedCount(24)
+      .onReachEnd(() => {
+        Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1,this.orderType)
+          .then((response) => {
+            if (response.result!=undefined) {
+              this.page++
+              this.videoData.pushDataAll(response.result)
+            }
+          }).catch((err => {
+          Utils.Toast("视频页面："+err)
+        }))
+      })
+    }.onRefreshing(() => {
+      this.page = 1
+      Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page,this.orderType).then((response) => {
+        this.videoData.reloadData(response.result)
+
+        if (response.result!=null&&this.videoData.totalCount()!=0) {
+          this.loadingStatus = LoadingStatus.LoadingSuccess
+        }else{
+          this.loadingStatus = LoadingStatus.LoadingOther
+        }
+        this.isRefreshing = false
+      }).catch((err => {
+        this.isRefreshing = false
+      }))
+    })
+    .width('100%')
+    .layoutWeight(1)
   }
 
   @Builder
@@ -81,4 +175,49 @@ export struct SearchDefaultDetails {
       BiliUserItem({ item: item })  //mid,uname
     }
   }
+
+  orderRequest(keyword:string,order:'totalrank'|'click'|'pubdate'|'dm'){
+    if (this.orderType === order||this.loadingStatus===LoadingStatus.Loading) {
+      return
+    }
+    this.loadingStatus = LoadingStatus.Loading
+    this.orderType=order
+    this.page=1
+    if (order==='totalrank'){
+      Api.getSearchDefault(keyword,this.page,'totalrank')
+        .then((response) => {
+          if (response.result!=undefined) {
+            // 需要特殊处理
+            let temp = this.allData.dealData(response.result)
+            this.allData.reloadData(temp)
+            this.page++
+            this.loadingStatus = LoadingStatus.LoadingSuccess
+          }
+        }).catch((err => {
+        Utils.Toast("视频页面："+err)
+        this.loadingStatus = LoadingStatus.LoadingFailure
+      }))
+    }else{
+      Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, keyword, this.page,order)
+        .then((response) => {
+          if (response.result!=undefined) {
+            this.page++
+            this.videoData.reloadData(response.result)
+            this.loadingStatus = LoadingStatus.LoadingSuccess
+          }
+        }).catch((err => {
+        Utils.Toast("视频页面："+err)
+        this.loadingStatus = LoadingStatus.LoadingFailure
+      }))
+    }
+  }
+}
+
+@Extend(Text)
+function orderTitleStyle(select:boolean){
+  .width('15%')
+  .height('100%')
+  .textAlign(TextAlign.Center)
+  .fontSize(14)
+  .fontColor(select?$r('app.color.bilibili_theme'):$r('app.color.bilibili_text_grey_bold'))
 }

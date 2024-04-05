@@ -62,30 +62,30 @@ export struct SearchTabsAll {
       TabContent() {
         SearchDefaultDetails({ search: this.search })
       }.tabBar(this.TabBuilder(0, "综合"))
-      TabContent() {
-        // 视频页面
+/*      TabContent() {
+        // 视频页面 2024-4-5 视频页面合并到综合当中，并实现按弹幕，播放量等排序
         SearchVideoDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(1, this.videoTitle))
+      }.tabBar(this.TabBuilder(1, this.videoTitle))*/
 
       TabContent() {
         SearchMediaBangumiDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(2, this.mediaBangumiTitle))
+      }.tabBar(this.TabBuilder(1, this.mediaBangumiTitle))
 
       TabContent() {
         SearchLiving({ search: this.search })
-      }.tabBar(this.TabBuilder(3, this.liveTitle))
+      }.tabBar(this.TabBuilder(2, this.liveTitle))
 
       TabContent() {
         SearchBiliUserDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(4, this.biliUserTitle))
+      }.tabBar(this.TabBuilder(3, this.biliUserTitle))
 
       TabContent() {
         SearchMediaFt({ search: this.search })
-      }.tabBar(this.TabBuilder(5, this.mediaFtTitle))
+      }.tabBar(this.TabBuilder(4, this.mediaFtTitle))
 
       TabContent() {
         SearchArticleDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(6, this.articleTitle))
+      }.tabBar(this.TabBuilder(5, this.articleTitle))
     }
     .width('100%')
     .vertical(false)
