@@ -100,6 +100,8 @@ export class Api extends ApiBase{
   // article的详细内容链接,id为SearchArticle中的id
 
   // https://passport.bilibili.com/x/passport-login/web/qrcode/generate
+
+  //https://api.bilibili.com/x/web-interface/zone 登录位置
 }
 
 const api: Api = new Api()

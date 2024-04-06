@@ -21,24 +21,24 @@ struct BiliUserPage {
   aboutToAppear() {
     if (router.getParams()!==undefined) {
       this.mid = router.getParams()[RouterConstants.MID]
-    // this.mid = 68406011
-  /*    Promise.all(  [ApiBiliUser.getUserAccInfo(this.mid),ApiBiliUser.loginUserInfo(this.mid)])
+
+      Promise.all(  [ApiBiliUser.getUserAccInfo(this.mid),ApiBiliUser.loginUserInfo(this.mid)])
         .then((value)=>{
           value[0].mid
           value[1].card.mid
           this.accInfo = value[0]
           this.userInfo =  value[1]
-          console.error('Promise.all:', value[0].mid + '---'+   value[1].card.mid)
-        })*/
-    ApiBiliUser.getUserAccInfo(this.mid)
+        })
+/*    ApiBiliUser.getUserAccInfo(this.mid)
       .then(accInfo=>{
         this.accInfo = accInfo
         return ApiBiliUser.loginUserInfo(this.mid)
       }).then(userInfo=>{
         this.userInfo =userInfo
 
-      Utils.Toast(this.userInfo.card.fans.toString())
-    })
+
+    })*/
+
     }
   }
 
@@ -90,68 +90,172 @@ struct BiliUserPage {
         .height('45%')
         .width('100%')
         .objectFit(ImageFit.Cover)
+        .interpolation(ImageInterpolation.High)
 
-      Image(this.accInfo.face)
-        .position({y:'42.5%',x:'5%'})
-        .height('15%')
-        .aspectRatio(1)
-        .alt($r('app.media.ic_default_avatar'))
-        .borderColor(Color.White)
-        .borderWidth(1)
-        .borderRadius(100)
+
+      Stack(){
+        // 头像
+        Stack(){
+          Image(this.accInfo.face)
+            .objectFit(ImageFit.Contain)
+            .alt($r('app.media.ic_default_avatar'))
+            .borderColor(Color.White)
+            .borderWidth(1)
+            .borderRadius(100)
+            .width('100%')
+            .height('100%')
+        }.width('65%')
+        .height('65%')
+
+
+        // 头像收藏框
+        if (Utils.isNonNull(this.accInfo.pendant)){
+          Image(this.accInfo.pendant.image)
+            .objectFit(ImageFit.Contain)
+            .aspectRatio(1)
+            .borderRadius(100)
+            .width('100%')
+            .height('100%')
+        }
+
+        // 右下角的vip年会员图标
+        if (Utils.isNonNull(this.accInfo.vip) && this.accInfo.vip.type === 2){
+          Stack(){
+            Image(this.accInfo.vip.avatar_subscript_url!==""?this.accInfo.vip.avatar_subscript_url:($r('app.media.ic_mine_vip_section_v2_logo')))
+              .position({y:`${50+50/Math.sqrt(2)-12.5}%`,x:`${50+50/Math.sqrt(2)-12.5}%`})
+              .width('25%')
+              .height('25%')
+              .alt($r('app.media.ic_default_avatar'))
+              .borderColor(Color.White)
+              .borderWidth(1)
+              .borderRadius(100)
+          }.width('65%')
+          .height('65%')
+
+
+        }
+      }.position({y:'30%',x:'5%'})
+      .height('32.5%')
+      .aspectRatio(1)
 
       Row(){
-        this.contentTitleItem(this.userInfo.card.fans.toString(),'粉丝')
-        Text(this.userInfo.card.fans.toString()+'1粉丝')
+        ContentTitle({title: this.userInfo.card.fans,content:'粉丝'})
         Divider()
           .height('20%')
           .vertical(true)
           .width("2%")
           .color($r('app.color.bilibili_divider'))
-        this.contentTitleItem(this.userInfo.follower.toString(),'关注')
+        ContentTitle({title:this.userInfo.card.friend,content:'关注'})
         Divider()
           .height('20%')
           .vertical(true)
           .width("2%")
           .color($r('app.color.bilibili_divider'))
-        this.contentTitleItem(this.userInfo.like_num.toString(),'获赞')
+        ContentTitle({title:this.userInfo.like_num,content:'获赞'})
       }.position({x:'25%',y:'45%'})
       .width('75%')
-      .height('12.5%')
-      .borderColor(Color.Orange)
-      .borderWidth(1)
+      .height('17.5%')
+
     Column(){
       Column(){
         Row(){
           Text(this.accInfo.name)
+            .margin({left:'2%'})
+            .fontSize(24)
+            .fontColor(this.accInfo.vip!=undefined?this.accInfo.vip.nickname_color:$r('app.color.bilibili_text_black_middle'))
           // 等级
-          Image('')
+          Image(userLevel(this.accInfo.level))
+            .height('20%')
+            .objectFit(ImageFit.Cover)
+            .margin({left:'2%'})
+
           // 大会员
-          Image('')
-          //牌子
-          Image('')
+          if (Utils.isNonNull(this.accInfo.vip)&&Utils.isNonNull(this.accInfo.vip.type)){
+            Image(this.accInfo.vip.label.img_label_uri_hans_static)
+              .height('40%')
+              .objectFit(ImageFit.Cover)
+              .margin({left:'2%'})
+          }
+
+          if (Utils.isNonNull(this.accInfo.nameplate)){
+            Image(this.accInfo.nameplate.image)
+              .height('40%')
+              .objectFit(ImageFit.Cover)
+              .margin({left:'2%'})
+          }
+
+        }.justifyContent(FlexAlign.Start)
+        .alignItems(VerticalAlign.Center)
+        .width('100%')
+        .layoutWeight(2)
+
+        // 签名 sign
+        if (Utils.isNonNull(this.accInfo.sign)){
+          Text(this.accInfo.sign)
+            .fontSize(14)
+            .margin({left:'2%'})
+            .fontColor($r('app.color.bilibili_text_grey_light'))
+            .layoutWeight(1)
         }
-        Text(this.accInfo.sign)
+
         Row(){
-          // 学校
-          Image('')
-          Text("this.accInfo.school.name")
-
           // ip属地
-          Image('')
-          Text('ip属地')
+/*          Image('')
+            .margin({left:'2%'})
+          Text('ip属地:')
+            .margin({left:'1%'})*/
 
-          // up
+          // uip
           Image($r('app.media.ic_playlist_up_label'))
             .width('2%')
             .aspectRatio(1)
-          Text('up')
+            .aspectRatio(1)
+          Text(this.accInfo.mid+'')
+            .margin({left:'1%'})
+            .fontSize(12)
+            .fontColor($r('app.color.bilibili_text_grey_light'))
+
+          // 学校
+          if (Utils.isNonNull(this.accInfo.school) && Utils.isNonNull(this.accInfo.school.name)){
+            Image($r('app.media.ic_vc_school'))
+              .width('2%')
+              .aspectRatio(1)
+              .margin({left:'2%'})
+
+            Text(this.accInfo.school.name)
+              .margin({left:'1%'})
+              .fontSize(12)
+              .fontWeight(FontWeight.Bold)
+              .fontColor($r('app.color.bilibili_text_grey_light'))
+          }
+
+          //男女
+          Text("性别："+this.accInfo.sex)
+            .margin({left:'1%'})
+            .fontColor($r('app.color.bilibili_text_grey_light'))
+            .fontSize(12)
+
+          // 生日
+          if (Utils.isNonNull(this.accInfo.birthday)){
+            Text("生日："+this.accInfo.birthday)
+              .margin({left:'2%'})
+              .fontColor($r('app.color.bilibili_text_grey_light'))
+              .fontSize(12)
+          }
+        }
+        .layoutWeight(1)
+        .margin({left:'2%'})
+        .alignItems(VerticalAlign.Center)
+        .justifyContent(FlexAlign.Center)
+        // 签名 为空时，放一个Blank来称布局
+        if (!Utils.isNonNull(this.accInfo.sign)){
+          Blank().layoutWeight(1)
         }
       }
       .width('100%')
       .height('65%')
-      .borderWidth(2)
-      .borderColor(Color.Yellow)
+      .alignItems(HorizontalAlign.Start)
+
       Tabs({}) {
         TabContent()
           .tabBar('主页')
@@ -166,13 +270,10 @@ struct BiliUserPage {
       }
       .width('100%')
       .height('35%')
-    }.position({x:'0%',y:'60%'})
+    }.position({x:'0%',y:'65%'})
       .width('100%')
-    .height('40%')
-
-    .borderWidth(2)
-    .borderColor(Color.Gray)
-      .alignItems(HorizontalAlign.Start)
+    .height('35%')
+    .alignItems(HorizontalAlign.Start)
 
     }
     .height('40%')
@@ -186,16 +287,31 @@ struct BiliUserPage {
       }
       this.msg = "onVisibleAreaChange:" + isVisible + "  " + currentRatio
     })
-    .borderWidth(2)
-    .borderColor(Color.Orange)
   }
-  @Builder
-  contentTitleItem(title:string,content:string){
+}
+
+@Component
+struct ContentTitle{
+  @Prop title:number = -1
+  @Prop content:string = ''
+  build(){
     Column(){
-      Text(title)
-      Text(content)
+      Text(userFans(this.title))
+        .fontColor($r('app.color.bilibili_text_black_light'))
+        .fontSize(20)
+        .margin({bottom:'2%'})
+
+      Text(this.content)
+        .fontColor($r('app.color.bilibili_text_grey_light'))
+        .fontSize(14)
     }.layoutWeight(1)
     .justifyContent(FlexAlign.Center).height('100%')
+  }
+
+  @Styles
+  testBorder(){
+  /*  .borderColor(Color.Orange)
+    .borderWidth(1)*/
   }
 }
 
@@ -203,4 +319,50 @@ struct BiliUserPage {
 enum ScrollStatus {
   SCROLL_MOVE,
   LIST_MOVE
+}
+
+
+function userFans(fans: number): string {
+  let fansRes = fans.toString()
+  if (fans >= 10000) {
+    fansRes = Math.floor(fans / 10000).toFixed(1) + "万"
+  }
+
+  return fansRes
+}
+
+function userLevel(level: number): Resource {
+  let icon = $r('app.media.ic_im_user_level_0')
+  switch (level) {
+    case 1: {
+      icon = $r('app.media.ic_im_user_level_1')
+      break
+    }
+    case 2: {
+      icon = $r('app.media.ic_im_user_level_2')
+      break
+    }
+    case 3: {
+      icon = $r('app.media.ic_im_user_level_3')
+      break
+    }
+    case 4: {
+      icon = $r('app.media.ic_im_user_level_4')
+      break
+    }
+    case 5: {
+      icon = $r('app.media.ic_im_user_level_5')
+      break
+    }
+    case 6: {
+      icon = $r('app.media.ic_im_user_level_6')
+      break
+    }
+    default: {
+      icon = $r('app.media.ic_im_user_level_0')
+      break
+    }
+  }
+
+  return icon
 }

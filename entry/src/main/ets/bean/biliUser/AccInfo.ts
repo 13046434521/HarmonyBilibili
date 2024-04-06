@@ -167,56 +167,56 @@ export class  AccInfo {
   name: string
   sex: string
   face: string
-  face_nft: 0
-  face_nft_type: 0
+  face_nft: number
+  face_nft_type: number
   sign: string
-  rank: 10000
-  level: 6
-  jointime: 0
-  moral: 0
-  silence: 0
-  coins: 451.6
+  rank: number
+  level: number
+  jointime: number
+  moral: number
+  silence: number
+  coins: number
   fans_badge: false
   fans_medal: {
     show: true
     wear: true
     medal: {
-      uid: 68406011
-      target_id: 2052851329
-      medal_id: 611069
-      level: 3
+      uid: number
+      target_id: number
+      medal_id: number
+      level: number
       medal_name: string
-      medal_color: 6067854
-      intimacy: 449
-      next_intimacy: 500
-      day_limit: 1500
-      medal_color_start: 6067854
-      medal_color_end: 6067854
-      medal_color_border: 6067854
-      is_lighted: 1
-      light_status: 1
-      wearing_status: 1
-      score: 950
+      medal_color: number
+      intimacy: number
+      next_intimacy: number
+      day_limit: number
+      medal_color_start: number
+      medal_color_end: number
+      medal_color_border: number
+      is_lighted: number
+      light_status: number
+      wearing_status: number
+      score: number
     }
   }
   official: {
-    role: 0
+    role: number
     title: string
     desc: string
-    type: -1
+    type: number
   }
   vip: {
-    type: 2
-    status: 1
-    due_date: 1717603200000
-    vip_pay_type: 1
-    theme_type: 0
+    type: number
+    status: number
+    due_date: number
+    vip_pay_type: number
+    theme_type: number
     label: {
       path: string
       text: string
       label_theme: string
       text_color: string
-      bg_style: 1
+      bg_style: number
       bg_color: string
       border_color: string
       use_img_label: true
@@ -225,29 +225,29 @@ export class  AccInfo {
       img_label_uri_hans_static: string
       img_label_uri_hant_static: string
     }
-    avatar_subscript: 1
+    avatar_subscript: number
     nickname_color: string
-    role: 3
+    role: number
     avatar_subscript_url: string
-    tv_vip_status: 0
-    tv_vip_pay_type: 0
-    tv_due_date: 0
+    tv_vip_status: number
+    tv_vip_pay_type: number
+    tv_due_date: number
     avatar_icon: {
-      icon_type: 1
+      icon_type: number
       icon_resource: {}
     }
   }
   pendant: {
-    pid: 0
+    pid: number
     name: string
     image: string
-    expire: 0
+    expire: number
     image_enhance: string
     image_enhance_frame: string
-    n_pid: 0
+    n_pid: number
   }
   nameplate: {
-    nid: 0
+    nid: number
     name: string
     image: string
     image_small: string
@@ -255,7 +255,7 @@ export class  AccInfo {
     condition: string
   }
   user_honour_info: {
-    mid: 0
+    mid: number
     colour: null
     tags: []
     is_latest_100honour: 0
@@ -265,18 +265,18 @@ export class  AccInfo {
   theme: {}
   sys_notice: {}
   live_room: {
-    roomStatus: 1
-    liveStatus: 0
+    roomStatus: number
+    liveStatus: number
     url: string
     title: string
     cover: string
-    roomid: 11388945
-    roundStatus: 0
-    broadcast_type: 0
+    roomid: number
+    roundStatus: number
+    broadcast_type: number
     watched_show: {
-      switch: true
-      num: 1
-      text_small: 1
+      switch: boolean
+      num: number
+      text_small: number
       text_large: string
       icon: string
       icon_location: string
@@ -291,22 +291,22 @@ export class  AccInfo {
     name: string
     department: string
     title: string
-    is_show: 0
+    is_show: number
   }
   tags: null
   series: {
-    user_upgrade_status: 3
+    user_upgrade_status: number
     show_upgrade_window: false
   }
-  is_senior_member: 0
+  is_senior_member: number
   mcn_info: null
-  gaia_res_type: 0
+  gaia_res_type: number
   gaia_data: null
   is_risk: false
   elec: {
     show_info: {
       show: true
-      state: 1
+      state: number
       title: string
       icon: string
       jump_url: string

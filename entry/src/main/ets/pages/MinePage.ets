@@ -39,6 +39,7 @@ struct MineInfoPage {
   @StorageLink('day_night') daynight: 'day'|'night' = 'day'
   @State vipImageUrl :string = ''
   @State vipBageUrl: string = undefined
+  @State isBigVip :boolean= false
   @State dynamic_count: string = "-"
   @State fans: string = "-"
   @State following: string = "-"
@@ -70,7 +71,10 @@ aboutToAppear() {
        this.following = response.following.toString()
       return ApiBiliUser.loginUserInfo(this.mid)
     }).then(response=>{
-        this.vipBageUrl = response.card.vip.avatar_icon.icon_resource.url
+       // 如果，没有特殊图标显示，获取当前对象的vip类别，如果类别是2，代表年度大会员，显示年度大会员图标
+       this.isBigVip =  response.card.vip.type===2
+       // 特殊图标：愚人节时是绿色图标的 vip图片url
+       this.vipBageUrl = response.card.vip.avatar_icon.icon_resource.url
      }).catch((err)=>{
       Utils.Toast(err+"---Mine页面")
     })
@@ -100,21 +104,21 @@ aboutToAppear() {
             .aspectRatio(1)
             .alt($r('app.media.ic_default_avatar'))
             .borderRadius(100)
-          if (this.vipBageUrl!==undefined){
-            Image(this.vipBageUrl)
-              .height('30%')
-              .position({x:'75%',y:'75%'})
-              .aspectRatio(1)
-              .alt($r('app.media.ic_default_avatar'))
+          if (this.isBigVip){
+            Image(Utils.isNonNull(this.vipBageUrl)?this.vipBageUrl:$r('app.media.ic_mine_vip_section_v2_logo'))
+              .height('34%')
+              .position({y:`${50+50/Math.sqrt(2)-17}%`,x:`${50+50/Math.sqrt(2)-17}%`})  //这里的17为height（34%）的一半
               .borderRadius(100)
               .interpolation(ImageInterpolation.High)
               .objectFit(ImageFit.Cover)
               .borderWidth(2)
               .borderColor(Color.White)
           }
+
         }.height('100%')
         .aspectRatio(1)
         .margin("2%")
+
         Column(){
           Row(){
             Text(this.userName)

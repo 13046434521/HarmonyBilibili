@@ -42,6 +42,9 @@ struct ViewA {
 @Component
 export struct NewPage {
   @State b: ClassB = new ClassB(new ClassA(0));
+  aboutToAppear(){
+    Utils.Toast(Math.sqrt(4)+'  '+Math.sqrt(9))
+  }
   build() {
     Column() {
 

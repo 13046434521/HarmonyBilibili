@@ -1,7 +1,6 @@
 import { AccInfo } from '../bean/biliUser/AccInfo'
 import { UserInfoBean } from '../bean/biliUser/UserInfoBean'
 import { UserStateBean } from '../bean/biliUser/UserStateBean'
-import { Utils } from '../Utils/Utils'
 import { ApiBase } from './ApiBase'
 import NetEncryption from './NetEncryption'
 
@@ -12,7 +11,6 @@ import NetEncryption from './NetEncryption'
     let param={'mid':mid}
     return NetEncryption.getWbi(param).then(webi=>{
       let url =  `https://api.bilibili.com/x/space/wbi/acc/info?${webi}`
-      Utils.Toast(url)
       console.warn('WBI',url)
       return this.request<AccInfo>(url,this.instanceAxios)
     })

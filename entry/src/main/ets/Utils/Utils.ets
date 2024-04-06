@@ -131,6 +131,12 @@ export class Utils {
   //     return minutes + ":" + newSeconds;
   //   }
   // }
+
+
+  static isNonNull(content:any){
+    let temp = (content === undefined || content ===null || content == '')
+    return !temp
+  }
 }
 
 // 切换横竖屏
@@ -145,4 +151,3 @@ function windowOrientation(orientation: window.Orientation){
     })
   }
 }
-
