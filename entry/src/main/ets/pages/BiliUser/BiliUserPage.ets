@@ -3,6 +3,8 @@ import { PageManager, RouterConstants } from '../../common/PageManager'
 import ApiBiliUser from '../../net/ApiBiliUser'
 import { Utils } from '../../Utils/Utils'
 import radio from '@ohos.telephony.radio'
+import { AccInfo } from '../../bean/biliUser/AccInfo'
+import { UserInfoBean } from '../../bean/biliUser/UserInfoBean'
 
 @Entry
 @Component
@@ -14,11 +16,29 @@ struct BiliUserPage {
   private arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
   private scrollerForScroll: Scroller = new Scroller()
   private scrollerForList: Scroller = new Scroller()
-
+  @State accInfo:AccInfo = new AccInfo()
+  @State userInfo:UserInfoBean = new UserInfoBean()
   aboutToAppear() {
-    if (router.getParams()===undefined) {
-      // this.mid = router.getParams()[RouterConstants.MID]
-      // ApiBiliUser.getUserDetail(this.mid)
+    if (router.getParams()!==undefined) {
+      this.mid = router.getParams()[RouterConstants.MID]
+    // this.mid = 68406011
+  /*    Promise.all(  [ApiBiliUser.getUserAccInfo(this.mid),ApiBiliUser.loginUserInfo(this.mid)])
+        .then((value)=>{
+          value[0].mid
+          value[1].card.mid
+          this.accInfo = value[0]
+          this.userInfo =  value[1]
+          console.error('Promise.all:', value[0].mid + '---'+   value[1].card.mid)
+        })*/
+    ApiBiliUser.getUserAccInfo(this.mid)
+      .then(accInfo=>{
+        this.accInfo = accInfo
+        return ApiBiliUser.loginUserInfo(this.mid)
+      }).then(userInfo=>{
+        this.userInfo =userInfo
+
+      Utils.Toast(this.userInfo.card.fans.toString())
+    })
     }
   }
 
@@ -42,7 +62,7 @@ struct BiliUserPage {
         }
         .width("100%")
         .height('100%')
-        .edgeEffect(EdgeEffect.None)
+        .edgeEffect(EdgeEffect.Fade)
         .onReachStart(()=>{
           this.scrollStatus = ScrollStatus.SCROLL_MOVE
         })
@@ -60,52 +80,41 @@ struct BiliUserPage {
       }
     }
     .width("100%").height("100%")
+    .edgeEffect(EdgeEffect.Spring)
   }
 
   @Builder
   title() {
     Column() {
-      Image($r('app.media.test'))
+      Image(this.accInfo.top_photo)
         .height('45%')
         .width('100%')
         .objectFit(ImageFit.Cover)
 
-      Image($r('app.media.ic_default_avatar'))
+      Image(this.accInfo.face)
         .position({y:'42.5%',x:'5%'})
         .height('15%')
         .aspectRatio(1)
-        .alt($r('app.media.ic_placeholder'))
+        .alt($r('app.media.ic_default_avatar'))
         .borderColor(Color.White)
         .borderWidth(1)
         .borderRadius(100)
 
       Row(){
-        Column(){
-          Text('44.4万')
-          Text('粉丝')
-        }.layoutWeight(1)
-        .justifyContent(FlexAlign.Center).height('100%')
+        this.contentTitleItem(this.userInfo.card.fans.toString(),'粉丝')
+        Text(this.userInfo.card.fans.toString()+'1粉丝')
         Divider()
           .height('20%')
           .vertical(true)
           .width("2%")
           .color($r('app.color.bilibili_divider'))
-        Column(){
-          Text('44.4万')
-          Text('粉丝')
-        }.justifyContent(FlexAlign.Center).height('100%').borderColor(Color.Blue).borderWidth(1).layoutWeight(1)
+        this.contentTitleItem(this.userInfo.follower.toString(),'关注')
         Divider()
           .height('20%')
           .vertical(true)
           .width("2%")
           .color($r('app.color.bilibili_divider'))
-
-        Column(){
-          Text('44.4万')
-          Text('粉丝')
-        }.layoutWeight(1)
-        .justifyContent(FlexAlign.Center).height('100%')
-        .borderColor(Color.Blue).borderWidth(1).layoutWeight(1)
+        this.contentTitleItem(this.userInfo.like_num.toString(),'获赞')
       }.position({x:'25%',y:'45%'})
       .width('75%')
       .height('12.5%')
@@ -114,7 +123,7 @@ struct BiliUserPage {
     Column(){
       Column(){
         Row(){
-          Text('可乐儿加冰')
+          Text(this.accInfo.name)
           // 等级
           Image('')
           // 大会员
@@ -122,11 +131,11 @@ struct BiliUserPage {
           //牌子
           Image('')
         }
-        Text('个人信息')
+        Text(this.accInfo.sign)
         Row(){
           // 学校
           Image('')
-          Text('学校')
+          Text("this.accInfo.school.name")
 
           // ip属地
           Image('')
@@ -180,7 +189,16 @@ struct BiliUserPage {
     .borderWidth(2)
     .borderColor(Color.Orange)
   }
+  @Builder
+  contentTitleItem(title:string,content:string){
+    Column(){
+      Text(title)
+      Text(content)
+    }.layoutWeight(1)
+    .justifyContent(FlexAlign.Center).height('100%')
+  }
 }
+
 // 主页，动态，投稿，收藏，追番，
 enum ScrollStatus {
   SCROLL_MOVE,

@@ -103,12 +103,12 @@
 //https://api.bilibili.com/x/web-interface/card?mid=68406011
 
 export class UserInfoBean {
-  card: UserCardBean
-  following: boolean
-  archive_count: number
+  card: UserCardBean = new UserCardBean()
+  following: boolean =false
+  archive_count: number = 0
   article_count: number
-  follower: number
-  like_num: number
+  follower: number = 0
+  like_num: number = 0
 }
 
 export class UserCardBean {
@@ -221,7 +221,7 @@ export class UserCardBean {
   description: string
   article: number
   attentions: []
-  fans: number
+  fans: number = 0
   friend: number
   attention: number
   sign: string

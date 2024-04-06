@@ -1,19 +1,20 @@
+import { AccInfo } from '../bean/biliUser/AccInfo'
 import { UserInfoBean } from '../bean/biliUser/UserInfoBean'
 import { UserStateBean } from '../bean/biliUser/UserStateBean'
 import { Utils } from '../Utils/Utils'
 import { ApiBase } from './ApiBase'
 import NetEncryption from './NetEncryption'
 
- class ApiBiliUser extends ApiBase{
+ export class ApiBiliUser extends ApiBase{
   // https://api.bilibili.com/x/space/wbi/acc/info?mid=''&wts=1685070149&w_rid=f7b376124782ae8cb42c56fdd69144ed
   // 用户空间详细信息 Cookie（SESSDATA）
-  getUserDetail(mid:number){
+  getUserAccInfo(mid:number){
     let param={'mid':mid}
-    NetEncryption.getWbi(param).then(webi=>{
+    return NetEncryption.getWbi(param).then(webi=>{
       let url =  `https://api.bilibili.com/x/space/wbi/acc/info?${webi}`
       Utils.Toast(url)
       console.warn('WBI',url)
-      // this.request()
+      return this.request<AccInfo>(url,this.instanceAxios)
     })
     let url = "https://api.bilibili.com/x/space/wbi/acc/info?mid=''&wts=1685070149&w_rid=f7b376124782ae8cb42c56fdd69144ed"
   }

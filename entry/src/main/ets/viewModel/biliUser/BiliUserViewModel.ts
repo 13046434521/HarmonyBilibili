@@ -1,7 +1,12 @@
+import ApiBiliUser from '../../net/ApiBiliUser'
+
 export class BiliUserViewModel{
   // 获取用户数据
-  getUserData(){
-
+  async getUserData(mid:number){
+    return await ApiBiliUser.loginUserInfo(mid)
+      .then(item=>{
+        return item
+      })
   }
 
   // 获取主页数据
