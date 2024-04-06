@@ -83,7 +83,7 @@ export class ApiBase{
           console.log("Bilibili:https data:"+url+"  status:" + resp.status + "--*--" + JSON.stringify(httpData))
           resolve(httpData)
         } else {
-          reject("请求失败：" + resp.status)
+          reject("Bilibili:https err:：" + resp.status)
           Utils.Toast("Bilibili:https err:" + resp.status)
         }
       }).catch(error => {
