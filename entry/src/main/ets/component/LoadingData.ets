@@ -1,6 +1,6 @@
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Failure } from './Failure'
-import { Loading } from './LoadingComponent'
+import { Loading, LoadingType } from './Loading'
 import { NoData } from './NoData'
 
 @Component
@@ -9,11 +9,11 @@ export struct LoadingData{
   @Link loadingStatus :LoadingStatus
   @Prop extraFailure:string =''
   extraSuccess:string =''
-
+  type:LoadingType = LoadingType.DATA
   build(){
     Column(){
       if (this.loadingStatus === LoadingStatus.Loading){
-        Loading({extra:this.extraSuccess})
+        Loading({extra:this.extraSuccess,type:this.type})
           .width('50%').aspectRatio(1)
       }else if (this.loadingStatus === LoadingStatus.LoadingSuccess){
         this.page()

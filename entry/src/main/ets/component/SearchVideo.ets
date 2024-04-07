@@ -1,5 +1,5 @@
 import Api from '../net/Api'
-import { Loading } from './LoadingComponent'
+import { Loading } from './Loading'
 import { SearchVideoBean } from '../bean/SearchVideoBean'
 import { Utils } from '../Utils/Utils'
 import router from '@ohos.router'

@@ -1,6 +1,6 @@
 import Constants from '../common/Constants'
 import { LoadingStatus } from '../common/LoadingStatus'
-import { Loading } from '../component/LoadingComponent'
+import { Loading } from '../component/Loading'
 import { VolumeBrightness } from '../component/VolumeBrightness'
 import { Utils } from '../Utils/Utils'
 

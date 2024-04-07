@@ -14,8 +14,8 @@ export class PageManager {
   }
 
   // 视频详情页面
-  static routerVideoDetail(bvid: string) {
-    router.pushUrl({ url: 'pages/VideoDetailPage', params: { 'bvid': bvid, 'cid': 0 } })
+  static routerVideoDetail(bvid: string,cid:number=0) {
+    router.pushUrl({ url: 'pages/VideoDetailPage', params: { 'bvid': bvid, 'cid': cid } })
   }
 
   // 直播间页面

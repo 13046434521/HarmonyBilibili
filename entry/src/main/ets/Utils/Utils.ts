@@ -51,12 +51,26 @@ export class Utils {
       return hour+":"+minute+":"+second
     }
   }
-  // 视频时常，转换处理
+  // 视频时长，转换处理
   static Duration(duration: number): string {
     //console.log("Duration:time:"+duration)
 
-    let second: number | string = (duration % 60)
-    let minute: number | string = Math.floor(duration / 60)
+    let second: number | string= 0
+    let minute: number | string = 0
+    let hour: number | string = 0
+    if (duration>3600) {
+      hour = Math.floor(duration / 3600)
+      minute =Math.floor((duration % 3600)/60)
+      second =Math.floor((duration % 3600)%60)
+    }else{
+      minute =Math.floor(duration / 60)
+      second =Math.floor(duration %60)
+    }
+    if (minute < 10) {
+      minute = '0' + minute.toFixed(0)
+    }else{
+      minute.toFixed(0)
+    }
     if (second < 10) {
       second = '0' + second.toFixed(0)
     }else{
@@ -64,7 +78,7 @@ export class Utils {
     }
 
     //console.log("duration:"+duration+"---"+minute+'---'+second)
-    return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
+    return duration > 3600 ? hour+ ":" + minute + ":" + second : minute + ":" + second
   }
 
   static upRichText(title:string){

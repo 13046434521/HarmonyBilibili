@@ -13,6 +13,13 @@ import { UserCollection } from '../../bean/biliUser/UserCollection'
 import { UserCoinVideo } from '../../bean/biliUser/UserCoinVideo'
 import { UserUpvote } from '../../bean/biliUser/UserUpvote'
 import { UserDynamic } from '../../bean/biliUser/UserDynamic'
+import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel'
+import { Loading, LoadingType } from '../../component/Loading'
+import { LoadingData } from '../../component/LoadingData'
+import { LoadingStatus } from '../../common/LoadingStatus'
+import { BiliUserBangumi } from './BiliUserBangumi'
+import { BiliUserVideo } from './BiliUserVideo'
+import { BiliUserBookmark } from './BiliUserBookmark'
 
 @Entry
 @Component
@@ -20,84 +27,97 @@ struct BiliUserPage {
   @State message: string = 'BiliUserPage'
   @State mid: number = 0
   @State scrollStatus: ScrollStatus = ScrollStatus.SCROLL_MOVE; // 0代表滚动到List顶部，1代表中间值，2代表滚动到List底部。
-  @State msg: string = ''
+  private scrollerForScroll: Scroller = new Scroller()
+  private tabController:TabsController = new TabsController()
+
+  biliUserViewModel : BiliUserViewModel = new BiliUserViewModel(this.tabController)
+  // AccInfo, UserInfoBean, [UserVideoBean, UserBookmark, UserBangumi, void | UserCoinVideo[], UserUpvote, UserDynamic, UserCollection
   @State accInfo: AccInfo = new AccInfo()
   @State userInfo: UserInfoBean = new UserInfoBean()
-  private arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-  private scrollerForScroll: Scroller = new Scroller()
-  private scrollerForList: Scroller = new Scroller()
+  @State userVideoBean: UserVideoBean = new UserVideoBean()
+  @State userBookmark: UserBookmark = new UserBookmark()
+  @State userBangumi: UserBangumi = new UserBangumi()
+  @State userCoinVideos: UserCoinVideo[] = []
+  @State userUpvote: UserUpvote = new UserUpvote()
+  @State userDynamic: UserDynamic = new UserDynamic()
+  @State userCollection: UserCollection = new UserCollection()
 
+  @State loadingStatus :LoadingStatus = LoadingStatus.Loading
+  @State err:string = ''
   aboutToAppear() {
     if (router.getParams() !== undefined) {
       this.mid = router.getParams()[RouterConstants.MID]
-
-      Promise.all([ApiBiliUser.getUserAccInfo(this.mid), ApiBiliUser.loginUserInfo(this.mid)
-        , ApiBiliUser.getBiliUserVideo<UserVideoBean>(this.mid, "pubdate"),
-      ApiBiliUser.getBiliUserBookmarks<UserBookmark>(this.mid),
-      ApiBiliUser.getBiliUserBangumi<UserBangumi>(this.mid),
-      ApiBiliUser.getBiliUserCoin<UserCoinVideo[]>(this.mid),
-      ApiBiliUser.getBiliUserUpvote<UserUpvote>(this.mid),
-      ApiBiliUser.getBiliUserDynamic<UserDynamic>(this.mid),
-      ApiBiliUser.getBiliUserCollection<UserCollection>(this.mid)])
+      this.biliUserViewModel.getUserAllData(this.mid)
         .then((value) => {
-          value[0].mid
-          value[1].card.mid
           this.accInfo = value[0]
           this.userInfo = value[1]
-        })
-
-
-      /*    ApiBiliUser.getUserAccInfo(this.mid)
-            .then(accInfo=>{
-              this.accInfo = accInfo
-              return ApiBiliUser.loginUserInfo(this.mid)
-            }).then(userInfo=>{
-              this.userInfo =userInfo
-
-
-          })*/
-
+          this.userVideoBean = value[2]
+          this.userBookmark = value[3]
+          this.userBangumi = value[4]
+          this.userCoinVideos = value[5]
+          this.userUpvote = value[6]
+          this.userDynamic = value[7]
+          this.userCollection = value[8]
+          this.loadingStatus = LoadingStatus.LoadingSuccess
+        }).catch(err=>{
+          this.err = err
+          this.loadingStatus = LoadingStatus.LoadingFailure
+      })
     }
   }
 
   build() {
+    Column(){
+      LoadingData({loadingStatus:this.loadingStatus,type:LoadingType.PAGE,page:this.userPage.bind(this),extraFailure:this.err})
+    }
+  }
+
+  @Builder
+  userPage(){
     Scroll(this.scrollerForScroll) {
       Column() {
         this.title()
-        Tabs({}) {
+        Tabs({controller:this.tabController}) {
           TabContent() {
-            BiliUserMine({ mid: this.mid })
+            BiliUserMine({ mid:this.mid ,biliUserViewModel:this.biliUserViewModel,userVideoBean:this.userVideoBean,userBookmark:this.userBookmark,
+              userBangumi:this.userBangumi,userCoinVideos:this.userCoinVideos,userUpvote:this.userUpvote})
           }.tabBar('主页')
           .onClick(()=>{
-            ApiBiliUser.getBiliUserCoin<UserCoinVideo[]>(this.mid)
+            this.biliUserViewModel.getUserHomeData(this.mid)
           })
 
           TabContent() {
             // BiliUserMine({mid:this.mid})
           }.tabBar('动态')
           .onClick(()=>{
-            ApiBiliUser.getBiliUserUpvote(this.mid)
+            this.biliUserViewModel.getUserHomeData(this.mid)
           })
           TabContent() {
-            // BiliUserMine({mid:this.mid})
+            BiliUserVideo({mid:this.mid,userVideoBean:this.userVideoBean,biliUserViewModel:this.biliUserViewModel})
           }.tabBar('投稿')
           .onClick(()=>{
-            ApiBiliUser.getBiliUserDynamic(this.mid)
+            this.biliUserViewModel.getUserVideoData(this.mid)
           })
           TabContent() {
-            // BiliUserMine({mid:this.mid})
-          }.tabBar('收藏')
+            BiliUserBookmark({mid:this.mid,userBookmark:this.userBookmark,biliUserViewModel:this.biliUserViewModel})
 
+          }.tabBar('收藏')
+          .onClick(()=>{
+            this.biliUserViewModel.getUserBookmarksData(this.mid)
+          })
           TabContent() {
-            // BiliUserMine({mid:this.mid})
-          }.tabBar('追番')
+            BiliUserBangumi({mid:this.mid,userBangumi:this.userBangumi,biliUserViewModel:this.biliUserViewModel})
+          }.tabBar('追番').onClick(()=>{
+            this.biliUserViewModel.getUserBangumiData(this.mid)
+          })
         }.width('100%')
-        .height('100%')
+        .height('60%')
       }
     }
-    .width("100%").height("100%")
+    .width("100%")
+    .height("100%")
     .edgeEffect(EdgeEffect.Spring)
-  }
+}
 
   @Builder
   title() {
@@ -273,7 +293,6 @@ struct BiliUserPage {
         if (!Utils.isNonNull(this.accInfo.sign)) {
           Blank().layoutWeight(1)
         }
-
       }.position({ x: '0%', y: '80%' })
       .width('100%')
       .height('20%')
@@ -288,7 +307,6 @@ struct BiliUserPage {
       } else {
         this.scrollStatus = ScrollStatus.SCROLL_MOVE
       }
-      this.msg = "onVisibleAreaChange:" + isVisible + "  " + currentRatio
     })
   }
 }
@@ -310,12 +328,6 @@ struct ContentTitle {
         .fontSize(14)
     }.layoutWeight(1)
     .justifyContent(FlexAlign.Center).height('100%')
-  }
-
-  @Styles
-  testBorder() {
-    /*  .borderColor(Color.Orange)
-      .borderWidth(1)*/
   }
 }
 

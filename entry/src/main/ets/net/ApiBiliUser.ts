@@ -14,7 +14,6 @@ import NetEncryption from './NetEncryption'
       console.warn('WBI',url)
       return this.request<AccInfo>(url,this.instanceAxios)
     })
-    let url = "https://api.bilibili.com/x/space/wbi/acc/info?mid=''&wts=1685070149&w_rid=f7b376124782ae8cb42c56fdd69144ed"
   }
 
    // https://api.bilibili.com/x/web-interface/card?mid=68406011
@@ -101,8 +100,6 @@ import NetEncryption from './NetEncryption'
        let url = `https://api.bilibili.com/x/space/coin/video?${wbi}`
        console.error('ApiBiliUser',"BiliUserCoin:  "+url)
        return this.request<T>(url,this.instanceAxios)
-     }).catch(err=>{
-
      })
    }
    //https://api.bilibili.com/x/space/like/video?vmid=68406011&wts=1712425725&w_rid=aa1573efd400be4c3b0af4c092027a6c

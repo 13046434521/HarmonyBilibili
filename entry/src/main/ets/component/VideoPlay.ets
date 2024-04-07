@@ -1,7 +1,7 @@
 import { PlayStatus } from '../common/PlayStatus'
 import VideoModel from '../viewModel/VideoModel'
 import { VideoViewModel } from '../viewModel/VideoViewModel'
-import { Loading } from './LoadingComponent'
+import { Loading } from './Loading'
 import router from '@ohos.router'
 import Constants from '../common/Constants'
 import { Utils } from '../Utils/Utils'

@@ -4,7 +4,7 @@ import router from '@ohos.router'
 import { RouterConstants } from '../../common/PageManager'
 import { JLog } from '../../common/JLog'
 import { Failure } from '../../component/Failure'
-import { Loading } from '../../component/LoadingComponent'
+import { Loading } from '../../component/Loading'
 import { Utils } from '../../Utils/Utils'
 
 @Entry
