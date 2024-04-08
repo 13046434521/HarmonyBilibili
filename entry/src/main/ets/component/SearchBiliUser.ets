@@ -6,6 +6,7 @@ import { SearchBiliUserBean } from '../bean/SearchBiliUserBean'
 import { Utils } from '../Utils/Utils'
 import { BiliUserItem } from './item/BiliUserItem'
 import { BiliUserData } from '../datasource/BiliUserData'
+import Constants from '../common/Constants'
 
 @Component
 export struct SearchBiliUserDetails {
@@ -49,7 +50,7 @@ export struct SearchBiliUserDetails {
           }
         },(item:SearchBiliUserBean)=>JSON.stringify(item))
       }.layoutWeight(1)
-      .cachedCount(12)
+      .cachedCount(Constants.CACHE_COUNT)
       .onReachEnd(() => {
         Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page + 1).then(response => {
           if (response.result!=undefined) {

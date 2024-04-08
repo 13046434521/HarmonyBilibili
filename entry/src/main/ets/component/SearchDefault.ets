@@ -27,6 +27,7 @@ import router from '@ohos.router'
 import { PageManager } from '../common/PageManager'
 import { SearchVideoBean } from '../bean/SearchVideoBean'
 import { VideoData } from '../datasource/VideoData'
+import Constants from '../common/Constants'
 
 @Component
 export struct SearchDefaultDetails {
@@ -100,7 +101,7 @@ export struct SearchDefaultDetails {
         }
       }, (item: SearchDefaultDataBean,index) => JSON.stringify(item)+index)
     }.width('100%')
-    .cachedCount(24)
+    .cachedCount(Constants.CACHE_COUNT)
     .layoutWeight(1)
     .onReachEnd(()=>{
       Api.getSearchDefault(this.search, this.page+1).then((response) => {
@@ -126,7 +127,7 @@ export struct SearchDefaultDetails {
           }
         }, (item: SearchVideoBean,index) =>JSON.stringify(item)+index)
       }
-      .cachedCount(24)
+      .cachedCount(Constants.CACHE_COUNT)
       .onReachEnd(() => {
         Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1,this.orderType)
           .then((response) => {

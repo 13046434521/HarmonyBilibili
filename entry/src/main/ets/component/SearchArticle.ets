@@ -1,4 +1,5 @@
 import { SearchArticleBean } from '../bean/SearchArticleBean'
+import Constants from '../common/Constants'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { ArticleData } from '../datasource/ArticleData'
@@ -51,7 +52,7 @@ export struct SearchArticleDetails {
           ArticleItem({item:item})
         }
       },(item: SearchArticleBean) =>item.mid+item.title)
-    }.cachedCount(12).divider({
+    }.cachedCount(Constants.CACHE_COUNT).divider({
       strokeWidth: 1,
       color: $r('app.color.bilibili_divider'),
       startMargin: 8,

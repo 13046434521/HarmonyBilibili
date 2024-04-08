@@ -7,7 +7,7 @@ import { NoData } from './NoData'
 export struct LoadingData{
   @BuilderParam page:()=>void
   @Link loadingStatus :LoadingStatus
-  @Prop extraFailure:string =''
+  extraFailure:string =''
   extraSuccess:string =''
   type:LoadingType = LoadingType.DATA
   reload:()=>void =undefined

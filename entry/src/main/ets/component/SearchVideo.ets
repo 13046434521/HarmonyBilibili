@@ -9,6 +9,7 @@ import { SearchType } from '../common/SearchType'
 import { LoadingData } from './LoadingData'
 import { VideoItem } from './item/VideoItem'
 import { VideoData } from '../datasource/VideoData'
+import Constants from '../common/Constants'
 
 @Component
 export struct SearchVideoDetails {
@@ -59,7 +60,7 @@ export struct SearchVideoDetails {
           }
         }, (item: SearchVideoBean) =>JSON.stringify(item))
       }
-      .cachedCount(12)
+      .cachedCount(Constants.CACHE_COUNT)
       .onReachEnd(() => {
         Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1)
           .then((response) => {

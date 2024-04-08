@@ -56,7 +56,7 @@ export struct BiliUserBookmark{
         this.BookmarkItem(bookmark)
       },(item,index)=>JSON.stringify(item)+index)
     }.lanes(1)
-    .cachedCount(12)
+    .cachedCount(Constants.CACHE_COUNT)
     .onReachEnd(()=>{
       this.biliUserViewModel.getUserBookmarksData(this.mid,this.page+1,20).then(item=>{
         this.page++
@@ -114,10 +114,10 @@ export struct BiliUserBookmark{
         .strokeWidth(1)
         .layoutWeight(1)
     }.width('100%')
-    .height('20%')
+    .height('12%')
     .onClick(event=>{
       Utils.Toast("收藏夹："+bookmark.title +'  id:'+bookmark.id+ '  fid'+bookmark.fid)
-    }).margin({top:'1%',bottom:'1%'})
+    })
   }
 
 

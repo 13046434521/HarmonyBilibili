@@ -14,7 +14,7 @@ export struct ShoppingPage {
 
   build() {
     Column() {
-      this.getText.bind(this)
+
     }
   }
 

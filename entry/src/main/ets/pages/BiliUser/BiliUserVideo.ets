@@ -20,7 +20,9 @@ export struct BiliUserVideo{
   order:'pubdate' | 'click' | 'stow' = 'pubdate'
   page = 1
   aboutToAppear(){
-    this.userVideoData.addDataAll(this.userVideoBean.list.vlist)
+    if (Utils.isNonNull(this.userVideoBean)&&Utils.isNonNull(this.userVideoBean.list)) {
+      this.userVideoData.addDataAll(this.userVideoBean.list.vlist)
+    }
   }
 
   build(){
@@ -34,7 +36,7 @@ export struct BiliUserVideo{
         this.VideoItem(video)
       },(item,index)=>JSON.stringify(item)+index)
     }.lanes(1)
-    .cachedCount(12)
+    .cachedCount(Constants.CACHE_COUNT)
     .onReachEnd(()=>{
       this.biliUserViewModel.getUserVideoData(this.mid,this.order,this.page+1).then(item=>{
         this.page++
@@ -121,7 +123,7 @@ export struct BiliUserVideo{
 
       }.justifyContent(FlexAlign.Start)
       .width('100%')
-      .height('20%')
+      .height('12%')
 
       Divider().color($r('app.color.bilibili_divider'))
         .margin({ left: '1%', right: '1%' })

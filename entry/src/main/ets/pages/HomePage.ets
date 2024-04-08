@@ -191,7 +191,7 @@ export struct HomePage {
           }.margin(3)
         },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)}.lanes(2)
       .edgeEffect(EdgeEffect.Fade)
-      .cachedCount(12)
+      .cachedCount(Constants.CACHE_COUNT)
       .onReachEnd(()=>{
         Api.getHomePages(this.homePage+1).then(response=>{
           if (response.item!=undefined) {

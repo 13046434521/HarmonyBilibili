@@ -20,8 +20,8 @@ export class BiliUserViewModel {
   }
 
   // 获取用户数据
-  async getUserAllData(mid: number) {
-    return await Promise.all([this.getUserAccInfo(mid),
+  getUserAllData(mid: number) {
+    return  Promise.all([this.getUserAccInfo(mid),
     this.getLoginUserInfo(mid),
     this.getUserVideoData(mid),
     this.getUserBookmarksData(mid),
@@ -30,14 +30,14 @@ export class BiliUserViewModel {
     this.getUserLikeData(mid),
     this.getUserDynamicData(mid),
     this.getUserCollection(mid)]).then((value )=>{
-
+      console.error('BiliUser  Page:video:start')
       // 数据处理。因为有的用户，数据会返回空。此时统一将值设置为undefined，方便后面ui操作
       let accInfo = value[0]//该数据可能为：undefined
       let userInfo = value[1]
 
       // 主页的影视和投稿页面中的数据
       let userVideoBean = value[2]
-      if (!Utils.isNonNull(userVideoBean)||!Utils.isNonNull(userVideoBean.list)||!Utils.isNonNull(userVideoBean.list.vlist)||(userVideoBean.list.vlist.length==0)) {
+      if (!Utils.isNonNull(userVideoBean)||!Utils.isNonNull(userVideoBean.list)||!Utils.isNonNull(userVideoBean.list.vlist)||(userVideoBean.list.vlist.length===0)) {
         userVideoBean = undefined//该数据可能为：undefined   投过图文而不是视频的userVideoBean以及userVideoBean中的list不为undefined，但vlist为null
       }
       // 主页的收藏和收藏页面中的数据
@@ -52,7 +52,7 @@ export class BiliUserViewModel {
       }
       // 主页的最近投币视频
       let userCoinVideos = value[5]//该数据可能为：null
-      if (!Utils.isNonNull(userCoinVideos)||userCoinVideos.length==0) {
+      if (!Utils.isNonNull(userCoinVideos)||userCoinVideos.length===0) {
         userCoinVideos = undefined
       }
       // 主页的最近点赞视频

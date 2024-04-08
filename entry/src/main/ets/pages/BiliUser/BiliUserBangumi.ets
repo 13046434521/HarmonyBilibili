@@ -3,6 +3,7 @@ import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 import { UserBangumiData } from '../../datasource/UserBangumiData'
+import Constants from '../../common/Constants'
 
 @Component
 export struct BiliUserBangumi{
@@ -28,7 +29,7 @@ export struct BiliUserBangumi{
         this.BangumiItem(bangumi)
       },(item,index)=>JSON.stringify(item)+index)
     }.lanes(3)
-    .cachedCount(12)
+    .cachedCount(Constants.CACHE_COUNT)
     .onReachEnd(()=>{
       this.biliUserViewModel.getUserBangumiData(this.mid,this.page+1).then(item=>{
         this.page++

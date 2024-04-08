@@ -22,9 +22,10 @@ export struct Loading {
     Column(){
       ImageAnimator().images(this.loadingOption.value).iterations(-1)
         .duration(1000)
-        .width('50%')
-        .aspectRatio(1)
+        .width('80%')
+        .aspectRatio(this.loadingOption.aspectRatio)
         .state(this.state)
+
       Text(this.loadingOption.content)
         .width('100%')
         .fontSize(20)
@@ -40,9 +41,11 @@ export struct Loading {
 export class LoadingOption{
   value: ImageFrameInfo[]
   content:string
+  aspectRatio:number
 
-  constructor(value: ImageFrameInfo[],content:string) {
+  constructor(value: ImageFrameInfo[],content:string,aspectRatio:number) {
     this.content =content
+    this.aspectRatio = aspectRatio
     this.value = value
   }
 }
@@ -58,7 +61,7 @@ export class DataLoadingOption extends LoadingOption{
     }, {
       src: $r('app.media.mall_asyn_loading_anim_img04')
     },
-    ],'正在加载数据...')
+    ],'正在加载数据...',1)
   }
 }
 
@@ -70,7 +73,7 @@ export class PageLoadingOption extends LoadingOption{
       src: $r('app.media.ic_laoding_anim_02')
     }, {
       src: $r('app.media.ic_laoding_anim_03')
-    }],'拼命加载中...')
+    }],'拼命加载中...',16/9)
   }
 }
 

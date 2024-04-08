@@ -72,6 +72,8 @@ struct BiliUserPage {
         }).catch(err=>{
           this.err = err
           this.loadingStatus = LoadingStatus.LoadingFailure
+        console.error('BiliUser Page:err:'+ err)
+
       })
     }
   }
@@ -135,7 +137,7 @@ struct BiliUserPage {
           })
 
         }.width('100%')
-        .height('60%')
+        .height('100%')
       }
     }
     .width("100%")
