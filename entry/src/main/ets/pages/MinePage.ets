@@ -7,7 +7,6 @@ import { Utils } from '../Utils/Utils';
 import ApiBiliUser from '../net/ApiBiliUser';
 import { PageManager } from '../common/PageManager';
 import { MineItem, MineViewModel } from '../viewModel/MineViewModel';
-import { SwipeRefreshLayout } from '../../../../../Loading/src/main/ets/pages/SwipeRefreshLayout';
 
 @Preview
 @Component
@@ -165,13 +164,7 @@ aboutToAppear() {
         this.ImageItemComponent($r('app.media.ic_mine_watchlater'),"稍后再看")
       }.rowItemStyle()
 
-      SwipeRefreshLayout({refresh:()=>{
-        ApiLogin.loginNav().then(data=>{
-          Utils.Toast(data.mid+'  '+data.uname)
-        })
-      }}) {
-        this.otherFeatures()
-      }
+      this.otherFeatures()
     }.width('100%') 
     .height('100%')
     .backgroundColor(this.backgroundColors)

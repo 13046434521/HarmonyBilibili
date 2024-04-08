@@ -19,7 +19,7 @@ export struct SwipeRefreshList {
   build() {
     Scroll(this.scrollController){
       Column() {
-        Image($r('app.media.ic_succeed_refresh'))
+        Image('')
           .width(this.progressWidth)
           .aspectRatio(1)
           .objectFit(ImageFit.Contain)
@@ -42,7 +42,7 @@ export struct SwipeRefreshList {
           this.scrollController.scrollBy(0,150)
         })
       }.width('100%').height('100%')
-      Image($r('app.media.ic_succeed_refresh'))
+      Image('')
         .width(this.progressWidth)
         .aspectRatio(1)
         .objectFit(ImageFit.Contain)

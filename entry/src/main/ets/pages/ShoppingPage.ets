@@ -1,6 +1,5 @@
 import webview from '@ohos.web.webview'
 import Constants from '../common/Constants'
-import {SwipeRefreshLayout} from '@ohos/loading'
 import Api from '../net/Api'
 import { Utils } from '../Utils/Utils'
 
@@ -15,12 +14,7 @@ export struct ShoppingPage {
 
   build() {
     Column() {
-
-      SwipeRefreshLayout({refresh:()=>{
-        Api.getSearchHot().then((DATA)=>{
-            Utils.Toast(DATA.list.length+DATA.list[0].keyword)
-        })
-      },childLayout:this.getText.bind(this)})
+      this.getText.bind(this)
     }
   }
 
