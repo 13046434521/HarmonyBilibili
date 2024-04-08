@@ -1,8 +1,8 @@
 
 @Component
 export struct Failure{
-  @Prop msg:string = "加载失败...wuuuu.."
-  @Prop extra:string =''
+   msg:string = "加载失败...wuuuu.."
+   extra:string =''
 
   aboutToAppear(){
     console.log("加载失败页面刷新  "+this.extra)

@@ -17,7 +17,7 @@ struct SplashPage {
   @StorageLink('login_img_url') loginIcon :string = ''
   @StorageLink('bilibili_cookie') cookie :string = ''
   aboutToAppear() {
-    this.cookie="DedeUserID=68406011;DedeUserID__ckMd5=ecb0ad5cd0bcd251;Expires=1726995029;SESSDATA=3cd4e8a3%2C1726995029%2C2c018*31CjDoM1Zr4KPtkw7itX5UpWdKtyd_PclBy8Dew0oMYwOABq7vQwq_XMrcC3_ALgqsIVgSVnR6NTBXMTBCV0IxWmxCMEN4VV9EUkVrNGlnQ0cxczdTal9IQkFHZnhUVGU3R09HU09CQTRqdXU1QnZ6T3ZaUnUyUVRjMklXTnlFR3VCV2liZVVSVkNBIIEC;bili_jct=5a92cb28818fcbe9d658f0792cf28a7f;gourl=httpswww.bilibili.com"
+    this.cookie="SESSDATA=30309593%2C1727972062%2Cb9920%2A42CjA8Qo8z1dtk_GMJ5ZbYy27pYtLsR34iB24EmmJnsaWM0Jq1SYQrG4PX0LC9ARiD3dgSVjFORzlybkpHc1VNVHU0dlBLa0VpRm5NaDFsSGp4ZlNjVTV1ZlVfdUp5OTlkYnpKSFVQazRaa19PbGw0TXc1OEc2TTc3M3hSakNmVDdheFJTUDJNRmR3IIEC; bili_jct=e8fbf10f85318c0011ea9d9659b8891a; DedeUserID=68406011; DedeUserID__ckMd5=ecb0ad5cd0bcd251; sid=4y5btiio;"
     //this.cookie="SESSDATA=3ae5643a%2C1727949301%2Cf6efd%2A41CjARWsn5Y2xAXP8Ar8YqQeouM0TYtN51rWVug2aS_4Oknms97dEqkxQGs2wYIHTpmRoSVm5LUEdyb2hCMjhtVGVCQ3ZRVURUSEtsaUtjNHNSMWViUW1WamlPYVFCY3BWNGhpTzlLNmNUR2dWRkFqN1hsckFham1KbWQxQnlxWm8zcVR2UFhjdDRRIIEC"
     this.update()
   }

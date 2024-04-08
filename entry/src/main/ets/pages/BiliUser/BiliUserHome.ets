@@ -7,17 +7,20 @@ import { Utils } from '../../Utils/Utils'
 import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel'
 import router from '@ohos.router'
 import { PageManager } from '../../common/PageManager'
+import { Loading } from '../../component/Loading'
+import { LoadingData } from '../../component/LoadingData'
+import { LoadingStatus } from '../../common/LoadingStatus'
 
 @Component
-export struct BiliUserMine{
+export struct BiliUserHome{
   mid:number = 0
   @State state:string = ''
-  @Prop userVideoBean: UserVideoBean
-  @Prop userBookmark: UserBookmark
-  @Prop userBangumi: UserBangumi
-  @Prop userCoinVideos: UserCoinVideo[]
-  @Prop userUpvote: UserUpvote
-  biliUserViewModel:BiliUserViewModel
+  userVideoBean: UserVideoBean = undefined
+  userBookmark: UserBookmark = undefined
+  userBangumi: UserBangumi = undefined
+  userCoinVideos: UserCoinVideo[] = undefined
+  userUpvote: UserUpvote = undefined
+  biliUserViewModel:BiliUserViewModel = undefined
 
   @State userVideoItems:UserVideoItem[]=[]
   @State userBookmarkItems:UserBookmarkItem[]=[]
@@ -25,53 +28,71 @@ export struct BiliUserMine{
   @State userUpvoteItems:UserUpvoteItem[]=[]
   @State userCoinItems:UserCoinVideo[]=[]
 
-
+  isHasData :boolean = false
+  hasVideoData :boolean = false
+  hasCoinData :boolean = false
+  hasBangumiData :boolean = false
+  hasUpvoteData :boolean = false
+  hasBookmarkData :boolean = false
+ // @State loadingStatus:LoadingStatus = LoadingStatus.LoadingFailure
   aboutToAppear(){
-    // 视频最多4个
-    let videoCount = this.userVideoBean.list.vlist.length>4?4:this.userVideoBean.list.vlist.length
-    for (let index = 0; index < videoCount; index++) {
-      const element = this.userVideoBean.list.vlist[index];
-      this.userVideoItems.push(element)
+    console.error('BiliUser  Home:video:'+this.userVideoBean+ '  Bangumi:'+this.userBangumi+ '  CoinVideos:'+this.userCoinVideos+ '  Upvote:'+this.userUpvote+ '  Bookmark:'+this.userBookmark)
+    if (Utils.isNonNull(this.userVideoBean)) {
+      // 视频最多4个
+      let videoCount = this.userVideoBean.list.vlist.length>4?4:this.userVideoBean.list.vlist.length
+      for (let index = 0; index < videoCount; index++) {
+        const element = this.userVideoBean.list.vlist[index];
+        this.userVideoItems.push(element)
+      }
+      this.hasVideoData =  true
+    }
+    if (Utils.isNonNull(this.userBangumi)) {
+      // 追番最多3个
+      let bangumikCount = this.userBangumi.list.length > 3 ? 3 : this.userBangumi.list.length
+      for (let index = 0; index < bangumikCount; index++) {
+        const element = this.userBangumi.list[index];
+        this.userBangumiItems.push(element)
+      }
+      this.hasBangumiData =  true
+    }
+    if (Utils.isNonNull(this.userCoinVideos)) {
+      //投币视频最多2个
+      let coinCount = this.userCoinVideos.length > 2 ? 2 : this.userCoinVideos.length
+      for (let index = 0; index < coinCount; index++) {
+        const element = this.userCoinVideos[index];
+        this.userCoinItems.push(element)
+      }
+      this.hasCoinData =  true
+    }
+    if (Utils.isNonNull(this.userUpvote)) {
+      //点赞视频最多2个
+      let upvoteCount = this.userUpvote.list.length > 2 ? 2 : this.userUpvote.list.length
+      for (let index = 0; index < upvoteCount; index++) {
+        const element = this.userUpvote.list[index];
+        this.userUpvoteItems.push(element)
+      }
+      this.hasUpvoteData =  true
+    }
+    if (Utils.isNonNull(this.userBookmark)) {
+      // 收藏最多2个
+      let bookmarkCount = this.userBookmark.list.length > 2 ? 2 : this.userBookmark.list.length
+      for (let index = 0; index < bookmarkCount; index++) {
+        const element = this.userBookmark.list[index];
+        this.userBookmarkItems.push(element)
+      }
+      this.hasBookmarkData =  true
     }
 
-    // 收藏最多2个
-    let bookmarkCount = this.userBookmark.list.length>2?2:this.userBookmark.list.length
-    for (let index = 0; index < bookmarkCount; index++) {
-      const element =this.userBookmark.list[index];
-      this.userBookmarkItems.push(element)
-    }
-
-    // 追番最多3个
-    let bangumikCount = this.userBangumi.list.length>3?3:this.userBangumi.list.length
-    for (let index = 0; index < bangumikCount; index++) {
-      const element =this.userBangumi.list[index];
-      this.userBangumiItems.push(element)
-    }
-
-    //投币视频最多2个
-    let coinCount = this.userCoinVideos.length>2?2:this.userCoinVideos.length
-    for (let index = 0; index < coinCount; index++) {
-      const element = this.userCoinVideos[index];
-      this.userCoinItems.push(element)
-    }
-
-    //点赞视频最多2个
-    let upvoteCount = this.userUpvote.list.length>2?2:this.userUpvote.list.length
-    for (let index = 0; index < upvoteCount; index++) {
-      const element =this.userUpvote.list[index];
-      this.userUpvoteItems.push(element)
+    // 判断是否有数据，有一个有数据，就显示数据页面
+    if (this.hasVideoData || this.hasCoinData || this.userBookmark||this.hasBangumiData||this.hasUpvoteData){
+      // this.loadingStatus = LoadingStatus.LoadingSuccess
     }
   }
 
   build(){
     Scroll(){
       Column(){
-        this.VideoView()
-        this.BookmarkView()
-        this.BangumiView()
-        this.CoinVideoView()
-        this.UpvoteVideoView()
-
+        this.UserPage()
       }.width('100%')
       .justifyContent(FlexAlign.Start)
       .backgroundColor($r('app.color.bilibili_background_grey'))
@@ -80,20 +101,27 @@ export struct BiliUserMine{
     .height('100%')
     .backgroundColor($r('app.color.bilibili_background_grey'))
     .scrollBar(BarState.Off)
-
-/*    Column(){
-      this.VideoView()
-      this.BookmarkView()
-      this.BangumiView()
-      this.CoinView()
-      this.UpvoteView()
-
-    }.width('100%')
-    .height('100%')
-    .justifyContent(FlexAlign.Start)
-    .backgroundColor($r('app.color.bilibili_background_grey'))
-    .padding('2%')*/
   }
+  /*------------------------------------------- 总数据 --------------------------------------------*/
+  @Builder
+  UserPage(){
+    if (this.hasVideoData) {
+      this.VideoView()
+    }
+    if (this.hasBookmarkData) {
+      this.BookmarkView()
+    }
+    if (this.hasBangumiData) {
+      this.BangumiView()
+    }
+    if (this.hasCoinData) {
+      this.CoinVideoView()
+    }
+    if (this.hasUpvoteData) {
+      this.UpvoteVideoView()
+    }
+  }
+
   /*------------------------------------------- 视频 --------------------------------------------*/
   @Builder
   VideoView() {

@@ -47,15 +47,6 @@ import NetEncryption from './NetEncryption'
    // https://api.bilibili.com/x/space/notice?mid=17920281
    // 个人空间公告 --- app中用不到
 
-   // https://api.bilibili.com/x/space/like/video?vmid=17920281
-   // 点赞的视频
-
-   // https://api.bilibili.com/x/space/coin/video?vmid=17920281
-   // 投币的视频
-
-   // https://api.bilibili.com/x/v3/fav/folder/created/list-all?up_mid=68406011
-   // 查询用户收藏夹列表
-
    //https://space.bilibili.com/ajax/Bangumi/getList?mid=68406011&type=1&ps=2&pn=1
    // 查询用户追番列表
 
@@ -93,6 +84,7 @@ import NetEncryption from './NetEncryption'
     }
    //  https://api.bilibili.com/x/space/coin/video?vmid=68406011&wts=1712425725&w_rid=aa1573efd400be4c3b0af4c092027a6c
    // 主页->最近投币视频
+   // {"code":53013,"message":"用户隐私设置未公开","ttl":1,"data":null}
    getBiliUserCoin<T>(mid:number){
      let param ={'vmid':mid}
 
@@ -104,6 +96,7 @@ import NetEncryption from './NetEncryption'
    }
    //https://api.bilibili.com/x/space/like/video?vmid=68406011&wts=1712425725&w_rid=aa1573efd400be4c3b0af4c092027a6c
    //主页->最近点赞视频
+   // {"code":53013,"message":"用户隐私设置未公开","ttl":1,"data":null}
    getBiliUserUpvote<T>(mid:number){
      // let param ={vmid:mid,gaia_source:'main_web',web_location:'333.999'}
      let param ={vmid:mid}
@@ -117,18 +110,21 @@ import NetEncryption from './NetEncryption'
 
    //https://api.bilibili.com/x/v3/fav/folder/created/list?pn=1&ps=10&up_mid=68406011
    //主页->我的收藏夹（只有收藏夹名字和里面的数量，没有详细信息
+   // {"code":0,"message":"0","ttl":1,"data":null}
    getBiliUserBookmarks<T>(mid:number,pn:number=1,ps:number=10){
      let url = `https://api.bilibili.com/x/v3/fav/folder/created/list?pn=${pn}&ps=${ps}&up_mid=${mid}`
      return this.request<T>(url,this.instanceAxios)
    }
    // https://api.bilibili.com/x/space/bangumi/follow/list?vmid=68406011&type=1&pn=1&ps=1
   // 主页->订阅的番剧(有seasonid和mediaid)type可能是番剧和影视切换
+   // {"code":53013,"message":"用户隐私设置未公开","ttl":1}
    getBiliUserBangumi<T>(mid:number,pn:number=1,ps:number=10,type:1|2=1){
      let url = `https://api.bilibili.com/x/space/bangumi/follow/list?vmid=${mid}&type=${type}&pn=${pn}&ps=${ps}`
      return this.request<T>(url,this.instanceAxios)
    }
    //https://api.bilibili.com/x/polymer/web-space/home/seasons_series?mid=68406011&page_num=1&page_size=10
-   //主页->我的合集和视频列表(有aid，bid等)
+   // 主页->我的合集和视频列表(有aid，bid等)
+   // {"code":0,"message":"0","ttl":1,"data":{"items_lists":{"page":{"page_num":10,"page_size":10,"total":10},"seasons_list":[],"series_list":[]}}}
    getBiliUserCollection<T>(mid:number,pn:number=1,ps:number=10){
      let url = `https://api.bilibili.com/x/polymer/web-space/home/seasons_series?mid=${mid}&page_num=${pn}&page_size=${ps}`
      return this.request<T>(url,this.instanceAxios)

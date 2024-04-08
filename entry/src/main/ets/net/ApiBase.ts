@@ -78,18 +78,18 @@ export class ApiBase{
             httpData= resp.data.result
           }
           if (httpData === undefined) {
-            Utils.Toast("当前请求返回可以数据为空:"+url)
+            // Utils.Toast("当前请求返回可以数据为空:"+url)
           }
           console.log("Bilibili:https data:"+url+"  status:" + resp.status + "--*--" + JSON.stringify(httpData))
           resolve(httpData)
         } else {
-          reject("Bilibili:https err:：" + resp.status)
-          Utils.Toast("Bilibili:https err:" + resp.status)
+          reject("Bilibili:https err:：" + resp.status +"   url:"+url)
+          Utils.Toast("Bilibili:https err:" + resp.status+"  url:"+url)
         }
       }).catch(error => {
         reject("请求失败：" + error)
-        console.log("Bilibili:https err:" + error)
-        Utils.Toast("Bilibili:https err:" + error)
+        console.log("Bilibili:https err:catch:" + error)
+        Utils.Toast("Bilibili:https err:catch:" + error)
       })
     })
   }

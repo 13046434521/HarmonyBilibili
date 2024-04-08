@@ -10,6 +10,7 @@ export struct LoadingData{
   @Prop extraFailure:string =''
   extraSuccess:string =''
   type:LoadingType = LoadingType.DATA
+  reload:()=>void =undefined
   build(){
     Column(){
       if (this.loadingStatus === LoadingStatus.Loading){
@@ -21,7 +22,7 @@ export struct LoadingData{
         Failure({extra:this.extraFailure})
           .width('50%').aspectRatio(1)
       }else{
-        NoData()
+        NoData({reload:this.reload})
           .width('50%').aspectRatio(1)
       }
     }.justifyContent(FlexAlign.Center)

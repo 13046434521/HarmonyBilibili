@@ -5,7 +5,7 @@ import { Utils } from '../../Utils/Utils'
 import radio from '@ohos.telephony.radio'
 import { AccInfo } from '../../bean/biliUser/AccInfo'
 import { UserInfoBean } from '../../bean/biliUser/UserInfoBean'
-import { BiliUserMine } from './BiliUserMine'
+import { BiliUserHome } from './BiliUserHome'
 import { UserVideoBean } from '../../bean/biliUser/UserVideoBean'
 import { UserBangumi } from '../../bean/biliUser/UserBangumi'
 import { UserBookmark } from '../../bean/biliUser/UserBookmark'
@@ -20,6 +20,7 @@ import { LoadingStatus } from '../../common/LoadingStatus'
 import { BiliUserBangumi } from './BiliUserBangumi'
 import { BiliUserVideo } from './BiliUserVideo'
 import { BiliUserBookmark } from './BiliUserBookmark'
+import { Failure } from '../../component/Failure'
 
 @Entry
 @Component
@@ -31,19 +32,21 @@ struct BiliUserPage {
   private tabController:TabsController = new TabsController()
 
   biliUserViewModel : BiliUserViewModel = new BiliUserViewModel(this.tabController)
-  // AccInfo, UserInfoBean, [UserVideoBean, UserBookmark, UserBangumi, void | UserCoinVideo[], UserUpvote, UserDynamic, UserCollection
-  @State accInfo: AccInfo = new AccInfo()
-  @State userInfo: UserInfoBean = new UserInfoBean()
-  @State userVideoBean: UserVideoBean = new UserVideoBean()
-  @State userBookmark: UserBookmark = new UserBookmark()
-  @State userBangumi: UserBangumi = new UserBangumi()
-  @State userCoinVideos: UserCoinVideo[] = []
-  @State userUpvote: UserUpvote = new UserUpvote()
-  @State userDynamic: UserDynamic = new UserDynamic()
-  @State userCollection: UserCollection = new UserCollection()
+  @State accInfo: AccInfo = undefined
+  @State userInfo: UserInfoBean =undefined
+  @State userVideoBean: UserVideoBean = undefined
+  @State userBookmark: UserBookmark = undefined
+  @State userBangumi: UserBangumi = undefined
+  @State userCoinVideos: UserCoinVideo[] = new Array<UserCoinVideo>()
+  @State userUpvote: UserUpvote =undefined
+  @State userDynamic: UserDynamic = undefined
+  @State userCollection: UserCollection = undefined
 
   @State loadingStatus :LoadingStatus = LoadingStatus.Loading
   @State err:string = ''
+  count = 0
+  errCount = 0
+
   aboutToAppear() {
     if (router.getParams() !== undefined) {
       this.mid = router.getParams()[RouterConstants.MID]
@@ -51,6 +54,11 @@ struct BiliUserPage {
         .then((value) => {
           this.accInfo = value[0]
           this.userInfo = value[1]
+          if (!Utils.isNonNull(this.accInfo)||!Utils.isNonNull(this.userInfo)) {
+            Utils.Toast('当前用户个人信息：accInfo:'+this.accInfo+"  userInfo:"+ this.userInfo)
+            this.loadingStatus = LoadingStatus.LoadingFailure
+            return
+          }
           this.userVideoBean = value[2]
           this.userBookmark = value[3]
           this.userBangumi = value[4]
@@ -58,6 +66,8 @@ struct BiliUserPage {
           this.userUpvote = value[6]
           this.userDynamic = value[7]
           this.userCollection = value[8]
+          console.error('BiliUser Page:处理过后的数据:'+"  video:"+this.userVideoBean+"  bookMark:"+this.userBookmark+"   bangumi:"+this.userBangumi)+
+            "  coin:"+this.userCoinVideos+"  upvote:"+this.userUpvote+"  dynamic:"+this.userDynamic+"  collection:"+this.userCollection
           this.loadingStatus = LoadingStatus.LoadingSuccess
         }).catch(err=>{
           this.err = err
@@ -78,11 +88,19 @@ struct BiliUserPage {
       Column() {
         this.title()
         Tabs({controller:this.tabController}) {
+          // 所有用户都会显示主页数据
           TabContent() {
-            BiliUserMine({ mid:this.mid ,biliUserViewModel:this.biliUserViewModel,userVideoBean:this.userVideoBean,userBookmark:this.userBookmark,
-              userBangumi:this.userBangumi,userCoinVideos:this.userCoinVideos,userUpvote:this.userUpvote})
+            BiliUserHome({
+              mid: this.mid,
+              biliUserViewModel: this.biliUserViewModel,
+              userVideoBean: this.userVideoBean,
+              userBookmark: this.userBookmark,
+              userBangumi: this.userBangumi,
+              userCoinVideos: this.userCoinVideos,
+              userUpvote: this.userUpvote
+            })
           }.tabBar('主页')
-          .onClick(()=>{
+          .onClick(() => {
             this.biliUserViewModel.getUserHomeData(this.mid)
           })
 
@@ -92,12 +110,16 @@ struct BiliUserPage {
           .onClick(()=>{
             this.biliUserViewModel.getUserHomeData(this.mid)
           })
-          TabContent() {
-            BiliUserVideo({mid:this.mid,userVideoBean:this.userVideoBean,biliUserViewModel:this.biliUserViewModel})
-          }.tabBar('投稿')
-          .onClick(()=>{
-            this.biliUserViewModel.getUserVideoData(this.mid)
-          })
+          // 有的用户会隐藏该数据，因此要判空
+
+            TabContent() {
+              BiliUserVideo({mid:this.mid,userVideoBean:this.userVideoBean,biliUserViewModel:this.biliUserViewModel})
+            }.tabBar('投稿')
+            .onClick(()=>{
+              this.biliUserViewModel.getUserVideoData(this.mid)
+            })
+
+          // 有的用户会隐藏该数据，因此要判空
           TabContent() {
             BiliUserBookmark({mid:this.mid,userBookmark:this.userBookmark,biliUserViewModel:this.biliUserViewModel})
 
@@ -105,11 +127,13 @@ struct BiliUserPage {
           .onClick(()=>{
             this.biliUserViewModel.getUserBookmarksData(this.mid)
           })
+          // 有的用户会隐藏该数据，因此要判空
           TabContent() {
             BiliUserBangumi({mid:this.mid,userBangumi:this.userBangumi,biliUserViewModel:this.biliUserViewModel})
           }.tabBar('追番').onClick(()=>{
             this.biliUserViewModel.getUserBangumiData(this.mid)
           })
+
         }.width('100%')
         .height('60%')
       }
@@ -313,7 +337,7 @@ struct BiliUserPage {
 
 @Component
 struct ContentTitle {
-  @Prop title: number = -1
+  @Prop title: number = 0
   @Prop content: string = ''
 
   build() {

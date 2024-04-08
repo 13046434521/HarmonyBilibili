@@ -10,6 +10,8 @@ import { PageManager } from '../../common/PageManager'
 import { UserBookmarkData } from '../../datasource/UserBookmarkData'
 import Constants from '../../common/Constants'
 import FaultLogger from '@ohos.faultLogger'
+import { LoadingData } from '../../component/LoadingData'
+import { LoadingStatus } from '../../common/LoadingStatus'
 
 @Component
 export struct BiliUserBookmark{
@@ -18,13 +20,33 @@ export struct BiliUserBookmark{
   biliUserViewModel:BiliUserViewModel
   userBookmarkData:UserBookmarkData = new UserBookmarkData()
   page:number = 1
+  @State loadingStatus :LoadingStatus = LoadingStatus.LoadingOther
   aboutToAppear(){
-    this.userBookmarkData.addDataAll(this.userBookmark.list)
+    if (Utils.isNonNull(this.userBookmark)&&Utils.isNonNull(this.userBookmark.list)) {
+      this.userBookmarkData.addDataAll(this.userBookmark.list)
+      this.loadingStatus = LoadingStatus.LoadingSuccess
+    }else{
+      this.loadingStatus = LoadingStatus.LoadingOther
+    }
   }
 
   build() {
-    this.BookmarkView()
+    LoadingData({loadingStatus:this.loadingStatus,page:this.BookmarkView.bind(this),reload:()=>{
+      this.loadingStatus = LoadingStatus.Loading
+      this.page= 1
+      this.biliUserViewModel.getUserBookmarksData(this.mid).then(item=>{
+        if (Utils.isNonNull(item)) {
+          this.page++
+          this.userBookmarkData.reloadData(item.list)
+          this.loadingStatus = LoadingStatus.LoadingSuccess
+        }else{
+          this.loadingStatus = LoadingStatus.LoadingOther
+        }
 
+      }).catch(err=>{
+        this.loadingStatus = LoadingStatus.LoadingFailure
+      })
+    }})
   }
   /*------------------------------------------- 收藏 --------------------------------------------*/
   @Builder
