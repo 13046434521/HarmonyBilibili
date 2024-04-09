@@ -1,10 +1,11 @@
 import router from '@ohos.router'
-import { SearchHotBeanItem } from '../bean/SearchHotBean'
-import Constants from '../common/Constants'
-import { SearchHeader} from '../component/SearchHeader'
-import { HotSearchData } from '../datasource/HotSearchData'
+import { SearchHotBeanItem } from '../../bean/search/SearchHotBean'
+import Constants from '../../common/Constants'
+import { PageManager } from '../../common/PageManager'
+import { SearchHeader} from '../../component/SearchHeader'
+import { HotSearchData } from '../../datasource/HotSearchData'
 
-import Api from '../net/Api'
+import Api from '../../net/Api'
 
 @Entry
 @Component
@@ -34,11 +35,11 @@ struct SearchHotPage {
          this.search = value
        }
      },clickEvent:()=>{
-        router.pushUrl({url:"pages/SearchPage",params:{keyword:this.search}})
+       PageManager.routerSearchPage (this.search)
      }})
 
       this.SearchHot((content) => {
-        router.pushUrl({url:"pages/SearchWebPage"})
+        PageManager.routerSearchWeb()
       })
 
 
@@ -99,7 +100,7 @@ struct SearchHotPage {
     }.justifyContent(FlexAlign.SpaceBetween)
     .margin({ left: 10, right: 10, top: 10, bottom: 10 })
     .onClick(()=>{
-      router.pushUrl({url:"pages/SearchPage",params:{keyword:content}})
+      PageManager.routerSearchPage(content)
     })
   }
 }

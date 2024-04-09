@@ -1,7 +1,7 @@
 import webview from '@ohos.web.webview'
-import { Loading } from '../component/Loading'
-import { LoadingStatus } from '../common/LoadingStatus'
-import { Utils } from '../Utils/Utils'
+import { Loading } from '../../component/Loading'
+import { LoadingStatus } from '../../common/LoadingStatus'
+import { Utils } from '../../Utils/Utils'
 
 @Entry
 @Component

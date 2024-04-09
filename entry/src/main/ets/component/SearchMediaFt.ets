@@ -1,4 +1,4 @@
-import { SearchMediaFtBean } from '../bean/SearchMediaFtBean'
+import { SearchMediaFtBean } from '../bean/search/SearchMediaFtBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { MediaFtData } from '../datasource/MediaFtData'

@@ -5,6 +5,7 @@ import ApiLogin from '../net/ApiLogin'
 import { Utils } from '../Utils/Utils'
 import StorageManager from '../common/StorageManager'
 import webview from '@ohos.web.webview'
+import { PageManager } from '../common/PageManager'
 
 
 @Entry
@@ -60,13 +61,8 @@ struct SplashPage {
         Utils.Toast(e)
       })
       .finally(() => {
-        this.content =this.homeBeanData!==null?`加载成功:${this.homeBeanData.length}`:'加载失败'
-        router.replaceUrl({
-          url: 'pages/Index',
-          params: {
-            'homeData': this.homeBeanData,
-          }
-        }, router.RouterMode.Single)
+        this.content = this.homeBeanData !== null ? `加载成功:${this.homeBeanData.length}` : '加载失败'
+        PageManager.routerIndex(this.homeBeanData)
       })
   }
 }

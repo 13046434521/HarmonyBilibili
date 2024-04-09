@@ -1,8 +1,8 @@
-import Constants from '../common/Constants'
-import { LoadingStatus } from '../common/LoadingStatus'
-import { Loading } from '../component/Loading'
-import { VolumeBrightness } from '../component/VolumeBrightness'
-import { Utils } from '../Utils/Utils'
+import Constants from '../../common/Constants'
+import { LoadingStatus } from '../../common/LoadingStatus'
+import { Loading } from '../../component/Loading'
+import { VolumeBrightness } from '../../component/VolumeBrightness'
+import { Utils } from '../../Utils/Utils'
 
 @Component
 // 动态页面

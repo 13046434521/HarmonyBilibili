@@ -11,11 +11,11 @@
     }
 }*/
 // https://passport.bilibili.com/x/passport-login/web/qrcode/poll?qrcode_key=d7a23f1b2d7196d7970a5b8428e0fed5
-// qrcode_keyÊÇQrcodeGenerateBeanÖĞµÄqrcode_key
+// qrcode_keyæ˜¯QrcodeGenerateBeanä¸­çš„qrcode_key
 export interface QrcodeLoginBean{
   url:string
   refresh_token:string
   timestamp:string
-  code:number  //0£ºÉ¨ÂëµÇÂ¼³É¹¦ 86038£º¶şÎ¬ÂëÒÑÊ§Ğ§ 86090£º¶şÎ¬ÂëÒÑÉ¨ÂëÎ´È·ÈÏ 86101£ºÎ´É¨Âë
+  code:number  //0ï¼šæ‰«ç ç™»å½•æˆåŠŸ 86038ï¼šäºŒç»´ç å·²å¤±æ•ˆ 86090ï¼šäºŒç»´ç å·²æ‰«ç æœªç¡®è®¤ 86101ï¼šæœªæ‰«ç 
   message:string
 }

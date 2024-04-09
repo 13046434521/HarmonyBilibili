@@ -1,4 +1,4 @@
-import { SearchMediaBangumiBean } from '../../bean/SearchMediaBangumiBean'
+import { SearchMediaBangumiBean } from '../../bean/search/SearchMediaBangumiBean'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 

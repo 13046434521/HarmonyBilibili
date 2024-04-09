@@ -1,4 +1,4 @@
-import { SearchMediaFtBean } from '../../bean/SearchMediaFtBean'
+import { SearchMediaFtBean } from '../../bean/search/SearchMediaFtBean'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 

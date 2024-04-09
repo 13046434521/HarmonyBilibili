@@ -1,15 +1,15 @@
-import { AccInfo } from '../bean/biliUser/AccInfo';
-import { UserInfoBean } from '../bean/biliUser/UserInfoBean';
-import Constants from '../common/Constants';
-import { Utils } from '../Utils/Utils'
-import { BiliUserViewModel } from '../viewModel/biliUser/BiliUserViewModel';
-import { UserBangumi } from '../bean/biliUser/UserBangumi'
-import { UserBookmark } from '../bean/biliUser/UserBookmark'
-import { UserCoinVideo } from '../bean/biliUser/UserCoinVideo'
-import { UserCollection } from '../bean/biliUser/UserCollection'
-import { UserDynamic } from '../bean/biliUser/UserDynamic'
-import { UserUpvote } from '../bean/biliUser/UserUpvote'
-import { UserVideoBean } from '../bean/biliUser/UserVideoBean'
+import { AccInfo } from '../../bean/biliUser/AccInfo';
+import { UserInfoBean } from '../../bean/biliUser/UserInfoBean';
+import Constants from '../../common/Constants';
+import { Utils } from '../../Utils/Utils'
+import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel';
+import { UserBangumi } from '../../bean/biliUser/UserBangumi'
+import { UserBookmark } from '../../bean/biliUser/UserBookmark'
+import { UserCoinVideo } from '../../bean/biliUser/UserCoinVideo'
+import { UserCollection } from '../../bean/biliUser/UserCollection'
+import { UserDynamic } from '../../bean/biliUser/UserDynamic'
+import { UserUpvote } from '../../bean/biliUser/UserUpvote'
+import { UserVideoBean } from '../../bean/biliUser/UserVideoBean'
 
 @Preview
 @Component

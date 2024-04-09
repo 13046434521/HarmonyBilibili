@@ -1,5 +1,5 @@
-import { SearchBiliUserBean } from '../bean/SearchBiliUserBean'
-import { SearchLiveRoomBean } from '../bean/SearchLiveRoomBean'
+import { SearchBiliUserBean } from '../bean/search/SearchBiliUserBean'
+import { SearchLiveRoomBean } from '../bean/search/SearchLiveRoomBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { LivingData } from '../datasource/LivingData'

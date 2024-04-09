@@ -1,6 +1,6 @@
 import Api from '../net/Api'
 import { Loading } from './Loading'
-import { SearchVideoBean } from '../bean/SearchVideoBean'
+import { SearchVideoBean } from '../bean/search/SearchVideoBean'
 import { Utils } from '../Utils/Utils'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction'
@@ -10,6 +10,7 @@ import { LoadingData } from './LoadingData'
 import { VideoItem } from './item/VideoItem'
 import { VideoData } from '../datasource/VideoData'
 import Constants from '../common/Constants'
+import { PageManager } from '../common/PageManager'
 
 @Component
 export struct SearchVideoDetails {
@@ -55,7 +56,7 @@ export struct SearchVideoDetails {
         LazyForEach(this.videoData, (item: SearchVideoBean) => {
           ListItem() {
             VideoItem({ item:item }).onClick(()=>{
-              router.pushUrl({url:'pages/VideoDetailPage',params:{'bvid':item.bvid,'cid':0}})
+              PageManager.routerVideoDetail(item.bvid)
             })
           }
         }, (item: SearchVideoBean) =>JSON.stringify(item))

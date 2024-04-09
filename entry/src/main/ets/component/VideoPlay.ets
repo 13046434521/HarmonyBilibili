@@ -8,6 +8,7 @@ import { Utils } from '../Utils/Utils'
 import hilog from '@ohos.hilog'
 import window from '@ohos.window'
 import { VolumeBrightness, VolumeBrightStatus } from './VolumeBrightness'
+import { PageManager } from '../common/PageManager'
 
 @Component
 export struct VideoPlay {
@@ -91,9 +92,7 @@ struct VideoPlayer {
             }).btnImageStyle()
 
             Image($r('app.media.biliplayer_ic_topbar_back')).onClick(() => {
-              router.replaceUrl({
-                url: 'pages/Index' // 目标url
-              }, router.RouterMode.Single)
+              PageManager.routerIndex()
             }).btnImageStyle()
 
           }.width('100%')

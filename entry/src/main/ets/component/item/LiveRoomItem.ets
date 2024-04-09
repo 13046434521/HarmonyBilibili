@@ -1,7 +1,7 @@
-import { SearchMediaFtBean } from '../../bean/SearchMediaFtBean'
+import { SearchMediaFtBean } from '../../bean/search/SearchMediaFtBean'
 import { Utils } from '../../Utils/Utils'
 import router from '@ohos.router'
-import { SearchLiveRoomBean } from '../../bean/SearchLiveRoomBean'
+import { SearchLiveRoomBean } from '../../bean/search/SearchLiveRoomBean'
 import { PageManager } from '../../common/PageManager'
 
 @Component

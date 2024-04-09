@@ -1,4 +1,4 @@
-import { SearchSuggestResultBean, SearchSuggestTagBean } from '../bean/SearchSuggestBean'
+import { SearchSuggestResultBean, SearchSuggestTagBean } from '../bean/search/SearchSuggestBean'
 import Api from '../net/Api'
 import { Utils } from '../Utils/Utils'
 

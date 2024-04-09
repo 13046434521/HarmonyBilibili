@@ -1,4 +1,4 @@
-import { SearchMediaBangumiBean } from '../bean/SearchMediaBangumiBean'
+import { SearchMediaBangumiBean } from '../bean/search/SearchMediaBangumiBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { MediaBangumiData } from '../datasource/MediaBangumiData'

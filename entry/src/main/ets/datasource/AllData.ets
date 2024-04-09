@@ -1,11 +1,11 @@
-import { SearchDefaultBean, SearchDefaultDataBean } from '../bean/SearchDefaultBean'
+import { SearchDefaultBean, SearchDefaultDataBean } from '../bean/search/SearchDefaultBean'
 import { BasicDataSource } from './BasicDataSource'
 
 export class AllData extends BasicDataSource<SearchDefaultDataBean>{
 
   // result_type:string
-  // data:SearchDefaultDataBean[] 我需要的是SearchDefaultDataBean[]数组，同时含有result_type
-  // 将SearchDefaultBean中的resultType和SearchDefaultDataBean数组，生成一个SearchDefaultDataBean数组且含有resultType
+  // data:SearchDefaultDataBean[] 锟斤拷锟斤拷要锟斤拷锟斤拷SearchDefaultDataBean[]锟斤拷锟介，同时锟斤拷锟斤拷result_type
+  // 锟斤拷SearchDefaultBean锟叫碉拷resultType锟斤拷SearchDefaultDataBean锟斤拷锟介，锟斤拷锟斤拷一锟斤拷SearchDefaultDataBean锟斤拷锟斤拷锟揭猴拷锟斤拷resultType
   dealData(data:SearchDefaultBean[]):SearchDefaultDataBean[]{
     let searchDataBean :SearchDefaultDataBean[] =[]
 
@@ -23,11 +23,11 @@ export class AllData extends BasicDataSource<SearchDefaultDataBean>{
   }
 
   specialData(datas:SearchDefaultBean[]){
-    // 1.生成特殊数据
+    // 1.锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
     let temp = this.dealData(datas)
-    // 2.清理已存在的所有数据
+    // 2.锟斤拷锟斤拷锟窖达拷锟节碉拷锟斤拷锟斤拷锟斤拷锟斤拷
     this.cleanData()
-    // 3.将新生成的数据添加至Data中
+    // 3.锟斤拷锟斤拷锟斤拷锟缴碉拷锟斤拷锟斤拷锟斤拷锟斤拷锟紻ata锟斤拷
     this.pushDataAll(temp)
   }
 }

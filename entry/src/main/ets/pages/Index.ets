@@ -1,9 +1,9 @@
 import { Utils } from '../Utils/Utils'
-import { HomePage } from './HomePage'
-import { MinePage } from './MinePage'
-import { MomentPage } from './MomentPage'
-import { NewPage } from './NewPage'
-import { ShoppingPage } from './ShoppingPage'
+import { HomePage } from './Home/HomePage'
+import { MinePage } from './Home/MinePage'
+import { MomentPage } from './Home/MomentPage'
+import { NewPage } from './Home/NewPage'
+import { ShoppingPage } from './Home/ShoppingPage'
 import deviceInfo from '@ohos.deviceInfo';
 import Constants from '../common/Constants'
 

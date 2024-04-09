@@ -1,7 +1,7 @@
 import webview from '@ohos.web.webview'
-import Constants from '../common/Constants'
-import Api from '../net/Api'
-import { Utils } from '../Utils/Utils'
+import Constants from '../../common/Constants'
+import Api from '../../net/Api'
+import { Utils } from '../../Utils/Utils'
 
 @Component
 export struct ShoppingPage {

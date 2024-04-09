@@ -1,4 +1,4 @@
-import { SearchArticleBean } from '../../bean/SearchArticleBean'
+import { SearchArticleBean } from '../../bean/search/SearchArticleBean'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 

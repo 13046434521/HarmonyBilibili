@@ -1,4 +1,4 @@
-import { topTlistBean } from '../bean/SearchBaseBean'
+import { topTlistBean } from '../bean/search/SearchBaseBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Utils } from '../Utils/Utils'
 import { LoadingData } from './LoadingData'

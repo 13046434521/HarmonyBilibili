@@ -1,4 +1,4 @@
-import { SearchArticleBean } from '../bean/SearchArticleBean'
+import { SearchArticleBean } from '../bean/search/SearchArticleBean'
 import Constants from '../common/Constants'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'

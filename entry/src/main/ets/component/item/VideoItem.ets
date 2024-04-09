@@ -1,4 +1,4 @@
-import { SearchVideoBean } from '../../bean/SearchVideoBean'
+import { SearchVideoBean } from '../../bean/search/SearchVideoBean'
 import Constants from '../../common/Constants'
 import { Utils } from '../../Utils/Utils'
 import deviceInfo from '@ohos.deviceInfo'

@@ -1,12 +1,12 @@
-import { LoginNavBean } from '../bean/login/LoginNavBean';
-import { QrcodeGenerateBean } from '../bean/login/QrcodeGenerateBean';
-import Constants from '../common/Constants';
-import StorageManager from '../common/StorageManager';
-import ApiLogin from '../net/ApiLogin';
-import { Utils } from '../Utils/Utils';
-import ApiBiliUser from '../net/ApiBiliUser';
-import { PageManager } from '../common/PageManager';
-import { MineItem, MineViewModel } from '../viewModel/MineViewModel';
+import { LoginNavBean } from '../../bean/login/LoginNavBean';
+import { QrcodeGenerateBean } from '../../bean/login/QrcodeGenerateBean';
+import Constants from '../../common/Constants';
+import StorageManager from '../../common/StorageManager';
+import ApiLogin from '../../net/ApiLogin';
+import { Utils } from '../../Utils/Utils';
+import ApiBiliUser from '../../net/ApiBiliUser';
+import { PageManager } from '../../common/PageManager';
+import { MineItem, MineViewModel } from '../../viewModel/MineViewModel';
 
 @Preview
 @Component

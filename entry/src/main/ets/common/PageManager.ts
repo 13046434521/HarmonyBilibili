@@ -1,8 +1,27 @@
 import router from '@ohos.router'
-import { HomeBeanItem } from '../bean/HomeBean'
+import { HomeBean, HomeBeanItem } from '../bean/HomeBean'
 import WebConstants from './WebConstants'
 
 export class PageManager {
+  static routerIndex(homeData?: Array<HomeBeanItem>){
+    router.replaceUrl({
+      url: 'pages/Index',
+      params: {
+        'homeData': homeData,
+      }
+    }, router.RouterMode.Single)
+  }
+  static routerSearchHot(title: string) {
+    router.pushUrl({url:'pages/Search/SearchHotPage',params:{
+      title:title
+    }})
+  }
+  static routerSearchPage(keyword:string) {
+    router.pushUrl({url:"pages/Search/SearchPage",params:{keyword:keyword}})
+  }
+  static routerSearchWeb() {
+    router.pushUrl({url:"pages/Search/SearchWebPage"})
+  }
   // 视频详情页面
   static routerHomePage(homeData: Array<HomeBeanItem>) {
     router.replaceUrl({

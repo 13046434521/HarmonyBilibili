@@ -1,4 +1,4 @@
-import { SearchBiliUserBean } from '../../bean/SearchBiliUserBean'
+import { SearchBiliUserBean } from '../../bean/search/SearchBiliUserBean'
 import deviceInfo from '@ohos.deviceInfo'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'

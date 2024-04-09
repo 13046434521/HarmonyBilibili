@@ -1,12 +1,13 @@
-import { HomeBeanItem } from '../bean/HomeBean';
-import Api from '../net/Api'
+import { HomeBeanItem } from '../../bean/HomeBean';
+import Api from '../../net/Api'
 import router from '@ohos.router';
-import { HomeSearchBean } from '../bean/HomeSearchBean';
-import { SearchView } from '../component/HomeSearch';
-import { Utils } from '../Utils/Utils';
-import { HomeData } from '../datasource/HomeData';
-import Constants from '../common/Constants';
-import { SwipeRefreshList } from '../../../../../Loading/src/main/ets/pages/SwipeRefreshList';
+import { HomeSearchBean } from '../../bean/HomeSearchBean';
+import { SearchView } from '../../component/HomeSearch';
+import { Utils } from '../../Utils/Utils';
+import { HomeData } from '../../datasource/HomeData';
+import Constants from '../../common/Constants';
+import { SwipeRefreshList } from '../../../../../../Loading/src/main/ets/pages/SwipeRefreshList';
+import { PageManager } from '../../common/PageManager';
 
 @Component
 export struct HomePage {
@@ -129,10 +130,7 @@ export struct HomePage {
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
     .backgroundColor($r('app.color.bilibili_background_white'))
     .onClick(event=>{
-      router.pushUrl({url:"pages/VideoDetailPage",params:{
-        bvid:homeBeanItem.bvid,
-        cid:homeBeanItem.cid
-      }})
+      PageManager.routerVideoDetail(homeBeanItem.bvid,homeBeanItem.cid)
     })
   }
 
@@ -149,9 +147,7 @@ export struct HomePage {
         })
       SearchView({title:this.homeSearchBeanData.show_name})
         .height('50%').onClick(event=>{
-        router.pushUrl({url:'pages/SearchHotPage',params:{
-          title:this.homeSearchBeanData.show_name
-        }})
+        PageManager.routerSearchHot(this.homeSearchBeanData.show_name)
       }).layoutWeight(1)
       .margin({left:'2%',right:'4%'})
       Image($r('app.media.ic_home_game_center'))

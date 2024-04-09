@@ -9,7 +9,7 @@ import { SearchMediaBangumiBean,
 import { SearchMediaFtBadgesColor, SearchMediaFtBean } from './SearchMediaFtBean';
 import { SearchVideoBean } from './SearchVideoBean';
 
-// 6ºÏ1µÄÊı¾İÔ´
+// 6åˆ1çš„æ•°æ®æº
 //https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=overlord&page=1
 export class SearchDefaultBean{
   result_type:string

@@ -10,7 +10,7 @@
  </center>
  <p>
  */
-import { SearchDefaultDataBean } from '../bean/SearchDefaultBean'
+import { SearchDefaultDataBean } from '../bean/search/SearchDefaultBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { AllData } from '../datasource/AllData'
@@ -25,7 +25,7 @@ import { VideoItem } from './item/VideoItem'
 import { LoadingData } from './LoadingData'
 import router from '@ohos.router'
 import { PageManager } from '../common/PageManager'
-import { SearchVideoBean } from '../bean/SearchVideoBean'
+import { SearchVideoBean } from '../bean/search/SearchVideoBean'
 import { VideoData } from '../datasource/VideoData'
 import Constants from '../common/Constants'
 
@@ -122,7 +122,7 @@ export struct SearchDefaultDetails {
         LazyForEach(this.videoData, (item: SearchVideoBean) => {
           ListItem() {
             VideoItem({ item:item }).onClick(()=>{
-              router.pushUrl({url:'pages/VideoDetailPage',params:{'bvid':item.bvid,'cid':0}})
+              PageManager.routerVideoDetail(item.bvid)
             })
           }
         }, (item: SearchVideoBean,index) =>JSON.stringify(item)+index)

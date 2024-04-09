@@ -2,12 +2,12 @@ import axios, {InternalAxiosRequestConfig} from '@ohos/axios'
 import {HomeBean} from '../bean/HomeBean';
 import { HomeSearchBean } from '../bean/HomeSearchBean';
 import { PlayVideoBean } from '../bean/PlayVideoBean';
-import { SearchHotBean } from '../bean/SearchHotBean';
+import { SearchHotBean } from '../bean/search/SearchHotBean';
 import { PageListBean } from '../bean/PageListBean';
-import { SearchBaseBean } from '../bean/SearchBaseBean';
+import { SearchBaseBean } from '../bean/search/SearchBaseBean';
 import { SearchType } from '../common/SearchType';
-import { SearchSuggestResultBean } from '../bean/SearchSuggestBean';
-import { SearchDefaultBean } from '../bean/SearchDefaultBean';
+import { SearchSuggestResultBean } from '../bean/search/SearchSuggestBean';
+import { SearchDefaultBean } from '../bean/search/SearchDefaultBean';
 import { ApiBase } from './ApiBase';
 
 export class Api extends ApiBase{
