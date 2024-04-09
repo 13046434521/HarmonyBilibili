@@ -27,6 +27,7 @@ export struct SearchTabsAll {
     console.log("SearchTabsAll 页面刷新了")
     this.upDataTitle()
   }
+
   aboutToDisappear(){
     console.log("SearchTabsAll 页面销毁了")
   }
@@ -44,16 +45,19 @@ export struct SearchTabsAll {
         .maxLines(1)
         .textAlign(TextAlign.Center)
         .margin({ bottom: 8 })
+
       Divider()
         .strokeWidth(2)
         .color($r('app.color.bilibili_theme'))
         .opacity(this.currentIndex === index  ? 1 : 0)
         .width('60%')
-    }.width('15%')
+    }.width('17%')
+    .height('60%')
+    .stateStyles({pressed:pressedStyles,normal:normalStyles})
     .onClick(()=>{
       this.currentIndex = index
       this.controller.changeIndex(this.currentIndex)
-    })
+    }).justifyContent(FlexAlign.Center)
   }
 
   @Builder
@@ -90,7 +94,6 @@ export struct SearchTabsAll {
     .width('100%')
     .vertical(false)
     .scrollable(true)
-    .barWidth('100%')
     .barMode(BarMode.Scrollable)
     .animationDuration(200)
     .onChange((index: number) => {
@@ -118,4 +121,12 @@ export struct SearchTabsAll {
     }
     return res;
   }
+}
+
+@Styles function  pressedStyles() {
+  .backgroundColor($r('app.color.bilibili_background_grey'))
+}
+
+@Styles function  normalStyles() {
+  .backgroundColor($r('app.color.bilibili_background_white'))
 }

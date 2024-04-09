@@ -82,6 +82,7 @@ struct SearchHotPage {
     }
     .height(30)
     .justifyContent(FlexAlign.SpaceBetween)
+    .margin({top:'2%'})
   }
 
   @Builder

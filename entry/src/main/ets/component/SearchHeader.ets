@@ -56,6 +56,6 @@ export struct SearchHeader {
         .backgroundColor(Color.White)
 
     }.width('100%')
-    .margin({top:'4%',bottom:'2%'})
+    .margin({top:'4%'})
   }
 }
