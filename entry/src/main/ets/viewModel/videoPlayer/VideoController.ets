@@ -3,14 +3,14 @@ import { IPlayer } from './IPlayer'
 
 import promptAction from '@ohos.promptAction'
 import VideoModel from './VideoModel'
-import { PlayStatus } from '../common/PlayStatus'
+import { PlayStatus } from '../../common/PlayStatus'
 import { IjkMediaPlayer } from '@ohos/ijkplayer'
 import window from '@ohos.window'
-import Constants from '../common/Constants'
+import Constants from '../../common/Constants'
 import audio from '@ohos.multimedia.audio'
 
 //VideoPlayer 的 逻辑功能类
-export class VideoViewModel implements IPlayer {
+export class VideoController implements IPlayer {
   videoModel: VideoModel = new VideoModel()
   volumeManager = audio.getAudioManager().getVolumeManager();
   init(context: object) {

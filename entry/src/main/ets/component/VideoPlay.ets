@@ -1,50 +1,49 @@
 import { PlayStatus } from '../common/PlayStatus'
-import VideoModel from '../viewModel/VideoModel'
-import { VideoViewModel } from '../viewModel/VideoViewModel'
+import VideoModel from '../viewModel/videoPlayer/VideoModel'
+import { VideoController } from '../viewModel/videoPlayer/VideoController'
 import { Loading } from './Loading'
 import router from '@ohos.router'
 import Constants from '../common/Constants'
 import { Utils } from '../Utils/Utils'
-import hilog from '@ohos.hilog'
 import window from '@ohos.window'
 import { VolumeBrightness, VolumeBrightStatus } from './VolumeBrightness'
 import { PageManager } from '../common/PageManager'
 
 @Component
 export struct VideoPlay {
-  @Link videoViewModel: VideoViewModel
+  videoController: VideoController
   @Prop @Watch('initPlay') url: string
   @State @Watch('initPlay') context: object = undefined
 
   aboutToAppear() {
-    this.videoViewModel.getVolume().then(volume=>{
-      this.videoViewModel.videoModel.volume = volume
-      return this.videoViewModel.getBright()
+    this.videoController.getVolume().then(volume=>{
+      this.videoController.videoModel.volume = volume
+      return this.videoController.getBright()
     }).then(bright=>{
-      this.videoViewModel.videoModel.brightness = bright
-      Utils.Toast("亮度："+ bright +"  声音："+this.videoViewModel.videoModel.volume)
-      console.log('app_log:VideoPlay:创建了：亮度：'+ bright +"  声音："+this.videoViewModel.videoModel.volume)
+      this.videoController.videoModel.brightness = bright
+      Utils.Toast("亮度："+ bright +"  声音："+this.videoController.videoModel.volume)
+      console.log('app_log:VideoPlay:创建了：亮度：'+ bright +"  声音："+this.videoController.videoModel.volume)
     })
 }
 
   aboutToDisappear() {
     console.log('app_log:VideoPlay:销毁了')
-    this.videoViewModel.release('页面销毁')
+    this.videoController.release('页面销毁')
   }
 
   // 等到有url和context完毕时开始初始化
   initPlay() {
     console.log('app_log:initPlay:' + this.url + this.context)
-    if (this.videoViewModel.getPlayState() === PlayStatus.INIT && this.url !== '' && this.context !== undefined) {
-      this.videoViewModel.setUrl(this.url)
-      this.videoViewModel.init(this.context)
+    if (this.videoController.getPlayState() === PlayStatus.INIT && this.url !== '' && this.context !== undefined) {
+      this.videoController.setUrl(this.url)
+      this.videoController.init(this.context)
     }
   }
 
   build() {
     VideoPlayer({
-      videoModel: this.videoViewModel.videoModel,
-      videoViewModel: this.videoViewModel,
+      videoModel: this.videoController.videoModel,
+      videoController: this.videoController,
       mOnPlayerCompleteListener: (context: object) => {
         this.context = context
       }
@@ -63,7 +62,7 @@ function btnImageStyle() {
 @Component
 struct VideoPlayer {
   @State videoAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
-  @Link videoViewModel: VideoViewModel
+  videoController: VideoController
   @ObjectLink videoModel: VideoModel
   mOnPlayerCompleteListener: (context: object) => void
   @State isShow: boolean = true
@@ -116,13 +115,13 @@ struct VideoPlayer {
                 })
                 .onActionUpdate((event?:GestureEvent)=>{
                   // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
-                  let temp = this.videoViewModel.videoModel.brightness - event.offsetY / 100
-                  this.videoViewModel.adjustBrightness(temp)
+                  let temp = this.videoController.videoModel.brightness - event.offsetY / 100
+                  this.videoController.adjustBrightness(temp)
                   this.volumeBrightValue = temp * 100
                   console.log('Gesture:onActionUpdate:'+ event.offsetY)
                 }).onActionEnd((event?:GestureEvent)=>{
 
-                this.videoViewModel.getBright().then(brightness=>{
+                this.videoController.getBright().then(brightness=>{
                   this.videoModel.brightness = brightness
                   this.videoModel.volume = brightness
                   this.isVolumeBrightShow = false
@@ -159,12 +158,12 @@ struct VideoPlayer {
                 })
                 .onActionUpdate((event?:GestureEvent)=>{
                   // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
-                  let temp = this.videoViewModel.videoModel.volume - event.offsetY * 15 /100
-                  this.videoViewModel.adjustVolume(temp)
+                  let temp = this.videoController.videoModel.volume - event.offsetY * 15 /100
+                  this.videoController.adjustVolume(temp)
                   this.volumeBrightValue = temp * 100 /15
                   console.log('Gesture:onActionUpdate:'+ event.offsetY)
                 }).onActionEnd((event?:GestureEvent)=>{
-                this.videoViewModel.getVolume().then(volume=>{
+                this.videoController.getVolume().then(volume=>{
                   this.videoModel.volume = volume
                   this.isVolumeBrightShow = false
                 })
@@ -231,11 +230,11 @@ struct VideoPlayer {
         .interpolation(ImageInterpolation.High)
         .onClick(() => {
           if (this.videoModel.state < PlayStatus.PAUSE) {
-            this.videoViewModel.pause()
+            this.videoController.pause()
           } else if (this.videoModel.state < PlayStatus.STOP) {
-            this.videoViewModel.play()
+            this.videoController.play()
           } else if (this.videoModel.state === PlayStatus.STOP) {
-            this.videoViewModel.reset()
+            this.videoController.reset()
           }
         })
         .margin(4)
@@ -252,12 +251,12 @@ struct VideoPlayer {
           // value/100 是百分比  getDuration获取的是总时长
           // 移动结束时，设置moveProgress
           if (mode == SliderChangeMode.Moving) {
-            this.videoViewModel.pause()
+            this.videoController.pause()
             this.videoModel.state = PlayStatus.LOADING
           }
           else if (mode == SliderChangeMode.End) {
             this.videoModel.sliderStep = value
-            this.videoViewModel.moveProgress(value)
+            this.videoController.moveProgress(value)
           }
         })
         .layoutWeight(1)
@@ -271,7 +270,7 @@ struct VideoPlayer {
 
       Image($r('app.media.ic_full_screen'))
         .onClick(() => {
-          this.videoViewModel.changeOrientation()
+          this.videoController.changeOrientation()
           if (this.videoModel.orientation===window.Orientation.LANDSCAPE) {
             this.isFullScreen = undefined
           }else{
@@ -298,7 +297,7 @@ struct VideoPlayer {
         this.mOnPlayerCompleteListener(context)
       })
       .onDestroy(() => {
-        this.videoViewModel.release('XComponent:onDestroy')
+        this.videoController.release('XComponent:onDestroy')
       })
       .width(this.videoModel.xComponentWidth)
       .height(this.videoModel.xComponentHeight)
@@ -316,11 +315,11 @@ struct VideoPlayer {
         })
         .onActionUpdate((event?:GestureEvent)=>{
           // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
-          let temp = this.videoViewModel.videoModel.volume -event.offsetY/15
-          this.videoViewModel.adjustVolume(temp)
+          let temp = this.videoController.videoModel.volume -event.offsetY/15
+          this.videoController.adjustVolume(temp)
           console.log('Gesture:onActionUpdate:'+ event.offsetY)
         }).onActionEnd((event?:GestureEvent)=>{
-        this.videoViewModel.getVolume().then(volume=>{
+        this.videoController.getVolume().then(volume=>{
           this.videoModel.volume = volume
         })
         console.log('Gesture:onActionEnd:'+ event.offsetY)

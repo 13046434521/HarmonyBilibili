@@ -4,14 +4,14 @@ import Constants from '../../common/Constants'
 import { RouterConstants } from '../../common/PageManager'
 import { VideoPlay } from '../../component/VideoPlay'
 import  ApiLiving  from '../../net/ApiLiving'
-import { VideoViewModel } from '../../viewModel/VideoViewModel'
+import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 
 @Entry
 @Component
 struct LivePage {
   roomId:number
   @State liveUrl:LiveUrlBean = new LiveUrlBean()
-  @State videoViewModel:VideoViewModel = new VideoViewModel()
+  videoController:VideoController = new VideoController()
   @State url :string=''
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
@@ -26,7 +26,7 @@ struct LivePage {
   }
   build() {
     Column() {
-      VideoPlay({videoViewModel:this.videoViewModel,url:this.url})
+      VideoPlay({videoController:this.videoController,url:this.url})
         .layoutWeight(1)
     }.backgroundColor(this.backgroundColors)
     .width('100%')

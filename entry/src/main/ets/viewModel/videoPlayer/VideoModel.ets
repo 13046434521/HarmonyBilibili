@@ -8,9 +8,9 @@ import {
   OnTimedTextListener,
   OnVideoSizeChangedListener
 } from '@ohos/ijkplayer'
-import { PlayStatus } from '../common/PlayStatus'
+import { PlayStatus } from '../../common/PlayStatus'
 import window from '@ohos.window'
-import Constants from '../common/Constants'
+import Constants from '../../common/Constants'
 
 
 

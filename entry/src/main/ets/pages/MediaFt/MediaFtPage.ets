@@ -6,14 +6,14 @@ import { RouterConstants } from '../../common/PageManager'
 import { VideoPlay } from '../../component/VideoPlay'
 import ApiMediaFt from '../../net/ApiMediaFt'
 import { Utils } from '../../Utils/Utils'
-import { VideoViewModel } from '../../viewModel/VideoViewModel'
+import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 
 @Entry
 @Component
 struct MediaFtPage {
   seasonId:number
   qn:number = Constants.QN
-  @State videoViewModel:VideoViewModel = new VideoViewModel()
+  videoController:VideoController = new VideoController()
   @State url :string=''
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
@@ -38,7 +38,7 @@ struct MediaFtPage {
 
   build() {
     Column() {
-      VideoPlay({videoViewModel:this.videoViewModel,url:this.url})
+      VideoPlay({videoController:this.videoController,url:this.url})
         .layoutWeight(1)
     }
     .width('100%')

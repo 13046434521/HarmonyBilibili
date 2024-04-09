@@ -3,7 +3,7 @@
     "pages/SplashPage",
     "pages/Index",
     "pages/Search/SearchHotPage",
-    "pages/VideoDetailPage",
+    "pages/Video/VideoDetailPage",
     "pages/Search/SearchPage",
     "pages/Search/SearchWebPage",
     "pages/Live/LivePage",
