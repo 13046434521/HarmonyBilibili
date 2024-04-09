@@ -30,7 +30,11 @@ export struct NewPage {
 
   build() {
     Column() {
-
+      Image($r("app.media.ic_video_coin"))
+        .objectFit(ImageFit.Contain)
+        .layoutWeight(1)
+        .margin({bottom:'2%'})
+        .fillColor(Color.Orange)
       Text('测试')
         .fontSize(25)
         .onClick(()=>{

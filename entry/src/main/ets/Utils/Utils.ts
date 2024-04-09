@@ -145,7 +145,14 @@ export class Utils {
   //     return minutes + ":" + newSeconds;
   //   }
   // }
+  static userFans(fans: number): string {
+    let fansRes = fans+''
+    if (fans >= 10000) {
+      fansRes = Math.floor(fans / 10000).toFixed(1) + "万"
+    }
 
+    return fansRes
+  }
 
   static isNonNull(content:any){
     let temp = (content === undefined || content ===null || content == '')

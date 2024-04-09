@@ -1,6 +1,11 @@
 import StorageManager from './StorageManager'
 
 class Constants{
+  WINDOW_HEIGHT = -1
+  WINDOW_WIDTH = -1
+  WINDOW_
+
+
   CACHE_COUNT = 4
   // QN:number = 64
   QN:number = 116

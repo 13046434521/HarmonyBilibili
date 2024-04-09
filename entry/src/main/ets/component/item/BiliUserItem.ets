@@ -37,7 +37,7 @@ export struct BiliUserItem{
             .objectFit(ImageFit.Auto)
         }
 
-        Text(`${userFans(item.fans)}粉丝     ${item.videos}个视频${'\n'}${item.official_verify.desc}`)
+        Text(`${Utils.userFans(item.fans)}粉丝     ${item.videos}个视频${'\n'}${item.official_verify.desc}`)
           .fontColor($r('app.color.bilibili_text_grey_bold'))
           .fontSize(10)
           .maxLines(2)
@@ -72,14 +72,7 @@ export struct BiliUserItem{
   }
 }
 
-function userFans(fans: number): string {
-  let fansRes = fans.toString()
-  if (fans >= 10000) {
-    fansRes = Math.floor(fans / 10000).toFixed(1) + "万"
-  }
 
-  return fansRes
-}
 function userLevel(level: number): Resource {
   let icon = $r('app.media.ic_im_user_level_0')
   switch (level) {

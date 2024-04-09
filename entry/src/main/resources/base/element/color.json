@@ -7,7 +7,12 @@
     {
       "name": "bilibili_background_white",
       "value": "#FFFFFF"
-    },{
+    },
+    {
+      "name": "bilibili_background_black_light",
+      "value": "#61666D"
+    },
+    {
       "name": "bilibili_background_black",
       "value": "#17181A"
     },

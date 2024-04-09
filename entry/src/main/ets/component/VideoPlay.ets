@@ -51,13 +51,7 @@ export struct VideoPlay {
   }
 }
 
-@Extend(Image)
-function btnImageStyle() {
-  .objectFit(ImageFit.Contain)
-  .height('50%')
-  .aspectRatio(1)
-  .margin(16)
-}
+
 
 @Component
 struct VideoPlayer {
@@ -70,10 +64,8 @@ struct VideoPlayer {
   @State isVolumeBrightShow: boolean = false
   @State volumeBrightStatus: VolumeBrightStatus = VolumeBrightStatus.VOLUME
   @State volumeBrightValue: number = 0
-  @State isFullScreen:number = Constants.DEFAULT_ASPECT_RATIO
-  aboutToAppear() {
-  }
-  lastPosition = 0
+  // @State isFullScreen:number = Constants.DEFAULT_ASPECT_RATIO
+  @State isFullScreen:boolean = false
   build() {
     Stack() {
       Column() {
@@ -211,11 +203,11 @@ struct VideoPlayer {
       .height('100%')
     }
     .alignContent(Alignment.BottomStart)
-    .width('100%')
-    .height('100%')
-    .aspectRatio(undefined)
+    .size({width:'100%'})
+    .aspectRatio(this.isFullScreen?Constants.WINDOW_HEIGHT/Constants.WINDOW_WIDTH:this.videoAspectRatio)
     .backgroundColor(Color.Black)
     .onClick(() => {
+      Utils.Toast(Constants.WINDOW_WIDTH+" ----  "+Constants.WINDOW_HEIGHT)
       this.isShow = !this.isShow
     })
   }
@@ -272,9 +264,9 @@ struct VideoPlayer {
         .onClick(() => {
           this.videoController.changeOrientation()
           if (this.videoModel.orientation===window.Orientation.LANDSCAPE) {
-            this.isFullScreen = undefined
+            this.isFullScreen = true
           }else{
-            this.isFullScreen = this.videoModel.defaultAspectRatio
+            this.isFullScreen = false
           }
         })
         .objectFit(ImageFit.Cover)
@@ -327,3 +319,12 @@ struct VideoPlayer {
     ))
   }
 }
+
+@Extend(Image)
+function btnImageStyle() {
+  .objectFit(ImageFit.Contain)
+  .height('50%')
+  .aspectRatio(1)
+  .margin(16)
+}
+

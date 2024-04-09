@@ -53,6 +53,7 @@ export struct SearchTabsAll {
     }.width('17%')
     .height('60%')
     .stateStyles({pressed:pressedStyles,normal:normalStyles})
+    .borderRadius(5)
     .onClick(()=>{
       this.currentIndex = index
       this.controller.changeIndex(this.currentIndex)

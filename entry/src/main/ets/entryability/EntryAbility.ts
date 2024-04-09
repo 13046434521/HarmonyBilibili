@@ -3,6 +3,7 @@ import hilog from '@ohos.hilog';
 import UIAbility from '@ohos.app.ability.UIAbility';
 import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
+import Constants from '../common/Constants';
 
 export default class EntryAbility extends UIAbility {
 
@@ -21,6 +22,10 @@ export default class EntryAbility extends UIAbility {
     // 1.获取应用主窗口。
     let windowClass = null;
     windowStage.getMainWindow((err, data) => {
+      let rect = data.getWindowProperties().windowRect
+      Constants.WINDOW_HEIGHT = rect.height
+      Constants.WINDOW_WIDTH = rect.width
+
       if (err.code) {
         console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
         return;
