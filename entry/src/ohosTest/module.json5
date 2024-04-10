@@ -19,7 +19,7 @@
         "icon": "$media:icon",
         "label": "$string:TestAbility_label",
         "exported": true,
-        "startWindowIcon": "$media:icon",
+        "startWindowIcon": "$media:test",
         "startWindowBackground": "$color:start_window_background",
         "skills": [
           {

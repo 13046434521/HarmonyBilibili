@@ -199,7 +199,7 @@
 // https://api.bilibili.com/x/space/bangumi/follow/list?vmid=68406011&type=1
 // 主页->订阅的番剧(有seasonid和mediaid)type可能是番剧和影视切换
 export class UserBangumi {
-  list: UserBangumiItem[]
+  list: UserBangumiItem[] = new Array<UserBangumiItem>()
   pn: number
   ps: number
   total: number

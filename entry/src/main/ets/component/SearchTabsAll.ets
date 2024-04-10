@@ -1,14 +1,10 @@
 import { topTlistBean } from '../bean/search/SearchBaseBean'
-import { LoadingStatus } from '../common/LoadingStatus'
-import { Utils } from '../Utils/Utils'
-import { LoadingData } from './LoadingData'
 import { SearchArticleDetails } from './SearchArticle'
 import { SearchBiliUserDetails } from './SearchBiliUser'
 import { SearchDefaultDetails } from './SearchDefault'
 import { SearchLiving } from './SearchLiving'
 import { SearchMediaBangumiDetails } from './SearchMediaBangumi'
 import { SearchMediaFt } from './SearchMediaFt'
-import { SearchVideoDetails } from './SearchVideo'
 
 @Component
 export struct SearchTabsAll {
@@ -20,9 +16,9 @@ export struct SearchTabsAll {
   @State articleTitle: string = "图文"
   @Prop search: string
   @Prop @Watch('upDataTitle')topList: topTlistBean = new topTlistBean()
-  @State currentIndex :number = 0
+  @State @Watch('isPageShow') currentIndex :number = 0
+  @State pageShow:boolean[] = [true,false,false,false,false]
   controller:TabsController = new TabsController()
-
   aboutToAppear(){
     console.log("SearchTabsAll 页面刷新了")
     this.upDataTitle()
@@ -35,7 +31,9 @@ export struct SearchTabsAll {
   build() {
     this.tabPages()
   }
-
+  isPageShow(){
+    this.pageShow[this.currentIndex] = true
+  }
   @Builder
   TabBuilder(index: number, name: string) {
     Column() {
@@ -64,32 +62,45 @@ export struct SearchTabsAll {
   tabPages() {
     Tabs({ barPosition: BarPosition.Start,controller:this.controller,index:0}) {
       TabContent() {
-        SearchDefaultDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(0, "综合"))
+        if (this.pageShow[0]){
+          SearchDefaultDetails({ search: this.search })
+        }
+      }.tabBar(this.TabBuilder(0,"综合"))
 /*      TabContent() {
         // 视频页面 2024-4-5 视频页面合并到综合当中，并实现按弹幕，播放量等排序
         SearchVideoDetails({ search: this.search })
       }.tabBar(this.TabBuilder(1, this.videoTitle))*/
 
       TabContent() {
-        SearchMediaBangumiDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(1, this.mediaBangumiTitle))
+        if (this.pageShow[1]){
+          SearchMediaBangumiDetails({ search: this.search })
+        }
+      }.tabBar(this.TabBuilder(1,this.mediaBangumiTitle))
 
       TabContent() {
-        SearchLiving({ search: this.search })
-      }.tabBar(this.TabBuilder(2, this.liveTitle))
+        if (this.pageShow[2]){
+          SearchLiving({ search: this.search })
+        }
+
+      }.tabBar(this.TabBuilder(2,this.liveTitle))
 
       TabContent() {
-        SearchBiliUserDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(3, this.biliUserTitle))
+        if (this.pageShow[3]){
+          SearchBiliUserDetails({ search: this.search })
+        }
+      }.tabBar(this.TabBuilder(3,this.biliUserTitle))
 
       TabContent() {
-        SearchMediaFt({ search: this.search })
-      }.tabBar(this.TabBuilder(4, this.mediaFtTitle))
+        if (this.pageShow[4]){
+          SearchMediaFt({ search: this.search })
+        }
+      }.tabBar(this.TabBuilder(4,this.mediaFtTitle))
 
       TabContent() {
-        SearchArticleDetails({ search: this.search })
-      }.tabBar(this.TabBuilder(5, this.articleTitle))
+        if (this.pageShow[5]){
+          SearchArticleDetails({ search: this.search })
+        }
+      }.tabBar(this.TabBuilder(5,this.articleTitle))
     }
     .width('100%')
     .vertical(false)

@@ -53,6 +53,7 @@ export struct HomePage {
     Column(){
       Stack(){
         Image(homeBeanItem.pic)
+        // Image('https://wx3.sinaimg.cn/orj480/72f858d3gy1hnke6by8zij20u00gwn2x.jpg')
           .width('100%')
           .objectFit(ImageFit.Cover)
           .borderRadius({topLeft:5,topRight:5})
@@ -63,6 +64,7 @@ export struct HomePage {
             .aspectRatio(1)
             .height('60%')
             .margin({left:'1%'})
+            .colorFilter($r('app.color.bilibili_background_white'))
             .objectFit(ImageFit.Cover)
 
           Text(Utils.Views(homeBeanItem.stat.view))

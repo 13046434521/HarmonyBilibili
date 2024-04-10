@@ -41,8 +41,9 @@ struct BiliUserPage {
 
   @State loadingStatus :LoadingStatus = LoadingStatus.Loading
   @State err:string = ''
-  count = 0
-  errCount = 0
+
+  @State @Watch('showPage')currentIndex:number = 0
+  @State isShowPage :boolean[] = [true,false,false,false,false]
 
   aboutToAppear() {
     if (router.getParams() !== undefined) {
@@ -69,10 +70,14 @@ struct BiliUserPage {
         }).catch(err=>{
           this.err = err
           this.loadingStatus = LoadingStatus.LoadingFailure
-        console.error('BiliUser Page:err:'+ err)
+          console.error('BiliUser Page:err:'+ err)
 
       })
     }
+  }
+
+  showPage(){
+   this.isShowPage[this.currentIndex] = true
   }
 
   build() {
@@ -89,47 +94,62 @@ struct BiliUserPage {
         Tabs({controller:this.tabController}) {
           // 所有用户都会显示主页数据
           TabContent() {
-            BiliUserHome({
-              mid: this.mid,
-              biliUserViewModel: this.biliUserViewModel,
-              userVideoBean: this.userVideoBean,
-              userBookmark: this.userBookmark,
-              userBangumi: this.userBangumi,
-              userCoinVideos: this.userCoinVideos,
-              userUpvote: this.userUpvote
-            })
-          }.tabBar('主页')
+            if (this.isShowPage[0]){
+              BiliUserHome({
+                mid: this.mid,
+                biliUserViewModel: this.biliUserViewModel,
+                userVideoBean: this.userVideoBean,
+                userBookmark: this.userBookmark,
+                userBangumi: this.userBangumi,
+                userCoinVideos: this.userCoinVideos,
+                userUpvote: this.userUpvote
+              })
+            }
+          }.tabBar(this.TabBuilders(0,'主页'))
           .onClick(() => {
             this.biliUserViewModel.getUserHomeData(this.mid)
           })
 
           TabContent() {
-            // BiliUserMine({mid:this.mid})
-          }.tabBar('动态')
+            if (this.isShowPage[1]){
+              // BiliUser({mid:this.mid})
+            }
+          }.tabBar(this.TabBuilders(1,'动态'))
           .onClick(()=>{
             this.biliUserViewModel.getUserHomeData(this.mid)
           })
           // 有的用户会隐藏该数据，因此要判空
 
             TabContent() {
-              BiliUserVideo({mid:this.mid,userVideoBean:this.userVideoBean,biliUserViewModel:this.biliUserViewModel})
-            }.tabBar('投稿')
+              if (this.isShowPage[2]){
+                BiliUserVideo({mid:this.mid,userVideoBean:this.userVideoBean,biliUserViewModel:this.biliUserViewModel})
+              }
+            }
+            .tabBar(this.TabBuilders(2,'投稿'))
             .onClick(()=>{
               this.biliUserViewModel.getUserVideoData(this.mid)
             })
 
           // 有的用户会隐藏该数据，因此要判空
           TabContent() {
-            BiliUserBookmark({mid:this.mid,userBookmark:this.userBookmark,biliUserViewModel:this.biliUserViewModel})
-
-          }.tabBar('收藏')
+            if (this.isShowPage[3]){
+              BiliUserBookmark({mid:this.mid,userBookmark:this.userBookmark,biliUserViewModel:this.biliUserViewModel})
+            }
+          }
+          .tabBar(this.TabBuilders(3,'收藏'))
           .onClick(()=>{
             this.biliUserViewModel.getUserBookmarksData(this.mid)
           })
           // 有的用户会隐藏该数据，因此要判空
           TabContent() {
-            BiliUserBangumi({mid:this.mid,userBangumi:this.userBangumi,biliUserViewModel:this.biliUserViewModel})
-          }.tabBar('追番').onClick(()=>{
+            if (this.isShowPage[4]){
+              BiliUserBangumi({mid:this.mid,userBangumi:this.userBangumi,biliUserViewModel:this.biliUserViewModel})
+            }
+          }
+          .tabBar(this.TabBuilders(4,'追番'))
+          .onClick(()=>{
+            this.currentIndex = 4
+            this.tabController.changeIndex(this.currentIndex)
             this.biliUserViewModel.getUserBangumiData(this.mid)
           })
 
@@ -324,7 +344,7 @@ struct BiliUserPage {
     .height('40%')
     .width("100%")
     .onVisibleAreaChange([0.0, 1.0], (isVisible: boolean, currentRatio: number) => {
-      console.error('currentRatio:' + currentRatio + '  isVisible:' + isVisible)
+      // console.error('currentRatio:' + currentRatio + '  isVisible:' + isVisible)
       if (currentRatio === 0) {
         this.scrollStatus = ScrollStatus.LIST_MOVE
       } else {
@@ -332,6 +352,31 @@ struct BiliUserPage {
       }
     })
   }
+
+  @Builder TabBuilders(index: number, name: string) {
+  Column() {
+    Text(name)
+      .fontColor(this.currentIndex === index ? $r('app.color.bilibili_theme') : $r('app.color.bilibili_text_grey_bold'))
+      .fontSize(16)
+      .maxLines(1)
+      .textAlign(TextAlign.Center)
+      .margin({bottom:'4%'})
+      .width('40%')
+    Divider()
+      .strokeWidth(2)
+      .color($r('app.color.bilibili_theme'))
+      .opacity(this.currentIndex === index  ? 1 : 0)
+      .width('30%')
+  }.width('100%')
+  .height('100%')
+  .stateStyles({pressed:pressedStyles,normal:normalStyles})
+  .borderRadius(5)
+  .justifyContent(FlexAlign.Center)
+  .onClick(() => {
+    this.currentIndex = index
+    this.tabController.changeIndex(this.currentIndex)
+  })
+}
 }
 
 @Component
@@ -404,4 +449,12 @@ function userLevel(level: number): Resource {
   }
 
   return icon
+}
+
+@Styles function  pressedStyles() {
+  .backgroundColor($r('app.color.bilibili_background_grey'))
+}
+
+@Styles function  normalStyles() {
+  .backgroundColor($r('app.color.bilibili_background_white'))
 }

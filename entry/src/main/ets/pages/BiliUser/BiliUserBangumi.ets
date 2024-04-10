@@ -7,7 +7,7 @@ import Constants from '../../common/Constants'
 @Component
 export struct BiliUserBangumi{
   mid:number = 0
-  @Prop userBangumi: UserBangumi
+  @Prop userBangumi: UserBangumi = new UserBangumi()
   biliUserViewModel:BiliUserViewModel
   userBangumiData :UserBangumiData = new UserBangumiData()
   page:number=1
