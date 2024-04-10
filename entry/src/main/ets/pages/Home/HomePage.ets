@@ -59,7 +59,7 @@ export struct HomePage {
           .aspectRatio(4/3)
           .alt($r('app.media.ic_placeholder'))
         Row(){
-          Image($r('app.media.ic_video_play'))
+          Image($r("app.media.ic_play"))
             .aspectRatio(1)
             .height('60%')
             .margin({left:'1%'})

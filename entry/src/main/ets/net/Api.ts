@@ -102,6 +102,13 @@ export class Api extends ApiBase{
   // https://passport.bilibili.com/x/passport-login/web/qrcode/generate
 
   //https://api.bilibili.com/x/web-interface/zone 登录位置
+
+  // https://api.bilibili.com/x/player/online/total?cid=1499268571&bvid=BV1Mm411677N
+  // 实时在线人数
+  getOnline<T>(bvid:string,cid:number){
+    let url = `https://api.bilibili.com/x/player/online/total?cid=${cid}&bvid=${bvid}`
+    return this.request<T>(url,this.instanceAxios)
+  }
 }
 
 const api: Api = new Api()

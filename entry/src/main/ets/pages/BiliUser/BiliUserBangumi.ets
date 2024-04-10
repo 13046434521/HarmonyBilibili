@@ -1,7 +1,6 @@
 import { UserBangumi, UserBangumiItem } from '../../bean/biliUser/UserBangumi'
 import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel'
 import { PageManager } from '../../common/PageManager'
-import { Utils } from '../../Utils/Utils'
 import { UserBangumiData } from '../../datasource/UserBangumiData'
 import Constants from '../../common/Constants'
 

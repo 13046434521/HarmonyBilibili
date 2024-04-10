@@ -1,4 +1,6 @@
+import { Online } from '../../bean/Online'
 import VideoInfo from '../../bean/video/VideoInfo'
+import { VideoRecommend } from '../../bean/video/VideoRecommend'
 import Api from '../../net/Api'
 import ApiBiliUser from '../../net/ApiBiliUser'
 import ApiVideo from '../../net/ApiVideo'
@@ -32,5 +34,18 @@ export default  class VideoViewModel{
 
   upInfo(mid:number){
     return ApiBiliUser.loginUserInfo(mid)
+  }
+  /**
+   * @name 视频详情页的推荐视频信息
+   * @url https://api.bilibili.com/x/web-interface/archive/related?bvid=BV1QQ4y1M7Va
+   * @param bvid 视频bvid号
+   * @returns 推荐视频信息 VideoRecommend[]
+   */
+  videoRecommend(bvid:string){
+    return ApiVideo.getVideoRecommend<VideoRecommend[]>(bvid)
+  }
+
+  videoOnline(bvid:string,cid:number){
+    return Api.getOnline<Online>(bvid,cid)
   }
 }

@@ -37,8 +37,6 @@ export struct Loading{
         .position({y:this.y,x:'47.5%'})
         .rotate({angle:this.angle*5})
 
-        .borderWidth(2)
-        .borderColor(Color.Orange)
       // .offset({y:-40})
       Text(this.test)
     }.gesture(PanGesture({fingers:1,direction:PanDirection.Vertical})

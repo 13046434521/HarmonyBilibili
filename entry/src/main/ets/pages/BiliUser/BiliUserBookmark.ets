@@ -1,15 +1,8 @@
-import { UserBangumi, UserBangumiItem } from '../../bean/biliUser/UserBangumi'
 import { UserBookmark, UserBookmarkItem } from '../../bean/biliUser/UserBookmark'
-import { UserCoinVideo } from '../../bean/biliUser/UserCoinVideo'
-import { UserUpvote, UserUpvoteItem } from '../../bean/biliUser/UserUpvote'
-import { UserVideoBean, UserVideoItem } from '../../bean/biliUser/UserVideoBean'
 import { Utils } from '../../Utils/Utils'
 import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel'
-import router from '@ohos.router'
-import { PageManager } from '../../common/PageManager'
 import { UserBookmarkData } from '../../datasource/UserBookmarkData'
 import Constants from '../../common/Constants'
-import FaultLogger from '@ohos.faultLogger'
 import { LoadingData } from '../../component/LoadingData'
 import { LoadingStatus } from '../../common/LoadingStatus'
 
@@ -119,15 +112,4 @@ export struct BiliUserBookmark{
       Utils.Toast("收藏夹："+bookmark.title +'  id:'+bookmark.id+ '  fid'+bookmark.fid)
     })
   }
-
-
-}
-
-@Extend(Text) function textSizeStyle(){
-  .fontSize(14)
-  .fontColor(Color.White)
-}
-
-@Extend(Text) function titleStyle(){
-  .fontColor($r('app.color.bilibili_text_grey_light'))
 }

@@ -51,7 +51,12 @@ export class Utils {
       return hour+":"+minute+":"+second
     }
   }
-  // 视频时长，转换处理
+  //
+  /**
+   * @name 视频时长，转换成00:00:00格式
+   * @param duration 时长
+   * @returns
+   */
   static Duration(duration: number): string {
     //console.log("Duration:time:"+duration)
 

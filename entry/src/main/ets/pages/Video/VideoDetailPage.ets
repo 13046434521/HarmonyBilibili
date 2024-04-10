@@ -59,11 +59,9 @@ struct VideoDetailPage {
           VideoComments({videoViewModel:this.videoViewModel,bvid:this.bvid})
         }.tabBar('评论')
       } .barMode(BarMode.Fixed)
-      .scrollable(false)
+      .scrollable(true)
       .layoutWeight(1)
       .width('100%')
-      .borderWidth(2)
-      .borderColor(Color.Orange)
     }.width('100%')
     .justifyContent(FlexAlign.Start)
   }

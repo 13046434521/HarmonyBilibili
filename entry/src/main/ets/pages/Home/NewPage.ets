@@ -30,7 +30,7 @@ export struct NewPage {
 
   build() {
     Column() {
-      Image($r("app.media.ic_video_coin"))
+      Image($r("app.media.icon_video_dislike"))
         .objectFit(ImageFit.Contain)
         .layoutWeight(1)
         .margin({bottom:'2%'})

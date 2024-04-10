@@ -1,11 +1,6 @@
-import { UserBangumi, UserBangumiItem } from '../../bean/biliUser/UserBangumi'
-import { UserBookmark, UserBookmarkItem } from '../../bean/biliUser/UserBookmark'
-import { UserCoinVideo } from '../../bean/biliUser/UserCoinVideo'
-import { UserUpvote, UserUpvoteItem } from '../../bean/biliUser/UserUpvote'
 import { UserVideoBean, UserVideoItem } from '../../bean/biliUser/UserVideoBean'
 import { Utils } from '../../Utils/Utils'
 import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel'
-import router from '@ohos.router'
 import { PageManager } from '../../common/PageManager'
 import { UserVideoData } from '../../datasource/UserVideoData'
 import Constants from '../../common/Constants'
@@ -98,7 +93,7 @@ export struct BiliUserVideo{
             Image($r("app.media.ic_danmakus_dark"))
               .imageStyle()
               .margin({ left: '2%' })
-            Text(Utils.Views(video.review))
+            Text(Utils.Views(video.video_review))
               .textStyle()
             Blank()
               .layoutWeight(1)

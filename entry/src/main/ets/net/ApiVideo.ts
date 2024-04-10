@@ -27,7 +27,18 @@ export class ApiVideo extends ApiBase{
   }
 
   //https://api.bilibili.com/x/v2/reply/wbi/main?oid=85440373&type=1&mode=3&pagination_str=%7B%22offset%22:%22%22%7D&plat=1&seek_rpid=&web_location=1315875&w_rid=67b75f44868bd2e361fee6877f926ec5&wts=1712649241
-}
+  // 评论
 
+
+  // https://api.bilibili.com/x/web-interface/archive/related?bvid=BV1QQ4y1M7Va
+  // 视频详情页的视频推荐列表
+
+  getVideoRecommend<T>(bvid:string){
+    let url = `https://api.bilibili.com/x/web-interface/archive/related?bvid=${bvid}`
+    return this.request<T>(url,this.instanceAxios)
+  }
+
+
+}
 const apiVideo:ApiVideo = new ApiVideo()
 export default apiVideo as ApiVideo

@@ -5,12 +5,7 @@ import { UserUpvote, UserUpvoteItem } from '../../bean/biliUser/UserUpvote'
 import { UserVideoBean, UserVideoItem } from '../../bean/biliUser/UserVideoBean'
 import { Utils } from '../../Utils/Utils'
 import { BiliUserViewModel } from '../../viewModel/biliUser/BiliUserViewModel'
-import router from '@ohos.router'
 import { PageManager } from '../../common/PageManager'
-import { Loading } from '../../component/Loading'
-import { LoadingData } from '../../component/LoadingData'
-import { LoadingStatus } from '../../common/LoadingStatus'
-import ArrayList from '@ohos.util.ArrayList'
 
 @Component
 export struct BiliUserHome {
@@ -169,7 +164,7 @@ export struct BiliUserHome {
         //   .linearGradient({
         //     colors: [[0xffffff, 0.0],[0x17181A, 1.0]]})
         Row() {
-          Image($r('app.media.ic_video_play'))
+          Image($r("app.media.ic_play"))
             .aspectRatio(1)
             .height('30%')
             .margin({ left: '1%' })
