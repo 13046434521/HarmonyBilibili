@@ -21,6 +21,12 @@ struct VideoDetailPage {
   @State url :string=''
   videoController: VideoController = new VideoController()
   videoViewModel:VideoViewModel = new VideoViewModel()
+  @State @Watch('showPage')currentIndex:number = 0
+  @State isShowPage :boolean[] = [true,false]
+  tabController:TabsController = new TabsController()
+  showPage(){
+    this.isShowPage[this.currentIndex] = true
+  }
   aboutToAppear() {
     if (router.getParams()!=null) {
       this.bvid = router.getParams()[RouterConstants.BVID]
@@ -46,18 +52,22 @@ struct VideoDetailPage {
   aboutToDisappear(){
     this.videoController.release('VideoDetailPage')
   }
-@State volume:number = 0
+
   build() {
     Column() {
       VideoPlay({url:this.url,videoController:this.videoController})
 
-      Tabs({barPosition:BarPosition.Start}){
+      Tabs({barPosition:BarPosition.Start,controller:this.tabController}){
         TabContent(){
-          VideoIntroduction({videoViewModel:this.videoViewModel,bvid:this.bvid})
-        }.tabBar('简介')
+          if (this.isShowPage){
+            VideoIntroduction({videoViewModel:this.videoViewModel,bvid:this.bvid})
+          }
+        }.tabBar(this.TabBuilders(0,'简介'))
         TabContent(){
-          VideoComments({videoViewModel:this.videoViewModel,bvid:this.bvid})
-        }.tabBar('评论')
+           if (this.isShowPage) {
+             VideoComments({ videoViewModel: this.videoViewModel, bvid: this.bvid })
+           }
+        }.tabBar(this.TabBuilders(1,'评论'))
       } .barMode(BarMode.Fixed)
       .scrollable(true)
       .layoutWeight(1)
@@ -65,4 +75,37 @@ struct VideoDetailPage {
     }.width('100%')
     .justifyContent(FlexAlign.Start)
   }
+
+  @Builder TabBuilders(index: number, name: string) {
+    Column() {
+      Text(name)
+        .fontColor(this.currentIndex === index ? $r('app.color.bilibili_theme') : $r('app.color.bilibili_text_grey_bold'))
+        .fontSize(16)
+        .maxLines(1)
+        .textAlign(TextAlign.Center)
+        .margin({bottom:'4%'})
+        .width('40%')
+      Divider()
+        .strokeWidth(2)
+        .color($r('app.color.bilibili_theme'))
+        .opacity(this.currentIndex === index  ? 1 : 0)
+        .width('30%')
+    }.width('100%')
+    .height('100%')
+    .stateStyles({pressed:pressedStyles,normal:normalStyles})
+    .borderRadius(5)
+    .justifyContent(FlexAlign.Center)
+    .onClick(() => {
+      this.currentIndex = index
+      this.tabController.changeIndex(this.currentIndex)
+    })
+  }
+}
+
+@Styles function  pressedStyles() {
+  .backgroundColor($r('app.color.bilibili_background_grey'))
+}
+
+@Styles function  normalStyles() {
+  .backgroundColor($r('app.color.bilibili_background_white'))
 }

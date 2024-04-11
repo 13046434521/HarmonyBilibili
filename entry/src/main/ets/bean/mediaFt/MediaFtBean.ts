@@ -1,4 +1,7 @@
 // 年会不能停：1920 * 804
+import Dimension from '../Dimension'
+import Stat from '../Stat'
+
 // https://api.bilibili.com/pgc/view/web/season?season_id=45735
 export class MediaFtBean{
         actors: string
@@ -7,7 +10,7 @@ export class MediaFtBean{
         cover: string
         delivery_fragment_video: boolean
         enable_vt: boolean
-        episodes: MediaFtEpisodesBean[]
+        episodes: MediaFtEpisodesBean[] =[]
 
         evaluate: string
 
@@ -34,73 +37,62 @@ export class MediaFtBean{
         season_id: number
         season_title: string
         seasons: []
-        section: MediaFtSectionBean[]
+        section: MediaFtSectionBean[]=[]
         series: {
-            display_type: 0
-            series_id: 0
+            display_type:number
+            series_id:number
             series_title:string
         }
         share_copy: string
         share_sub_title: string
         share_url: string
         show: {
-            wide_screen: 1
+            wide_screen: number
         }
-        show_season_type: 2
+        show_season_type: number
         square_cover: string
         staff: string
-        stat: {
-            coins: 158967
-            danmakus: 83267
-            favorite: 55957
-            favorites: 494176
-            follow_text: string
-            likes: 237467
-            reply: 12189
-            share: 49013
-            views: 19105309
-            vt: 0
-        }
-        status: 13
+        stat: Stat
+        status: number
         styles: string[]
         subtitle: string
         title: string
-        total: 1
-        type: 2
+        total: number
+        type: number
         up_info: {
             avatar: string
             avatar_subscript_url:string
-            follower: 7632413
-            is_follow: 0
-            mid: 15773384
+            follower: number
+            is_follow:number
+            mid: number
             nickname_color: string
             pendant: {
                 image:string
                 name:string
-                pid: 0
+                pid:number
             }
-            theme_type: 0
+            theme_type:number
             uname: string
-            verify_type: 3
+            verify_type: number
             vip_label: {
                 bg_color: string
-                bg_style: 1
+                bg_style: number
                 border_color:string
                 text: string
                 text_color:string
             }
-            vip_status: 1
-            vip_type: 2
+            vip_status: number
+            vip_type: number
         }
         user_status: {
-            area_limit: 0
-            ban_area_show: 0
-            follow: 0
-            follow_status: 0
-            login: 0
-            pay: 0
-            pay_pack_paid: 0
-            sponsor: 0
+            area_limit: number
+            ban_area_show:number
+            follow:number
+            follow_status:number
+            login:number
+            pay:number
+            pay_pack_paid:number
+            sponsor:number
         }
 }
 export class MediaFtSectionBean{
@@ -126,17 +118,13 @@ export class MediaFtEpisodesBean{
   bvid: string
   cid: number
   cover: string
-  dimension: {
-    height: number
-    rotate: number
-    width: number
-  }
+  dimension: Dimension
   duration: number
-  enable_vt: false
+  enable_vt: boolean
   ep_id: number
   from: string
   id: number
-  is_view_hide: false
+  is_view_hide: boolean
   link: string
   long_title:string
   pub_time: number

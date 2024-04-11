@@ -8,6 +8,7 @@ import { IjkMediaPlayer } from '@ohos/ijkplayer'
 import window from '@ohos.window'
 import Constants from '../../common/Constants'
 import audio from '@ohos.multimedia.audio'
+import { Utils } from '../../Utils/Utils'
 
 //VideoPlayer 的 逻辑功能类
 export class VideoController implements IPlayer {
@@ -39,7 +40,7 @@ export class VideoController implements IPlayer {
 
       let seekValue = progress * (IjkMediaPlayer.getInstance().getDuration() / 100);
       IjkMediaPlayer.getInstance().seekTo(Math.floor(seekValue).toString())
-      this.videoModel.currentTime = this.Duration(Math.floor(seekValue / 1000))
+      this.videoModel.currentTime = Utils.Duration(Math.floor(seekValue / 1000))
     }
   }
   updateProgressTimer:number = 0
@@ -52,7 +53,7 @@ export class VideoController implements IPlayer {
         if (duration>0) {
           this.videoModel.sliderStep = current/duration *100;
         }
-        this.videoModel.currentTime = this.Duration(Math.floor(current/1000))
+        this.videoModel.currentTime = Utils.Duration(Math.floor(current/1000))
       }
     }, 300);
 
@@ -238,19 +239,7 @@ export class VideoController implements IPlayer {
     console.log('app_log stopProgressTask')
   }
 
-  // 视频时常，转换处理
-  Duration(duration: number): string {
-    let second: number | string = (duration % 60)
-    let minute: number | string = Math.floor(duration / 60)
-    if (second < 10) {
-      second = '0' + second.toFixed(0)
-    } else {
-      second.toFixed(0)
-    }
 
-    //console.log("duration:"+duration+"---"+minute+'---'+second)
-    return duration > 3600 ? Math.floor(duration / 3600) + ":" + minute + ":" + second : minute + ":" + second
-  }
 
   // 初始化Player,不包括播放
   public initPlayer(context: object, url:string,headers:Map<string,string>) {
@@ -301,7 +290,7 @@ export class VideoController implements IPlayer {
           this.videoModel.xComponentHeight = '100%'
         }
         this.videoModel.videoAspectRatio = this.videoModel.videoWidth/this.videoModel.videoHeight
-        this.videoModel.timeTotal = this.Duration(Math.floor(IjkMediaPlayer.getInstance().getDuration() / 1000))
+        this.videoModel.timeTotal = Utils.Duration(Math.floor(IjkMediaPlayer.getInstance().getDuration() / 1000))
         console.log('app_log mOnPreparedListener:'+this.videoModel.videoWidth+" --- "+this.videoModel.videoHeight +" --- "+this.videoModel.videoAspectRatio )
         this.videoModel.state = PlayStatus.PLAY
         this.startProgressTask();

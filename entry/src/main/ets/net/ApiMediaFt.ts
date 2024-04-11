@@ -13,8 +13,8 @@ export class ApiMediaFt extends ApiBase{
   // 年会不能停 ： https://api.bilibili.com/pgc/view/web/season?season_id=45735
   // 获取剧集明细（web端）（ssid/epid方式）
   // result
-  getMediaFtAidCidEpid(seasonId:number):Promise<MediaFtBean>{
-    let url = `https://api.bilibili.com/pgc/view/web/season?season_id=${seasonId}`
+  getMediaFtAidCidEpid(seasonId:number,qn:number):Promise<MediaFtBean>{
+    let url = `https://api.bilibili.com/pgc/view/web/season?season_id=${seasonId}&qn=${qn}`
     return this.request(url,this.instanceAxios)
   }
 

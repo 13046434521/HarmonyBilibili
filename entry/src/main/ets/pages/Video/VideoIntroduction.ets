@@ -43,7 +43,6 @@ export default struct VideoIntroduction {
   }
   build(){
     LoadingData({loadingStatus:this.loadStatus,page:this.VideoIntroduction.bind(this),extraFailure:this.err,type:LoadingType.PAGE})
-
   }
 
   @Builder
@@ -151,6 +150,7 @@ export default struct VideoIntroduction {
       .width('100%')
     }
   }
+
   @Builder VideoItem(videoRecommend:VideoRecommend){
     Column() {
       Row() {

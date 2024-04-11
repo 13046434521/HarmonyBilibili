@@ -17,7 +17,7 @@ export class MediaFtUrlBean {
   is_drm: boolean
   no_rexcode: number
   format: string
-  support_formats: MediaFtSupportFormatsBean[]
+  support_formats: MediaFtSupportFormatsBean[]=[]
   message: string
 
   accept_quality: number[] // 64 16
