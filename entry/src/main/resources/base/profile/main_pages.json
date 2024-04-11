@@ -7,8 +7,7 @@
     "pages/Search/SearchPage",
     "pages/Search/SearchWebPage",
     "pages/Live/LivePage",
-    "pages/MediaFt/MediaFtPage",
-    "pages/MediaBangumi/MediaBangumiPage",
+    "pages/Media/MediaPage",
     "pages/Article/ArticlePage",
     "pages/BiliUser/BiliUserPage",
     "pages/Mine/MineWebPage"

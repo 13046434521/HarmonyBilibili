@@ -105,8 +105,8 @@ export class Api extends ApiBase{
 
   // https://api.bilibili.com/x/player/online/total?cid=1499268571&bvid=BV1Mm411677N
   // 实时在线人数
-  getOnline<T>(bvid:string,cid:number){
-    let url = `https://api.bilibili.com/x/player/online/total?cid=${cid}&bvid=${bvid}`
+  getOnline<T>(bvid:string="",cid:number,aid:number=0){
+    let url = `https://api.bilibili.com/x/player/online/total?cid=${cid}&bvid=${bvid}&aid=${aid}`
     return this.request<T>(url,this.instanceAxios)
   }
 

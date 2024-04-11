@@ -42,14 +42,10 @@ export class PageManager {
     router.pushUrl({ url: 'pages/Live/LivePage', params: { 'roomId': roomId } })
   }
 
-  // 番剧页面
-  static routerMediaBangumi(roomId: number) {
-    router.pushUrl({ url: 'pages/MediaBangumi/MediaBangumiPage', params: { 'roomId': roomId } })
-  }
 
-  // 影视页面
-  static routerMediaFt(season_id: number) {
-    router.pushUrl({ url: 'pages/MediaFt/MediaFtPage', params: { 'seasonId': season_id } })
+  // 影视|番剧页面
+  static routerMedia(season_id: number) {
+    router.pushUrl({ url: 'pages/Media/MediaPage', params: { 'seasonId': season_id } })
   }
 
   // 图文页面

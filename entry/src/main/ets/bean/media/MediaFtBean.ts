@@ -1,5 +1,6 @@
 // 年会不能停：1920 * 804
 import Dimension from '../Dimension'
+import { MediaStat } from '../MediaStat'
 import Stat from '../Stat'
 
 // https://api.bilibili.com/pgc/view/web/season?season_id=45735
@@ -10,7 +11,7 @@ export class MediaFtBean{
         cover: string
         delivery_fragment_video: boolean
         enable_vt: boolean
-        episodes: MediaFtEpisodesBean[] =[]
+        episodes: MediaFtEpisodesBean[] =new Array<MediaFtEpisodesBean>()
 
         evaluate: string
 
@@ -52,7 +53,7 @@ export class MediaFtBean{
         show_season_type: number
         square_cover: string
         staff: string
-        stat: Stat
+        stat: MediaStat
         status: number
         styles: string[]
         subtitle: string
@@ -127,7 +128,7 @@ export class MediaFtEpisodesBean{
   is_view_hide: boolean
   link: string
   long_title:string
-  pub_time: number
+  pub_time: number = 0
   pv: number
   release_date:string
   rights: {

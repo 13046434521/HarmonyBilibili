@@ -4,9 +4,10 @@ import { VideoRecommend } from '../../bean/video/VideoRecommend'
 import Api from '../../net/Api'
 import ApiBiliUser from '../../net/ApiBiliUser'
 import ApiVideo from '../../net/ApiVideo'
+import { BaseViewModel } from '../BaseViewModel'
 
 
-export default  class VideoViewModel{
+export default  class VideoViewModel extends BaseViewModel{
 
   // 加载视频信息
   loadVideoData(bvid:string,cid:number=0){
@@ -43,9 +44,5 @@ export default  class VideoViewModel{
    */
   videoRecommend(bvid:string){
     return ApiVideo.getVideoRecommend<VideoRecommend[]>(bvid)
-  }
-
-  videoOnline(bvid:string,cid:number){
-    return Api.getOnline<Online>(bvid,cid)
   }
 }

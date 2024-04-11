@@ -126,7 +126,7 @@ export struct MediaBangumiItem{
         .margin('2%')
     }.backgroundColor(Color.White)
     .height('22%').onClick(()=>{
-      PageManager.routerMediaFt(this.item.season_id)
+      PageManager.routerMedia(this.item.season_id)
     })
   }
 }

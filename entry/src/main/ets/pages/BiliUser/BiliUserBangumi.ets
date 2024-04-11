@@ -72,7 +72,7 @@ export struct BiliUserBangumi{
     .backgroundColor($r('app.color.bilibili_background_white'))
     .margin('2%')
     .onClick(event=>{
-      PageManager.routerMediaFt(bangumi.season_id)
+      PageManager.routerMedia(bangumi.season_id)
     })
   }
 }

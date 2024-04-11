@@ -177,9 +177,6 @@ export default struct VideoIntroduction {
         .aspectRatio(Constants.DEFAULT_ASPECT_RATIO)
         .padding('1%')
         .align(Alignment.BottomEnd)
-        .onClick(()=>{
-          PageManager.routerBiliUser(videoRecommend.owner.mid)
-        })
 
         Column() {
           Text(videoRecommend.title)

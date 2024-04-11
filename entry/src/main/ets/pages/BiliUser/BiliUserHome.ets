@@ -356,7 +356,7 @@ export struct BiliUserHome {
     .borderRadius({ topLeft: '1%', topRight: '1%', bottomLeft: '1%', bottomRight: '1%' })
     .backgroundColor($r('app.color.bilibili_background_white'))
     .onClick(event => {
-      PageManager.routerMediaFt(bangumi.season_id)
+      PageManager.routerMedia(bangumi.season_id)
     })
   }
 

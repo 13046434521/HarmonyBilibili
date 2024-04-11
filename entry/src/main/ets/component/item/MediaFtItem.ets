@@ -129,7 +129,7 @@ export struct MediaFtItem{
     }.backgroundColor(Color.White)
     .height('22%')
     .onClick(()=>{
-      PageManager.routerMediaFt(item.season_id)
+      PageManager.routerMedia(item.season_id)
     })
   }
 }

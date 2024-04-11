@@ -9,23 +9,10 @@ export struct NewPage {
 
   build() {
     Column() {
-      Button("显隐切换")
-        .onClick(() => {
-          if (this.isVisible == Visibility.Visible) {
-            this.isVisible = Visibility.None
-          } else {
-            this.isVisible = Visibility.Visible
-          }
-        })
-      TestCompoment().visibility(this.isVisible)
-
-      Button("if语句显隐切换")
-        .onClick(() => {
-          this.isShow = !this.isShow
-        })
-      if (this.isShow) {
-        TestCompoment()
-      }
+      Image($r('app.media.icon_media_like'))
+        .fillColor(Color.Orange)
+        .width('10%')
+        .aspectRatio(1)
     }
   }
 }

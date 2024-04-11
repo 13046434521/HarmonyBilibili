@@ -14,7 +14,9 @@ export class ApiMediaBangumi extends ApiBase{
 
   // https://api.bilibili.com/pgc/web/season/section?season_id=42290
   // 获取剧集分集信息
-  
+
+  // https://api.bilibili.com/pgc/season/web/related/recommend?season_id=39431
+  // 番剧影视推荐推荐
 }
 
 

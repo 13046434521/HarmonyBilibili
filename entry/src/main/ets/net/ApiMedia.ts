@@ -1,7 +1,8 @@
 import axios from '@ohos/axios'
-import { MediaFtBean } from '../bean/mediaFt/MediaFtBean'
-import { MediaFtUrlBean } from '../bean/mediaFt/MediaFtUrlBean'
+import { MediaFtBean } from '../bean/media/MediaFtBean'
+import { MediaFtUrlBean } from '../bean/media/MediaFtUrlBean'
 import { PlayVideoBean } from '../bean/PlayVideoBean'
+import Constants from '../common/Constants'
 import { ApiBase } from './ApiBase'
 
 export class ApiMediaFt extends ApiBase{
@@ -32,6 +33,32 @@ export class ApiMediaFt extends ApiBase{
   getMediaFtPlayUrl(avid: number, cid: number,qn:number=116): Promise<PlayVideoBean> {
     let url = `/player/playurl?avid=${avid}&cid=${cid}&qn=${qn}`
     return this.request(url,this.instanceAxios)
+  }
+
+
+  // https://api.bilibili.com/pgc/review/user
+  // 获取剧集基本信息
+  getMediaBasicInfo(){
+    let url = 'https://api.bilibili.com/pgc/review/user'
+  }
+  // https://api.bilibili.com/pgc/view/web/season
+  // 获取剧集详细信息
+  getMediaDetailInfo<T>(season_id:number,ep_id:string ='',qn:number=Constants.QN){
+    let url = `https://api.bilibili.com/pgc/view/web/season?season_id=${season_id}&ep_id=${ep_id}&qn=${qn}`
+    return this.request<T>(url,this.instanceAxios)
+  }
+
+  // https://api.bilibili.com/pgc/web/season/section?season_id=42290
+  // 获取剧集分集信息
+
+  /**
+   * @name 番剧影视推荐推荐
+   * @url https://api.bilibili.com/pgc/season/web/related/recommend?season_id=39431
+   * @param season_id 番号/视频 ID
+   */
+  getMediaRelation<T>(season_id:number){
+    let url = `https://api.bilibili.com/pgc/season/web/related/recommend?season_id=${season_id}`
+    return this.request<T>(url,this.instanceAxios)
   }
 }
 

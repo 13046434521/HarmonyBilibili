@@ -6,10 +6,13 @@ export class Utils {
   // 观看量数据转换处理
   static Views(views: number,unit:string='w'): string {
     //console.log("views:"+views+"---"+(views/10000).toFixed(2)+"w")
-    if (views > 10000) {
-      return (views / 10000).toFixed(2) + unit
+    if (views > 100000000){
+      return (views / 100000000).toFixed(2) + '亿'
     }
-    return views.toString()
+    else if (views > 10000) {
+      return (views / 10000).toFixed(2) + '万'
+    }
+    return views +''
   }
 
   // 让登录获取的cookie可以获取大会员的资源（影视番剧等）

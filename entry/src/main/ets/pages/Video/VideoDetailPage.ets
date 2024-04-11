@@ -59,12 +59,12 @@ struct VideoDetailPage {
 
       Tabs({barPosition:BarPosition.Start,controller:this.tabController}){
         TabContent(){
-          if (this.isShowPage){
+          if (this.isShowPage[0]){
             VideoIntroduction({videoViewModel:this.videoViewModel,bvid:this.bvid})
           }
         }.tabBar(this.TabBuilders(0,'简介'))
         TabContent(){
-           if (this.isShowPage) {
+          if (this.isShowPage[1]){
              VideoComments({ videoViewModel: this.videoViewModel, bvid: this.bvid })
            }
         }.tabBar(this.TabBuilders(1,'评论'))
@@ -72,6 +72,10 @@ struct VideoDetailPage {
       .scrollable(true)
       .layoutWeight(1)
       .width('100%')
+      .onChange((index)=>{
+        this.tabController.changeIndex(index)
+        this.currentIndex = index
+      })
     }.width('100%')
     .justifyContent(FlexAlign.Start)
   }

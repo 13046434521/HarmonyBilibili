@@ -155,6 +155,10 @@ struct BiliUserPage {
 
         }.width('100%')
         .height('100%')
+        .onChange((index)=>{
+          this.tabController.changeIndex(index)
+          this.currentIndex = index
+        })
       }
     }
     .width("100%")
