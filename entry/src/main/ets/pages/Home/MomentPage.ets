@@ -9,10 +9,12 @@ import { Utils } from '../../Utils/Utils'
 @Preview
 export struct MomentPage {
   @State listPosition: number = 0; // 0代表滚动到List顶部，1代表中间值，2代表滚动到List底部。
-  private arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  @State private arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   private scrollerForScroll: Scroller = new Scroller()
   private scrollerForList: Scroller = new Scroller()
+  private oter: number[] = [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10]
 
+  count:number =0
   build() {
     Scroll(this.scrollerForScroll) {
       Column() {
@@ -24,11 +26,16 @@ export struct MomentPage {
           })
 
         List({ space: 20, scroller: this.scrollerForList }) {
-          ForEach(this.arr, (item) => {
+          ForEach(this.arr, (item: any, index?: number) => {
             ListItem() {
-              Text("ListItem" + item)
-                .width("100%").height("100%").borderRadius(15)
-                .fontSize(16).textAlign(TextAlign.Center).backgroundColor(Color.White)
+              if (index===this.arr.length-1) {
+                Image($r('app.media.test'))
+              }else{
+                Text("ListItem" + item)
+                  .width("100%").height("100%").borderRadius(15)
+                  .fontSize(16).textAlign(TextAlign.Center).backgroundColor(Color.White)
+              }
+
             }.width("100%").height(100)
           }, item => item)
         }
@@ -39,7 +46,12 @@ export struct MomentPage {
           this.listPosition = 0
         })
         .onReachEnd(() => {
-          this.listPosition = 2
+          for (let index = 0; index < 10; index++) {
+            this.count++
+            this.arr.push(this.count)
+          }
+
+          // this.listPosition = 2
         }).onScrollFrameBegin((offset: number) => {
           // console.debug('scrollTest:',"offest:"+offset+"  listPosition:"+this.listPosition+"")
           if ((this.listPosition == 0 && offset <= 0) || (this.listPosition == 2 && offset >= 0)) {

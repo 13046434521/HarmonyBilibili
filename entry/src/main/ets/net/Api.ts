@@ -109,6 +109,13 @@ export class Api extends ApiBase{
     let url = `https://api.bilibili.com/x/player/online/total?cid=${cid}&bvid=${bvid}`
     return this.request<T>(url,this.instanceAxios)
   }
+
+  // https://api.bilibili.com/x/msgfeed/unread
+  getUnReadMessage<T>(){
+    let url = `https://api.bilibili.com/x/msgfeed/unread`
+    return this.request<T>(url,this.instanceAxios)
+  }
+
 }
 
 const api: Api = new Api()

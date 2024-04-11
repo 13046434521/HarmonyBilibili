@@ -183,9 +183,16 @@ export struct HomePage {
   @Builder Refresh(){
     Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
       List(){
-        LazyForEach(this.homeData,(item:HomeBeanItem)=>{
+        LazyForEach(this.homeData,(item:HomeBeanItem,index)=>{
           ListItem(){
-            this.HomeItem(item)
+            if (index===this.homeData.totalCount()-1) {
+              Column(){
+                LoadingProgress().color($r('app.color.bilibili_theme'))
+                Text('加载更多......').fontColor($r('app.color.bilibili_text_grey_light'))
+              }.height('10%')
+            }else{
+              this.HomeItem(item)
+            }
           }.margin(3)
         },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)}.lanes(2)
       .edgeEffect(EdgeEffect.Fade)
