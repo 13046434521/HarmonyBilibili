@@ -27,8 +27,8 @@ struct MediaFtPage {
   }
   aboutToAppear(){
     // if (router.getParams()!=null) {
-    //   this.seasonId = router.getParams()[RouterConstants.SEASON_ID]
-      this.seasonId =  25622
+      this.seasonId = router.getParams()[RouterConstants.SEASON_ID]
+      // this.seasonId =  25622
       this.mediaViewModel.getMediaInfo(this.seasonId).then(mediaInfo=>{
         this.mediaInfo = mediaInfo
         let avid = mediaInfo.episodes[0].aid
@@ -54,7 +54,7 @@ struct MediaFtPage {
 
   build() {
     Column() {
-      // VideoPlay({videoController:this.videoController,url:this.url})
+      VideoPlay({videoController:this.videoController,url:this.url})
 
       Tabs({barPosition:BarPosition.Start,controller:this.tabController}){
         TabContent(){

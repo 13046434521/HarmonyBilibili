@@ -145,6 +145,8 @@ export default struct VideoIntroduction {
         .lanes(1)
         .cachedCount(Constants.CACHE_COUNT)
         .scrollBar(BarState.Off)
+        .width('100%')
+        .height("100%")
       }.justifyContent(FlexAlign.Start)
       .alignItems(HorizontalAlign.Start)
       .width('100%')

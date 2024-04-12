@@ -14,6 +14,7 @@ import { Utils } from '../../Utils/Utils'
 export class VideoController implements IPlayer {
   videoModel: VideoModel = new VideoModel()
   volumeManager = audio.getAudioManager().getVolumeManager();
+
   init(context: object) {
     this.videoModel.context = context
     // 初始化Player,包括播放
