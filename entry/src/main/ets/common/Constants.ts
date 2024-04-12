@@ -5,7 +5,6 @@ class Constants{
   WINDOW_WIDTH = -1
   WINDOW_
 
-
   CACHE_COUNT = 4
   // QN:number = 64
   QN:number = 116

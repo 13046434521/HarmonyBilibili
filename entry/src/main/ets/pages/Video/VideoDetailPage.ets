@@ -104,6 +104,13 @@ struct VideoDetailPage {
       this.tabController.changeIndex(this.currentIndex)
     })
   }
+
+  onBackPress(){
+    if (this.videoController.videoModel.orientation === window.Orientation.LANDSCAPE){
+      this.videoController.changeOrientation()
+      return true
+    }
+  }
 }
 
 @Styles function  pressedStyles() {

@@ -3,7 +3,7 @@ import { MediaSeason } from '../../bean/media/MediaRelation'
 import { Online } from '../../bean/Online'
 import Constants from '../../common/Constants'
 import { LoadingStatus } from '../../common/LoadingStatus'
-import { PageManager } from '../../common/PageManager'
+import { PageManager, PageType } from '../../common/PageManager'
 import { LoadingType } from '../../component/Loading'
 import { LoadingData } from '../../component/LoadingData'
 import { MediaSeasonData } from '../../datasource/MediaSeasonData'
@@ -273,7 +273,7 @@ export struct MediaIntroduction {
         .strokeWidth(1)
     }
     .onClick(event => {
-      PageManager.routerMedia(season.season_id)
+      PageManager.routerMedia(season.season_id,PageType.REPLACE)
     })
   }
 }

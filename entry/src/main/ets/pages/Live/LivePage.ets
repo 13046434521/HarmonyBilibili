@@ -5,6 +5,7 @@ import { RouterConstants } from '../../common/PageManager'
 import { VideoPlay } from '../../component/VideoPlay'
 import  ApiLiving  from '../../net/ApiLiving'
 import { VideoController } from '../../viewModel/videoPlayer/VideoController'
+import window from '@ohos.window'
 
 @Entry
 @Component
@@ -30,5 +31,12 @@ struct LivePage {
         .layoutWeight(1)
     }.backgroundColor(this.backgroundColors)
     .width('100%')
+  }
+
+  onBackPress(){
+    if (this.videoController.videoModel.orientation === window.Orientation.LANDSCAPE){
+      this.videoController.changeOrientation()
+      return true
+    }
   }
 }

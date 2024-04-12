@@ -8,6 +8,7 @@ import { showDialog } from '../../Utils/DialogUtil'
 import { MediaViewModel } from '../../viewModel/media/MediaViewModel'
 import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 import { MediaIntroduction } from './MeidaIntroduction'
+import window from '@ohos.window'
 
 @Entry
 @Component
@@ -100,6 +101,13 @@ struct MediaFtPage {
       this.currentIndex = index
       this.tabController.changeIndex(this.currentIndex)
     })
+  }
+
+  onBackPress(){
+    if (this.videoController.videoModel.orientation === window.Orientation.LANDSCAPE){
+      this.videoController.changeOrientation()
+      return true
+    }
   }
 }
 

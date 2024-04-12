@@ -4,7 +4,7 @@ import VideoInfo from '../../bean/video/VideoInfo'
 import { VideoRecommend } from '../../bean/video/VideoRecommend'
 import Constants from '../../common/Constants'
 import { LoadingStatus } from '../../common/LoadingStatus'
-import { PageManager } from '../../common/PageManager'
+import { PageManager, PageType } from '../../common/PageManager'
 import { LoadingType } from '../../component/Loading'
 import { LoadingData } from '../../component/LoadingData'
 import { VideoRecommendData } from '../../datasource/VideoRecommendData'
@@ -63,7 +63,7 @@ export default struct VideoIntroduction {
             .margin({right:'1%'})
             .alt($r('app.media.default_avater'))
             .onClick(()=>{
-              PageManager.routerBiliUser(this.videoInfo.owner.mid)
+              PageManager.routerBiliUser(this.videoInfo.owner.mid,PageType.REPLACE)
             })
 
           Column(){
@@ -257,7 +257,7 @@ export default struct VideoIntroduction {
         .strokeWidth(1)
     }
     .onClick(event=>{
-      PageManager.routerVideoDetail(videoRecommend.bvid,videoRecommend.cid)
+      PageManager.routerVideoDetail(videoRecommend.bvid,videoRecommend.cid,PageType.REPLACE)
     })
   }
 }
