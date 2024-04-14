@@ -69,6 +69,9 @@ struct MediaFtPage {
           }
         }.tabBar(this.TabBuilders(1,'评论'))
       } .barMode(BarMode.Fixed)
+      .scrollable(true)
+      .layoutWeight(1)
+      .width('100%')
       .onChange((index)=>{
         this.tabController.changeIndex(index)
         this.currentIndex = index

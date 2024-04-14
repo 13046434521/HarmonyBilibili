@@ -58,100 +58,102 @@ export struct MediaIntroduction {
 
   @Builder
   MediaIntroduction() {
-    Scroll() {
-      Column() {
-        // 标题
-        // 播放，收藏，正在观看，分数，详情
-        // 点赞,不喜欢,投币,收藏,分享
-        // 其他视频
-        Row() {
-          Text(this.mediaInfo.title)
-            .textStyle($r('app.color.bilibili_text_black_middle'), 20)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .maxLines(2)
-          if (Utils.isNonNull(this.mediaInfo.rating)){
-            Text(this.mediaInfo.rating.score + "分")
-              .textStyle()
-              .fontColor($r('app.color.color_orange'))
-              .margin({ left: '2%' })
+    List() {
+      ListItemGroup({header:this.Header()}){
+        LazyForEach(this.mediaSeasonData, mediaSeason => {
+          ListItem() {
+            this.MediaItem(mediaSeason)
           }
-        } .margin({ left: "2%", top: '2%' })
-
-        Row() {
-          Image($r('app.media.ic_play'))
-            .imageDescriptionStyle()
-          Text(Utils.Views(this.mediaInfo.stat.views))
-            .textStyle()
-            .margin({ left: '1%' })
-          Image($r("app.media.icon_media_like"))
-            .imageDescriptionStyle()
-            .padding(2)
-            .margin({ left: '2%' })
-          Text(Utils.Views(this.mediaInfo.stat.favorites))
-            .textStyle()
-            .margin({ left: '1%' })
-          Text(Utils.timestampToDate(this.episodes.pub_time))
-            .textStyle()
-            .margin({ left: '2%' })
-          /*          Image($r("app.media.icon_video_bilibili"))
-                      .imageDescriptionStyle()
-                      .margin({ left: '2%' })*/
-          Text(this.online.total + "人正在看")
-            .textStyle()
-            .margin({ left: '2%' })
-
-          Blank()
-            .layoutWeight(1)
-        }
-        .justifyContent(FlexAlign.Start)
-        .alignItems(VerticalAlign.Center)
-        .height('4%')
-        .margin({ left: "2%", top: '1%' })
-
-        Row() {
-          Icon({
-            res: $r("app.media.icon_video_like"),
-            content: Utils.Views(this.mediaInfo.stat.likes)
-          })
-          Icon({
-            res: $r("app.media.icon_video_coin"),
-            content: Utils.Views(this.mediaInfo.stat.coins)
-          })
-          Icon({
-            res: $r("app.media.icon_video_favorite"),
-            content: Utils.Views(this.mediaInfo.stat.favorite)
-          })
-          Icon({
-            res: $r("app.media.icon_video_share"),
-            content: Utils.Views(this.mediaInfo.stat.share)
-          })
-        }.justifyContent(FlexAlign.Start)
-        .alignItems(VerticalAlign.Center)
-        .height('5%')
-        .margin({ left: "2%", top: '1%' })
-
-        Divider()
-          .vertical(false)
-          .strokeWidth(1)
-          .margin({ top: "1%", bottom: "1%" })
-          .color($r('app.color.bilibili_divider'))
-        List() {
-          LazyForEach(this.mediaSeasonData, mediaSeason => {
-            ListItem() {
-              this.MediaItem(mediaSeason)
-            }
-          }, (item, index) => JSON.stringify(item) + index)
-        }.scrollBar(BarState.Off)
-        .lanes(1)
-        .height('100%')
-        .cachedCount(Constants.CACHE_COUNT)
-        .scrollBar(BarState.Off)
-      }.justifyContent(FlexAlign.Start)
-      .alignItems(HorizontalAlign.Start)
-    }.width('100%')
-    .scrollable(ScrollDirection.Vertical)
-    .height('100%')
+        }, (item, index) => JSON.stringify(item) + index)
+      }
+    }.scrollBar(BarState.Off)
+    .lanes(1)
+    .width('100%')
+    .layoutWeight(1)
+    .cachedCount(Constants.CACHE_COUNT)
     .scrollBar(BarState.Off)
+  }
+
+  @Builder
+  Header(){
+    Column() {
+    // 标题
+    // 播放，收藏，正在观看，分数，详情
+    // 点赞,不喜欢,投币,收藏,分享
+    // 其他视频
+    Row() {
+      Text(this.mediaInfo.title)
+        .textStyle($r('app.color.bilibili_text_black_middle'), 20)
+        .textOverflow({ overflow: TextOverflow.Ellipsis })
+        .maxLines(2)
+      if (Utils.isNonNull(this.mediaInfo.rating)){
+        Text(this.mediaInfo.rating.score + "分")
+          .textStyle()
+          .fontColor($r('app.color.color_orange'))
+          .margin({ left: '2%' })
+      }
+    } .margin({ left: "2%", top: '2%' })
+
+    Row() {
+      Image($r('app.media.ic_play'))
+        .imageDescriptionStyle()
+      Text(Utils.Views(this.mediaInfo.stat.views))
+        .textStyle()
+        .margin({ left: '1%' })
+      Image($r("app.media.icon_media_like"))
+        .imageDescriptionStyle()
+        .padding(2)
+        .margin({ left: '2%' })
+      Text(Utils.Views(this.mediaInfo.stat.favorites))
+        .textStyle()
+        .margin({ left: '1%' })
+      Text(Utils.timestampToDate(this.episodes.pub_time))
+        .textStyle()
+        .margin({ left: '2%' })
+      /*          Image($r("app.media.icon_video_bilibili"))
+                  .imageDescriptionStyle()
+                  .margin({ left: '2%' })*/
+      Text(this.online.total + "人正在看")
+        .textStyle()
+        .margin({ left: '2%' })
+
+      Blank()
+        .layoutWeight(1)
+    }
+    .justifyContent(FlexAlign.Start)
+    .alignItems(VerticalAlign.Center)
+    .height('4%')
+    .margin({ left: "2%", top: '1%' })
+
+    Row() {
+      Icon({
+        res: $r("app.media.icon_video_like"),
+        content: Utils.Views(this.mediaInfo.stat.likes)
+      })
+      Icon({
+        res: $r("app.media.icon_video_coin"),
+        content: Utils.Views(this.mediaInfo.stat.coins)
+      })
+      Icon({
+        res: $r("app.media.icon_video_favorite"),
+        content: Utils.Views(this.mediaInfo.stat.favorite)
+      })
+      Icon({
+        res: $r("app.media.icon_video_share"),
+        content: Utils.Views(this.mediaInfo.stat.share)
+      })
+    }.justifyContent(FlexAlign.Start)
+    .alignItems(VerticalAlign.Center)
+    .height('8%')
+    .margin({ left: "2%", top: '1%' })
+
+    Divider()
+      .vertical(false)
+      .strokeWidth(1)
+      .margin({ top: "1%", bottom: "1%" })
+      .color($r('app.color.bilibili_divider'))
+    }.justifyContent(FlexAlign.Start)
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
@@ -288,10 +290,11 @@ struct Icon {
       Image(this.res)
         .objectFit(ImageFit.Contain)
         .layoutWeight(1)
-        .margin({ bottom: '2%' })
+        .margin({bottom:'2%'})
         .fillColor($r('app.color.bilibili_background_black_light'))
       Text(this.content)
         .textStyle()
+        .height('30%')
     }
     .layoutWeight(1)
   }

@@ -68,7 +68,7 @@ export struct MediaFtItem{
               .margin({left:'1%'})
               .fontColor($r('app.color.bilibili_bangumi_score'))
               .textAlign(TextAlign.Center)
-            Text(Utils.Views(item.media_score.user_count,'万')+'人参与')
+            Text(Utils.Views(item.media_score.user_count)+'人参与')
               .fontSize(12)
               .fontColor($r('app.color.bilibili_text_grey_bold'))
               .margin({left:'2%'})

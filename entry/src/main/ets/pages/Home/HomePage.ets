@@ -183,18 +183,18 @@ export struct HomePage {
   @Builder Refresh(){
     Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
       List(){
-        LazyForEach(this.homeData,(item:HomeBeanItem,index)=>{
-          ListItem(){
-            if (index===this.homeData.totalCount()-1) {
-              Column(){
-                LoadingProgress().color($r('app.color.bilibili_theme'))
-                Text('加载更多......').fontColor($r('app.color.bilibili_text_grey_light'))
-              }.height('10%')
-            }else{
+        ListItemGroup({footer:this.ListFooter()}){
+          LazyForEach(this.homeData,(item:HomeBeanItem,index)=>{
+            ListItem(){
               this.HomeItem(item)
             }
-          }.margin(3)
-        },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)}.lanes(2)
+            .margin("1.5%")
+
+          },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)
+        }
+      }.lanes(2)
+
+      .sticky(StickyStyle.None)
       .edgeEffect(EdgeEffect.Fade)
       .cachedCount(Constants.CACHE_COUNT)
       .onReachEnd(()=>{
@@ -219,7 +219,24 @@ export struct HomePage {
     }).layoutWeight(1)
     .backgroundColor($r('app.color.bilibili_background_grey'))
   }
+  @Builder
+  ListFooter(){
+    Column(){
+      Blank().layoutWeight(2)
+      LoadingProgress().color($r('app.color.bilibili_theme'))
+        .height("50%")
+      Blank().layoutWeight(1)
+      Text('加载更多......').fontColor($r('app.color.bilibili_text_grey_light'))
+        .height("30%")
+      Blank().layoutWeight(2)
+    }.alignItems(HorizontalAlign.Center)
+    .justifyContent(FlexAlign.Center)
+    .height("10%")
+    .width('100%')
+  }
 }
+
+
 
 @Extend(Text) function textSizeStyle(){
   .height(20)

@@ -7,7 +7,7 @@ import ApiVideo from '../../net/ApiVideo'
 import { BaseViewModel } from '../BaseViewModel'
 
 
-export default  class VideoViewModel extends BaseViewModel{
+export default class VideoViewModel extends BaseViewModel{
 
   // 加载视频信息
   loadVideoData(bvid:string,cid:number=0){
@@ -35,6 +35,10 @@ export default  class VideoViewModel extends BaseViewModel{
 
   upInfo(mid:number){
     return ApiBiliUser.loginUserInfo(mid)
+  }
+
+  getVideoList(bvid:string){
+    return Api.getPageList(bvid)
   }
   /**
    * @name 视频详情页的推荐视频信息

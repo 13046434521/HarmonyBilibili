@@ -2,19 +2,27 @@ import webview from '@ohos.web.webview'
 import Constants from '../../common/Constants'
 import Api from '../../net/Api'
 import { Utils } from '../../Utils/Utils'
+import VideoViewModel from '../../viewModel/Video/VideoViewModel'
+import VideoIntroduction from '../Video/VideoIntroduction'
 
+@Preview
 @Component
 export struct ShoppingPage {
   url: string = 'https://m.bilibili.com/'
   controller: webview.WebviewController = new webview.WebviewController()
   @State title:string=''
+  videoViewModel:VideoViewModel = new VideoViewModel()
+  bvid:string
   aboutToAppear() {
 
   }
 
+  index:number = 10545
+
   build() {
     Column() {
-
+      Text(Utils.Views(this.index))
+      // VideoIntroduction({videoViewModel:this.videoViewModel})
     }
   }
 

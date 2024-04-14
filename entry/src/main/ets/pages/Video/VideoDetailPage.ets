@@ -11,6 +11,7 @@ import VideoViewModel from '../../viewModel/Video/VideoViewModel'
 import VideoInfo from '../../bean/video/VideoInfo'
 import VideoIntroduction from './VideoIntroduction'
 import VideoComments from './VideoComments'
+import { toast } from '../../Utils/ToastUtils'
 
 @Entry
 @Component
@@ -31,8 +32,18 @@ struct VideoDetailPage {
     if (router.getParams()!=null) {
       this.bvid = router.getParams()[RouterConstants.BVID]
       this.cid = router.getParams()[RouterConstants.CID]
+      new Promise<PlayVideoBean>((resolve,reject)=>{
+        if (this.cid === 0) {
+          resolve( Api.getPageList(this.bvid).then((item)=>{
+            this.cid = item[0].cid
 
-      this.videoViewModel.loadVideoData(this.bvid,this.cid).then(playVideo=>{
+            return Api.getPlayVideo(this.bvid,this.cid)
+          }))
+        }else{
+          resolve( Api.getPlayVideo(this.bvid,this.cid))
+        }
+      }).then(playVideo=>{
+        toast(this.cid+'---')
         this.url = playVideo.durl[0].url
         this.loadingPage = LoadingStatus.LoadingSuccess
       }).catch(err=>{
@@ -60,7 +71,7 @@ struct VideoDetailPage {
       Tabs({barPosition:BarPosition.Start,controller:this.tabController}){
         TabContent(){
           if (this.isShowPage[0]){
-            VideoIntroduction({videoViewModel:this.videoViewModel,bvid:this.bvid})
+            VideoIntroduction({videoViewModel:this.videoViewModel,bvid:this.bvid,cid:this.cid})
           }
         }.tabBar(this.TabBuilders(0,'简介'))
         TabContent(){

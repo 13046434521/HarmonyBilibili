@@ -103,6 +103,7 @@ export struct SearchDefaultDetails {
     }.width('100%')
     .cachedCount(Constants.CACHE_COUNT)
     .layoutWeight(1)
+    .edgeEffect(EdgeEffect.None)
     .onReachEnd(()=>{
       Api.getSearchDefault(this.search, this.page+1).then((response) => {
         // 需要特殊处理

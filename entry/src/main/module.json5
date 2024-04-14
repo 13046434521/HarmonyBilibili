@@ -10,8 +10,12 @@
       "phone"
     ],
     "requestPermissions": [
-      {"name": 'ohos.permission.INTERNET'},
-      {"name" :'ohos.permission.ACCESS_NOTIFICATION_POLICY'}
+      {
+        "name": 'ohos.permission.INTERNET'
+      },
+      {
+        "name": 'ohos.permission.ACCESS_NOTIFICATION_POLICY'
+      }
     ],
     "deliveryWithInstall": true,
     "installationFree": false,

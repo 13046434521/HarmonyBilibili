@@ -37,7 +37,7 @@ export struct BiliUserItem{
             .objectFit(ImageFit.Auto)
         }
 
-        Text(`${Utils.userFans(item.fans)}粉丝     ${item.videos}个视频${'\n'}${item.official_verify.desc}`)
+        Text(`${Utils.Views(item.fans,1)}粉丝     ${item.videos}个视频${'\n'}${item.official_verify.desc}`)
           .fontColor($r('app.color.bilibili_text_grey_bold'))
           .fontSize(10)
           .maxLines(2)

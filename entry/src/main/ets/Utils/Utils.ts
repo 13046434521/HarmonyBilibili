@@ -4,13 +4,13 @@ import util from '@ohos.util'
 
 export class Utils {
   // 观看量数据转换处理
-  static Views(views: number,unit:string='w'): string {
+  static Views(views: number,fix:number=2): string {
     //console.log("views:"+views+"---"+(views/10000).toFixed(2)+"w")
     if (views > 100000000){
-      return (views / 100000000).toFixed(2) + '亿'
+      return (views / 100000000).toFixed(fix) + '亿'
     }
     else if (views > 10000) {
-      return (views / 10000).toFixed(2) + '万'
+      return (views / 10000).toFixed(fix) + '万'
     }
     return views +''
   }
@@ -153,14 +153,6 @@ export class Utils {
   //     return minutes + ":" + newSeconds;
   //   }
   // }
-  static userFans(fans: number): string {
-    let fansRes = fans+''
-    if (fans >= 10000) {
-      fansRes = Math.floor(fans / 10000).toFixed(1) + "万"
-    }
-
-    return fansRes
-  }
 
   static isNonNull(content:any){
     let temp = (content === undefined || content ===null || content == '')
