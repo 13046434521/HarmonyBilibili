@@ -1,7 +1,7 @@
 import { SearchMediaBean } from '../bean/search/SearchMediaBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
-import { MediaFtData } from '../datasource/MediaFtData'
+import { SearchMediaData } from '../datasource/SearchMediaData'
 import Api from '../net/Api'
 import { Utils } from '../Utils/Utils'
 import { MediaFtItem } from './item/MediaFtItem'
@@ -12,7 +12,7 @@ export struct SearchMediaFt {
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
   search: string =""
   @State page:number=1
-  @State mediaFtData:MediaFtData =new MediaFtData()
+  @State mediaFtData:SearchMediaData =new SearchMediaData()
   controller:Scroller=new Scroller()
   searchType:SearchType = SearchType.MEDIA_FT
 

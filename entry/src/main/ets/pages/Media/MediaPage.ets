@@ -22,20 +22,33 @@ struct MediaFtPage {
   mediaViewModel:MediaViewModel = new MediaViewModel()
   tabController:TabsController = new TabsController()
   seasonId:number
-
+  @State epid:number = 0
+  @State index :number = 0
   showPage(){
     this.isShowPage[this.currentIndex] = true
   }
   aboutToAppear(){
     // if (router.getParams()!=null) {
       this.seasonId = router.getParams()[RouterConstants.SEASON_ID]
+      this.epid = router.getParams()[RouterConstants.EPID]
       // this.seasonId =  25622
       this.mediaViewModel.getMediaInfo(this.seasonId).then(mediaInfo=>{
         this.mediaInfo = mediaInfo
-        let avid = mediaInfo.episodes[0].aid
-        let cid = mediaInfo.episodes[0].cid
-        let epId = mediaInfo.episodes[0].ep_id
 
+        if (this.epid!==0) {
+          for (let index = 0; index < this.mediaInfo.episodes.length; index++) {
+            const element = this.mediaInfo.episodes[index];
+            if (this.epid === element.ep_id) {
+              this.index = index
+              continue
+            }
+          }
+        }
+
+        let avid = mediaInfo.episodes[this.index].aid
+        let epId = mediaInfo.episodes[this.index].ep_id
+        let cid = mediaInfo.episodes[this.index].cid
+        this.epid = epId
         return ApiMediaFt.getMediaFtUrl(avid,cid,epId)
       }).then(mediaFtUrl=>{
         this.mediaUrl = mediaFtUrl
@@ -60,7 +73,7 @@ struct MediaFtPage {
       Tabs({barPosition:BarPosition.Start,controller:this.tabController}){
         TabContent(){
           if (this.isShowPage[0]){
-            MediaIntroduction({mediaViewModel:this.mediaViewModel,seasonId:this.seasonId})
+            MediaIntroduction({mediaViewModel:this.mediaViewModel,seasonId:this.seasonId,epid:this.epid,index:this.index})
           }
         }.tabBar(this.TabBuilders(0,'简介'))
         TabContent(){

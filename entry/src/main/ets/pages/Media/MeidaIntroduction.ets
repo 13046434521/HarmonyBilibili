@@ -6,6 +6,7 @@ import { LoadingStatus } from '../../common/LoadingStatus'
 import { PageManager, PageType } from '../../common/PageManager'
 import { LoadingType } from '../../component/Loading'
 import { LoadingData } from '../../component/LoadingData'
+import { MediaEpsData } from '../../datasource/MediaEpsData'
 import { MediaSeasonData } from '../../datasource/MediaSeasonData'
 import { Utils } from '../../Utils/Utils'
 import { MediaViewModel } from '../../viewModel/media/MediaViewModel'
@@ -19,13 +20,29 @@ export struct MediaIntroduction {
   @State episodes: MediaEpisodesBean = new MediaEpisodesBean()
   @State loadStatus: LoadingStatus = LoadingStatus.Loading
   @State mediaSeasonData: MediaSeasonData = new MediaSeasonData()
+  @State mediaEpsData:MediaEpsData = new MediaEpsData()
+  @Prop index:number
+  @Prop epid:number
   mediaViewModel: MediaViewModel = new MediaViewModel()
-  // episodes: MediaFtEpisodesBean[]
+  dialogController: CustomDialogController = new CustomDialogController({
+    builder: MediaSelectDialog({
+      mediaData:this.mediaEpsData,
+      epid:this.epid,
+      seasonId:this.seasonId,
+      index:this.index
+    }),
+    autoCancel: false,
+    alignment: DialogAlignment.Bottom,
+    offset: { dx: 0, dy: 0 },
+    customStyle: true,
+  })
   aboutToAppear() {
     this.mediaViewModel.getMediaInfo(this.seasonId)
       .then(mediaInfo => {
         this.mediaInfo = mediaInfo
-        this.episodes = this.mediaInfo.episodes[0]
+        this.episodes = this.mediaInfo.episodes[this.index]
+
+        this.mediaEpsData.addDataAll(mediaInfo.episodes)
         console.warn('Media',JSON.stringify(this.mediaInfo.stat))
         return this.mediaViewModel.videoOnline(this.episodes.bvid,this.episodes.cid)
       }).then(online=>{
@@ -45,6 +62,10 @@ export struct MediaIntroduction {
         this.loadStatus = LoadingStatus.LoadingFailure
         this.err = err
       })
+  }
+
+  aboutToDisappear(){
+    this.dialogController = null
   }
 
   build() {
@@ -117,51 +138,10 @@ export struct MediaIntroduction {
         .textStyle()
         .margin({ left: '2%' })
 
-      // 多P情况下显示该页面
-   /*   if (this.mediaInfo.episodes.length>=2){
-        Stack(){
-          List({initialIndex:this.index,space:'2%'}){
-            LazyForEach(this.videoLists,video=>{
-              ListItem(){
-                Text(video.part)
-                  .height('100%')
-                  .width('100%')
-                  .textAlign(TextAlign.Start)
-                  .maxLines(2)
-                  .fontSize(14)
-                  .padding('4%')
-                  .fontColor(video.cid===this.cid?$r('app.color.bilibili_text_theme'):$r('app.color.bilibili_text_black_middle'))
-                  .textOverflow({overflow:TextOverflow.Ellipsis})
-              }.margin({ left:'1%',right:'1%' })
-              .align(Alignment.Center)
-              .backgroundColor($r('app.color.bilibili_background_grey'))
-              .borderRadius(5)
-              .height('80%')
-              .aspectRatio(2.5)
-              .onClick(()=>{
-                PageManager.routerVideoDetail(this.bvid,video.cid,PageType.REPLACE)
-              })
-            },(item,index)=>JSON.stringify(item)+index)
-
-          }.listDirection(Axis.Horizontal)
-          .height('100%')
-          .tabIndex(this.index)
-          .alignListItem(ListItemAlign.Center)
-          Image($r("app.media.icon_video_more"))
-            .objectFit(ImageFit.Contain)
-            .height('70%')
-            .aspectRatio(0.5)
-            .opacity(0.8)
-            .backgroundColor(Color.White)
-            .onClick(()=>{
-              this.dialogController.open()
-            })
-        }.align(Alignment.End)
-        .height('10%')
-      }*/
       Blank()
         .layoutWeight(1)
     }
+
     .justifyContent(FlexAlign.Start)
     .alignItems(VerticalAlign.Center)
     .height('4%')
@@ -188,7 +168,64 @@ export struct MediaIntroduction {
     .alignItems(VerticalAlign.Center)
     .height('8%')
     .margin({ left: "2%", top: '1%' })
+      // 多P情况下显示该页面
+      if (this.mediaEpsData.totalCount()>=2){
+        Stack(){
+          List({initialIndex:this.index,space:'2%'}){
+            LazyForEach(this.mediaEpsData,(eps: MediaEpisodesBean)=>{
+              ListItem(){
+                Stack({alignContent:Alignment.TopEnd}){
+                  Text(eps.title+"\n"+eps.long_title)
+                    .width('100%')
+                    .height('100%')
+                    .textAlign(TextAlign.Start)
+                    .maxLines(2)
+                    .fontSize(14)
+                    .padding('8%')
+                    .fontColor(eps.ep_id===this.epid?$r('app.color.bilibili_text_theme'):$r('app.color.bilibili_text_black_middle'))
+                    .textOverflow({overflow:TextOverflow.Ellipsis})
 
+                  if (Utils.isNonNull(eps.badge_info)&&Utils.isNonNull(eps.badge_info.text)) {
+                    Text(eps.badge_info.text)
+                      .width('20%')
+                      .height('25%')
+                      .textAlign(TextAlign.Center)
+                      .maxLines(1)
+                      .fontSize(12)
+                      .fontColor($r('app.color.bilibili_text_white'))
+                      .backgroundColor(eps.badge_info.bg_color)
+                      .textOverflow({overflow:TextOverflow.Ellipsis})
+                      .borderRadius({bottomLeft:5})
+                  }
+                }.width('100%')
+                .height('100%')
+              }.margin({ left:'1%',right:'1%' })
+              .align(Alignment.Center)
+              .backgroundColor($r('app.color.bilibili_background_grey'))
+              .borderRadius(5)
+              .height('80%')
+              .aspectRatio(2.5)
+              .onClick(()=>{
+                PageManager.routerMedia(this.seasonId,eps.ep_id,PageType.REPLACE)
+              })
+            },(item,index)=>JSON.stringify(item)+index)
+
+          }.listDirection(Axis.Horizontal)
+          .height('100%')
+          .tabIndex(this.index)
+          .alignListItem(ListItemAlign.Center)
+          Image($r("app.media.icon_video_more"))
+            .objectFit(ImageFit.Contain)
+            .height('70%')
+            .aspectRatio(0.5)
+            .opacity(0.8)
+            .backgroundColor(Color.White)
+            .onClick(()=>{
+              this.dialogController.open()
+            })
+        }.align(Alignment.End)
+        .height('10%')
+      }
     Divider()
       .vertical(false)
       .strokeWidth(1)
@@ -317,7 +354,7 @@ export struct MediaIntroduction {
         .strokeWidth(1)
     }
     .onClick(event => {
-      PageManager.routerMedia(season.season_id,PageType.REPLACE)
+      PageManager.routerMedia(season.season_id,this.episodes.ep_id,PageType.REPLACE)
     })
   }
 }
@@ -365,4 +402,84 @@ function imageDescriptionStyle() {
   .fillColor($r('app.color.bilibili_text_grey_light'))
   .objectFit(ImageFit.Cover)
   .interpolation(ImageInterpolation.Low)
+}
+
+@CustomDialog
+struct MediaSelectDialog {
+  @Link mediaData: MediaEpsData
+  @Link epid: number
+  @Link seasonId: number
+  @Link index: number
+  customDialogController :CustomDialogController
+  build() {
+    Column(){
+      Row(){
+        Text("分集("+this.mediaData.totalCount()+")")
+          .margin({left:"1%"})
+          .height('100%')
+          .fontColor($r('app.color.bilibili_text_black_middle'))
+          .fontSize(18)
+          .fontWeight(FontWeight.Bold)
+        Blank().layoutWeight(1)
+        Image($r('app.media.icon_close'))
+          .objectFit(ImageFit.Contain)
+          .height('30%')
+          .aspectRatio(1)
+          .onClick(()=>{
+            this.customDialogController.close()
+          }).margin('1%')
+      }.height("8%")
+      .alignItems(VerticalAlign.Center)
+      Divider().strokeWidth(0.5).margin({bottom:"2%"})
+        .backgroundColor($r("app.color.bilibili_divider"))
+
+      List({initialIndex:this.index,space:'1%'}){
+        LazyForEach(this.mediaData,eps=>{
+          ListItem(){
+            Stack({alignContent:Alignment.TopEnd}){
+              Text(eps.title+"\n"+eps.long_title)
+                .width('100%')
+                .height('100%')
+                .textAlign(TextAlign.Center)
+                .maxLines(2)
+                .fontSize(14)
+                .fontColor(eps.ep_id===this.epid?$r('app.color.bilibili_text_theme'):$r('app.color.bilibili_text_black_middle'))
+                .textOverflow({overflow:TextOverflow.Ellipsis})
+
+              if (Utils.isNonNull(eps.badge_info)&&Utils.isNonNull(eps.badge_info.text)) {
+                Text(eps.badge_info.text)
+                  .width('10%')
+                  .height('30%')
+                  .textAlign(TextAlign.Center)
+                  .maxLines(1)
+                  .fontSize(12)
+                  .fontColor($r('app.color.bilibili_text_white'))
+                  .backgroundColor(eps.badge_info.bg_color)
+                  .textOverflow({overflow:TextOverflow.Ellipsis})
+                  .borderRadius({bottomLeft:5})
+              }
+            }.width('100%')
+            .height('100%')
+
+          }.margin({ left:'1%',right:'1%' })
+          .align(Alignment.Center)
+          .backgroundColor($r('app.color.bilibili_background_grey'))
+          .borderRadius(5)
+          .height('10%')
+          .width('98%')
+          .selectable(true)
+          .onClick(()=>{
+            PageManager.routerMedia(this.seasonId,eps.ep_id,PageType.REPLACE)
+          })
+        })
+      }.listDirection(Axis.Vertical)
+      .cachedCount(Constants.CACHE_COUNT)
+      .alignListItem(ListItemAlign.Center)
+      .lanes(2)
+      .layoutWeight(1)
+    }.height('60%')
+    .width('100%')
+    .backgroundColor($r('app.color.bilibili_background_white'))
+
+  }
 }

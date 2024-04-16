@@ -66,9 +66,10 @@ export class PageManager {
 
 
   // 影视|番剧页面
-  static routerMedia(season_id: number, type: PageType = PageType.PUSH) {
+  static routerMedia(season_id: number, epid: number = 0,type: PageType = PageType.PUSH) {
     let url = 'pages/Media/MediaPage'
-    let params = { 'seasonId': season_id }
+    let params = { 'seasonId': season_id,
+                    'epid':epid}
 
     if (type === PageType.PUSH) {
       router.pushUrl({ url: url, params: params }
@@ -131,6 +132,7 @@ export class RouterConstants {
   static ROOM_ID = 'roomId' // 直播间
   static BVID = 'bvid' // 视频详情页面
   static CID = 'cid' // 视频详情页面
+  static EPID = 'epid' // 视频详情页面
   static MID = 'mid' // 用户页面
   /*------------------------------------------- Mine页面相关 --------------------------------------------*/
   static MINE_WEB_URL = 'mine_web_url' //  Mine的web页面
