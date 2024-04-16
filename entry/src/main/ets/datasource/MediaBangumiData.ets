@@ -1,4 +1,4 @@
-import { SearchMediaBangumiBean } from '../bean/search/SearchMediaBangumiBean';
+import { SearchMediaBean } from '../bean/search/SearchMediaBean';
 import { BasicDataSource } from './BasicDataSource';
 
-export class MediaBangumiData extends BasicDataSource<SearchMediaBangumiBean>{}
+export class MediaBangumiData extends BasicDataSource<SearchMediaBean>{}

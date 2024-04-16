@@ -1,4 +1,4 @@
-import { SearchMediaFtBean } from '../bean/search/SearchMediaFtBean'
+import { SearchMediaBean } from '../bean/search/SearchMediaBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { MediaFtData } from '../datasource/MediaFtData'
@@ -23,7 +23,7 @@ export struct SearchMediaFt {
   
   initPage(){
     this.page = 1
-    Api.getSearchType<SearchMediaFtBean>(this.searchType,this.search,this.page).then(response=>{
+    Api.getSearchType<SearchMediaBean>(this.searchType,this.search,this.page).then(response=>{
       this.mediaFtData.pushDataAll(response.result)
 
       if (this.mediaFtData.totalCount()!=0) {
@@ -49,7 +49,7 @@ export struct SearchMediaFt {
       Column() {
         LazyForEach(this.mediaFtData, (item, index) => {
           MediaFtItem({ item: item })
-        }, (item:SearchMediaFtBean) => JSON.stringify(item))
+        }, (item:SearchMediaBean) => JSON.stringify(item))
       }.width('100%')
     }.width('100%')
     .align(Alignment.Top)

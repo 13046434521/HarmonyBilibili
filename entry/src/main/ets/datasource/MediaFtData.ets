@@ -1,4 +1,4 @@
-import { SearchMediaFtBean } from '../bean/search/SearchMediaFtBean'
+import { SearchMediaBean } from '../bean/search/SearchMediaBean'
 import { BasicDataSource } from './BasicDataSource'
 
-export class MediaFtData extends BasicDataSource<SearchMediaFtBean>{}
+export class MediaFtData extends BasicDataSource<SearchMediaBean>{}

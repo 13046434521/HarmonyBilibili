@@ -1,5 +1,5 @@
 // https://api.bilibili.com/pgc/player/web/playurl?avid=1900434537&cid=1432159459&ep_id=814315
-export class MediaFtUrlBean {
+export class MediaUrlBean {
   accept_format: string
   code: number
   seek_param: string
@@ -13,11 +13,11 @@ export class MediaFtUrlBean {
   seek_type: string
   from: string
   video_codecid: number
-  durl: MediaFtDurlBean[]
+  durl: MediaDurlBean[]
   is_drm: boolean
   no_rexcode: number
   format: string
-  support_formats: MediaFtSupportFormatsBean[]=[]
+  support_formats: MediaSupportFormatsBean[]=[]
   message: string
 
   accept_quality: number[] // 64 16
@@ -30,7 +30,7 @@ export class MediaFtUrlBean {
   status: number
 }
 // 播放地址
-export class MediaFtDurlBean {
+export class MediaDurlBean {
   size: number
   ahead: string
   length: number
@@ -41,7 +41,7 @@ export class MediaFtDurlBean {
   md5: string
 }
 // 分辨率类
-export class MediaFtSupportFormatsBean {
+export class MediaSupportFormatsBean {
   // display_desc: 720P
   // sub_description:
   // superscript:

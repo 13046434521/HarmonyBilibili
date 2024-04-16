@@ -1,16 +1,16 @@
-import { SearchMediaBangumiBean } from '../../bean/search/SearchMediaBangumiBean'
+import { SearchMediaBean } from '../../bean/search/SearchMediaBean'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 
 @Component
 export struct MediaBangumiItem{
-  item: SearchMediaBangumiBean
+  item: SearchMediaBean
 
   build(){
     this.banguMiPageItem(this.item)
   }
 
-  @Builder banguMiPageItem(item:SearchMediaBangumiBean){
+  @Builder banguMiPageItem(item:SearchMediaBean){
     Column(){
       Row(){
         Stack(){

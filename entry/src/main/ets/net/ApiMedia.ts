@@ -1,6 +1,6 @@
 import axios from '@ohos/axios'
-import { MediaFtBean } from '../bean/media/MediaFtBean'
-import { MediaFtUrlBean } from '../bean/media/MediaFtUrlBean'
+import { MediaBean } from '../bean/media/MediaBean'
+import { MediaUrlBean } from '../bean/media/MediaUrlBean'
 import { PlayVideoBean } from '../bean/PlayVideoBean'
 import Constants from '../common/Constants'
 import { ApiBase } from './ApiBase'
@@ -14,7 +14,7 @@ export class ApiMediaFt extends ApiBase{
   // 年会不能停 ： https://api.bilibili.com/pgc/view/web/season?season_id=45735
   // 获取剧集明细（web端）（ssid/epid方式）
   // result
-  getMediaFtAidCidEpid(seasonId:number,qn:number):Promise<MediaFtBean>{
+  getMediaFtAidCidEpid(seasonId:number,qn:number):Promise<MediaBean>{
     let url = `https://api.bilibili.com/pgc/view/web/season?season_id=${seasonId}&qn=${qn}`
     return this.request(url,this.instanceAxios)
   }
@@ -22,7 +22,7 @@ export class ApiMediaFt extends ApiBase{
   //  https://api.bilibili.com/pgc/player/web/playurl?avid=1900434537&cid=1432159459&ep_id=814315&qn=116
   // 获取番剧视频流URL
   // result 此接口和getMediaFt 都能获取URL，选用一个即可
-  getMediaFtUrl(avid: number, cid: number,ep_id:number,qn:number=116):Promise<MediaFtUrlBean>{
+  getMediaFtUrl(avid: number, cid: number,ep_id:number,qn:number=116):Promise<MediaUrlBean>{
     let url = `https://api.bilibili.com/pgc/player/web/playurl?avid=${avid}&cid=${cid}&ep_id=${ep_id}&qn=${qn}`
     return this.request(url,this.instanceAxios)
   }

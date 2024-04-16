@@ -86,7 +86,10 @@
 * */
 
 //https://api.bilibili.com/x/web-interface/search/type?search_type=media_bangumi&keyword=overlord&page=1
-export interface SearchMediaBangumiBean{
+//https://api.bilibili.com/x/web-interface/search/type?search_type=media_ft&keyword=年会不能停&page=1
+// 影视的返回数据，和番剧是一样的。这里用两个类来进行区分，以免后续出现修改
+
+export interface SearchMediaBean{
   type: string
   media_id: number
   title: string
@@ -119,24 +122,24 @@ export interface SearchMediaBangumiBean{
     score: number
     user_count: number
   }
-  display_info: SearchMediaBangumiTextColor[]
+  display_info: SearchMediaBadges[]
   pgc_season_id: number
   corner: number
   index_show: string
-  eps: SearchMediaBangumiEps[]
-  badges: SearchMediaBangumiTextColor[]
+  eps: SearchMediaEps[]
+  badges: SearchMediaBadges[]
 }
-export interface SearchMediaBangumiEps{
+export interface SearchMediaEps{
   id: number
   cover: string
   title: number
   url: string
   release_date:string
-  badges: SearchMediaBangumiTextColor[]
+  badges: SearchMediaBadges[]
   index_title: number
   long_title: string
 }
-export interface SearchMediaBangumiTextColor{
+export interface SearchMediaBadges{
   text: string
   text_color: string
   text_color_night:string

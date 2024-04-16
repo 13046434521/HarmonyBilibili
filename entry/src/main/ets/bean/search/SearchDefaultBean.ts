@@ -3,10 +3,9 @@ import { SearchBiliUserBean,
   SearchBiliUserResBean,
   SearchBiliUserVerifyBean } from './SearchBiliUserBean';
 import { SearchLiveRoomBean } from './SearchLiveRoomBean';
-import { SearchMediaBangumiBean,
-  SearchMediaBangumiEps,
-  SearchMediaBangumiTextColor } from './SearchMediaBangumiBean';
-import { SearchMediaFtBadgesColor, SearchMediaFtBean } from './SearchMediaFtBean';
+import { SearchMediaBean,
+  SearchMediaEps,
+  SearchMediaBadges } from './SearchMediaBean';
 import { SearchVideoBean } from './SearchVideoBean';
 
 // 6合1的数据源
@@ -16,7 +15,7 @@ export class SearchDefaultBean{
   data:SearchDefaultDataBean[]
 }
 
-export class SearchDefaultDataBean implements SearchBiliUserBean,SearchMediaBangumiBean,SearchVideoBean,SearchMediaFtBean,SearchArticleBean,SearchLiveRoomBean{
+export class SearchDefaultDataBean implements SearchBiliUserBean,SearchMediaBean,SearchVideoBean,SearchMediaBean,SearchArticleBean,SearchLiveRoomBean{
   result_type:string
   media_id: number;
   title: string;
@@ -48,12 +47,12 @@ export class SearchDefaultDataBean implements SearchBiliUserBean,SearchMediaBang
     score: number;
     user_count: number;
   };
-  display_info: SearchMediaBangumiTextColor[];
+  display_info: SearchMediaBadges[];
   pgc_season_id: number;
   corner: number;
   index_show: string;
-  eps: SearchMediaBangumiEps[];
-  badges: SearchMediaFtBadgesColor[];
+  eps: SearchMediaEps[];
+  badges: SearchMediaBadges[];
   id: number;
   author: string;
   typeid: string;

@@ -1,4 +1,4 @@
-import { MediaFtBean } from '../../bean/media/MediaFtBean'
+import { MediaBean } from '../../bean/media/MediaBean'
 import { MediaRelation } from '../../bean/media/MediaRelation'
 import Constants from '../../common/Constants'
 import ApiMedia from '../../net/ApiMedia'
@@ -12,7 +12,7 @@ export class MediaViewModel extends BaseViewModel{
    * @param qn 清晰度
    */
   getMediaInfo(seasonId:number,ep_id:string ='',qn:number=Constants.QN){
-    return ApiMedia.getMediaDetailInfo<MediaFtBean>(seasonId,ep_id,qn)
+    return ApiMedia.getMediaDetailInfo<MediaBean>(seasonId,ep_id,qn)
   }
 
   /**

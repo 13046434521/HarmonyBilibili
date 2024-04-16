@@ -1,4 +1,4 @@
-import { MediaFtBean, MediaFtEpisodesBean } from '../../bean/media/MediaFtBean'
+import { MediaBean, MediaEpisodesBean } from '../../bean/media/MediaBean'
 import { MediaSeason } from '../../bean/media/MediaRelation'
 import { Online } from '../../bean/Online'
 import Constants from '../../common/Constants'
@@ -15,8 +15,8 @@ export struct MediaIntroduction {
   @State online: Online = new Online()
   @State err: string = ''
   @Prop seasonId: number
-  @State mediaInfo: MediaFtBean = new MediaFtBean()
-  @State episodes: MediaFtEpisodesBean = new MediaFtEpisodesBean()
+  @State mediaInfo: MediaBean = new MediaBean()
+  @State episodes: MediaEpisodesBean = new MediaEpisodesBean()
   @State loadStatus: LoadingStatus = LoadingStatus.Loading
   @State mediaSeasonData: MediaSeasonData = new MediaSeasonData()
   mediaViewModel: MediaViewModel = new MediaViewModel()

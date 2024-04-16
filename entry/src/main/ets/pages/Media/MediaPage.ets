@@ -1,6 +1,6 @@
 import router from '@ohos.router'
-import { MediaFtBean } from '../../bean/media/MediaFtBean'
-import { MediaFtUrlBean } from '../../bean/media/MediaFtUrlBean'
+import { MediaBean } from '../../bean/media/MediaBean'
+import { MediaUrlBean } from '../../bean/media/MediaUrlBean'
 import { RouterConstants } from '../../common/PageManager'
 import { VideoPlay } from '../../component/VideoPlay'
 import ApiMediaFt from '../../net/ApiMedia'
@@ -14,8 +14,8 @@ import window from '@ohos.window'
 @Component
 struct MediaFtPage {
   @State url :string=''
-  @State mediaInfo:MediaFtBean = new MediaFtBean()
-  @State mediaUrl:MediaFtUrlBean = new MediaFtUrlBean()
+  @State mediaInfo:MediaBean = new MediaBean()
+  @State mediaUrl:MediaUrlBean = new MediaUrlBean()
   @State isShowPage :boolean[] = [true,false]
   @State @Watch('showPage')currentIndex:number = 0
   videoController:VideoController = new VideoController()

@@ -4,14 +4,14 @@ import { MediaStat } from '../MediaStat'
 import Stat from '../Stat'
 
 // https://api.bilibili.com/pgc/view/web/season?season_id=45735
-export class MediaFtBean{
+export class MediaBean{
         actors: string
         alias: string
         bkg_cover:string
         cover: string
         delivery_fragment_video: boolean
         enable_vt: boolean
-        episodes: MediaFtEpisodesBean[] =new Array<MediaFtEpisodesBean>()
+        episodes: MediaEpisodesBean[] =new Array<MediaEpisodesBean>()
 
         evaluate: string
 
@@ -38,7 +38,7 @@ export class MediaFtBean{
         season_id: number
         season_title: string
         seasons: []
-        section: MediaFtSectionBean[]=[]
+        section: MediaSectionBean[]=[]
         series: {
             display_type:number
             series_id:number
@@ -96,18 +96,18 @@ export class MediaFtBean{
             sponsor:number
         }
 }
-export class MediaFtSectionBean{
+export class MediaSectionBean{
   attr: number
   episode_id: number
   episode_ids: []
-  episodes: MediaFtEpisodesBean[]
+  episodes: MediaEpisodesBean[]
   id: number
   title: string
   type: number
   type2: number
 }
 
-export class MediaFtEpisodesBean{
+export class MediaEpisodesBean{
   aid: number
   badge: string
   badge_info: {

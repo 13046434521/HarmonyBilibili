@@ -1,4 +1,4 @@
-import { SearchMediaBangumiBean } from '../bean/search/SearchMediaBangumiBean'
+import { SearchMediaBean } from '../bean/search/SearchMediaBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
 import { MediaBangumiData } from '../datasource/MediaBangumiData'
@@ -24,7 +24,7 @@ export struct SearchMediaBangumiDetails {
 
   initPage(){
     this.page = 1
-    Api.getSearchType<SearchMediaBangumiBean>(this.searchType,this.search,this.page).then(response=>{
+    Api.getSearchType<SearchMediaBean>(this.searchType,this.search,this.page).then(response=>{
       this.mediaBangumiData.pushDataAll(response.result)
       if (response.result !=null&&this.mediaBangumiData.totalCount()!=0) {
         this.loadingStatus = LoadingStatus.LoadingSuccess
@@ -47,9 +47,9 @@ export struct SearchMediaBangumiDetails {
   @Builder banguMiPage(){
     Scroll(this.scroller){
       Column(){
-        LazyForEach(this.mediaBangumiData,(item:SearchMediaBangumiBean,index)=>{
+        LazyForEach(this.mediaBangumiData,(item:SearchMediaBean, index)=>{
           MediaBangumiItem({item:item})
-        }, (item:SearchMediaBangumiBean )=>JSON.stringify(item))
+        }, (item:SearchMediaBean )=>JSON.stringify(item))
       }
       .width('100%')
     }.height('100%')

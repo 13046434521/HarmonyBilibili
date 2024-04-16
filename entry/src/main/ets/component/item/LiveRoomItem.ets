@@ -1,4 +1,4 @@
-import { SearchMediaFtBean } from '../../bean/search/SearchMediaFtBean'
+import { SearchMediaBean } from '../../bean/search/SearchMediaBean'
 import { Utils } from '../../Utils/Utils'
 import router from '@ohos.router'
 import { SearchLiveRoomBean } from '../../bean/search/SearchLiveRoomBean'

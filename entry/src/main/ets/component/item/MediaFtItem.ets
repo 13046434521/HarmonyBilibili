@@ -1,16 +1,16 @@
-import { SearchMediaFtBean } from '../../bean/search/SearchMediaFtBean'
+import { SearchMediaBean } from '../../bean/search/SearchMediaBean'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 
 @Component
 export struct MediaFtItem{
-  item:SearchMediaFtBean
+  item:SearchMediaBean
 
   build(){
     this.mediaFtItem(this.item)
   }
 
-  @Builder mediaFtItem(item:SearchMediaFtBean){
+  @Builder mediaFtItem(item:SearchMediaBean){
     Column(){
       Row(){
         Stack(){
