@@ -87,10 +87,11 @@ struct VideoPlayer {
             }
           }).btnImageStyle()
 
-          Image($r('app.media.biliplayer_ic_topbar_back')).onClick(() => {
+          Image($r('app.media.ic_tab_bar_home')).onClick(() => {
             this.changePortrait()
             PageManager.routerIndex()
           }).btnImageStyle()
+            .fillColor($r('app.color.bilibili_background_white'))
 
           Image($r('app.media.icon_replay')).onClick(() => {
             this.videoController.reset()
@@ -210,8 +211,8 @@ struct VideoPlayer {
       .height('100%')
     }
     .alignContent(Alignment.BottomStart)
-    .size({ width: '100%' })
-    .aspectRatio(this.isFullScreen ? Constants.WINDOW_HEIGHT / Constants.WINDOW_WIDTH : this.videoAspectRatio)
+    .size({width:'100%'})
+    .aspectRatio(this.isFullScreen ?Constants.WINDOW_HEIGHT / Constants.WINDOW_WIDTH : this.videoAspectRatio)
     .backgroundColor(Color.Black)
     .onClick(() => {
       this.isShow = !this.isShow

@@ -119,6 +119,10 @@ export class Utils {
     promptAction.showToast({message:message})
   }
 
+  static Dialog(message:string,title:string=''){
+    promptAction.showDialog({title:title,message:message})
+  }
+
   static  timestampToDate(timestamp_ms: number): string {
     const date = new Date(timestamp_ms * 1000); // 将时间戳转换为Date对象
     const year = date.getFullYear(); // 获取年份

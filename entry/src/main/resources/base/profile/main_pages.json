@@ -10,6 +10,7 @@
     "pages/Media/MediaPage",
     "pages/Article/ArticlePage",
     "pages/BiliUser/BiliUserPage",
-    "pages/Mine/MineWebPage"
+    "pages/Mine/MineWebPage",
+    "pages/TestPage"
   ]
 }

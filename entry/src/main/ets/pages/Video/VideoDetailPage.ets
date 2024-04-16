@@ -87,6 +87,7 @@ struct VideoDetailPage {
         this.tabController.changeIndex(index)
         this.currentIndex = index
       })
+      .visibility(this.videoController.videoModel.orientation ===window.Orientation.LANDSCAPE?Visibility.None:Visibility.Visible)
     }.width('100%')
     .justifyContent(FlexAlign.Start)
   }

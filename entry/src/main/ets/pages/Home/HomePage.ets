@@ -64,7 +64,7 @@ export struct HomePage {
             .aspectRatio(1)
             .height('60%')
             .margin({left:'1%'})
-            .colorFilter($r('app.color.bilibili_background_white'))
+            .fillColor($r('app.color.bilibili_background_white'))
             .objectFit(ImageFit.Cover)
 
           Text(Utils.Views(homeBeanItem.stat.view))

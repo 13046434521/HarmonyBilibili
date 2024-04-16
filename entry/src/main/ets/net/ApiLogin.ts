@@ -7,6 +7,7 @@ import { QrcodeLoginBean } from '../bean/login/QrcodeLoginBean'
 import { UserStateBean } from '../bean/biliUser/UserStateBean'
 import StorageManager from '../common/StorageManager'
 import { ApiBase } from './ApiBase'
+import { Utils } from '../Utils/Utils'
 
 
 export class ApiLogin extends ApiBase{
@@ -30,7 +31,14 @@ export class ApiLogin extends ApiBase{
   loginNav():Promise<LoginNavBean>{
     let url = "https://api.bilibili.com/x/web-interface/nav"
     this.instanceAxios.defaults.headers['Cookie'] = StorageManager.getCookie();
-    return this.request<LoginNavBean>(url,this.instanceAxios)
+    return this.request<LoginNavBean>(url,this.instanceAxios).then(nav=>{
+      return new Promise<LoginNavBean>(resolve=>{
+        if (!nav.isLogin){
+          Utils.Dialog('账号未登录：'+nav.isLogin)
+        }
+        resolve(nav)
+      })
+    })
   }
   //https://passport.bilibili.com/account/security#/home
   // 账号安全评分

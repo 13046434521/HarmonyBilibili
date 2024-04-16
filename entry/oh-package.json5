@@ -7,7 +7,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "@ohos/loading": "file:../Loading",
+//    "@ohos/loading": "file:../Loading",
     "@ohos/ijkplayer": "file:./libs/ijkplayer.har"
   }
 }

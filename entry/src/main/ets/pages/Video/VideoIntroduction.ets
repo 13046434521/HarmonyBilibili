@@ -180,6 +180,7 @@ export default struct VideoIntroduction {
       .height('8%')
       .margin({left:"2%",top:'1%',bottom:'1&'})
 
+      // 多集选项
       if (this.videoLists.totalCount()>=2){
         Stack(){
           List({initialIndex:this.index,space:'2%'}){

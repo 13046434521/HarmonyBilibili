@@ -20,7 +20,7 @@ export struct MediaIntroduction {
   @State loadStatus: LoadingStatus = LoadingStatus.Loading
   @State mediaSeasonData: MediaSeasonData = new MediaSeasonData()
   mediaViewModel: MediaViewModel = new MediaViewModel()
-
+  // episodes: MediaFtEpisodesBean[]
   aboutToAppear() {
     this.mediaViewModel.getMediaInfo(this.seasonId)
       .then(mediaInfo => {
@@ -117,6 +117,48 @@ export struct MediaIntroduction {
         .textStyle()
         .margin({ left: '2%' })
 
+      // 多P情况下显示该页面
+   /*   if (this.mediaInfo.episodes.length>=2){
+        Stack(){
+          List({initialIndex:this.index,space:'2%'}){
+            LazyForEach(this.videoLists,video=>{
+              ListItem(){
+                Text(video.part)
+                  .height('100%')
+                  .width('100%')
+                  .textAlign(TextAlign.Start)
+                  .maxLines(2)
+                  .fontSize(14)
+                  .padding('4%')
+                  .fontColor(video.cid===this.cid?$r('app.color.bilibili_text_theme'):$r('app.color.bilibili_text_black_middle'))
+                  .textOverflow({overflow:TextOverflow.Ellipsis})
+              }.margin({ left:'1%',right:'1%' })
+              .align(Alignment.Center)
+              .backgroundColor($r('app.color.bilibili_background_grey'))
+              .borderRadius(5)
+              .height('80%')
+              .aspectRatio(2.5)
+              .onClick(()=>{
+                PageManager.routerVideoDetail(this.bvid,video.cid,PageType.REPLACE)
+              })
+            },(item,index)=>JSON.stringify(item)+index)
+
+          }.listDirection(Axis.Horizontal)
+          .height('100%')
+          .tabIndex(this.index)
+          .alignListItem(ListItemAlign.Center)
+          Image($r("app.media.icon_video_more"))
+            .objectFit(ImageFit.Contain)
+            .height('70%')
+            .aspectRatio(0.5)
+            .opacity(0.8)
+            .backgroundColor(Color.White)
+            .onClick(()=>{
+              this.dialogController.open()
+            })
+        }.align(Alignment.End)
+        .height('10%')
+      }*/
       Blank()
         .layoutWeight(1)
     }

@@ -283,7 +283,9 @@ struct BiliUserPage {
             .fontSize(14)
             .margin({ left: '2%' })
             .fontColor($r('app.color.bilibili_text_grey_light'))
-            .layoutWeight(1)
+            .width('100%')
+            .textOverflow({overflow:TextOverflow.Ellipsis})
+            .maxLines(2)
         }
 
         Row() {

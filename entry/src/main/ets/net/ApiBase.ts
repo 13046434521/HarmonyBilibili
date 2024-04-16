@@ -46,17 +46,17 @@ export class ApiBase{
 
     this.instanceCookie.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
       console.log(`拦截器:search_cookie的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
-      for (const element of value.headers) {
+/*      for (const element of value.headers) {
         console.log(`拦截器:search_cookie的的：header:${element.toString()}`)
-      }
+      }*/
       return value
     })
 
     this.instanceAxios.interceptors.request.use((value: InternalAxiosRequestConfig)=>{
       console.log(`拦截器:登录cookie的：发送URL：${value.baseURL}${value.url} Header：${value.headers}`)
-      for (const element of value.headers) {
+/*      for (const element of value.headers) {
         console.log(`拦截器:登录cookie的：header:${element.toString()}`)
-      }
+      }*/
       return value
     })
   }
@@ -70,6 +70,8 @@ export class ApiBase{
 
     return await new Promise<T>((resolve, reject) => {
       instance.get(url).then(resp => {
+        console.log("Bilibili:https data:headers:"+url+"  status:" + resp.status+'  message:'+resp.data.message  + "-- headers:" + resp.headers.toString())
+
         if (resp.status == axios.HttpStatusCode.Ok) {
           // 不同的请求，返回的值不一样，正常用data
           let httpData = resp.data.data
@@ -80,11 +82,11 @@ export class ApiBase{
           if (httpData === undefined) {
             // Utils.Toast("当前请求返回可以数据为空:"+url)
           }
-          console.log("Bilibili:https data:"+url+"  status:" + resp.status + "--*--" + JSON.stringify(httpData))
+          console.log("Bilibili:https data:"+url+"  status:" + resp.status+'  message:'+resp.data.message  + "--*--" + JSON.stringify(httpData))
           resolve(httpData)
         } else {
-          reject("Bilibili:https err:：" + resp.status +"   url:"+url)
-          Utils.Toast("Bilibili:https err:" + resp.status+"  url:"+url)
+          reject("Bilibili:https err:：" + resp.status+'  message:'+resp.data.message +"   url:"+url)
+          Utils.Toast("Bilibili:https err:" + resp.status+'  message:'+resp.data.message +"  url:"+url)
         }
       }).catch(error => {
         reject("请求失败：" + error)
