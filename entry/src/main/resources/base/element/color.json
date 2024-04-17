@@ -55,6 +55,9 @@
     {
       "name": "bilibili_text_theme",
       "value": "#FB7299"
+    },{
+      "name": "bilibili_text_blue_dark",
+      "value": "#4176A2"
     },
     {
       "name": "bilibili_text_white",

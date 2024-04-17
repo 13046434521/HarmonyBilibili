@@ -20,7 +20,7 @@ import Logger from './Logger';
  *
  * @param message Message.
  */
-export function showDialog(title:string='',message: ResourceStr=''): void {
+export function showDialog(title:string='',message: ResourceStr): void {
   let newMessage = message.toString();
   if (newMessage.length > CommonConstants.SUB_LENGTH) {
     message = newMessage.substring(0, CommonConstants.SUB_LENGTH);

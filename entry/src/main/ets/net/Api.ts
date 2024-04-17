@@ -127,8 +127,8 @@ export class Api extends ApiBase{
    * @param type type=1是视频类型的评论
    * @returns
    */
-  getCommentsInfo<T>(oid:number, mode:2 |3, type:number=1){
-    let param={'oid':oid,'mode':mode,'type':type}
+  getCommentsInfo<T>(oid:number, mode:2 |3, type:number=1,pn:number=1,ps:number=20){
+    let param={'oid':oid,'mode':mode,'type':type,'pn':pn,"ps":ps}
     return NetEncryption.getWbi(param).then(webi=>{
       let url =  `https://api.bilibili.com/x/v2/reply/wbi/main?${webi}`
       console.warn('WBI',url)

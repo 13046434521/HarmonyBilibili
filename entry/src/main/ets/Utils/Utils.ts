@@ -108,13 +108,6 @@ export class Utils {
     return msg
   }
 
-  private completionNum(num: number): string | number {
-    if (num < 10) {
-      return '0' + num;
-    } else {
-      return num;
-    }
-  }
   static Toast(message:string){
     promptAction.showToast({message:message})
   }
@@ -123,6 +116,11 @@ export class Utils {
     promptAction.showDialog({title:title,message:message})
   }
 
+  /**
+   * 时间戳转换为年月日
+   * @param timestamp_ms
+   * @returns
+   */
   static  timestampToDate(timestamp_ms: number): string {
     const date = new Date(timestamp_ms * 1000); // 将时间戳转换为Date对象
     const year = date.getFullYear(); // 获取年份
