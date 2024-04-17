@@ -37,9 +37,9 @@ export class PageManager {
   }
 
   // 视频详情页面
-  static routerVideoDetail(bvid: string, cid: number = 0, type: PageType = PageType.PUSH) {
+  static routerVideoDetail(bvid: string,aid:number = 0, cid: number = 0, type: PageType = PageType.PUSH) {
     let url = 'pages/Video/VideoDetailPage'
-    let params = { 'bvid': bvid, 'cid': cid }
+    let params = { 'bvid': bvid, 'cid': cid ,'aid':aid}
 
     if (type === PageType.PUSH) {
       router.pushUrl({ url: url, params: params }
@@ -134,6 +134,9 @@ export class RouterConstants {
   static CID = 'cid' // 视频详情页面
   static EPID = 'epid' // 视频详情页面
   static MID = 'mid' // 用户页面
+
+  static AID = 'aid' // 评论页面
+
   /*------------------------------------------- Mine页面相关 --------------------------------------------*/
   static MINE_WEB_URL = 'mine_web_url' //  Mine的web页面
 }

@@ -137,7 +137,7 @@ export struct BiliUserHome {
         ForEach(this.userVideoItems, (video: UserVideoItem) => {
           // GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 } }) {
           GridCol() {
-            this.VideoItem(video.pic, video.title, video.length, video.play, video.video_review, video.bvid)
+            this.VideoItem(video.pic, video.title, video.length, video.play, video.video_review, video.bvid,video.aid)
           }
         }, (item, index) => JSON.stringify(item) + index)
       }
@@ -145,7 +145,7 @@ export struct BiliUserHome {
   }
 
   @Builder
-  VideoItem(pic: string, title: string, time: string, play: number, danmu: number, bvid: string, cid: number = 0) {
+  VideoItem(pic: string, title: string, time: string, play: number, danmu: number, bvid: string,aid:number, cid: number = 0) {
     Column() {
       Stack() {
         Image(pic)
@@ -215,7 +215,7 @@ export struct BiliUserHome {
     .borderRadius(5)
     .backgroundColor($r('app.color.bilibili_background_white'))
     .onClick(event => {
-      PageManager.routerVideoDetail(bvid, cid)
+      PageManager.routerVideoDetail(bvid,aid, cid)
     })
   }
 
@@ -384,7 +384,7 @@ export struct BiliUserHome {
         ForEach(this.userCoinItems, (coin: UserCoinVideo) => {
           // GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 } }) {
           GridCol() {
-            this.VideoItem(coin.pic, coin.title, Utils.Duration(coin.duration), coin.stat.view, coin.stat.danmaku, coin.bvid, coin.cid)
+            this.VideoItem(coin.pic, coin.title, Utils.Duration(coin.duration), coin.stat.view, coin.stat.danmaku, coin.bvid,coin.aid, coin.cid)
           }
         }, (item, index) => JSON.stringify(item) + index)
       }
@@ -415,7 +415,7 @@ export struct BiliUserHome {
         ForEach(this.userUpvoteItems, (upvote: UserUpvoteItem) => {
           // GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 } }) {
           GridCol() {
-            this.VideoItem(upvote.pic, upvote.title, Utils.Duration(upvote.duration), upvote.stat.view, upvote.stat.danmaku, upvote.bvid, upvote.cid
+            this.VideoItem(upvote.pic, upvote.title, Utils.Duration(upvote.duration), upvote.stat.view, upvote.stat.danmaku, upvote.bvid,upvote.aid, upvote.cid
             )
           }
         }, (item, index) => JSON.stringify(item) + index)

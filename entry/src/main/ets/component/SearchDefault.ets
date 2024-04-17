@@ -123,7 +123,7 @@ export struct SearchDefaultDetails {
         LazyForEach(this.videoData, (item: SearchVideoBean) => {
           ListItem() {
             VideoItem({ item:item }).onClick(()=>{
-              PageManager.routerVideoDetail(item.bvid)
+              PageManager.routerVideoDetail(item.bvid,item.aid)
             })
           }
         }, (item: SearchVideoBean,index) =>JSON.stringify(item)+index)
@@ -165,7 +165,7 @@ export struct SearchDefaultDetails {
       MediaBangumiItem({ item: item })// media_id season_id
     } else if (item.result_type === SearchType.VIDEO.toString()) {
       VideoItem({ item: item }).onClick(()=>{
-        PageManager.routerVideoDetail(item.bvid)
+        PageManager.routerVideoDetail(item.bvid,item.aid)
       })
     } else if (item.result_type === SearchType.LIVE_ROOM.toString()) {
       LiveRoomItem({ item: item })//roomid

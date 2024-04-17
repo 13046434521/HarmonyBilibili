@@ -132,7 +132,7 @@ export struct HomePage {
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
     .backgroundColor($r('app.color.bilibili_background_white'))
     .onClick(event=>{
-      PageManager.routerVideoDetail(homeBeanItem.bvid,homeBeanItem.cid)
+      PageManager.routerVideoDetail(homeBeanItem.bvid,homeBeanItem.id,homeBeanItem.cid)
     })
   }
 

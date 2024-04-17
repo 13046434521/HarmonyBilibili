@@ -202,7 +202,7 @@ export default struct VideoIntroduction {
               .height('80%')
               .aspectRatio(2.5)
               .onClick(()=>{
-                PageManager.routerVideoDetail(this.bvid,video.cid,PageType.REPLACE)
+                PageManager.routerVideoDetail(this.bvid,0,video.cid,PageType.REPLACE)
               })
             },(item,index)=>JSON.stringify(item)+index)
 
@@ -337,7 +337,7 @@ export default struct VideoIntroduction {
         .strokeWidth(1)
     }
     .onClick(event=>{
-      PageManager.routerVideoDetail(videoRecommend.bvid,videoRecommend.cid,PageType.REPLACE)
+      PageManager.routerVideoDetail(videoRecommend.bvid,videoRecommend.aid,videoRecommend.cid,PageType.REPLACE)
     })
   }
 
@@ -437,7 +437,7 @@ struct VideoSelectDialog {
           .width('98%')
           .selectable(true)
           .onClick(()=>{
-            PageManager.routerVideoDetail(this.bvid,video.cid,PageType.REPLACE)
+            PageManager.routerVideoDetail(this.bvid,0,video.cid,PageType.REPLACE)
           })
         },(item,index)=>JSON.stringify(item)+index)
       }.listDirection(Axis.Vertical)

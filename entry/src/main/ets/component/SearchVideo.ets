@@ -56,7 +56,7 @@ export struct SearchVideoDetails {
         LazyForEach(this.videoData, (item: SearchVideoBean) => {
           ListItem() {
             VideoItem({ item:item }).onClick(()=>{
-              PageManager.routerVideoDetail(item.bvid)
+              PageManager.routerVideoDetail(item.bvid,item.aid)
             })
           }
         }, (item: SearchVideoBean) =>JSON.stringify(item))

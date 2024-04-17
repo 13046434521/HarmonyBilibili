@@ -9,6 +9,7 @@ import { MediaViewModel } from '../../viewModel/media/MediaViewModel'
 import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 import { MediaIntroduction } from './MeidaIntroduction'
 import window from '@ohos.window'
+import { BiliComments } from '../BiliComments'
 
 @Entry
 @Component
@@ -24,6 +25,7 @@ struct MediaFtPage {
   seasonId:number
   @State epid:number = 0
   @State index :number = 0
+  @State aid:number = 0
   showPage(){
     this.isShowPage[this.currentIndex] = true
   }
@@ -49,6 +51,7 @@ struct MediaFtPage {
         let epId = mediaInfo.episodes[this.index].ep_id
         let cid = mediaInfo.episodes[this.index].cid
         this.epid = epId
+        this.aid = avid
         return ApiMediaFt.getMediaFtUrl(avid,cid,epId)
       }).then(mediaFtUrl=>{
         this.mediaUrl = mediaFtUrl
@@ -77,8 +80,8 @@ struct MediaFtPage {
           }
         }.tabBar(this.TabBuilders(0,'简介'))
         TabContent(){
-          if (this.isShowPage[0]){
-            // VideoComments({ videoViewModel: this.videoViewModel, bvid: this.bvid })
+          if (this.isShowPage[1]){
+            BiliComments ({ aid: this.aid })
           }
         }.tabBar(this.TabBuilders(1,'评论'))
       } .barMode(BarMode.Fixed)

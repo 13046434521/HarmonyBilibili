@@ -70,7 +70,7 @@ export class ApiBase{
 
     return await new Promise<T>((resolve, reject) => {
       instance.get(url).then(resp => {
-        console.log("Bilibili:https data:headers:"+url+"  status:" + resp.status+'  message:'+resp.data.message  + "-- headers:" + resp.headers.toString())
+        // console.log("Bilibili:https data:headers:"+url+"  status:" + resp.status+'  message:'+resp.data.message  + "-- headers:" + resp.headers.toString())
 
         if (resp.status == axios.HttpStatusCode.Ok) {
           // 不同的请求，返回的值不一样，正常用data

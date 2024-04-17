@@ -9,6 +9,7 @@ import { SearchType } from '../common/SearchType';
 import { SearchSuggestResultBean } from '../bean/search/SearchSuggestBean';
 import { SearchDefaultBean } from '../bean/search/SearchDefaultBean';
 import { ApiBase } from './ApiBase';
+import NetEncryption from './NetEncryption';
 
 export class Api extends ApiBase{
   constructor() {
@@ -101,7 +102,8 @@ export class Api extends ApiBase{
 
   // https://passport.bilibili.com/x/passport-login/web/qrcode/generate
 
-  //https://api.bilibili.com/x/web-interface/zone 登录位置
+  //https://api.bilibili.com/x/web-interface/zone
+  // 登录位置
 
   // https://api.bilibili.com/x/player/online/total?cid=1499268571&bvid=BV1Mm411677N
   // 实时在线人数
@@ -111,11 +113,28 @@ export class Api extends ApiBase{
   }
 
   // https://api.bilibili.com/x/msgfeed/unread
+  // 未读消息
   getUnReadMessage<T>(){
     let url = `https://api.bilibili.com/x/msgfeed/unread`
     return this.request<T>(url,this.instanceAxios)
   }
-
+  /**
+   * 按热度评论，oid为aid：https://api.bilibili.com/x/v2/reply/wbi/main?oid=450096728&type=1&mode=3&pagination_str=%7B%22offset%22:%22%22%7D&plat=1&web_location=1315875&w_rid=1b67f8f94f4c6b45b5fec94222f0ac20&wts=1713286200
+   * 最新评论，oid为aid:https://api.bilibili.com/x/v2/reply/wbi/main?oid=450096728&type=1&mode=2&pagination_str=%7B%22offset%22:%22%22%7D&plat=1&web_location=1315875&w_rid=21609f1b3cfca332036d53c6829f4aae&wts=1713287083
+   * @name 获取详细评论
+   * @param oid aid
+   * @param mode 2为热度，3为最新
+   * @param type type=1是视频类型的评论
+   * @returns
+   */
+  getCommentsInfo<T>(oid:number, mode:2 |3, type:number=1){
+    let param={'oid':oid,'mode':mode,'type':type}
+    return NetEncryption.getWbi(param).then(webi=>{
+      let url =  `https://api.bilibili.com/x/v2/reply/wbi/main?${webi}`
+      console.warn('WBI',url)
+      return this.request<T>(url,this.instanceAxios)
+    })
+  }
 }
 
 const api: Api = new Api()

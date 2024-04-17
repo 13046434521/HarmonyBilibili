@@ -125,7 +125,7 @@ export struct BiliUserVideo{
         .strokeWidth(1)
     }
     .onClick(event=>{
-      PageManager.routerVideoDetail(video.bvid)
+      PageManager.routerVideoDetail(video.bvid,video.aid)
     })
   }
 }

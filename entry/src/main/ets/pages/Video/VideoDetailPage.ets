@@ -12,26 +12,31 @@ import VideoInfo from '../../bean/video/VideoInfo'
 import VideoIntroduction from './VideoIntroduction'
 import VideoComments from './VideoComments'
 import { toast } from '../../Utils/ToastUtils'
+import { BiliComments } from '../BiliComments'
 
 @Entry
 @Component
 struct VideoDetailPage {
   @State bvid: string = ""
   @State cid: number = 0
+  @State aid: number = 0
   @State loadingPage:LoadingStatus = LoadingStatus.Loading;
   @State url :string=''
-  videoController: VideoController = new VideoController()
-  videoViewModel:VideoViewModel = new VideoViewModel()
   @State @Watch('showPage')currentIndex:number = 0
   @State isShowPage :boolean[] = [true,false]
+  videoViewModel:VideoViewModel = new VideoViewModel()
+  videoController: VideoController = new VideoController()
   tabController:TabsController = new TabsController()
+
   showPage(){
     this.isShowPage[this.currentIndex] = true
   }
+
   aboutToAppear() {
     if (router.getParams()!=null) {
       this.bvid = router.getParams()[RouterConstants.BVID]
       this.cid = router.getParams()[RouterConstants.CID]
+      this.aid = router.getParams()[RouterConstants.AID]
       new Promise<PlayVideoBean>((resolve,reject)=>{
         if (this.cid === 0) {
           resolve( Api.getPageList(this.bvid).then((item)=>{
@@ -43,8 +48,19 @@ struct VideoDetailPage {
           resolve( Api.getPlayVideo(this.bvid,this.cid))
         }
       }).then(playVideo=>{
-        toast(this.cid+'---')
         this.url = playVideo.durl[0].url
+
+        return new Promise<number>((resolve,reject)=>{
+          if (this.aid===0) {
+            this.videoViewModel.loadVideoInfo(this.bvid).then(videoInfo=>{
+              resolve(videoInfo.aid)
+            })
+          }else{
+            resolve(this.aid)
+          }
+        })
+      }).then((aid)=>{
+        this.aid = aid
         this.loadingPage = LoadingStatus.LoadingSuccess
       }).catch(err=>{
         this.loadingPage = LoadingStatus.LoadingFailure
@@ -76,8 +92,8 @@ struct VideoDetailPage {
         }.tabBar(this.TabBuilders(0,'简介'))
         TabContent(){
           if (this.isShowPage[1]){
-             VideoComments({ videoViewModel: this.videoViewModel, bvid: this.bvid })
-           }
+            BiliComments ({ aid: this.aid })
+          }
         }.tabBar(this.TabBuilders(1,'评论'))
       } .barMode(BarMode.Fixed)
       .scrollable(true)
