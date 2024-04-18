@@ -3,7 +3,7 @@ export struct RefreshList{
   @BuilderParam listItem:()=>LazyForEachInterface|ForEachInterface
   @Prop refreshController:RefreshController
   build(){
-    Refresh({ refreshing: $$this.refreshController.isRefreshing, offset: 0, friction: 120 }) {
+    Refresh({ refreshing: $$this.refreshController.isRefreshing, offset: 0, friction: 50 }) {
       Column(){
         List(){
           ListItemGroup({footer:this.Loading()}){
@@ -19,6 +19,7 @@ export struct RefreshList{
           if (this.refreshController.onLoadMoreListener!==undefined) {
             this.refreshController.onLoadMoreListener()
           }
+          console.error('onReachEnd',"onReachEnd:"+this.refreshController.isLoadMore)
         })
         .edgeEffect(EdgeEffect.None)
       }
@@ -28,7 +29,7 @@ export struct RefreshList{
     })
     .onRefreshing(() => {
       if (this.refreshController.onRefreshListener!==undefined) {
-        this.refreshController.onRefreshListener()
+         this.refreshController.onRefreshListener()
       }
       this.refreshController.isRefreshing = false
     })
@@ -39,36 +40,32 @@ export struct RefreshList{
   @Builder
   Loading(){
     Column(){
-      LoadingProgress()
-        .width('6%')
-        .aspectRatio(1)
-        .color($r('app.color.bilibili_theme'))
-      Text('加载更多...')
-        .fontSize(12)
+      if (this.refreshController.isLoadMore){
+        LoadingProgress()
+          .width('6%')
+          .aspectRatio(1)
+          .color($r('app.color.bilibili_theme'))
+        Text('加载更多...')
+          .fontSize(12)
+      }else{
+        Text('没有更多数据...╮(╯▽╰)╭...')
+          .fontSize(14)
+      }
+
     }.justifyContent(FlexAlign.Center)
     .width('100%')
     .height('8%')
-    .visibility(this.refreshController.isLoadMore?Visibility.Visible:Visibility.None)
   }
 }
 
 
 export class RefreshListController implements RefreshController{
-  isRefreshing: boolean
+  isRefreshing: boolean = false
   isLoadMore: boolean = true
-  onRefreshListener: () => void
+  onRefreshListener: () => boolean
   onLoadMoreListener: () => void
   lanes: number
   cacheCount: number
-
-/*  constructor(refreshing:boolean ,loadMore:boolean,lanes:number=1,cacheCount:number,refreshListener:()=>void,loadMoreListener:()=>void) {
-    this.isRefreshing = refreshing
-    this.isLoadMore = loadMore
-    this.lanes = lanes
-    this.cacheCount=cacheCount
-    this.onLoadMoreListener = loadMoreListener
-    this.onRefreshListener = refreshListener
-  }*/
 
   setRefresh(refresh:boolean){
     this.isRefreshing = refresh
@@ -78,7 +75,7 @@ export class RefreshListController implements RefreshController{
     this.isLoadMore = loadMore
     return this
   }
-  setRefreshListener(refreshListener:() => void){
+  setRefreshListener(refreshListener:() => boolean){
     this.onRefreshListener = refreshListener
     return this
   }
@@ -99,7 +96,7 @@ export class RefreshListController implements RefreshController{
 export interface RefreshController{
   isRefreshing: boolean
   isLoadMore:boolean
-  onRefreshListener:()=>void
+  onRefreshListener:()=>boolean
   onLoadMoreListener:()=>void
   lanes :number
   cacheCount :number

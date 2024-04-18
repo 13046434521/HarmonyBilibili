@@ -44,6 +44,10 @@ export class BasicDataSource<T> implements IDataSource  {
       this.notifyDataReload()
     }
   }
+  /**
+   * 清除原有数据，增加新的数据
+   * @param data
+   */
   public reloadData(data: T[]): void {
     this.dataArray =[]
     this.addDataAll(data)

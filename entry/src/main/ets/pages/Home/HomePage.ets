@@ -14,7 +14,6 @@ export struct HomePage {
   @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
   @State homeData:HomeData = new HomeData()
   @State homePage: number = 0
-  @State isLoadMore: boolean = true
   @StorageLink('isLogin') isLogin:boolean = false
   @StorageLink('login_img_url') vipImageUrl :string = ''
   @State homeBeanItem:HomeBeanItem[] =[]
@@ -35,7 +34,6 @@ export struct HomePage {
     })
 
     this.refreshController
-      .setLoadMore(this.isLoadMore)
       .setLanes(2)
       .setCacheCount(Constants.CACHE_COUNT)
       .setRefreshListener(this.refresh.bind(this))
@@ -186,17 +184,19 @@ export struct HomePage {
 
         // 没有更多数据时，isLoadMore设置为false，隐藏加载图标
         if (!Utils.isNonNull(response.item)) {
-          this.isLoadMore = false
+          this.refreshController.isLoadMore = false
         }
       }
     })
   }
 
-  refresh(){
-    Api.getHomePages(this.homePage+1).then(response=>{
+  async refresh(){
+    await Api.getHomePages(this.homePage+1).then(response=>{
       if (response.item!=undefined) {
         this.homeData.addDataAll(response.item)
         this.homePage++
+
+        return false
       }
     })
   }

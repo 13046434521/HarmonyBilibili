@@ -26,19 +26,20 @@ export struct SearchDefaultDetails {
   @Consume('defaultPageData') allData: AllData
   @State loadingStatus: LoadingStatus = LoadingStatus.LoadingSuccess
   @State videoData:VideoData = new VideoData()
-  @State isRefreshing: boolean = false
   // 综合排序：totalrank
   // 最多点击：click
   // 最新发布：pubdate
   // 最多弹幕：dm
   @State orderType:'totalrank'|'click'|'pubdate'|'dm' = 'totalrank';
   @State refreshController:RefreshListController = new RefreshListController()
-  @State videoController:RefreshListController = new RefreshListController()
+  @State videoRefreshController:RefreshListController = new RefreshListController()
   aboutToAppear(){
-    this.refreshController.setLoadMoreListener(this.loadMore.bind(this))
+    this.refreshController
+      .setLoadMoreListener(this.loadMore.bind(this))
       .setRefreshListener(this.refresh.bind(this))
 
-    this.videoController.setLoadMoreListener(this.videoLoadMore.bind(this))
+    this.videoRefreshController
+      .setLoadMoreListener(this.videoLoadMore.bind(this))
       .setRefreshListener(this.videoRefresh.bind(this))
   }
 
@@ -50,6 +51,7 @@ export struct SearchDefaultDetails {
         .layoutWeight(1)
     }.justifyContent(FlexAlign.Start)
   }
+
   @Builder
   OrderTitle(){
     Column(){
@@ -78,26 +80,13 @@ export struct SearchDefaultDetails {
       }.height('5%')
       .width('100%')
       .margin({left:"1%"})
-
       Divider().strokeWidth(1).color($r('app.color.bilibili_divider'))
-    }
-
-  }
-
-  @Builder
-  allPage(){
-    // 默认排序时，使用用户，番剧，影视，视频混合List
-    // 新发布，播放多，弹幕多时，使用视频List
-    if ( this.orderType==='totalrank'){
-      this.defaultPage()
-    }else{
-      this.biliVideo()
     }
   }
 
   @Builder
   defaultPage() {
-    RefreshList({refreshController:this.orderType==='totalrank'?this.refreshController:this.videoController,
+    RefreshList({refreshController:this.orderType==='totalrank'?this.refreshController:this.videoRefreshController,
       listItem:this.orderType==='totalrank'?this.listItem.bind(this):this.videoListItem.bind(this)})
       .width('100%')
       .layoutWeight(1)
@@ -169,38 +158,6 @@ export struct SearchDefaultDetails {
       }).catch((err => {
       Utils.Toast("视频页面："+err)
     }))
-  }
-
-
-  @Builder
-  biliVideo() {
-    Refresh({ refreshing: $$this.isRefreshing, offset: 120, friction: 100 }) {
-      List() {
-        LazyForEach(this.videoData, (item: SearchVideoBean) => {
-          ListItem() {
-            VideoItem({ item:item }).onClick(()=>{
-              PageManager.routerVideoDetail(item.bvid,item.aid)
-            })
-          }
-        }, (item: SearchVideoBean,index) =>JSON.stringify(item)+index)
-      }
-      .cachedCount(Constants.CACHE_COUNT)
-      .onReachEnd(() => {
-        Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1,this.orderType)
-          .then((response) => {
-            if (response.result!=undefined) {
-              this.page++
-              this.videoData.pushDataAll(response.result)
-            }
-          }).catch((err => {
-          Utils.Toast("视频页面："+err)
-        }))
-      })
-    }.onRefreshing(() => {
-
-    })
-    .width('100%')
-    .layoutWeight(1)
   }
 
   @Builder

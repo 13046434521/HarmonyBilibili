@@ -29,7 +29,5 @@ export struct LoadingData{
     .alignItems(HorizontalAlign.Center)
     .width('100%')
     .height('100%')
-    // .borderWidth(2)
-    // .borderColor(Color.Orange)
   }
 }

@@ -1,5 +1,7 @@
 import { SearchMediaBean } from '../bean/search/SearchMediaBean'
+import Constants from '../common/Constants'
 import { LoadingStatus } from '../common/LoadingStatus'
+import { RefreshList, RefreshListController } from '../common/RefreshList'
 import { SearchType } from '../common/SearchType'
 import { SearchMediaData } from '../datasource/SearchMediaData'
 import Api from '../net/Api'
@@ -10,33 +12,20 @@ import { LoadingData } from './LoadingData'
 @Component
 export struct SearchMediaFt {
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
-  search: string =""
   @State page:number=1
   @State mediaFtData:SearchMediaData =new SearchMediaData()
-  controller:Scroller=new Scroller()
+  @State refreshController:RefreshListController = new RefreshListController()
   searchType:SearchType = SearchType.MEDIA_FT
+  search: string =""
 
   aboutToAppear() {
-    this.initPage()
+    this.refresh()
+
+    this.refreshController.setRefreshListener(this.refresh.bind(this))
+      .setLoadMoreListener(this.load.bind(this))
+      .setCacheCount(Constants.CACHE_COUNT)
   }
 
-  
-  initPage(){
-    this.page = 1
-    Api.getSearchType<SearchMediaBean>(this.searchType,this.search,this.page).then(response=>{
-      this.mediaFtData.pushDataAll(response.result)
-
-      if (this.mediaFtData.totalCount()!=0) {
-        this.loadingStatus = LoadingStatus.LoadingSuccess
-      }else{
-        this.loadingStatus = LoadingStatus.LoadingOther
-      }
-
-    }).catch(err=>{
-      this.loadingStatus = LoadingStatus.LoadingFailure
-      Utils.Toast("影视页面:"+err)
-    })
-  }
 
   build() {
     LoadingData({loadingStatus :this.loadingStatus,page:this.mediaFtPage.bind(this)})
@@ -45,18 +34,48 @@ export struct SearchMediaFt {
   }
 
   @Builder mediaFtPage(){
-    Scroll(this.controller){
-      Column() {
-        LazyForEach(this.mediaFtData, (item, index) => {
-          MediaFtItem({ item: item })
-        }, (item:SearchMediaBean) => JSON.stringify(item))
-      }.width('100%')
-    }.width('100%')
-    .align(Alignment.Top)
-    .edgeEffect(EdgeEffect.None)
-    .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
-    .scrollBar(BarState.Auto)  // 滚动条常驻显示
-    .scrollBarColor(Color.Gray)  // 滚动条颜色
-    .scrollBarWidth(2) // 滚动条宽度
+    RefreshList({refreshController:this.refreshController,listItem:this.mediaItem.bind(this)})
+      .width('100%')
+    .layoutWeight(1)
+  }
+
+  @Builder
+  mediaItem() {
+    LazyForEach(this.mediaFtData, (item, index) => {
+      Column(){
+        MediaFtItem({ item: item })
+      }
+    }, (item: SearchMediaBean) => JSON.stringify(item))
+  }
+
+
+   refresh(){
+     this.page = 1
+     Api.getSearchType<SearchMediaBean>(this.searchType,this.search,this.page).then(response=>{
+      this.mediaFtData.reloadData(response.result)
+      this.refreshController.isLoadMore = true
+      if (this.mediaFtData.totalCount()!=0) {
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
+    }).catch(err=>{
+      this.loadingStatus = LoadingStatus.LoadingFailure
+      Utils.Toast("影视页面:"+err)
+    })
+  }
+
+  load(){
+    Api.getSearchType<SearchMediaBean>(this.searchType,this.search,this.page+1).then(response=>{
+      if (Utils.isNonNull(response.result)){
+        this.mediaFtData.pushDataAll(response.result)
+        this.page++
+      }else{
+        this.refreshController.isLoadMore = false
+      }
+    }).catch(err=>{
+      this.refreshController.isLoadMore = false
+      Utils.Toast("影视页面:"+err)
+    })
   }
 }

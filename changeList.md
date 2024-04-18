@@ -27,6 +27,7 @@
 24. 搜索历史功能
 25. 动态功能
 26. Ijkplayer播放，会出现bug
+27. SearchDefault页面的新发布播放多弹幕多，下拉加载时会出错，可能是数据问题
 ## 项目功能进度
 ### 2024-3-17
     图文页面，最下部缺失，无法全屏
@@ -281,4 +282,7 @@
 
 #### 3. SearchDefault页面更新为RefreshList
      SearchDefault页面更新为RefreshList
+
+#### 3. SearchMediaFt页面更新为RefreshList
+     SearchMediaFt页面更新为RefreshList
 /*------------------------------------------- 2024-4-18 END--------------------------------------------*/
