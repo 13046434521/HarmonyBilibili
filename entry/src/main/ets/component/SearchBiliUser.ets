@@ -1,38 +1,27 @@
+import { SearchBiliUserBean } from '../bean/search/SearchBiliUserBean'
+import { BiliUserData } from '../datasource/BiliUserData'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
-import Api from '../net/Api'
-import { LoadingData } from './LoadingData'
-import { SearchBiliUserBean } from '../bean/search/SearchBiliUserBean'
-import { Utils } from '../Utils/Utils'
 import { BiliUserItem } from './item/BiliUserItem'
-import { BiliUserData } from '../datasource/BiliUserData'
+import { LoadingData } from './LoadingData'
+import { Utils } from '../Utils/Utils'
+import Api from '../net/Api'
+import { RefreshList, RefreshListController } from '../common/RefreshList'
 import Constants from '../common/Constants'
 
 @Component
 export struct SearchBiliUserDetails {
-  @State message: string = '用户'
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
+  @State biliUserData:BiliUserData = new BiliUserData()
+  @State refreshController:RefreshListController = new RefreshListController()
   @Prop search: string = ""
   @State page: number = 1
-  @State biliUserData:BiliUserData = new BiliUserData()
   searchType: SearchType = SearchType.BILI_USER
-
   aboutToAppear() {
-    this.initPage()
-  }
-
-  initPage() {
-    this.page = 1
-    Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
-      this.biliUserData.pushDataAll(response.result)
-      if (response.result!=null&& this.biliUserData.totalCount()!=0) {
-        this.loadingStatus = LoadingStatus.LoadingSuccess
-      }else{
-        this.loadingStatus = LoadingStatus.LoadingOther
-      }
-    }).catch(err => {
-      this.loadingStatus = LoadingStatus.LoadingFailure
-    })
+    this.refresh()
+    this.refreshController.setRefreshListener(this.refresh.bind(this))
+      .setLoadMoreListener(this.loadMore.bind(this))
+      .setCacheCount(Constants.CACHE_COUNT)
   }
 
   build() {
@@ -43,25 +32,46 @@ export struct SearchBiliUserDetails {
 
   @Builder
   biliUserPage() {
-      List() {
-        LazyForEach(this.biliUserData, (item: SearchBiliUserBean,index?: number) => {
-          ListItem(){
-            BiliUserItem({item:item})
-          }
-        },(item:SearchBiliUserBean)=>JSON.stringify(item))
-      }.layoutWeight(1)
-      .cachedCount(Constants.CACHE_COUNT)
-      .onReachEnd(() => {
-        Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page + 1).then(response => {
-          if (response.result!=undefined) {
-            this.page++
-            this.biliUserData.pushDataAll(response.result)
-          }
-        }).catch(err => {
-          Utils.Toast(err)
-        })
-      }).divider({ strokeWidth: 1, color: $r('app.color.bilibili_divider'), startMargin: 8, endMargin: 8 })
+    RefreshList({refreshController:this.refreshController,listItem:this.listItem.bind(this)})
       .width('100%')
+      .layoutWeight(1)
       .backgroundColor(Color.White)
+  }
+
+  @Builder
+  listItem(){
+    LazyForEach(this.biliUserData, (item: SearchBiliUserBean,index?: number) => {
+      Column(){
+        BiliUserItem({item:item})
+        Divider().color($r('app.color.bilibili_divider')).strokeWidth(1).width('100%')
+      }
+    },(item:SearchBiliUserBean)=>JSON.stringify(item))
+  }
+
+  refresh(){
+    this.page = 1
+    Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
+      this.biliUserData.reloadData(response.result)
+      if (response.result!=null&& this.biliUserData.totalCount()!=0) {
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
+    }).catch(err => {
+      this.loadingStatus = LoadingStatus.LoadingFailure
+    })
+  }
+
+  loadMore(){
+    Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page + 1).then(response => {
+      if (Utils.isNonNull(response.result)) {
+        this.page++
+        this.biliUserData.pushDataAll(response.result)
+      }else{
+        this.refreshController.isLoadMore = false
+      }
+    }).catch(err => {
+      Utils.Toast(err)
+    })
   }
 }

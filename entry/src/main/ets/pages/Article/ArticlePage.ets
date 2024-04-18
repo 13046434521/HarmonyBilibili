@@ -3,8 +3,6 @@ import webview from '@ohos.web.webview'
 import router from '@ohos.router'
 import { RouterConstants } from '../../common/PageManager'
 import { JLog } from '../../common/JLog'
-import { Failure } from '../../component/Failure'
-import { Loading } from '../../component/Loading'
 import { Utils } from '../../Utils/Utils'
 
 @Entry
@@ -12,8 +10,8 @@ import { Utils } from '../../Utils/Utils'
 struct ArticlePage {
   @StorageProp('bilibili_cookie') cookie: string = ''
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  url = "https://www.bilibili.com/"
   controller: webview.WebviewController = new webview.WebviewController()
+  url = "https://www.bilibili.com/"
   articleId = 0
 
   aboutToAppear() {

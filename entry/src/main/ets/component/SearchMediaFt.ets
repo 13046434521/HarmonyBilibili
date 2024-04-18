@@ -53,7 +53,6 @@ export struct SearchMediaFt {
      this.page = 1
      Api.getSearchType<SearchMediaBean>(this.searchType,this.search,this.page).then(response=>{
       this.mediaFtData.reloadData(response.result)
-      this.refreshController.isLoadMore = true
       if (this.mediaFtData.totalCount()!=0) {
         this.loadingStatus = LoadingStatus.LoadingSuccess
       }else{

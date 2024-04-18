@@ -31,6 +31,7 @@ export struct RefreshList{
       if (this.refreshController.onRefreshListener!==undefined) {
          this.refreshController.onRefreshListener()
       }
+      this.refreshController.isLoadMore = true
       this.refreshController.isRefreshing = false
     })
     .height('100%')

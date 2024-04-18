@@ -283,6 +283,9 @@
 #### 3. SearchDefault页面更新为RefreshList
      SearchDefault页面更新为RefreshList
 
-#### 3. SearchMediaFt页面更新为RefreshList
+#### 4. SearchMediaFt页面更新为RefreshList
      SearchMediaFt页面更新为RefreshList
+
+#### 5. SearchBiliUser页面更新为RefreshList
+     SearchBiliUser页面更新为RefreshList
 /*------------------------------------------- 2024-4-18 END--------------------------------------------*/

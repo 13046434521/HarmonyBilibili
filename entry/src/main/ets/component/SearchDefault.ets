@@ -37,10 +37,11 @@ export struct SearchDefaultDetails {
     this.refreshController
       .setLoadMoreListener(this.loadMore.bind(this))
       .setRefreshListener(this.refresh.bind(this))
-
+      .setCacheCount(Constants.CACHE_COUNT)
     this.videoRefreshController
       .setLoadMoreListener(this.videoLoadMore.bind(this))
       .setRefreshListener(this.videoRefresh.bind(this))
+      .setCacheCount(Constants.CACHE_COUNT)
   }
 
   build() {
