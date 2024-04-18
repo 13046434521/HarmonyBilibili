@@ -51,8 +51,8 @@ export struct SearchBiliUserDetails {
   refresh(){
     this.page = 1
     Api.getSearchType<SearchBiliUserBean>(this.searchType, this.search, this.page).then(response => {
-      this.biliUserData.reloadData(response.result)
-      if (response.result!=null&& this.biliUserData.totalCount()!=0) {
+      if (response.result!=null&& response.result.length!==0) {
+        this.biliUserData.reloadData(response.result)
         this.loadingStatus = LoadingStatus.LoadingSuccess
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther

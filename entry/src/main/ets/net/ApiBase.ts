@@ -21,7 +21,7 @@ export class ApiBase{
 
   // /web-interface/search/type?search_type=video&keyword=48岁博士生8年未毕业被劝退&page=1
   protected instance = axios.create({
-    baseURL: this.baseURl,
+    baseURL: '',
     timeout: 10000,
     headers: {
       "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -29,7 +29,7 @@ export class ApiBase{
     }
   })
   protected instanceCookie = axios.create({
-    baseURL: this.baseURl,
+    baseURL: '',
     timeout: 10000,
     headers: {
       "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -62,13 +62,13 @@ export class ApiBase{
   }
 
   // 请求
-  protected async request<T>(url:string,axiosInstance?:AxiosInstance):Promise<T>{
+  protected  request<T>(url:string,axiosInstance?:AxiosInstance):Promise<T>{
     let instance = this.instance
     if (axiosInstance){
       instance = axiosInstance
     }
 
-    return await new Promise<T>((resolve, reject) => {
+    return  new Promise<T>((resolve, reject) => {
       instance.get(url).then(resp => {
         // console.log("Bilibili:https data:headers:"+url+"  status:" + resp.status+'  message:'+resp.data.message  + "-- headers:" + resp.headers.toString())
 

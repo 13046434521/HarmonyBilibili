@@ -288,4 +288,7 @@
 
 #### 5. SearchBiliUser页面更新为RefreshList
      SearchBiliUser页面更新为RefreshList
+
+#### 6. SearchBangumi，SearchLive，SearchArticle页面更新为RefreshList
+     SearchBangumi，SearchLive，SearchArticle页面更新为RefreshList
 /*------------------------------------------- 2024-4-18 END--------------------------------------------*/

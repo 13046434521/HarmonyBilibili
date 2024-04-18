@@ -17,12 +17,12 @@ export class Api extends ApiBase{
   }
 
   getHomePages(page: number = 0): Promise<HomeBean> {
-    let url = `/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=${page}&feed_version=undefined`
+    let url = `https://api.bilibili.com/x/web-interface/index/top/feed/rcmd?ps=12&fresh_idx=${page}&feed_version=undefined`
     return this.request(url)
   }
 
   getHomeSearch(): Promise<HomeSearchBean> {
-    let url = "/web-interface/search/default"
+    let url = "https://api.bilibili.com/x/web-interface/search/default"
     return this.request(url)
   }
 
@@ -30,7 +30,7 @@ export class Api extends ApiBase{
   // 需要Referer
   // 视频Video
   getPlayVideo(bvid: string, cid: number): Promise<PlayVideoBean> {
-    let url = `/player/playurl?bvid=${bvid}&cid=${cid}&qn=116`
+    let url = `https://api.bilibili.com/x/player/playurl?bvid=${bvid}&cid=${cid}&qn=116`
     return this.request(url)
   }
 
@@ -38,14 +38,14 @@ export class Api extends ApiBase{
   // 需要Referer
   // 影视
   getPlayVideoAid(avid: number, cid: number): Promise<PlayVideoBean> {
-    let url = `/player/playurl?avid=${avid}&cid=${cid}&qn=116`
+    let url = `https://api.bilibili.com/x/player/playurl?avid=${avid}&cid=${cid}&qn=116`
     return this.request(url)
   }
   // 'https://api.bilibili.com/pgc/player/web/playurl?ep_id=232533'
   // 需要Referer
   // 番剧
   getPlayVideoEpId(ep_id: number): Promise<PlayVideoBean> {
-    let url = `/player/playurl?ep_id=${ep_id}&qn=116`
+    let url = `https://api.bilibili.com/x/player/playurl?ep_id=${ep_id}&qn=116`
     return this.request(url)
   }
 
@@ -53,7 +53,7 @@ export class Api extends ApiBase{
   // {"code":0,"message":"0","ttl":1,"data":[{"cid":1469197725,"page":1,"from":"vupload","part":"美国即将封禁tiktok！","duration":222,"vid":"","weblink":"","dimension":{"width":1920,"height":1080,"rotate":0},"first_frame":"http://i0.hdslb.com/bfs/storyff/n240314sa2e909peujo7pbkqeqe4zik5_firsti.jpg"}]}
   // Video页面，没有cid时，需要额外获取一遍
   getPageList(bvid: string):Promise<PageListBean[]>{
-    let url = `/player/pagelist?bvid=${bvid}`
+    let url = `https://api.bilibili.com/x/player/pagelist?bvid=${bvid}`
     return this.request(url)
   }
 
@@ -66,7 +66,7 @@ export class Api extends ApiBase{
   // getSearchHot(): Promise<BaseResponse<SearchHotBean>> {
   // 20个热搜
   getSearchHot(): Promise<SearchHotBean> {
-    let url = '/v2/search/trending/ranking'
+    let url = 'https://api.bilibili.com/x/v2/search/trending/ranking'
     return this.request<SearchHotBean>(url)
   }
 
@@ -74,7 +74,7 @@ export class Api extends ApiBase{
   //  需要cookie
   getSearchDefault(keyword:string,page:number=1,order:'totalrank'|'click'|'pubdate'|'dm' = 'totalrank'): Promise<SearchBaseBean<SearchDefaultBean>> {
     let key = keyword.replace(/ /g,`%20`)
-    let url = `/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}&order=${order}`
+    let url = `https://api.bilibili.com/x/web-interface/wbi/search/all/v2?keyword=${key}&page=${page}&order=${order}`
     return this.request(url,this.instanceCookie)
   }
 /*  视频：video
@@ -94,7 +94,7 @@ export class Api extends ApiBase{
   getSearchType<T>(search_type:SearchType, keyword?: string, page?: number,order:'totalrank'|'click'|'pubdate'|'dm' = 'totalrank'): Promise<SearchBaseBean<T>> {
     // keyword = '终结者'
     let key = keyword.replace(/ /g,`%20`)
-    let url = `/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}&order=${order}`
+    let url = `https://api.bilibili.com/x/web-interface/search/type?search_type=${search_type}&keyword=${key}&page=${page}&order=${order}`
     return this.request(url,this.instanceCookie)
   }
   // https://api.bilibili.com/x/article/viewinfo?id=2265901

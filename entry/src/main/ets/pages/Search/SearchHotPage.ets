@@ -95,8 +95,8 @@ struct SearchHotPage {
         .layoutWeight(1)
       if (image) {
         Image(image)
-          .width(15)
-          .aspectRatio(1)
+          .height(15)
+          .objectFit(ImageFit.Contain)
       }
     }.justifyContent(FlexAlign.SpaceBetween)
     .margin({ left: 10, right: 10, top: 10, bottom: 10 })

@@ -1,6 +1,7 @@
 import { SearchArticleBean } from '../bean/search/SearchArticleBean'
 import Constants from '../common/Constants'
 import { LoadingStatus } from '../common/LoadingStatus'
+import { RefreshList, RefreshListController } from '../common/RefreshList'
 import { SearchType } from '../common/SearchType'
 import { ArticleData } from '../datasource/ArticleData'
 import Api from '../net/Api'
@@ -9,31 +10,20 @@ import { LoadingData } from './LoadingData'
 
 @Component
 export struct SearchArticleDetails {
-  @State message: string = '图文'
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
-  @Prop search: string = ""
   @State page: number = 1
   @State articleData:ArticleData = new ArticleData()
-  searchType: SearchType = SearchType.ARTICLE
+  @Prop search: string = ""
   @State err: string = ""
-
+  @State refreshController:RefreshListController = new RefreshListController()
+  searchType: SearchType = SearchType.ARTICLE
   aboutToAppear() {
-    this.initPage()
-  }
+    this.refreshController
+      .setRefreshListener(this.refresh.bind(this))
+      .setLoadMoreListener(this.load.bind(this))
+      .setCacheCount(Constants.CACHE_COUNT)
 
-  initPage() {
-    this.page = 1
-    Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page).then(response => {
-      this.articleData.pushDataAll(response.result)
-      if (response.result!=null&& this.articleData.totalCount()!=0) {
-        this.loadingStatus = LoadingStatus.LoadingSuccess
-      }else{
-        this.loadingStatus = LoadingStatus.LoadingOther
-      }
-    }).catch(err => {
-      this.err = err
-      this.loadingStatus = LoadingStatus.LoadingFailure
-    })
+    this.refresh()
   }
 
   build() {
@@ -46,29 +36,48 @@ export struct SearchArticleDetails {
 
   @Builder
   articlePage() {
-    List() {
-      LazyForEach(this.articleData, (item: SearchArticleBean) => {
-        ListItem() {
-          ArticleItem({item:item})
-        }
-      },(item: SearchArticleBean) =>item.mid+item.title)
-    }.cachedCount(Constants.CACHE_COUNT).divider({
-      strokeWidth: 1,
-      color: $r('app.color.bilibili_divider'),
-      startMargin: 8,
-      endMargin: 8
+    RefreshList({refreshController:this.refreshController,listItem:this.listItem.bind(this)})
+      .width('100%')
+      .layoutWeight(1)
+      .backgroundColor(Color.White)
+  }
+
+  @Builder
+  listItem(){
+    LazyForEach(this.articleData, (item: SearchArticleBean) => {
+      Column() {
+        ArticleItem({item:item})
+
+        Divider().strokeWidth(1).width('100%').color($r('app.color.bilibili_divider'))
+      }
+    },(item: SearchArticleBean) =>item.mid+item.title)
+  }
+
+  load(){
+    Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page+1).then(response => {
+      if (response.result!=undefined && response.result.length!==0) {
+        this.page++
+        this.articleData.pushDataAll(response.result)
+      }else{
+        this.refreshController.isLoadMore = false
+      }
+    }).catch(err => {
+      this.err = err
     })
-    .onReachEnd(()=>{
-      Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page+1).then(response => {
-        if (response.result!=undefined) {
-          this.page++
-          this.articleData.pushDataAll(response.result)
-        }
-      }).catch(err => {
-        this.err = err
-      })
+  }
+
+  refresh(){
+    this.page = 1
+    Api.getSearchType<SearchArticleBean>(this.searchType, this.search, this.page).then(response => {
+      if (response.result!=undefined && response.result.length!==0) {
+        this.articleData.reloadData(response.result)
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
+    }).catch(err => {
+      this.err = err
+      this.loadingStatus = LoadingStatus.LoadingFailure
     })
-    .width('100%')
-    .backgroundColor(Color.White)
   }
 }

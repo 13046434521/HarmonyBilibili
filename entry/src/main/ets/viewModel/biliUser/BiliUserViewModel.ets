@@ -71,8 +71,8 @@ export class BiliUserViewModel {
     })
   }
   // 获取用户数据
-  async getUserAllSettledData(mid: number) {
-    return await Promise.allSettled([this.getUserAccInfo(mid),
+  getUserAllSettledData(mid: number) {
+    return Promise.allSettled([this.getUserAccInfo(mid),
     this.getLoginUserInfo(mid),
     this.getUserVideoData(mid),
     this.getUserBookmarksData(mid),
@@ -83,13 +83,13 @@ export class BiliUserViewModel {
     this.getUserCollection(mid)])
   }
   // 获取用户空间详细信息
-  async getUserAccInfo(mid: number) {
-    return await ApiBiliUser.getUserAccInfo(mid)
+  getUserAccInfo(mid: number) {
+    return ApiBiliUser.getUserAccInfo(mid)
   }
 
   // 获取用户
-  async getLoginUserInfo(mid: number) {
-    return await ApiBiliUser.loginUserInfo(mid)
+  getLoginUserInfo(mid: number) {
+    return ApiBiliUser.loginUserInfo(mid)
   }
 
   // 获取主页数据
@@ -106,37 +106,37 @@ export class BiliUserViewModel {
   }
 
   // 获取动态数据
-  async getUserDynamicData(mid: number) {
-    return await ApiBiliUser.getBiliUserDynamic<UserDynamic>(mid)
+  getUserDynamicData(mid: number) {
+    return ApiBiliUser.getBiliUserDynamic<UserDynamic>(mid)
   }
 
   // 获取投稿数据
-  async getUserVideoData(mid: number, order: 'pubdate' | 'click' | 'stow' = 'pubdate', pn: number = 1) {
-    return await ApiBiliUser.getBiliUserVideo<UserVideoBean>(mid, order, pn)
+  getUserVideoData(mid: number, order: 'pubdate' | 'click' | 'stow' = 'pubdate', pn: number = 1) {
+    return ApiBiliUser.getBiliUserVideo<UserVideoBean>(mid, order, pn)
   }
 
   // 获取追番数据
-  async getUserBangumiData(mid: number, pn: number = 1, ps: number = 10, type: 1 | 2 = 1) {
-    return await ApiBiliUser.getBiliUserBangumi<UserBangumi>(mid, pn, ps, type)
+  getUserBangumiData(mid: number, pn: number = 1, ps: number = 10, type: 1 | 2 = 1) {
+    return ApiBiliUser.getBiliUserBangumi<UserBangumi>(mid, pn, ps, type)
   }
 
   // 获取追番数据
-  async getUserBookmarksData(mid: number, pn: number = 1, ps: number = 10) {
-    return await ApiBiliUser.getBiliUserBookmarks<UserBookmark>(mid, pn, ps)
+  getUserBookmarksData(mid: number, pn: number = 1, ps: number = 10) {
+    return ApiBiliUser.getBiliUserBookmarks<UserBookmark>(mid, pn, ps)
   }
 
   // 获取投币数据
-  async getUserCoinData(mid: number) {
-    return await ApiBiliUser.getBiliUserCoin<UserCoinVideo[]>(mid)
+  getUserCoinData(mid: number) {
+    return ApiBiliUser.getBiliUserCoin<UserCoinVideo[]>(mid)
   }
 
   // 获取点赞视频数据
-  async getUserLikeData(mid: number) {
-    return await ApiBiliUser.getBiliUserUpvote<UserUpvote>(mid)
+  getUserLikeData(mid: number) {
+    return ApiBiliUser.getBiliUserUpvote<UserUpvote>(mid)
   }
 
-  async getUserCollection(mid: number, pn: number = 1, ps: number = 10) {
-    return await ApiBiliUser.getBiliUserCollection<UserCollection>(mid, ps, ps)
+  getUserCollection(mid: number, pn: number = 1, ps: number = 10) {
+    return ApiBiliUser.getBiliUserCollection<UserCollection>(mid, ps, ps)
   }
 
 

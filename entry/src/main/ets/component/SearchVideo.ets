@@ -13,6 +13,7 @@ import Constants from '../common/Constants'
 import { PageManager } from '../common/PageManager'
 
 @Component
+// 该组建已经用不到了
 export struct SearchVideoDetails {
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   @Prop search: string =""

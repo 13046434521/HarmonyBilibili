@@ -16,7 +16,7 @@ struct LivePage {
   @State url :string=''
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
-    if (router.getParams()!=null) {
+    if (router.getParams()!=undefined) {
       this.roomId = router.getParams()[RouterConstants.LIVE_ID]
     }
 

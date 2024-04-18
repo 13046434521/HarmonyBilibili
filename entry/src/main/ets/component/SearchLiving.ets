@@ -1,6 +1,8 @@
 import { SearchBiliUserBean } from '../bean/search/SearchBiliUserBean'
 import { SearchLiveRoomBean } from '../bean/search/SearchLiveRoomBean'
+import Constants from '../common/Constants'
 import { LoadingStatus } from '../common/LoadingStatus'
+import { RefreshList, RefreshListController } from '../common/RefreshList'
 import { SearchType } from '../common/SearchType'
 import { LivingData } from '../datasource/LivingData'
 import Api from '../net/Api'
@@ -9,22 +11,51 @@ import { LoadingData } from './LoadingData'
 
 @Component
 export struct SearchLiving {
+  @State refreshController:RefreshListController = new RefreshListController()
   @State loadingStatus:LoadingStatus = LoadingStatus.Loading
-  @Prop search:string = ""
-  @State page:number=1
   @State livingData :LivingData = new LivingData()
-  scrollerController:Scroller = new Scroller()
+  @State page:number=1
+  @Prop search:string = ""
   searchType:SearchType = SearchType.LIVE_ROOM
 
+
   aboutToAppear() {
-    this.initPage()
+    this.refreshController
+      .setRefreshListener(this.refresh.bind(this))
+      .setLoadMoreListener(this.load.bind(this))
+      .setCacheCount(Constants.CACHE_COUNT)
+      .setLanes(2)
+
+    this.refresh()
   }
 
-  initPage(){
+  build() {
+    LoadingData({loadingStatus :this.loadingStatus,page:this.liveRoomPage.bind(this)})
+      .layoutWeight(1)
+  }
+
+  @Builder liveRoomPage(){
+    RefreshList({refreshController:this.refreshController,listItem:this.listItem.bind(this)})
+      .width('100%')
+      .layoutWeight(1)
+      .backgroundColor($r('app.color.bilibili_background_grey'))
+  }
+
+  @Builder
+  listItem(){
+    LazyForEach(this.livingData,(item:SearchLiveRoomBean)=>{
+      Column() {
+        LiveRoomItem({ item: item })
+          .margin('4%')
+       }
+    },(item:SearchLiveRoomBean)=>JSON.stringify(item))
+  }
+
+  refresh(){
     this.page = 1
     Api.getSearchType<SearchLiveRoomBean>(this.searchType,this.search,this.page).then(response=>{
-      this.livingData.pushDataAll(response.result)
-      if (response.result!=null&& this.livingData.totalCount()!=0) {
+      if (response.result!=null&& response.result.length!==0) {
+        this.livingData.reloadData(response.result)
         this.loadingStatus = LoadingStatus.LoadingSuccess
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
@@ -34,33 +65,17 @@ export struct SearchLiving {
     })
   }
 
-  build() {
-    LoadingData({loadingStatus :this.loadingStatus,page:this.liveRoomPage.bind(this)})
-      .layoutWeight(1)
+  load(){
+    Api.getSearchType<SearchLiveRoomBean>(this.searchType,this.search,this.page+1).then(response=>{
+      if (response.result!=null&& response.result.length!==0) {
+        this.livingData.pushDataAll(response.result)
+        this.page++
+      }else{
+        this.refreshController.isLoadMore = false
+      }
+    }).catch(err=>{
+      this.loadingStatus = LoadingStatus.LoadingFailure
+    })
   }
 
-  @Builder liveRoomPage(){
-    Scroll(){
-      Column(){
-        List({scroller: this.scrollerController }) {
-          LazyForEach(this.livingData,(item:SearchLiveRoomBean)=>{
-            ListItem() {
-              LiveRoomItem({ item: item })
-                .margin('4%')
-            }
-          },(item:SearchLiveRoomBean)=>JSON.stringify(item))
-        }
-        .lanes(2)
-        .width('100%')
-        .height('100%')
-        .padding('2%')
-        .backgroundColor($r('app.color.bilibili_background_grey'))
-        }
-    }.edgeEffect(EdgeEffect.Fade)
-    .align(Alignment.Top)
-    .scrollable(ScrollDirection.Vertical)  // 滚动方向纵向
-    .scrollBar(BarState.Auto)  // 滚动条常驻显示
-    .scrollBarColor(Color.Gray)  // 滚动条颜色
-    .scrollBarWidth(2) // 滚动条宽度
-  }
 }
