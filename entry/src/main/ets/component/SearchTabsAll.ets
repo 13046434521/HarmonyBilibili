@@ -42,7 +42,7 @@ export struct SearchTabsAll {
         .fontSize(14)
         .maxLines(1)
         .textAlign(TextAlign.Center)
-        .margin('4%')
+        .margin({ top:"4%" ,left:"4%",right:"4%",bottom:'4%'})
       Divider()
         .strokeWidth(2)
         .color($r('app.color.bilibili_theme'))

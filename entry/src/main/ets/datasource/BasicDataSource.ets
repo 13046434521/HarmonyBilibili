@@ -21,13 +21,20 @@ export class BasicDataSource<T> implements IDataSource  {
     this.notifyDataAdd(this.dataArray.length - 1)
   }
 
+  /**
+   * 数据拼接到原数据后面
+   * @param data
+   */
   public pushDataAll(data: T[]): void {
     if (data!=null) {
       this.dataArray = this.dataArray.concat(data)
       this.notifyDataReload()
     }
   }
-
+  /**
+   * 数据拼接到原数据前面
+   * @param data
+   */
   public addDataAll(data: T[]): void {
     if (data!=null) {
       this.dataArray = data.concat(this.dataArray)

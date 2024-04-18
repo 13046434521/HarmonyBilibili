@@ -1,15 +1,3 @@
-/**
- MediaCodec class can be used to access low-level media codecs, i.e. encoder/decoder components.
- It is part of the Android low-level multimedia support infrastructure (normally used together
- with {@link MediaExtractor}, {@link MediaSync}, {@link MediaMuxer}, {@link MediaCrypto},
- {@link MediaDrm}, {@link Image}, {@link Surface}, and {@link AudioTrack}.)
- <p>
- <center>
- <img src="https://upload-images.jianshu.io/upload_images/5872452-51f25da88cc1a5c8.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" style="width: 540px; height: 205px"
- alt="MediaCodec buffer flow diagram">
- </center>
- <p>
- */
 import { SearchDefaultDataBean } from '../bean/search/SearchDefaultBean'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { SearchType } from '../common/SearchType'
@@ -28,6 +16,8 @@ import { PageManager } from '../common/PageManager'
 import { SearchVideoBean } from '../bean/search/SearchVideoBean'
 import { VideoData } from '../datasource/VideoData'
 import Constants from '../common/Constants'
+import { LoadingType } from './Loading'
+import { RefreshList, RefreshListController } from '../common/RefreshList'
 
 @Component
 export struct SearchDefaultDetails {
@@ -42,49 +32,62 @@ export struct SearchDefaultDetails {
   // 最新发布：pubdate
   // 最多弹幕：dm
   @State orderType:'totalrank'|'click'|'pubdate'|'dm' = 'totalrank';
-  aboutToAppear() {
+  @State refreshController:RefreshListController = new RefreshListController()
+  @State videoController:RefreshListController = new RefreshListController()
+  aboutToAppear(){
+    this.refreshController.setLoadMoreListener(this.loadMore.bind(this))
+      .setRefreshListener(this.refresh.bind(this))
 
+    this.videoController.setLoadMoreListener(this.videoLoadMore.bind(this))
+      .setRefreshListener(this.videoRefresh.bind(this))
   }
-
 
   build() {
     Column(){
       this.OrderTitle()
-      LoadingData({ loadingStatus: this.loadingStatus, page: this.allPage.bind(this)})
+      LoadingData({ loadingStatus: this.loadingStatus, page: this.defaultPage.bind(this),type:LoadingType.PAGE})
         .width('100%')
         .layoutWeight(1)
-    }
+    }.justifyContent(FlexAlign.Start)
   }
   @Builder
   OrderTitle(){
-    Row(){
-      Text("默认排序")
-        .orderTitleStyle(this.orderType==='totalrank')
-        .onClick(()=>{
-          this.orderRequest(this.search,'totalrank')
-        })
-      Text("新发布")
-        .orderTitleStyle(this.orderType==='pubdate')
-        .onClick(()=>{
-          this.orderRequest(this.search,'pubdate')
-        })
-      Text("播放多")
-        .orderTitleStyle(this.orderType==='click')
-        .onClick(()=>{
-          this.orderRequest(this.search,'click')
-        })
-      Text("弹幕多")
-        .orderTitleStyle(this.orderType==='dm')
-        .onClick(()=>{
-          this.orderRequest(this.search,'dm')
-        })
-      Blank().layoutWeight(1)
-    }.height('5%')
-    .width('100%')
-    .margin({left:"1%"})
+    Column(){
+      Row(){
+        Text("默认排序")
+          .orderTitleStyle(this.orderType==='totalrank')
+          .onClick(()=>{
+            this.orderRequest(this.search,'totalrank')
+          })
+        Text("新发布")
+          .orderTitleStyle(this.orderType==='pubdate')
+          .onClick(()=>{
+            this.orderRequest(this.search,'pubdate')
+          })
+        Text("播放多")
+          .orderTitleStyle(this.orderType==='click')
+          .onClick(()=>{
+            this.orderRequest(this.search,'click')
+          })
+        Text("弹幕多")
+          .orderTitleStyle(this.orderType==='dm')
+          .onClick(()=>{
+            this.orderRequest(this.search,'dm')
+          })
+        Blank().layoutWeight(1)
+      }.height('5%')
+      .width('100%')
+      .margin({left:"1%"})
+
+      Divider().strokeWidth(1).color($r('app.color.bilibili_divider'))
+    }
+
   }
+
   @Builder
   allPage(){
+    // 默认排序时，使用用户，番剧，影视，视频混合List
+    // 新发布，播放多，弹幕多时，使用视频List
     if ( this.orderType==='totalrank'){
       this.defaultPage()
     }else{
@@ -94,27 +97,80 @@ export struct SearchDefaultDetails {
 
   @Builder
   defaultPage() {
-    List() {
-      LazyForEach(this.allData, (item:SearchDefaultDataBean) => {
-        ListItem(){
-          this.defaultItem(item)
-        }
-      }, (item: SearchDefaultDataBean,index) => JSON.stringify(item)+index)
-    }.width('100%')
-    .cachedCount(Constants.CACHE_COUNT)
-    .layoutWeight(1)
-    .edgeEffect(EdgeEffect.None)
-    .onReachEnd(()=>{
-      Api.getSearchDefault(this.search, this.page+1).then((response) => {
-        // 需要特殊处理
-        let temp = this.allData.dealData(response.result)
-        this.allData.pushDataAll(temp)
-        this.page++
-      }).catch(() => {
-        Utils.Toast('综合页面没有数据了')
-      })
+    RefreshList({refreshController:this.orderType==='totalrank'?this.refreshController:this.videoController,
+      listItem:this.orderType==='totalrank'?this.listItem.bind(this):this.videoListItem.bind(this)})
+      .width('100%')
+      .layoutWeight(1)
+  }
+
+  @Builder
+  listItem(){
+    LazyForEach(this.allData, (item:SearchDefaultDataBean) => {
+      Column(){
+        this.defaultItem(item)
+      }
+    }, (item: SearchDefaultDataBean,index) => JSON.stringify(item)+index)
+  }
+
+  refresh(){
+    this.page = 1
+    Api.getSearchDefault(this.search, this.page+1).then((response) => {
+      // 需要特殊处理
+      let temp = this.allData.dealData(response.result)
+      this.allData.reloadData(temp)
+      this.page++
+    }).catch((err) => {
+      Utils.Toast('综合页面:'+err)
     })
   }
+
+  loadMore(){
+    Api.getSearchDefault(this.search, this.page+1).then((response) => {
+      // 需要特殊处理
+      let temp = this.allData.dealData(response.result)
+      this.allData.pushDataAll(temp)
+      this.page++
+    }).catch((err) => {
+      Utils.Toast('综合页面:'+err)
+    })
+  }
+
+
+  @Builder
+  videoListItem(){
+    LazyForEach(this.videoData, (item: SearchVideoBean) => {
+      Column() {
+        VideoItem({ item:item }).onClick(()=>{
+          PageManager.routerVideoDetail(item.bvid,item.aid)
+        })
+      }
+    }, (item: SearchVideoBean,index) =>JSON.stringify(item)+index)
+  }
+  videoRefresh(){
+    this.page = 1
+    Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page,this.orderType).then((response) => {
+      this.videoData.reloadData(response.result)
+      if (response.result!=null&&this.videoData.totalCount()!=0) {
+        this.loadingStatus = LoadingStatus.LoadingSuccess
+      }else{
+        this.loadingStatus = LoadingStatus.LoadingOther
+      }
+    }).catch((err => {
+      this.loadingStatus = LoadingStatus.LoadingFailure
+    }))
+  }
+  videoLoadMore(){
+    Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1,this.orderType)
+      .then((response) => {
+        if (response.result!=undefined) {
+          this.page++
+          this.videoData.pushDataAll(response.result)
+        }
+      }).catch((err => {
+      Utils.Toast("视频页面："+err)
+    }))
+  }
+
 
   @Builder
   biliVideo() {
@@ -141,19 +197,7 @@ export struct SearchDefaultDetails {
         }))
       })
     }.onRefreshing(() => {
-      this.page = 1
-      Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page,this.orderType).then((response) => {
-        this.videoData.reloadData(response.result)
 
-        if (response.result!=null&&this.videoData.totalCount()!=0) {
-          this.loadingStatus = LoadingStatus.LoadingSuccess
-        }else{
-          this.loadingStatus = LoadingStatus.LoadingOther
-        }
-        this.isRefreshing = false
-      }).catch((err => {
-        this.isRefreshing = false
-      }))
     })
     .width('100%')
     .layoutWeight(1)
@@ -217,9 +261,9 @@ export struct SearchDefaultDetails {
 
 @Extend(Text)
 function orderTitleStyle(select:boolean){
-  .width('15%')
   .height('100%')
   .textAlign(TextAlign.Center)
+  .padding({left:"2%",right:'2%'})
   .fontSize(14)
   .fontColor(select?$r('app.color.bilibili_theme'):$r('app.color.bilibili_text_grey_bold'))
 }

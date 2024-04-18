@@ -14,20 +14,13 @@ export struct HomePage {
   @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
   @State homeData:HomeData = new HomeData()
   @State homePage: number = 0
-  @State isRefreshing: boolean = false
   @State isLoadMore: boolean = true
-  @State loginIcon:string = ''
   @StorageLink('isLogin') isLogin:boolean = false
   @StorageLink('login_img_url') vipImageUrl :string = ''
-  onLoginClick:()=>void
   @State homeBeanItem:HomeBeanItem[] =[]
+  @State refreshController:RefreshListController = new RefreshListController()
 
-  refreshController:RefreshListController = new RefreshListController()
-    .setLoadMore(this.isLoadMore)
-    .setLanes(2)
-    .setCacheCount(Constants.CACHE_COUNT)
-    .setRefreshListener(this.refresh.bind(this))
-    .setLoadMoreListener(this.loadMore.bind(this))
+  onLoginClick:()=>void
 
   aboutToAppear(){
     if (router.getParams()!==undefined){
@@ -40,6 +33,13 @@ export struct HomePage {
     Api.getHomeSearch().then(homesearchbean=>{
       this.homeSearchBeanData = homesearchbean
     })
+
+    this.refreshController
+      .setLoadMore(this.isLoadMore)
+      .setLanes(2)
+      .setCacheCount(Constants.CACHE_COUNT)
+      .setRefreshListener(this.refresh.bind(this))
+      .setLoadMoreListener(this.loadMore.bind(this))
   }
 
   build() {
@@ -184,6 +184,7 @@ export struct HomePage {
         this.homePage++
         this.homeData.pushDataAll(response.item)
 
+        // 没有更多数据时，isLoadMore设置为false，隐藏加载图标
         if (!Utils.isNonNull(response.item)) {
           this.isLoadMore = false
         }
