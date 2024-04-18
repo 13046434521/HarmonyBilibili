@@ -5,9 +5,9 @@ import { HomeSearchBean } from '../../bean/HomeSearchBean';
 import { SearchView } from '../../component/HomeSearch';
 import { Utils } from '../../Utils/Utils';
 import { HomeData } from '../../datasource/HomeData';
-import Constants from '../../common/Constants';
-import { SwipeRefreshList } from '../../../../../../Loading/src/main/ets/pages/SwipeRefreshList';
 import { PageManager } from '../../common/PageManager';
+import { RefreshController, RefreshList, RefreshListController } from '../../common/RefreshList';
+import Constants from '../../common/Constants';
 
 @Component
 export struct HomePage {
@@ -16,13 +16,13 @@ export struct HomePage {
   @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
   @State homePage: number = 0
   @State isRefreshing: boolean = false
-
+  @State isLoadMore: boolean = true
   @State loginIcon:string = ''
   @StorageLink('isLogin') isLogin:boolean = false
   @StorageLink('login_img_url') vipImageUrl :string = ''
-  @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   onLoginClick:()=>void
   @State homeBeanItem:HomeBeanItem[] =[]
+  refreshController:RefreshController = new RefreshListController(this.isRefreshing,this.isLoadMore,2,Constants.CACHE_COUNT,this.refresh.bind(this),this.loadMore.bind(this))
   aboutToAppear(){
     if (router.getParams()!==undefined){
       // 主页数据
@@ -37,23 +37,21 @@ export struct HomePage {
   }
 
   build() {
-    Row() {
-      Column() {
-        this.HomeHeader()
-        // this.RefreshList()
-        this.Refresh()
-      }
-      .width('100%')
+    Column() {
+      this.HomeHeader()
+      RefreshList({listItem:this.listItem.bind(this),refreshController:this.refreshController}).width('100%')
+        .height('100%')
+        .layoutWeight(1)
+        .backgroundColor($r('app.color.bilibili_background_grey'))
     }
+    .width('100%')
     .height('100%')
-    .backgroundColor(this.backgroundColors)
   }
 
   @Builder HomeItem(homeBeanItem:HomeBeanItem){
     Column(){
       Stack(){
         Image(homeBeanItem.pic)
-        // Image('https://wx3.sinaimg.cn/orj480/72f858d3gy1hnke6by8zij20u00gwn2x.jpg')
           .width('100%')
           .objectFit(ImageFit.Cover)
           .borderRadius({topLeft:5,topRight:5})
@@ -106,10 +104,6 @@ export struct HomePage {
         .margin({top:'1%',bottom:'1%'})
 
       Row(){
-        // Image($r('app.media.icon_playlist_upper'))
-        //   .height('70%')
-        //   .margin({left:'1%'})
-        //   .objectFit(ImageFit.Cover)
         Image(homeBeanItem.owner.face)
           .height('70%')
           .margin({left:'1%'})
@@ -166,73 +160,38 @@ export struct HomePage {
     .margin({top:0,bottom:0})
     .justifyContent(FlexAlign.SpaceEvenly)
   }
-  @Builder RefreshList(){
-    SwipeRefreshList({data:this.homeBeanItem,refresh:()=>{
-      Api.getHomePages(this.homePage+1).then(response=>{
-        if (response.item!=undefined) {
-          this.homePage++
-          this.homeBeanItem =  this.homeBeanItem.concat(response.item)
-        }
-      }).catch(err=>{
-        Utils.Toast("主页面"+err)
-      })
-    },itemChildLayout:this.HomeItem.bind(this)})
-      .width('100%')
-      .layoutWeight(1)
-  }
-  @Builder Refresh(){
-    Refresh({refreshing :$$this.isRefreshing,offset:10,friction:50}){
-      List(){
-        ListItemGroup({footer:this.ListFooter()}){
-          LazyForEach(this.homeData,(item:HomeBeanItem,index)=>{
-            ListItem(){
-              this.HomeItem(item)
-            }
-            .margin("1.5%")
 
-          },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)
-        }
-      }.lanes(2)
-
-      .sticky(StickyStyle.None)
-      .edgeEffect(EdgeEffect.Fade)
-      .cachedCount(Constants.CACHE_COUNT)
-      .onReachEnd(()=>{
-        Api.getHomePages(this.homePage+1).then(response=>{
-          if (response.item!=undefined) {
-            this.homePage++
-            this.homeData.pushDataAll(response.item)
-          }
-        }).catch(err=>{
-          Utils.Toast("主页面"+err)
-        })
-      })
-    }.onRefreshing(()=>{
-      Api.getHomePages(this.homePage+1).then(response=>{
-        if (response.item!=undefined) {
-          this.homeData.addDataAll(response.item)
-          this.homePage++
-        }
-      }).finally(()=>{
-        this.isRefreshing = false
-      })
-    }).layoutWeight(1)
-    .backgroundColor($r('app.color.bilibili_background_grey'))
-  }
   @Builder
-  ListFooter(){
-    Column(){
-      Blank().layoutWeight(2)
-      LoadingProgress().color($r('app.color.bilibili_theme'))
-        .height("50%")
-      Blank().layoutWeight(1)
-      Text('加载更多......').fontColor($r('app.color.bilibili_text_grey_light'))
-        .height("30%")
-      Blank().layoutWeight(2)
-    }.alignItems(HorizontalAlign.Center)
-    .justifyContent(FlexAlign.Center)
-    .height("10%")
-    .width('100%')
+  listItem(){
+    LazyForEach(this.homeData,(item:HomeBeanItem,index)=>{
+      Column(){
+        this.HomeItem(item)
+      }
+      .margin("1.5%")
+
+    },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)
+  }
+
+  loadMore(){
+    Api.getHomePages(this.homePage+1).then(response=>{
+      if (response.item!=undefined) {
+        this.homePage++
+        this.homeData.pushDataAll(response.item)
+
+        if (!Utils.isNonNull(response.item)) {
+          this.isLoadMore = false
+        }
+      }
+    })
+  }
+
+  refresh(){
+    Api.getHomePages(this.homePage+1).then(response=>{
+      if (response.item!=undefined) {
+        this.homeData.addDataAll(response.item)
+        this.homePage++
+      }
+    })
   }
 }
 

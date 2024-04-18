@@ -1,6 +1,7 @@
 import prompt from '@ohos.prompt'
 import promptAction from '@ohos.promptAction';
 import { Loading } from './Loading';
+import { RefreshList } from './RefreshList';
 import { SwipeRefreshLayout } from './SwipeRefreshLayout';
 
 
@@ -15,13 +16,16 @@ PersistentStorage.PersistProp('aProp', 47);
 
   build() {
     Column(){
-      SwipeRefreshLayout({refresh:()=>{
+/*      SwipeRefreshLayout({refresh:()=>{
         promptAction.showToast({message:'刷新了'})
       }}){
         Text("ceshi")
           .borderWidth(2)
           .borderColor(Color.Orange)
-      }
+      }*/
+
+
+      RefreshList()
     }
   }
 }

@@ -157,6 +157,9 @@ export class Utils {
   // }
 
   static isNonNull(content:any){
+    if (content instanceof Array) {
+      return content.length !== 0
+    }
     let temp = (content === undefined || content ===null || content == '')
     return !temp
   }

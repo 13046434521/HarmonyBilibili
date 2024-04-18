@@ -18,10 +18,12 @@ export struct SwipeRefreshLayout{
         this.childLayout()
       }.width('100%')
       .height('100%')
-
-      Image($r('app.media.ic_succeed_refresh'))
+      LoadingProgress()
+        .color(Color.Orange)
+      Image($r('app.media.icon_refresh'))
         .width(this.progressWidth)
         .aspectRatio(1)
+        .fillColor(Color.Orange)
         .objectFit(ImageFit.Contain)
         .position({x:this.progressX,y:this.progressY})
         .rotate({angle:this.angle})
@@ -60,7 +62,7 @@ export struct SwipeRefreshLayout{
           return
         }
         let time = setInterval(()=>{
-          this.angle += 25
+          this.angle -= 25
         },16)
 
         if (this.refresh!==undefined) {

@@ -1,5 +1,5 @@
 @Builder
-export default  function  ListFooter(){
+export default function  ListFooter(){
   Column(){
     Blank().layoutWeight(2)
     LoadingProgress().color($r('app.color.bilibili_theme'))

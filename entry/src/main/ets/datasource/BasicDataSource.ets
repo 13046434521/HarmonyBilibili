@@ -24,7 +24,7 @@ export class BasicDataSource<T> implements IDataSource  {
   public pushDataAll(data: T[]): void {
     if (data!=null) {
       this.dataArray = this.dataArray.concat(data)
-      this.notifyDataAdd(this.dataArray.length - 1)
+      this.notifyDataReload()
     }
   }
 
@@ -39,12 +39,10 @@ export class BasicDataSource<T> implements IDataSource  {
   }
   public reloadData(data: T[]): void {
     this.dataArray =[]
-    this.listeners =[]
     this.addDataAll(data)
   }
   public cleanData(): void {
     this.dataArray =[]
-    this.listeners =[]
     this.notifyDataReload()
   }
 
