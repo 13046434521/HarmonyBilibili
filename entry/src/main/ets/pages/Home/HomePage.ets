@@ -11,9 +11,8 @@ import Constants from '../../common/Constants';
 
 @Component
 export struct HomePage {
-  @State message: string = 'Home'
-  @State homeData:HomeData = new HomeData()
   @State homeSearchBeanData:HomeSearchBean = new HomeSearchBean()
+  @State homeData:HomeData = new HomeData()
   @State homePage: number = 0
   @State isRefreshing: boolean = false
   @State isLoadMore: boolean = true
@@ -22,7 +21,14 @@ export struct HomePage {
   @StorageLink('login_img_url') vipImageUrl :string = ''
   onLoginClick:()=>void
   @State homeBeanItem:HomeBeanItem[] =[]
-  refreshController:RefreshController = new RefreshListController(this.isRefreshing,this.isLoadMore,2,Constants.CACHE_COUNT,this.refresh.bind(this),this.loadMore.bind(this))
+
+  refreshController:RefreshListController = new RefreshListController()
+    .setLoadMore(this.isLoadMore)
+    .setLanes(2)
+    .setCacheCount(Constants.CACHE_COUNT)
+    .setRefreshListener(this.refresh.bind(this))
+    .setLoadMoreListener(this.loadMore.bind(this))
+
   aboutToAppear(){
     if (router.getParams()!==undefined){
       // 主页数据

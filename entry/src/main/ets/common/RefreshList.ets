@@ -1,7 +1,7 @@
 @Component
 export struct RefreshList{
   @BuilderParam listItem:()=>LazyForEachInterface|ForEachInterface
-  @Prop refreshController:RefreshListController
+  @Prop refreshController:RefreshController
   build(){
     Refresh({ refreshing: $$this.refreshController.isRefreshing, offset: 0, friction: 120 }) {
       Column(){
@@ -61,13 +61,38 @@ export class RefreshListController implements RefreshController{
   lanes: number
   cacheCount: number
 
-  constructor(refreshing:boolean ,loadMore:boolean,lanes:number=1,cacheCount:number,refreshListener:()=>void,loadMoreListener:()=>void) {
+/*  constructor(refreshing:boolean ,loadMore:boolean,lanes:number=1,cacheCount:number,refreshListener:()=>void,loadMoreListener:()=>void) {
     this.isRefreshing = refreshing
     this.isLoadMore = loadMore
     this.lanes = lanes
     this.cacheCount=cacheCount
     this.onLoadMoreListener = loadMoreListener
     this.onRefreshListener = refreshListener
+  }*/
+
+  setRefresh(refresh:boolean){
+    this.isRefreshing = refresh
+    return this
+  }
+  setLoadMore(loadMore:boolean){
+    this.isLoadMore = loadMore
+    return this
+  }
+  setRefreshListener(refreshListener:() => void){
+    this.onRefreshListener = refreshListener
+    return this
+  }
+  setLoadMoreListener(loadMoreListener:() => void){
+    this.onLoadMoreListener = loadMoreListener
+    return this
+  }
+  setLanes(lanes:number){
+    this.lanes = lanes
+    return this
+  }
+  setCacheCount(cacheCount:number){
+    this.cacheCount = cacheCount
+    return this
   }
 }
 
