@@ -226,8 +226,6 @@ struct VideoPlayer {
     .onClick(() => {
       this.isShow = !this.isShow
     })
-    .borderColor(Color.Orange)
-    .borderWidth(2)
   }
 
   @Builder
@@ -314,4 +312,3 @@ function btnImageStyle() {
   .aspectRatio(1)
   .margin(16)
 }
-

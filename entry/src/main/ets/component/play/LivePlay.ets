@@ -50,9 +50,6 @@ export struct LivePlay {
         this.context = context
       }
     }).width('100%')
-      .height('100%')
-      .borderColor(Color.Orange)
-      .borderWidth(2)
   }
 }
 
@@ -63,7 +60,6 @@ struct VideoPlayer {
   @State isVolumeBrightShow: boolean = false
   @State volumeBrightStatus: VolumeBrightStatus = VolumeBrightStatus.VOLUME
   @State volumeBrightValue: number = 0
-  @State isFullScreen:boolean = false
   @ObjectLink videoModel: VideoModel
   videoController: VideoController
   mOnPlayerCompleteListener: (context: object) => void
@@ -85,7 +81,7 @@ struct VideoPlayer {
             Image($r('app.media.ic_common_back_white')).onClick(() => {
               if (this.videoModel.orientation === window.Orientation.LANDSCAPE){
                 this.videoController.changeOrientation()
-                this.isFullScreen = false
+
               }else{
                 router.back()
               }
@@ -190,19 +186,14 @@ struct VideoPlayer {
               .objectFit(ImageFit.Cover)
               .height('100%')
               .aspectRatio(1)
-              .margin({right:8})
+              .margin({right:4})
               .onClick(() => {
                 this.videoController.changeOrientation()
-                if (this.videoModel.orientation === window.Orientation.LANDSCAPE) {
-                  this.isFullScreen = true
-                } else {
-                  this.isFullScreen = false
-                }
               })
           }
           .width('100%')
           .aspectRatio(16)
-          .justifyContent(FlexAlign.SpaceBetween)
+          .justifyContent(FlexAlign.End)
           .alignItems(VerticalAlign.Center)
           .linearGradient({
             colors: [["#00000000", 0.0], ["#aa000000", 1.0]]
@@ -230,7 +221,6 @@ struct VideoPlayer {
     }
     .alignContent(Alignment.BottomStart)
     .size({width:'100%',height:'100%'})
-    // .aspectRatio(this.isFullScreen ?Constants.WINDOW_HEIGHT / Constants.WINDOW_WIDTH : this.videoAspectRatio)
     .backgroundColor(Color.Black)
     .onClick(() => {
       this.isShow = !this.isShow
@@ -287,6 +277,7 @@ struct VideoPlayer {
     }
     .justifyContent(FlexAlign.Start)
     .height('100%')
+    .layoutWeight(1)
   }
 
   @Builder
@@ -302,37 +293,13 @@ struct VideoPlayer {
         this.videoController.release('XComponent:onDestroy')
       })
       .width(this.videoModel.xComponentWidth)
-      .height(this.videoModel.xComponentHeight)
+        //该组建用来显示视频只用保持视频的宽高比就行了
       .aspectRatio(this.videoModel.videoAspectRatio)
-  }
-
-  @Styles
-  gestureBrightness(){
-    .gesture(GestureGroup(GestureMode.Exclusive,
-      PanGesture({direction:PanDirection.Vertical})
-        .onActionStart((event?:GestureEvent)=>{
-          // 向上为负，向下为正，以当前点为起始点
-          event.offsetY
-          console.log('Gesture:onActionStart:'+ event.offsetY)
-        })
-        .onActionUpdate((event?:GestureEvent)=>{
-          // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
-          let temp = this.videoController.videoModel.volume -event.offsetY/15
-          this.videoController.adjustVolume(temp)
-          console.log('Gesture:onActionUpdate:'+ event.offsetY)
-        }).onActionEnd((event?:GestureEvent)=>{
-        this.videoController.getVolume().then(volume=>{
-          this.videoModel.volume = volume
-        })
-        console.log('Gesture:onActionEnd:'+ event.offsetY)
-      })
-    ))
   }
 
   changePortrait(){
     if (this.videoModel.orientation === window.Orientation.LANDSCAPE){
       this.videoController.changeOrientation()
-      this.isFullScreen = false
     }
   }
 }
@@ -344,4 +311,3 @@ function btnImageStyle() {
   .aspectRatio(1)
   .margin(16)
 }
-
