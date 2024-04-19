@@ -6,6 +6,7 @@ import { VideoPlay } from '../../component/play/VideoPlay'
 import  ApiLiving  from '../../net/ApiLiving'
 import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 import window from '@ohos.window'
+import { LivePlay } from '../../component/play/LivePlay'
 
 @Entry
 @Component
@@ -29,7 +30,7 @@ struct LivePage {
 
   build() {
     Column() {
-      VideoPlay({videoController:this.videoController,url:this.url})
+      LivePlay({videoController:this.videoController,url:this.url})
         .layoutWeight(1)
     }.backgroundColor(this.backgroundColors)
     .width('100%')

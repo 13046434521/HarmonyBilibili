@@ -12,7 +12,7 @@ import { toast } from '../../Utils/ToastUtils'
 import { showDialog } from '../../Utils/DialogUtil'
 
 @Component
-export struct VideoPlay {
+export struct LivePlay {
   videoController: VideoController
   @Prop @Watch('initPlay') url: string
   @State @Watch('initPlay') context: object = undefined
@@ -26,7 +26,7 @@ export struct VideoPlay {
       Utils.Toast("亮度："+ bright +"  声音："+this.videoController.videoModel.volume)
       console.log('app_log:VideoPlay:创建了：亮度：'+ bright +"  声音："+this.videoController.videoModel.volume)
     })
-}
+  }
 
   aboutToDisappear() {
     console.log('app_log:VideoPlay:销毁了')
@@ -190,7 +190,7 @@ struct VideoPlayer {
               .objectFit(ImageFit.Cover)
               .height('100%')
               .aspectRatio(1)
-              .margin({right:4})
+              .margin({right:8})
               .onClick(() => {
                 this.videoController.changeOrientation()
                 if (this.videoModel.orientation === window.Orientation.LANDSCAPE) {
@@ -202,7 +202,7 @@ struct VideoPlayer {
           }
           .width('100%')
           .aspectRatio(16)
-          .justifyContent(FlexAlign.End)
+          .justifyContent(FlexAlign.SpaceBetween)
           .alignItems(VerticalAlign.Center)
           .linearGradient({
             colors: [["#00000000", 0.0], ["#aa000000", 1.0]]
@@ -287,7 +287,6 @@ struct VideoPlayer {
     }
     .justifyContent(FlexAlign.Start)
     .height('100%')
-    .layoutWeight(1)
   }
 
   @Builder
@@ -297,8 +296,8 @@ struct VideoPlayer {
       type: 'surface',
       libraryname: "ijkplayer_napi",
     }).onLoad((context) => {
-        this.mOnPlayerCompleteListener(context)
-      })
+      this.mOnPlayerCompleteListener(context)
+    })
       .onDestroy(() => {
         this.videoController.release('XComponent:onDestroy')
       })

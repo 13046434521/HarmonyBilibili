@@ -1,6 +1,6 @@
 @Component
 @Preview
-export struct VolumeBrightness {
+export struct VolumeBrightnessProgress {
   @Link value: number
   @Prop volumeBrightStatus: VolumeBrightStatus
 
