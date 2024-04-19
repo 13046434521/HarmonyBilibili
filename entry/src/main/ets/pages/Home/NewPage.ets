@@ -65,19 +65,3 @@ export struct NewPage {
      })
   }
 }
-
-@Component
-struct TestCompoment{
-  aboutToAppear(){
-    showDialog('TestCompoment','aboutToAppear:创建组件')
-  }
-  aboutToDisappear(){
-    showDialog('TestCompoment','aboutToDisappear:销毁组件')
-  }
-
-
-  build(){
-    Row()
-      .width(300).height(300).backgroundColor(Color.Pink)
-  }
-}

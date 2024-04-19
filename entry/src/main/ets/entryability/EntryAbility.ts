@@ -27,6 +27,9 @@ export default class EntryAbility extends UIAbility {
       Constants.WINDOW_HEIGHT = rect.height
       Constants.WINDOW_WIDTH = rect.width
 
+       Constants.WINDOW_ASPECT_RATIO_LANDSCAPE = Constants.WINDOW_HEIGHT/Constants.WINDOW_WIDTH
+      // Constants.WINDOW_ASPECT_RATIO_PORTRAIT = Constants.WINDOW_HEIGHT/Constants.WINDOW_WIDTH
+
       if (err.code) {
         console.error('Failed to obtain the main window. Cause: ' + JSON.stringify(err));
         return;

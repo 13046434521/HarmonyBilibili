@@ -3,8 +3,8 @@ import StorageManager from './StorageManager'
 class Constants{
   WINDOW_HEIGHT = -1
   WINDOW_WIDTH = -1
-  WINDOW_
-
+  WINDOW_ASPECT_RATIO_PORTRAIT = 16/9 //竖屏时，比例就是16:9
+  WINDOW_ASPECT_RATIO_LANDSCAPE = 1  // 横屏时，比例改为 屏幕的宽高比
   CACHE_COUNT = 4
   // QN:number = 64
   QN:number = 116

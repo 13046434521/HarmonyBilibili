@@ -39,7 +39,7 @@ export default  class VideoModel {
   timeTotal: string = '0:00'
   currentTime: string = '0:00'
   context:object =null
-  orientation:window.Orientation = null
+  orientation:window.Orientation = window.Orientation.PORTRAIT
   // 各种Listener
   mOnVideoSizeChangedListener: OnVideoSizeChangedListener = null
   mOnPreparedListener: OnPreparedListener = null
