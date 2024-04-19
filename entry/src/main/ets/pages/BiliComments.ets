@@ -1,16 +1,12 @@
 import CommentsViewModel from '../viewModel/CommentsViewModel'
-import router from '@ohos.router'
-import { RouterConstants } from '../common/PageManager'
 import { Utils } from '../Utils/Utils'
-import { showDialog } from '../Utils/DialogUtil'
-import CommentsInfo, { CommentsReply } from '../bean/CommentsInfo'
 import { LoadingStatus } from '../common/LoadingStatus'
 import { Loading, LoadingType } from '../component/Loading'
 import { LoadingData } from '../component/LoadingData'
 import { CommentsData } from '../datasource/CommentsData'
-import { VideoData } from '../datasource/VideoData'
 import { CommentsItem } from '../component/item/CommentsItem'
 import Constants from '../common/Constants'
+import { RefreshList, RefreshListController } from '../common/RefreshList'
 
 @Component
 export struct BiliComments {
@@ -19,29 +15,27 @@ export struct BiliComments {
   commentType: 2 | 3 = 3
   @State loadingStatus: LoadingStatus = LoadingStatus.Loading
   @State err: string = ''
-  // @State commentsData: VideoData = new VideoData()
+  @State page:number = 1
   @State commentsData:CommentsData = new CommentsData()
+  @State refreshController:RefreshListController = new RefreshListController()
   aboutToAppear(){
-    this.getCommentsInfo()
+    this.refreshController
+      .setCacheCount(Constants.CACHE_COUNT)
+      .setRefreshListener(this.refresh.bind(this))
+      .setLoadMoreListener(this.load.bind(this))
+
+    this.refresh()
   }
 
   build() {
-    LoadingData({ loadingStatus: this.loadingStatus, page: this.Comments.bind(this), type: LoadingType.PAGE, extraFailure: this.err, reload: this.getCommentsInfo.bind(this) })
+    LoadingData({ loadingStatus: this.loadingStatus, page: this.Comments.bind(this), type: LoadingType.PAGE, extraFailure: this.err, reload: this.refresh.bind(this) })
   }
 
   @Builder
   Comments() {
-    List() {
-      ListItemGroup({ header: this.title()}) {
-        LazyForEach(this.commentsData, (reply) => {
-          ListItem() {
-            CommentsItem({commentsReply:reply})
-          }
-        },(reply,index)=>JSON.stringify(reply)+index)
-      }
-    }.height('100%')
+    RefreshList({refreshController:this.refreshController,title:this.title.bind(this),listItem:this.listItem.bind(this)})
+      .layoutWeight(1)
     .width('100%')
-    .cachedCount(Constants.CACHE_COUNT)
   }
 
   @Builder
@@ -60,12 +54,27 @@ export struct BiliComments {
     .margin({bottom:'2%'})
   }
 
-  getCommentsInfo() {
-    this.commentViewModel.commentsInfo(this.aid, this.commentType)
+  @Builder
+  listItem(){
+    LazyForEach(this.commentsData, (reply) => {
+      Column() {
+        CommentsItem({commentsReply:reply})
+      }
+    },(reply,index)=>JSON.stringify(reply)+index)
+  }
+
+  refresh(){
+    this.page = 1
+    this.commentViewModel.commentsInfo(this.aid, this.commentType,this.page)
       .then((commentInfo) => {
-/*        if (Utils.isNonNull(commentInfo.top.upper)) {
-          this.commentsData.pushData(commentInfo.top.upper)
-        }*/
+        // 刷新成功，清空已有数据
+        if (Utils.isNonNull(commentInfo.top_replies)||Utils.isNonNull(commentInfo.replies)) {
+          this.commentsData.cleanData()
+        }else{
+          // 没有数据，隐藏loadmore
+          this.refreshController.isLoadMore = false
+        }
+
         if (Utils.isNonNull(commentInfo.top_replies)) {
           this.commentsData.pushDataAll(commentInfo.top_replies)
         }
@@ -77,6 +86,28 @@ export struct BiliComments {
       }).catch(err => {
       this.err = err
       this.loadingStatus = LoadingStatus.LoadingOther
+    })
+  }
+
+  load(){
+    this.page = 1
+    this.commentViewModel.commentsInfo(this.aid, this.commentType,this.page)
+      .then((commentInfo) => {
+
+        if (!Utils.isNonNull(commentInfo.top_replies) && !Utils.isNonNull(commentInfo.replies)) {
+          // 两个都为null时，没有数据，隐藏loadmore
+          this.refreshController.isLoadMore = false
+        }else{
+          // 两个有一个有数据，加载数据
+          if (Utils.isNonNull(commentInfo.top_replies)) {
+            this.commentsData.pushDataAll(commentInfo.top_replies)
+          }
+          if (Utils.isNonNull(commentInfo.replies)) {
+            this.commentsData.pushDataAll(commentInfo.replies)
+          }
+        }
+      }).catch(err => {
+      this.err = err
     })
   }
 }

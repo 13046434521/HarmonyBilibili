@@ -2,7 +2,7 @@ import router from '@ohos.router'
 import { LiveBean, LiveUrlBean } from '../../bean/Live/LiveBean'
 import Constants from '../../common/Constants'
 import { RouterConstants } from '../../common/PageManager'
-import { VideoPlay } from '../../component/VideoPlay'
+import { VideoPlay } from '../../component/play/VideoPlay'
 import  ApiLiving  from '../../net/ApiLiving'
 import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 import window from '@ohos.window'
@@ -19,12 +19,14 @@ struct LivePage {
     if (router.getParams()!=undefined) {
       this.roomId = router.getParams()[RouterConstants.LIVE_ID]
     }
+    this.videoController.isShowAttachments = false
 
     ApiLiving.getLive(this.roomId).then((item:LiveBean)=>{
       this.liveUrl = item.durl[0]
       this.url = this.liveUrl.url
     })
   }
+
   build() {
     Column() {
       VideoPlay({videoController:this.videoController,url:this.url})

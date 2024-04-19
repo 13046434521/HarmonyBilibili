@@ -24,6 +24,7 @@ export default  class VideoModel {
   xComponentId = "XID"+ new Date().valueOf()
   bvid: string
   cid: number
+  isShowAttachments = true
   videoWidth:number=0 // 视频宽高
   videoHeight: number = 0// 视频宽高
   xComponentWidth = '100%' //xComponent的宽，根据VIDEO_ASPECT_RATIO的值来确定

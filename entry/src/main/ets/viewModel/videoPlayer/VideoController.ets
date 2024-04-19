@@ -15,6 +15,9 @@ import { showDialog } from '../../Utils/DialogUtil'
 export class VideoController implements IPlayer {
   videoModel: VideoModel = new VideoModel()
   volumeManager = audio.getAudioManager().getVolumeManager();
+
+  isShowAttachments = true
+
   init(context: object) {
     console.log('app_log:init:'+this.getXComponentId())
     this.videoModel.context = context

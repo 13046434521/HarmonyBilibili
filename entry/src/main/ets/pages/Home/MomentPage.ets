@@ -1,7 +1,7 @@
 import Constants from '../../common/Constants'
 import { LoadingStatus } from '../../common/LoadingStatus'
 import { Loading } from '../../component/Loading'
-import { VolumeBrightness } from '../../component/VolumeBrightness'
+import { VolumeBrightness } from '../../component/play/VolumeBrightness'
 import { Utils } from '../../Utils/Utils'
 
 @Component

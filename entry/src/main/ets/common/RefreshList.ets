@@ -1,14 +1,26 @@
 @Component
 export struct RefreshList{
   @BuilderParam listItem:()=>LazyForEachInterface|ForEachInterface
+  @BuilderParam title:()=> void = undefined
   @Prop refreshController:RefreshController
+
+  aboutToAppear(){
+
+  }
+
   build(){
     Refresh({ refreshing: $$this.refreshController.isRefreshing, offset: 0, friction: 50 }) {
       Column(){
         List(){
-          ListItemGroup({footer:this.Loading()}){
-            this.listItem()
-          }.width('100%')
+          if (this.title!==undefined){
+            ListItemGroup({header:this.title(),footer:this.Loading()}){
+              this.listItem()
+            }.width('100%')
+          }else{
+            ListItemGroup({footer:this.Loading()}){
+              this.listItem()
+            }.width('100%')
+          }
         }.alignListItem(ListItemAlign.Start)
         .lanes(this.refreshController.lanes)
         .cachedCount(this.refreshController.cacheCount)

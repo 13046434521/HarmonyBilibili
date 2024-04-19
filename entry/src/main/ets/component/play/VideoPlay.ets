@@ -1,15 +1,15 @@
-import { PlayStatus } from '../common/PlayStatus'
-import VideoModel from '../viewModel/videoPlayer/VideoModel'
-import { VideoController } from '../viewModel/videoPlayer/VideoController'
-import { Loading } from './Loading'
+import { PlayStatus } from '../../common/PlayStatus'
+import VideoModel from '../../viewModel/videoPlayer/VideoModel'
+import { VideoController } from '../../viewModel/videoPlayer/VideoController'
+import { Loading } from '../Loading'
 import router from '@ohos.router'
-import Constants from '../common/Constants'
-import { Utils } from '../Utils/Utils'
+import Constants from '../../common/Constants'
+import { Utils } from '../../Utils/Utils'
 import window from '@ohos.window'
 import { VolumeBrightness, VolumeBrightStatus } from './VolumeBrightness'
-import { PageManager } from '../common/PageManager'
-import { toast } from '../Utils/ToastUtils'
-import { showDialog } from '../Utils/DialogUtil'
+import { PageManager } from '../../common/PageManager'
+import { toast } from '../../Utils/ToastUtils'
+import { showDialog } from '../../Utils/DialogUtil'
 
 @Component
 export struct VideoPlay {
@@ -57,7 +57,7 @@ export struct VideoPlay {
 struct VideoPlayer {
   @State videoAspectRatio: number = Constants.DEFAULT_ASPECT_RATIO
   videoController: VideoController
-  @ObjectLink videoModel: VideoModel
+  @Prop videoModel: VideoModel
   mOnPlayerCompleteListener: (context: object) => void
   @State isShow: boolean = true
 
@@ -69,6 +69,7 @@ struct VideoPlayer {
 
   build() {
     Stack() {
+      // 视频数据显示界面
       Column() {
         this.XComponentPlayer()
       }.alignItems(HorizontalAlign.Center)
@@ -76,139 +77,144 @@ struct VideoPlayer {
       .width('100%')
       .height('100%')
 
-      Column() {
-        Row() {
-          Image($r('app.media.ic_common_back_white')).onClick(() => {
-            if (this.videoModel.orientation === window.Orientation.LANDSCAPE){
-              this.videoController.changeOrientation()
-              this.isFullScreen = false
-            }else{
-              router.back()
-            }
-          }).btnImageStyle()
+      // 音量，亮度控制界面
+      Row() {
+        Blank("亮度")
+          .layoutWeight(1)
+          .gesture(GestureGroup(GestureMode.Exclusive,
+            PanGesture({ direction: PanDirection.Vertical })
+              .onActionStart((event?: GestureEvent) => {
+                // 向上为负，向下为正，以当前点为起始点
+                this.volumeBrightStatus = VolumeBrightStatus.BRIGHTNESS
+                this.volumeBrightValue = this.videoModel.brightness * 100
+                this.isVolumeBrightShow = true
+                console.log('Gesture:onActionStart:' + event.offsetY)
+              })
+              .onActionUpdate((event?: GestureEvent) => {
+                // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
+                let temp = this.videoController.videoModel.brightness - event.offsetY / 100
+                this.videoController.adjustBrightness(temp)
+                this.volumeBrightValue = temp * 100
+                console.log('Gesture:onActionUpdate:' + event.offsetY)
+              }).onActionEnd((event?: GestureEvent) => {
 
-          Image($r('app.media.ic_tab_bar_home')).onClick(() => {
-            this.changePortrait()
-            PageManager.routerIndex()
-          }).btnImageStyle()
-            .fillColor($r('app.color.bilibili_background_white'))
+              this.videoController.getBright().then(brightness => {
+                this.videoModel.brightness = brightness
+                this.videoModel.volume = brightness
+                this.isVolumeBrightShow = false
+              })
 
-          Image($r('app.media.icon_replay')).onClick(() => {
-            this.videoController.reset()
-          }).btnImageStyle()
+              console.log('Gesture:onActionEnd:' + event.offsetY)
+            })
+          ))
+        Stack({ alignContent: Alignment.Center }) {
+          if (this.videoModel.state <= PlayStatus.LOADING) {
+            Loading()
+          }
+          if (this.isVolumeBrightShow) {
+            VolumeBrightness({
+              value: this.volumeBrightValue,
+              volumeBrightStatus: this.volumeBrightStatus
+            })
+              .height(60)
+              .width(60)
+          }
+        }.layoutWeight(1)
+        .width('100%')
+
+
+        Blank('声音')
+          .layoutWeight(1)
+
+          .gesture(GestureGroup(GestureMode.Exclusive,
+            PanGesture({ direction: PanDirection.Vertical })
+              .onActionStart((event?: GestureEvent) => {
+                // 向上为负，向下为正，以当前点为起始点
+                // 向上为负，向下为正，以当前点为起始点
+                this.volumeBrightStatus = VolumeBrightStatus.VOLUME
+                this.volumeBrightValue = this.videoModel.volume / 15 * 100
+                this.isVolumeBrightShow = true
+                console.log('Gesture:onActionStart:' + event.offsetY)
+              })
+              .onActionUpdate((event?: GestureEvent) => {
+                // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
+                let temp = this.videoController.videoModel.volume - event.offsetY * 15 / 100
+                this.videoController.adjustVolume(temp)
+                this.volumeBrightValue = temp * 100 / 15
+                console.log('Gesture:onActionUpdate:' + event.offsetY)
+              }).onActionEnd((event?: GestureEvent) => {
+              this.videoController.getVolume().then(volume => {
+                this.videoModel.volume = volume
+                this.isVolumeBrightShow = false
+              })
+              console.log('Gesture:onActionEnd:' + event.offsetY)
+            })
+          ))
+      }.height('100%')
+      .layoutWeight(1)
+
+      // 配件界面（各种ui以及进度条等....）
+      if (this.videoController.isShowAttachments){
+        Column() {
+          Row() {
+            Image($r('app.media.ic_common_back_white')).onClick(() => {
+              if (this.videoModel.orientation === window.Orientation.LANDSCAPE){
+                this.videoController.changeOrientation()
+                this.isFullScreen = false
+              }else{
+                router.back()
+              }
+            }).btnImageStyle()
+
+            Image($r('app.media.ic_tab_bar_home')).onClick(() => {
+              this.changePortrait()
+              PageManager.routerIndex()
+            }).btnImageStyle()
+              .fillColor($r('app.color.bilibili_background_white'))
+
+            Image($r('app.media.icon_replay')).onClick(() => {
+              this.videoController.reset()
+            }).btnImageStyle()
+
+          }.width('100%')
+          .aspectRatio(16)
+          .linearGradient({
+            colors: [["#aa000000", 0.0], ["#00000000", 1.0]]
+          })
+          .visibility(this.isShow ? Visibility.Visible : Visibility.None)
+
+          Blank().layoutWeight(1)
+
+          Row() {
+            this.VideoSlider()
+          }
+          .width('100%')
+          .aspectRatio(16)
+          .justifyContent(FlexAlign.SpaceBetween)
+          .alignItems(VerticalAlign.Center)
+          .linearGradient({
+            colors: [["#00000000", 0.0], ["#aa000000", 1.0]]
+          })
+          .visibility(this.isShow ? Visibility.Visible : Visibility.None)
+          .height('10%')
+
+
+          Row() {
+            Row()
+              .width(`${this.videoModel.sliderStep}%`)
+              .backgroundColor($r('app.color.bilibili_theme'))
+              .height('100%')
+          }
+          .justifyContent(FlexAlign.Start)
+          .alignItems(VerticalAlign.Bottom)
+          .width('100%')
+          .height('0.5%')
+          .backgroundColor($r('app.color.bilibili_text_grey_light'))
+          .visibility(!this.isShow ? Visibility.Visible : Visibility.None)
 
         }.width('100%')
-        .aspectRatio(16)
-        .linearGradient({
-          colors: [["#aa000000", 0.0], ["#00000000", 1.0]]
-        })
-        .visibility(this.isShow ? Visibility.Visible : Visibility.None)
-
-
-        Row() {
-          Blank("亮度")
-            .layoutWeight(1)
-            .gesture(GestureGroup(GestureMode.Exclusive,
-              PanGesture({ direction: PanDirection.Vertical })
-                .onActionStart((event?: GestureEvent) => {
-                  // 向上为负，向下为正，以当前点为起始点
-                  this.volumeBrightStatus = VolumeBrightStatus.BRIGHTNESS
-                  this.volumeBrightValue = this.videoModel.brightness * 100
-                  this.isVolumeBrightShow = true
-                  console.log('Gesture:onActionStart:' + event.offsetY)
-                })
-                .onActionUpdate((event?: GestureEvent) => {
-                  // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
-                  let temp = this.videoController.videoModel.brightness - event.offsetY / 100
-                  this.videoController.adjustBrightness(temp)
-                  this.volumeBrightValue = temp * 100
-                  console.log('Gesture:onActionUpdate:' + event.offsetY)
-                }).onActionEnd((event?: GestureEvent) => {
-
-                this.videoController.getBright().then(brightness => {
-                  this.videoModel.brightness = brightness
-                  this.videoModel.volume = brightness
-                  this.isVolumeBrightShow = false
-                })
-
-                console.log('Gesture:onActionEnd:' + event.offsetY)
-              })
-            ))
-          Stack({ alignContent: Alignment.Center }) {
-            if (this.videoModel.state <= PlayStatus.LOADING) {
-              Loading()
-            }
-            if (this.isVolumeBrightShow) {
-              VolumeBrightness({
-                value: this.volumeBrightValue,
-                volumeBrightStatus: this.volumeBrightStatus
-              })
-                .height(60)
-                .width(60)
-            }
-          }.layoutWeight(1)
-          .width('100%')
-
-
-          Blank('声音')
-            .layoutWeight(1)
-
-            .gesture(GestureGroup(GestureMode.Exclusive,
-              PanGesture({ direction: PanDirection.Vertical })
-                .onActionStart((event?: GestureEvent) => {
-                  // 向上为负，向下为正，以当前点为起始点
-                  // 向上为负，向下为正，以当前点为起始点
-                  this.volumeBrightStatus = VolumeBrightStatus.VOLUME
-                  this.volumeBrightValue = this.videoModel.volume / 15 * 100
-                  this.isVolumeBrightShow = true
-                  console.log('Gesture:onActionStart:' + event.offsetY)
-                })
-                .onActionUpdate((event?: GestureEvent) => {
-                  // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
-                  let temp = this.videoController.videoModel.volume - event.offsetY * 15 / 100
-                  this.videoController.adjustVolume(temp)
-                  this.volumeBrightValue = temp * 100 / 15
-                  console.log('Gesture:onActionUpdate:' + event.offsetY)
-                }).onActionEnd((event?: GestureEvent) => {
-                this.videoController.getVolume().then(volume => {
-                  this.videoModel.volume = volume
-                  this.isVolumeBrightShow = false
-                })
-                console.log('Gesture:onActionEnd:' + event.offsetY)
-              })
-            ))
-        }.height('100%')
-        .layoutWeight(1)
-
-        Row() {
-          this.VideoSlider()
-        }
-        .width('100%')
-        .aspectRatio(16)
-        .justifyContent(FlexAlign.SpaceBetween)
-        .alignItems(VerticalAlign.Center)
-        .linearGradient({
-          colors: [["#00000000", 0.0], ["#aa000000", 1.0]]
-        })
-        .visibility(this.isShow ? Visibility.Visible : Visibility.None)
-        .height('10%')
-
-
-        Row() {
-          Row()
-            .width(`${this.videoModel.sliderStep}%`)
-            .backgroundColor($r('app.color.bilibili_theme'))
-            .height('100%')
-        }
-        .justifyContent(FlexAlign.Start)
-        .alignItems(VerticalAlign.Bottom)
-        .width('100%')
-        .height('0.5%')
-        .backgroundColor($r('app.color.bilibili_text_grey_light'))
-        .visibility(!this.isShow ? Visibility.Visible : Visibility.None)
-
-      }.width('100%')
-      .height('100%')
+        .height('100%')
+      }
     }
     .alignContent(Alignment.BottomStart)
     .size({width:'100%'})
