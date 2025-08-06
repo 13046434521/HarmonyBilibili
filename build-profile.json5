@@ -49,17 +49,17 @@
     //          "name": "ijkplayer",
     //          "srcPath": "./ijkplayer"
     //        },
-    {
-      "name": "Loading",
-      "srcPath": "./Loading",
-      "targets": [
-        {
-          "name": "default",
-          "applyToProducts": [
-            "default"
-          ]
-        }
-      ]
-    }
+//    {
+//      "name": "ijkplayer",
+//      "srcPath": "./ijkplayer",
+//      "targets": [
+//        {
+//          "name": "default",
+//          "applyToProducts": [
+//            "default"
+//          ]
+//        }
+//      ]
+//    }
   ]
 }
