@@ -6,7 +6,7 @@ import { PageManager } from '../../common/PageManager'
 
 @Component
 export struct LiveRoomItem{
-  item:SearchLiveRoomBean
+  item?:SearchLiveRoomBean
 
   build(){
     this.liveRoomItem(this.item)
@@ -14,17 +14,17 @@ export struct LiveRoomItem{
 
 
 
-  @Builder liveRoomItem(item:SearchLiveRoomBean){
+  @Builder liveRoomItem(item?:SearchLiveRoomBean){
     Column(){
       Stack({alignContent:Alignment.BottomStart}){
-        Image('https:'+item.user_cover)
+        Image('https:'+item?.user_cover)
           .alt($r('app.media.ic_placeholder'))
           .width('100%')
           .objectFit(ImageFit.Cover)
           .borderRadius({topLeft:5,topRight:5})
           .aspectRatio(4/3)
 
-        Text(item.uname)
+        Text(item?.uname)
           .backgroundColor($r('app.color.bilibili_text_grey_bold'))
           .opacity(0.6)
           .borderRadius(2)
@@ -33,18 +33,18 @@ export struct LiveRoomItem{
           .textNameStyle()
       }
 
-      Text(Utils.upRichTextClear(item.title))
+      Text(Utils.upRichTextClear(item?.title))
         .fontSize(14)
         .fontColor($r('app.color.bilibili_text_black'))
         .textStyle()
 
-      Text(Utils.upRichTextClear(item.cate_name))
+      Text(Utils.upRichTextClear(item?.cate_name))
         .fontSize(13)
         .fontColor($r('app.color.bilibili_text_grey_bold'))
         .textStyle()
         .height('3%')
 
-      Text(item.live_time)
+      Text(item?.live_time)
         .fontSize(13)
         .fontColor($r('app.color.bilibili_text_grey_bold'))
         .textStyle()
@@ -54,7 +54,7 @@ export struct LiveRoomItem{
     .borderRadius({topLeft:5,topRight:5,bottomLeft:5,bottomRight:5 })
     .backgroundColor(Color.White)
     .onClick(event=>{
-      PageManager.routerLiving(item.roomid)
+      PageManager.routerLiving(item?.roomid)
     }).width('100%')
   }
 }

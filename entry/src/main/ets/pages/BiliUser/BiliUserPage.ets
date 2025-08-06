@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import { RouterConstants } from '../../common/PageManager'
+import { MID, RouterConstants } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
 import { AccInfo } from '../../bean/biliUser/AccInfo'
 import { UserInfoBean } from '../../bean/biliUser/UserInfoBean'
@@ -29,15 +29,15 @@ struct BiliUserPage {
   private tabController:TabsController = new TabsController()
 
   biliUserViewModel : BiliUserViewModel = new BiliUserViewModel(this.tabController)
-  @State accInfo: AccInfo = undefined
-  @State userInfo: UserInfoBean =undefined
-  @State userVideoBean: UserVideoBean = undefined
-  @State userBookmark: UserBookmark = undefined
-  @State userBangumi: UserBangumi = undefined
+  @State accInfo: AccInfo = new AccInfo()
+  @State userInfo: UserInfoBean = new UserInfoBean()
+  @State userVideoBean: UserVideoBean = new UserVideoBean()
+  @State userBookmark: UserBookmark = new UserBookmark()
+  @State userBangumi: UserBangumi = new UserBangumi()
   @State userCoinVideos: UserCoinVideo[] = new Array<UserCoinVideo>()
-  @State userUpvote: UserUpvote =undefined
-  @State userDynamic: UserDynamic = undefined
-  @State userCollection: UserCollection = undefined
+  @State userUpvote: UserUpvote = new UserUpvote()
+  @State userDynamic: UserDynamic = new UserDynamic()
+  @State userCollection?: UserCollection = undefined
 
   @State loadingStatus :LoadingStatus = LoadingStatus.Loading
   @State err:string = ''
@@ -47,7 +47,8 @@ struct BiliUserPage {
 
   aboutToAppear() {
     if (router.getParams() !== undefined) {
-      this.mid = router.getParams()[RouterConstants.MID]
+      let params = router.getParams() as MID
+      this.mid = params.mid
       this.biliUserViewModel.getUserAllData(this.mid)
         .then((value) => {
           this.accInfo = value[0]
@@ -67,8 +68,8 @@ struct BiliUserPage {
           console.error('BiliUser Page:处理过后的数据:'+"  video:"+this.userVideoBean+"  bookMark:"+this.userBookmark+"   bangumi:"+this.userBangumi)+
             "  coin:"+this.userCoinVideos+"  upvote:"+this.userUpvote+"  dynamic:"+this.userDynamic+"  collection:"+this.userCollection
           this.loadingStatus = LoadingStatus.LoadingSuccess
-        }).catch(err=>{
-          this.err = err
+        }).catch((err:Error)=>{
+          this.err = err.message
           this.loadingStatus = LoadingStatus.LoadingFailure
           console.error('BiliUser Page:err:'+ err)
 

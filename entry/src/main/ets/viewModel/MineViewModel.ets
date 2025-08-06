@@ -40,7 +40,7 @@ export class MineViewModel {
 export class MineItem {
   name: string
   img: Resource
-  url:string
+  url?:string
 
   constructor(name: string, img: Resource,url?:string) {
     this.name = name

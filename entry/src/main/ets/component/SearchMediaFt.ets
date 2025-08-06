@@ -41,9 +41,9 @@ export struct SearchMediaFt {
 
   @Builder
   mediaItem() {
-    LazyForEach(this.mediaFtData, (item, index) => {
+    LazyForEach(this.mediaFtData, (search:SearchMediaBean) => {
       Column(){
-        MediaFtItem({ item: item })
+        MediaFtItem({ item: search })
       }
     }, (item: SearchMediaBean) => JSON.stringify(item))
   }
@@ -58,7 +58,7 @@ export struct SearchMediaFt {
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
       }
-    }).catch(err=>{
+    }).catch((err:Error)=>{
       this.loadingStatus = LoadingStatus.LoadingFailure
       Utils.Toast("影视页面:"+err)
     })
@@ -72,7 +72,7 @@ export struct SearchMediaFt {
       }else{
         this.refreshController.isLoadMore = false
       }
-    }).catch(err=>{
+    }).catch((err:Error)=>{
       this.refreshController.isLoadMore = false
       Utils.Toast("影视页面:"+err)
     })

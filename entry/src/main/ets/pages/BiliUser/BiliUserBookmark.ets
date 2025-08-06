@@ -10,7 +10,7 @@ import { LoadingStatus } from '../../common/LoadingStatus'
 export struct BiliUserBookmark{
   mid:number = 0
   @Prop userBookmark: UserBookmark
-  biliUserViewModel:BiliUserViewModel
+  biliUserViewModel?:BiliUserViewModel
   userBookmarkData:UserBookmarkData = new UserBookmarkData()
   page:number = 1
   @State loadingStatus :LoadingStatus = LoadingStatus.LoadingOther
@@ -27,7 +27,7 @@ export struct BiliUserBookmark{
     LoadingData({loadingStatus:this.loadingStatus,page:this.BookmarkView.bind(this),reload:()=>{
       this.loadingStatus = LoadingStatus.Loading
       this.page= 1
-      this.biliUserViewModel.getUserBookmarksData(this.mid).then(item=>{
+      this.biliUserViewModel?.getUserBookmarksData(this.mid).then(item=>{
         if (Utils.isNonNull(item)) {
           this.page++
           this.userBookmarkData.reloadData(item.list)
@@ -36,7 +36,7 @@ export struct BiliUserBookmark{
           this.loadingStatus = LoadingStatus.LoadingOther
         }
 
-      }).catch(err=>{
+      }).catch((err:Error)=>{
         this.loadingStatus = LoadingStatus.LoadingFailure
       })
     }})
@@ -47,11 +47,11 @@ export struct BiliUserBookmark{
     List(){
       LazyForEach(this.userBookmarkData,(bookmark: UserBookmarkItem)=>{
         this.BookmarkItem(bookmark)
-      },(item,index)=>JSON.stringify(item)+index)
+      },(item:string,index)=>JSON.stringify(item)+index)
     }.lanes(1)
     .cachedCount(Constants.CACHE_COUNT)
     .onReachEnd(()=>{
-      this.biliUserViewModel.getUserBookmarksData(this.mid,this.page+1,20).then(item=>{
+      this.biliUserViewModel?.getUserBookmarksData(this.mid,this.page+1,20).then(item=>{
         this.page++
         this.userBookmarkData.pushDataAll(item.list)
       })

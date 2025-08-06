@@ -11,12 +11,12 @@ import { PageManager } from '../../common/PageManager'
 export struct BiliUserHome {
   mid: number = 0
   @State state: string = ''
-  userVideoBean: UserVideoBean = undefined
-  userBookmark: UserBookmark = undefined
-  userBangumi: UserBangumi = undefined
-  userCoinVideos: UserCoinVideo[] = undefined
-  userUpvote: UserUpvote = undefined
-  biliUserViewModel: BiliUserViewModel = undefined
+  userVideoBean: UserVideoBean = new UserVideoBean()
+  userBookmark: UserBookmark = new UserBookmark()
+  userBangumi: UserBangumi = new UserBangumi()
+  userCoinVideos: UserCoinVideo[] = new Array()
+  userUpvote: UserUpvote = new UserUpvote()
+  biliUserViewModel: BiliUserViewModel = new BiliUserViewModel()
   @State userVideoItems: UserVideoItem[] = []
   @State userBookmarkItems: UserBookmarkItem[] = []
   @State userBangumiItems: UserBangumiItem[] = []
@@ -139,7 +139,7 @@ export struct BiliUserHome {
           GridCol() {
             this.VideoItem(video.pic, video.title, video.length, video.play, video.video_review, video.bvid,video.aid)
           }
-        }, (item, index) => JSON.stringify(item) + index)
+        }, (item:string, index) => JSON.stringify(item) + index)
       }
     }
   }
@@ -245,7 +245,7 @@ export struct BiliUserHome {
           GridCol() {
             this.BookmarkItem(bookmark)
           }
-        }, (item, index) => JSON.stringify(item) + index)
+        }, (item:string, index) => JSON.stringify(item) + index)
       }
     }
   }
@@ -319,7 +319,7 @@ export struct BiliUserHome {
           GridCol() {
             this.BangumiItem(bangumi)
           }
-        }, (item, index) => JSON.stringify(item) + index)
+        }, (item:string, index) => JSON.stringify(item) + index)
       }
     }
   }
@@ -386,7 +386,7 @@ export struct BiliUserHome {
           GridCol() {
             this.VideoItem(coin.pic, coin.title, Utils.Duration(coin.duration), coin.stat.view, coin.stat.danmaku, coin.bvid,coin.aid, coin.cid)
           }
-        }, (item, index) => JSON.stringify(item) + index)
+        }, (item:string, index) => JSON.stringify(item) + index)
       }
     }
   }
@@ -418,7 +418,7 @@ export struct BiliUserHome {
             this.VideoItem(upvote.pic, upvote.title, Utils.Duration(upvote.duration), upvote.stat.view, upvote.stat.danmaku, upvote.bvid,upvote.aid, upvote.cid
             )
           }
-        }, (item, index) => JSON.stringify(item) + index)
+        }, (item:string, index) => JSON.stringify(item) + index)
       }
     }
   }

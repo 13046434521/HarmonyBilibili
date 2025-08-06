@@ -10,7 +10,7 @@ import Constants from '../common/Constants'
 @Entry
 @Component
 struct SplashPage {
-  homeBeanData: Array<HomeBeanItem> = null
+  homeBeanData: Array<HomeBeanItem>|null = null
   @State content: string = "加载中..."
 
   @StorageLink('isLogin') isLogin:boolean = false
@@ -56,8 +56,8 @@ struct SplashPage {
       .then(response => {
         this.homeBeanData = response.item
       })
-      .catch(e => {
-        Utils.Toast(e)
+      .catch((e:Error) => {
+        Utils.Toast(e.message)
       })
       .finally(() => {
         this.content = this.homeBeanData !== null ? `加载成功:` : '加载失败:'+(this.isLogin?'已登录':'未登录')

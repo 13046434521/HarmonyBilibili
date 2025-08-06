@@ -1,10 +1,9 @@
 import CommentsInfo, { CommentsReply } from '../bean/CommentsInfo'
 import { Online } from '../bean/Online'
 import Api from '../net/Api'
-import { showDialog } from '../Utils/DialogUtil'
 
 export class BaseViewModel{
-  videoOnline(bvid:string,cid:number){
+  videoOnline(bvid:string,cid:number): Promise<Online>{
     return Api.getOnline<Online>(bvid,cid)
   }
   /**
@@ -16,7 +15,7 @@ export class BaseViewModel{
    * @param type type=1是视频类型的评论
    * @returns
    */
-  commentsInfo(aid:number,mode:2 |3,type:number=1,pn:number=1,ps:number=100){
+  commentsInfo(aid:number,mode:2 |3,type:number=1,pn:number=1,ps:number=100): Promise<CommentsInfo>{
     return Api.getCommentsInfo<CommentsInfo>(aid,mode,type,pn,ps)
   }
 }

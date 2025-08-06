@@ -60,7 +60,7 @@ export struct SearchLiving {
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
       }
-    }).catch(err=>{
+    }).catch((err:Error)=>{
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
   }
@@ -73,7 +73,7 @@ export struct SearchLiving {
       }else{
         this.refreshController.isLoadMore = false
       }
-    }).catch(err=>{
+    }).catch((err:Error)=>{
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
   }

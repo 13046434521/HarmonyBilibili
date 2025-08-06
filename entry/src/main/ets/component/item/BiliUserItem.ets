@@ -2,10 +2,11 @@ import { SearchBiliUserBean } from '../../bean/search/SearchBiliUserBean'
 import deviceInfo from '@ohos.deviceInfo'
 import { PageManager } from '../../common/PageManager'
 import { Utils } from '../../Utils/Utils'
+import { SearchBiliUserDetails } from '../SearchBiliUser'
 
 @Component
 export struct BiliUserItem{
-  item: SearchBiliUserBean
+  item?: SearchBiliUserBean
   deviceType = 'tablet'
   userHeight = 150
   aboutToAppear(){
@@ -18,9 +19,9 @@ export struct BiliUserItem{
   }
 
   @Builder
-  biliUserItem(item: SearchBiliUserBean) {
+  biliUserItem(item?: SearchBiliUserBean) {
     Row() {
-      Image(`https:${item.upic}`)
+      Image(`https:${item?.upic}`)
         .alt($r('app.media.ic_placeholder'))
         .margin(8)
         .height('65%')
@@ -28,16 +29,16 @@ export struct BiliUserItem{
         .borderRadius(100)
       Column() {
         Row() {
-          Text(`${item.uname}`)
+          Text(`${item?.uname}`)
             .fontSize(13)
-            .fontColor(item.official_verify.type === 127 ? $r('app.color.bilibili_text_black') : $r('app.color.bilibili_theme'))
-          Image(userLevel(item.level))
+            .fontColor(item?.official_verify.type === 127 ? $r('app.color.bilibili_text_black') : $r('app.color.bilibili_theme'))
+          Image(userLevel(item?.level))
             .height('15%')
             .margin(4)
             .objectFit(ImageFit.Auto)
         }
 
-        Text(`${Utils.Views(item.fans,1)}粉丝     ${item.videos}个视频${'\n'}${item.official_verify.desc}`)
+        Text(`${Utils.Views(item?.fans,1)}粉丝     ${item?.videos}个视频${'\n'}${item?.official_verify.desc}`)
           .fontColor($r('app.color.bilibili_text_grey_bold'))
           .fontSize(10)
           .maxLines(2)
@@ -67,13 +68,13 @@ export struct BiliUserItem{
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
     .onClick(()=>{
-      PageManager.routerBiliUser(this.item.mid)
+      PageManager.routerBiliUser(this.item?.mid)
     })
   }
 }
 
 
-function userLevel(level: number): Resource {
+function userLevel(level?: number): Resource {
   let icon = $r('app.media.ic_im_user_level_0')
   switch (level) {
     case 1: {

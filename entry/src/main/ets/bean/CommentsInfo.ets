@@ -3033,75 +3033,19 @@ export class CommentsReply {
 
 
 
-export default class CommentsInfo {
-  "cursor": {
-    "is_begin": boolean,
-    "prev": number,
-    "next": number,
-    "is_end": boolean,
-    "mode": number,
-    "mode_text": "",
-    "all_count": number,
-    "support_mode": number[],
-    "name": string,
-    "pagination_reply": {
-      "next_offset": {
-        type: number,
-        direction: number,
-        Data:
-          {
-            cursor: number
-          }
-      }
-    },
-    "session_id": string
-  }
+export default interface  CommentsInfo {
+  "cursor": Cursor
   "replies": CommentsReply[]
-  "top": {
-    "admin": null,
-    "upper": CommentsReply
-    "vote": null
-  }
+  "top":Top
   "top_replies": CommentsReply[]
-  "up_selection": {
-    "pending_count": number,
-    "ignore_count": number
-  }
-  "effects": {
-    "preloading": string
-  }
+  "up_selection":Up_selection
+  "effects":Effects
   "assist": number
   "blacklist": number
   "vote": number
-  "config": {
-    "showtopic": number,
-    "show_up_flag": boolean,
-    "read_only": boolean
-  }
-  "upper": {
-    "mid": number
-  }
-  "control": {
-    "input_disable": boolean,
-    "root_input_text": string
-    "child_input_text": string
-    "giveup_input_text": string
-    "screenshot_icon_state": number,
-    "upload_picture_icon_state": number,
-    "answer_guide_text": string
-    "answer_guide_icon_url":string
-    "answer_guide_ios_url": string
-    "answer_guide_android_url": string
-    "bg_text": string
-    "empty_page": null,
-    "show_type": number,
-    "show_text": "",
-    "web_selection": boolean,
-    "disable_jump_emote": boolean,
-    "enable_charged": boolean,
-    "enable_cm_biz_helper": boolean,
-    "preload_resources": null
-  }
+  "config":Config
+  "upper": Upper
+  "control": Control
   "note": number
   "callbacks": null
   "esports_grade_card": null
@@ -3130,160 +3074,457 @@ export class CommentsReply {
   "dialog_str": string
   "like": number
   "action": number
-  "member": {
-    "mid": string
-    "uname": string
-    "sex": string
-    "sign": string
-    "avatar": string
-    "rank": string
-    "face_nft_new": number
-    "is_senior_member": number
-    "senior": {}
-    "level_info": {
-      "current_level": number
-      "current_min": number
-      "current_exp": number
-      "next_exp": number
-    }
-    "pendant": {
-      "pid": number
-      "name": string
-      "image": string
-      "expire": number
-      "image_enhance": string
-      "image_enhance_frame": string
-      "n_pid": number
-    }
-    "nameplate": {
-      "nid": number
-      "name": string
-      "image": string
-      "image_small":string
-      "level": string
-      "condition": string
-    }
-    "official_verify": {
-      "type": number
-      "desc": string
-    }
-    "vip": {
-      "vipType": number
-      "vipDueDate": number
-      "dueRemark": string
-      "accessStatus": number
-      "vipStatus": number
-      "vipStatusWarn": string
-      "themeType": number
-      "label": {
-        "path":string
-        "text": string
-        "label_theme": string
-        "text_color": string
-        "bg_style": number
-        "bg_color": string
-        "border_color": string
-        "use_img_label": boolean
-        "img_label_uri_hans": string
-        "img_label_uri_hant": string
-        "img_label_uri_hans_static": string
-        "img_label_uri_hant_static": string
-      }
-      "avatar_subscript": number
-      "nickname_color": string
-    }
-    "fans_detail": null
-    "user_sailing": {
-      "pendant": null
-      "cardbg": null
-      "cardbg_with_focus": null
-    }
-    "is_contractor": boolean
-    "contract_desc": string
-    "nft_interaction": null
-    "avatar_item": {
-      "container_size": {
-        "width": number
-        "height": number
-      }
-      "fallback_layers": {
-        "layers": [
-          {
-            "visible": boolean
-            "general_spec": {
-              "pos_spec": {
-                "coordinate_pos": number
-                "axis_x": number
-                "axis_y": number
-              }
-              "size_spec": {
-                "width": number
-                "height": number
-              }
-              "render_spec": {
-                "opacity": number
-              }
-            }
-            "layer_config": {
-              "tags": {
-                "AVATAR_LAYER": {}
-                "GENERAL_CFG": {
-                  "config_type": number
-                  "general_config": {
-                    "web_css_style": {
-                      "borderRadius": "50%"
-                    }
-                  }
-                }
-              }
-              "is_critical": boolean
-            }
-            "resource": {
-              "res_type": number
-              "res_image": {
-                "image_src": {
-                  "src_type": number
-                  "placeholder": number
-                  "remote": {
-                    "url": "https://i1.hdslb.com/bfs/face/25b2940398c4b29c710a825b7a7156fcbfc4c327.jpg"
-                    "bfs_style": "widget-layer-avatar"
-                  }
-                }
-              }
-            }
-          }
-        ]
-        "is_critical_group": boolean
-      }
-      "mid":string
-    }
-  }
-  "content": {
-    "message": string
-    "members": CommentsReply[]
-    "jump_url": {}
-    "max_line": number
-  }
+  "member": Member
+  "content": Content
   "replies": CommentsReply[]
   "assist": number
-  "up_action": {
-    "like": boolean
-    "reply": boolean
-  }
+  "up_action": Up_action
   "invisible": boolean
-  "reply_control": {
-    "is_up_top": boolean
-    "max_line": number
-    "sub_reply_entry_text": string
-    "sub_reply_title_text": string
-    "time_desc": string
-  }
-  "folder": {
-    "has_folded": boolean
-    "is_folded": boolean
-    "rule": string
-  }
+  "reply_control": Reply_control
+  "folder": Folder
   "dynamic_id_str": string
   "note_cvid_str": string
   "track_info": string
+}
+
+export interface CommontsInfo {
+  code: number;
+  message: string;
+  ttl: number;
+  data: Data;
+}
+
+export interface Pagination_reply {
+
+}
+
+export interface Cursor {
+  is_begin: boolean;
+  prev: number;
+  next: number;
+  is_end: boolean;
+  mode: number;
+  mode_text: string;
+  all_count: number;
+  support_mode: number[];
+  name: string;
+  pagination_reply: Pagination_reply;
+  session_id: string;
+}
+
+export interface Senior {
+
+}
+
+export interface Level_info {
+  current_level: number;
+  current_min: number;
+  current_exp: number;
+  next_exp: number;
+}
+
+export interface Pendant {
+  pid: number;
+  name: string;
+  image: string;
+  expire: number;
+  image_enhance: string;
+  image_enhance_frame: string;
+  n_pid: number;
+}
+
+export interface Nameplate {
+  nid: number;
+  name: string;
+  image: string;
+  image_small: string;
+  level: string;
+  condition: string;
+}
+
+export interface Official_verify {
+  type: number;
+  desc: string;
+}
+
+export interface Label {
+  path: string;
+  text: string;
+  label_theme: string;
+  text_color: string;
+  bg_style: number;
+  bg_color: string;
+  border_color: string;
+  use_img_label: boolean;
+  img_label_uri_hans: string;
+  img_label_uri_hant: string;
+  img_label_uri_hans_static: string;
+  img_label_uri_hant_static: string;
+}
+
+export interface Vip {
+  vipType: number;
+  vipDueDate: number;
+  dueRemark: string;
+  accessStatus: number;
+  vipStatus: number;
+  vipStatusWarn: string;
+  themeType: number;
+  label: Label;
+  avatar_subscript: number;
+  nickname_color: string;
+}
+
+export interface User_sailing {
+  pendant: string;
+  cardbg: string;
+  cardbg_with_focus: string;
+}
+
+export interface Container_size {
+  width: number;
+  height: number;
+}
+
+export interface Pos_spec {
+  coordinate_pos: number;
+  axis_x: number;
+  axis_y: number;
+}
+
+export interface Size_spec {
+  width: number;
+  height: number;
+}
+
+export interface Render_spec {
+  opacity: number;
+}
+
+export interface General_spec {
+  pos_spec: Pos_spec;
+  size_spec: Size_spec;
+  render_spec: Render_spec;
+}
+
+export interface AVATAR_LAYER {
+
+}
+
+export interface Web_css_style {
+  borderRadius: string;
+}
+
+export interface General_config {
+  web_css_style: Web_css_style;
+}
+
+export interface GENERAL_CFG {
+  config_type: number;
+  general_config: General_config;
+}
+
+export interface Tags {
+  AVATAR_LAYER: AVATAR_LAYER;
+  GENERAL_CFG: GENERAL_CFG;
+}
+
+export interface Layer_config {
+  tags: Tags;
+  is_critical: boolean;
+}
+
+export interface Remote {
+  url: string;
+  bfs_style: string;
+}
+
+export interface Image_src {
+  src_type: number;
+  placeholder: number;
+  remote: Remote;
+}
+
+export interface Res_image {
+  image_src: Image_src;
+}
+
+export interface Resource {
+  res_type: number;
+  res_image: Res_image;
+}
+
+export interface Layers {
+  visible: boolean;
+  general_spec: General_spec;
+  layer_config: Layer_config;
+  resource: Resource;
+}
+
+export interface Fallback_layers {
+  layers: Layers[];
+  is_critical_group: boolean;
+}
+
+export interface Avatar_item {
+  container_size: Container_size;
+  layers: Layers[];
+  fallback_layers: Fallback_layers;
+  mid: string;
+}
+
+export interface Member {
+  mid: string;
+  uname: string;
+  sex: string;
+  sign: string;
+  avatar: string;
+  rank: string;
+  face_nft_new: number;
+  is_senior_member: number;
+  senior: Senior;
+  level_info: Level_info;
+  pendant: Pendant;
+  nameplate: Nameplate;
+  official_verify: Official_verify;
+  vip: Vip;
+  fans_detail: string;
+  user_sailing: string;
+  is_contractor: boolean;
+  contract_desc: string;
+  nft_interaction: string;
+  avatar_item: Avatar_item;
+}
+
+export interface Jump_url {
+
+}
+
+export interface Content {
+  message: string;
+  members: string[];
+  emote: Emote;
+  jump_url: Jump_url;
+  max_line: number;
+}
+
+export interface Up_action {
+  like: boolean;
+  reply: boolean;
+}
+
+export interface Reply_control {
+  is_up_top: boolean;
+  max_line: number;
+  sub_reply_entry_text: string;
+  sub_reply_title_text: string;
+  time_desc: string;
+}
+
+export interface Folder {
+  has_folded: boolean;
+  is_folded: boolean;
+  rule: string;
+}
+
+export interface Replies {
+  rpid: number;
+  oid: number;
+  type: number;
+  mid: number;
+  root: number;
+  parent: number;
+  dialog: number;
+  count: number;
+  rcount: number;
+  state: number;
+  fansgrade: number;
+  attr: number;
+  ctime: number;
+  mid_str: string;
+  oid_str: string;
+  rpid_str: string;
+  root_str: string;
+  parent_str: string;
+  dialog_str: string;
+  like: number;
+  action: number;
+  member: Member;
+  content: Content;
+  replies: string;
+  assist: number;
+  up_action: Up_action;
+  invisible: boolean;
+  reply_control: Reply_control;
+  folder: Folder;
+  dynamic_id_str: string;
+  note_cvid_str: string;
+  track_info: string;
+}
+
+export interface Meta {
+  size: number;
+}
+
+export interface EmoteLike {
+  id: number;
+  package_id: number;
+  state: number;
+  type: number;
+  attr: number;
+  text: string;
+  url: string;
+  meta: Meta;
+  mtime: number;
+  jump_title: string;
+}
+
+export interface Emote {
+  emotelike: EmoteLike;
+}
+
+export interface Upper {
+  mid: number;
+}
+
+export interface Top {
+  admin: string;
+  upper: Upper;
+  vote: string;
+}
+
+export interface Top_replies {
+  rpid: number;
+  oid: number;
+  type: number;
+  mid: number;
+  root: number;
+  parent: number;
+  dialog: number;
+  count: number;
+  rcount: number;
+  state: number;
+  fansgrade: number;
+  attr: number;
+  ctime: number;
+  mid_str: string;
+  oid_str: string;
+  rpid_str: string;
+  root_str: string;
+  parent_str: string;
+  dialog_str: string;
+  like: number;
+  action: number;
+  member: Member;
+  content: Content;
+  replies: Replies[];
+  assist: number;
+  up_action: Up_action;
+  invisible: boolean;
+  reply_control: Reply_control;
+  folder: Folder;
+  dynamic_id_str: string;
+  note_cvid_str: string;
+  track_info: string;
+}
+
+export interface Up_selection {
+  pending_count: number;
+  ignore_count: number;
+}
+
+export interface  Effects {
+  preloading: string;
+}
+
+export interface DataInfo {
+  id: number;
+  contract_id: string;
+  pos_num: number;
+  name: string;
+  pic: string;
+  litpic: string;
+  url: string;
+  style: number;
+  is_ad: boolean;
+  agency: string;
+  label: string;
+  intro: string;
+  creative_type: number;
+  request_id: string;
+  creative_id: number;
+  src_id: number;
+  show_url: string;
+  click_url: string;
+  area: number;
+  is_ad_loc: boolean;
+  ad_cb: string;
+  title: string;
+  server_type: number;
+  cm_mark: number;
+  stime: number;
+  mid: string;
+  activity_type: number;
+  epid: number;
+  sub_title: string;
+  ad_desc: string;
+  adver_name: string;
+  null_frame: boolean;
+  pic_main_color: string;
+}
+
+export interface Ads {
+  "4179": DataInfo[];
+}
+
+export interface Cm_info {
+  ads: Ads;
+}
+
+export interface Config {
+  showtopic: number;
+  show_up_flag: boolean;
+  read_only: boolean;
+}
+
+export interface Control {
+  input_disable: boolean;
+  root_input_text: string;
+  child_input_text: string;
+  giveup_input_text: string;
+  screenshot_icon_state: number;
+  upload_picture_icon_state: number;
+  answer_guide_text: string;
+  answer_guide_icon_url: string;
+  answer_guide_ios_url: string;
+  answer_guide_android_url: string;
+  bg_text: string;
+  empty_page: string;
+  show_type: number;
+  show_text: string;
+  web_selection: boolean;
+  disable_jump_emote: boolean;
+  enable_charged: boolean;
+  enable_cm_biz_helper: boolean;
+  preload_resources: string;
+}
+
+export interface Data {
+  cursor: Cursor;
+  replies: Replies[];
+  top: Top;
+  top_replies: Top_replies[];
+  up_selection: Up_selection;
+  effects: Effects;
+  cm_info: Cm_info;
+  assist: number;
+  blacklist: number;
+  vote: number;
+  config: Config;
+  upper: Upper;
+  control: Control;
+  note: number;
+  callbacks: string;
+  esports_grade_card: string;
+  context_feature: string;
 }

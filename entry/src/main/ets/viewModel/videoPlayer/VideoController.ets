@@ -9,7 +9,7 @@ import window from '@ohos.window'
 import Constants from '../../common/Constants'
 import audio from '@ohos.multimedia.audio'
 import { Utils } from '../../Utils/Utils'
-import { showDialog } from '../../Utils/DialogUtil'
+import { common } from '@kit.AbilityKit'
 
 //VideoPlayer 的 逻辑功能类
 export class VideoController implements IPlayer {
@@ -180,41 +180,44 @@ export class VideoController implements IPlayer {
     this.videoModel.videoHeight = videoHeight
   }
 
-  getOrientation(): window.Orientation {
+  getOrientation(context:common.UIAbilityContext): window.Orientation {
     if (this.videoModel.orientation===null) {
-      globalThis.windowStage.getMainWindow((err, data) => {
+      const windowStage = context.windowStage
+      windowStage.getMainWindow((err, window) => {
         if (err.code) {
           console.error(JSON.stringify(err))
-          return null
+          return
         }
-        this.videoModel.orientation = this.getOrientation()
+        this.videoModel.orientation = window.getPreferredOrientation()
       })
     }
 
     return this.videoModel.orientation
   }
 
-  setOrientation(orientation: window.Orientation) {
-    if (globalThis.windowStage != undefined) {
-      globalThis.windowStage.getMainWindow((err, data) => {
+  setOrientation(context:common.UIAbilityContext,orientation: window.Orientation) {
+    const windowStage = context.windowStage
+    if (windowStage != undefined) {
+      windowStage.getMainWindow((err, window) => {
         if (err.code) {
           console.error('IjkPlayer changeWindowDirection Failed to change the window: ' + JSON.stringify(err))
           return
         }
-        data.setPreferredOrientation(orientation);
+        window.setPreferredOrientation(orientation);
         this.videoModel.orientation = orientation
       })
     }
   }
 
-  changeOrientation(){
-    if (globalThis.windowStage != undefined) {
-      globalThis.windowStage.getMainWindow((err, data) => {
+  changeOrientation(context:common.UIAbilityContext){
+    const windowStage = context.windowStage
+    if (windowStage != undefined) {
+      windowStage.getMainWindow((err, data) => {
         if (err.code) {
           console.error('IjkPlayer changeWindowDirection Failed to change the window: ' + JSON.stringify(err))
           return
         }
-        let temp = this.getOrientation()===window.Orientation.LANDSCAPE?window.Orientation.PORTRAIT:window.Orientation.LANDSCAPE
+        let temp = this.getOrientation(context)===window.Orientation.LANDSCAPE?window.Orientation.PORTRAIT:window.Orientation.LANDSCAPE
         data.setPreferredOrientation(temp);
         this.videoModel.orientation = temp
       })

@@ -7,6 +7,7 @@ import { CommentsData } from '../datasource/CommentsData'
 import { CommentsItem } from '../component/item/CommentsItem'
 import Constants from '../common/Constants'
 import { RefreshList, RefreshListController } from '../common/RefreshList'
+import { CommentsReply } from '../bean/CommentsInfo'
 
 @Component
 export struct BiliComments {
@@ -56,11 +57,11 @@ export struct BiliComments {
 
   @Builder
   listItem(){
-    LazyForEach(this.commentsData, (reply) => {
+    LazyForEach(this.commentsData, (reply:CommentsReply) => {
       Column() {
         CommentsItem({commentsReply:reply})
       }
-    },(reply,index)=>JSON.stringify(reply)+index)
+    },(reply:string,index)=>JSON.stringify(reply)+index)
   }
 
   refresh(){
@@ -83,8 +84,8 @@ export struct BiliComments {
         }
 
         this.loadingStatus = LoadingStatus.LoadingSuccess
-      }).catch(err => {
-      this.err = err
+      }).catch((err:Error) => {
+      this.err = err.message
       this.loadingStatus = LoadingStatus.LoadingOther
     })
   }
@@ -106,8 +107,8 @@ export struct BiliComments {
             this.commentsData.pushDataAll(commentInfo.replies)
           }
         }
-      }).catch(err => {
-      this.err = err
+      }).catch((err:Error)=>{
+      this.err = err.message
     })
   }
 }

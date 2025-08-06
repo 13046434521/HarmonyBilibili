@@ -4,7 +4,7 @@ import { Utils } from '../Utils/Utils'
 @Preview
 export struct NoData{
   @State index:number = Math.random()
-  reload:()=>void = undefined
+  reload?:()=>void = undefined
   imgArr:Resource[]=[$r("app.media.img_tips_error_no_permission"),$r('app.media.img_holder_search_failed'),$r('app.media.bilibili_no_data'),$r('app.media.ic_following_no_exist'),$r('app.media.ic_empty_list_not_found')]
 
   aboutToAppear(){
@@ -24,7 +24,9 @@ export struct NoData{
           Button('重新加载')
             .fontColor($r('app.color.bilibili_text_white')).backgroundColor($r('app.color.bilibili_theme'))
             .onClick(()=>{
-              this.reload()
+              if (this.reload) {
+                this.reload()
+              }
             }).fontSize(18)
         } else if (this.index!==1){
           Text("今天真是寂寞如雪啊 ~ ").fontSize(18).maxLines(1)

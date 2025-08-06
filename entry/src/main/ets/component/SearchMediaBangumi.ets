@@ -1,4 +1,3 @@
-import constants from '../../../../.preview/cache/.default/entry/src/main/ets/common/WebConstants'
 import { SearchMediaBean } from '../bean/search/SearchMediaBean'
 import Constants from '../common/Constants'
 import { LoadingStatus } from '../common/LoadingStatus'
@@ -56,9 +55,9 @@ export struct SearchMediaBangumiDetails {
       }else{
         this.refreshController.isLoadMore = false
       }
-    }).catch(err=>{
+    }).catch((err:Error)=>{
       this.loadingStatus = LoadingStatus.LoadingFailure
-      this.errMessage = err
+      this.errMessage = err.message
     })
   }
 
@@ -71,9 +70,9 @@ export struct SearchMediaBangumiDetails {
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
       }
-    }).catch(err=>{
+    }).catch((err:Error)=>{
       this.loadingStatus = LoadingStatus.LoadingFailure
-      this.errMessage = err
+      this.errMessage = err.message
     })
   }
 }

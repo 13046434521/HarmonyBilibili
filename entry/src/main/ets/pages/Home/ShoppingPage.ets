@@ -5,6 +5,7 @@ import { Utils } from '../../Utils/Utils'
 import VideoViewModel from '../../viewModel/Video/VideoViewModel'
 import VideoIntroduction from '../Video/VideoIntroduction'
 import window from '@ohos.window'
+import { common } from '@kit.AbilityKit'
 
 @Preview
 @Component
@@ -34,14 +35,16 @@ export struct ShoppingPage {
   }
 
   changeOrientation(){
-    if (globalThis.windowStage != undefined) {
-      globalThis.windowStage.getMainWindow((err, data) => {
+    let context = getContext(this) as common.UIAbilityContext;
+    let windowStage = context.windowStage
+    if (windowStage != undefined) {
+      windowStage.getMainWindow((err, windows) => {
         if (err.code) {
           console.error('IjkPlayer changeWindowDirection Failed to change the window: ' + JSON.stringify(err))
           return
         }
         let temp = this.orientation===window.Orientation.LANDSCAPE?window.Orientation.PORTRAIT:window.Orientation.LANDSCAPE
-        data.setPreferredOrientation(temp);
+        windows.setPreferredOrientation(temp);
         this.orientation = temp
       })
     }

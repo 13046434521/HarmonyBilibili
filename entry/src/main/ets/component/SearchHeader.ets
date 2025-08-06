@@ -6,8 +6,8 @@ export struct SearchHeader {
   @Prop title: string
   @Prop isTitleVisible: boolean = false
   placeholder: string = ''
-  clickEvent? = (title?: string, placeholder?: string) => {}
-  change? = (value: string) => {}
+  clickEvent = (title: string, placeholder: string) => {}
+  change = (value: string) => {}
   controller:SearchController = new SearchController()
 
   build() {

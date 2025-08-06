@@ -37,7 +37,7 @@ struct MineInfoPage {
   @StorageLink('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   @StorageLink('day_night') daynight: 'day'|'night' = 'day'
   @State vipImageUrl :string = ''
-  @State vipBageUrl: string = undefined
+  @State vipBageUrl?: string = undefined
   @State isBigVip :boolean= false
   @State dynamic_count: string = "-"
   @State fans: string = "-"
@@ -74,7 +74,7 @@ aboutToAppear() {
        this.isBigVip =  response.card.vip.type===2
        // 特殊图标：愚人节时是绿色图标的 vip图片url
        this.vipBageUrl = response.card.vip.avatar_icon.icon_resource.url
-     }).catch((err)=>{
+     }).catch((err:Error)=>{
       Utils.Toast(err+"---Mine页面")
     })
   }
@@ -184,7 +184,7 @@ aboutToAppear() {
         GridCol() {
           this.MineChildItem(item)
         }.height('6%')
-      },item=>item)
+      },(item:string)=>item)
     }.direction(Direction.Ltr)
 
     Text('推荐服务')
@@ -206,7 +206,7 @@ aboutToAppear() {
         GridCol() {
           this.MineChildItem(item)
         }.height('6%')
-      },item=>item)
+      },(item:string)=>item)
     }.direction(Direction.Ltr)
   }
   @Builder
@@ -327,7 +327,7 @@ function rowItemStyle(){
 
 @Component
 struct LoginPage {
-  @State url: string = undefined
+  @State url?: string = undefined
   @State qrcode_key: string = ''
   @State responseUrl: string = ''
   @State loginStatus: number = -1
@@ -385,7 +385,7 @@ struct LoginPage {
       return this.qrcode_key = item.qrcode_key
     }).then((qrcode: string) => {
       this.login(qrcode)
-    }).catch((err) => {
+    }).catch((err:Error) => {
       Utils.Toast("二维码登录：生成二维码" + err)
     })
   }
@@ -412,7 +412,7 @@ struct LoginPage {
             Utils.Toast('二维码登录：登录二维码成功')
             console.log("二维码登录成功:" + StorageManager.getCookie())
           }
-        }).catch((err) => {
+        }).catch((err:Error) => {
           console.log("二维码登录：登录二维码" + err)
           this.loginStatus = -1
         })

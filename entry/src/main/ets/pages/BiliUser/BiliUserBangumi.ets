@@ -8,7 +8,7 @@ import Constants from '../../common/Constants'
 export struct BiliUserBangumi{
   mid:number = 0
   @Prop userBangumi: UserBangumi = new UserBangumi()
-  biliUserViewModel:BiliUserViewModel
+  biliUserViewModel:BiliUserViewModel = new BiliUserViewModel()
   userBangumiData :UserBangumiData = new UserBangumiData()
   page:number=1
   aboutToAppear(){
@@ -26,7 +26,7 @@ export struct BiliUserBangumi{
     List(){
       LazyForEach(this.userBangumiData,(bangumi: UserBangumiItem)=>{
         this.BangumiItem(bangumi)
-      },(item,index)=>JSON.stringify(item)+index)
+      },(item:string,index)=>JSON.stringify(item)+index)
     }.lanes(3)
     .cachedCount(Constants.CACHE_COUNT)
     .onReachEnd(()=>{

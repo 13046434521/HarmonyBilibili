@@ -10,7 +10,7 @@ export struct LoadingData{
   extraFailure:string =''
   extraSuccess:string =''
   type:LoadingType = LoadingType.DATA
-  reload:()=>void =undefined
+  reload?:()=>void =undefined
   build(){
     Column(){
       if (this.loadingStatus === LoadingStatus.Loading){

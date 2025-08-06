@@ -1,7 +1,7 @@
 import router from '@ohos.router'
 import { MediaBean } from '../../bean/media/MediaBean'
 import { MediaUrlBean } from '../../bean/media/MediaUrlBean'
-import { RouterConstants } from '../../common/PageManager'
+import { RouterConstants, SEASON_EP_ID } from '../../common/PageManager'
 import { VideoPlay } from '../../component/play/VideoPlay'
 import ApiMediaFt from '../../net/ApiMedia'
 import { showDialog } from '../../Utils/DialogUtil'
@@ -10,6 +10,7 @@ import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 import { MediaIntroduction } from './MeidaIntroduction'
 import window from '@ohos.window'
 import { BiliComments } from '../BiliComments'
+import { common } from '@kit.AbilityKit'
 
 @Entry
 @Component
@@ -22,7 +23,7 @@ struct MediaFtPage {
   videoController:VideoController = new VideoController()
   mediaViewModel:MediaViewModel = new MediaViewModel()
   tabController:TabsController = new TabsController()
-  seasonId:number
+  seasonId?:number
   @State epid:number = 0
   @State index :number = 0
   @State aid:number = 0
@@ -31,8 +32,9 @@ struct MediaFtPage {
   }
   aboutToAppear(){
     // if (router.getParams()!=null) {
-      this.seasonId = router.getParams()[RouterConstants.SEASON_ID]
-      this.epid = router.getParams()[RouterConstants.EPID]
+      let params = router.getParams() as SEASON_EP_ID
+      this.seasonId = params.seasonId
+      this.epid = params.epid
       // this.seasonId =  25622
       this.mediaViewModel.getMediaInfo(this.seasonId).then(mediaInfo=>{
         this.mediaInfo = mediaInfo
@@ -56,8 +58,8 @@ struct MediaFtPage {
       }).then(mediaFtUrl=>{
         this.mediaUrl = mediaFtUrl
         this.url = mediaFtUrl.durl[0].url
-      }).catch(err=>{
-        showDialog('MediaPage(播放页面)',err)
+      }).catch((err:Error)=>{
+        showDialog('MediaPage(播放页面)',err.message)
       })
   }
 
@@ -122,9 +124,10 @@ struct MediaFtPage {
     })
   }
 
-  onBackPress(){
+  onBackPress?(): void | boolean{
     if (this.videoController.videoModel.orientation === window.Orientation.LANDSCAPE){
-      this.videoController.changeOrientation()
+      let context = getContext(this) as common.UIAbilityContext;
+      this.videoController.changeOrientation(context)
       return true
     }
   }

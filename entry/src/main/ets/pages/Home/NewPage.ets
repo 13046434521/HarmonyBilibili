@@ -5,6 +5,7 @@ import { HomeData } from '../../datasource/HomeData';
 import { HomeBeanItem } from '../../bean/HomeBean';
 import Api from '../../net/Api';
 import { Utils } from '../../Utils/Utils';
+import { HOME_DATA } from '../../common/PageManager';
 
 @Preview
 @Component
@@ -20,7 +21,8 @@ export struct NewPage {
   aboutToAppear(){
     if (router.getParams()!==undefined){
       // 主页数据
-      let homeData_splash = router.getParams()['homeData']
+      let params = router.getParams() as HOME_DATA
+      let homeData_splash = params.homeData
       this.homeData.pushDataAll(homeData_splash)
     }
   }
@@ -38,8 +40,8 @@ export struct NewPage {
         this.page=1
         this.homeData.reloadData(response.item)
       }
-    }).catch(err=>{
-      Utils.Toast("NewPage:"+err)
+    }).catch((err:Error)=>{
+      Utils.Toast("NewPage:"+err.message)
     })
   }
 
@@ -49,7 +51,7 @@ export struct NewPage {
         this.page++
         this.homeData.pushDataAll(response.item)
       }
-    }).catch(err=>{
+    }).catch((err:Error)=>{
       Utils.Toast("NewPage:"+err)
     })
   }

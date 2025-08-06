@@ -5,7 +5,7 @@ import { HomeSearchBean } from '../../bean/HomeSearchBean';
 import { SearchView } from '../../component/HomeSearch';
 import { Utils } from '../../Utils/Utils';
 import { HomeData } from '../../datasource/HomeData';
-import { PageManager } from '../../common/PageManager';
+import { HOME_DATA, PageManager } from '../../common/PageManager';
 import { RefreshController, RefreshList, RefreshListController } from '../../common/RefreshList';
 import Constants from '../../common/Constants';
 
@@ -19,12 +19,13 @@ export struct HomePage {
   @State homeBeanItem:HomeBeanItem[] =[]
   @State refreshController:RefreshListController = new RefreshListController()
 
-  onLoginClick:()=>void
+  onLoginClick:()=>void =()=>{}
 
   aboutToAppear(){
     if (router.getParams()!==undefined){
       // 主页数据
-      let homeData_splash = router.getParams()['homeData']
+      let params = router.getParams() as HOME_DATA
+      let homeData_splash = params.homeData
       this.homeBeanItem = homeData_splash
       this.homeData.pushDataAll(homeData_splash)
     }
@@ -195,9 +196,9 @@ export struct HomePage {
       if (response.item!=undefined) {
         this.homeData.addDataAll(response.item)
         this.homePage++
-
-        return false
       }
+    }).catch((err:Error)=>{
+      Utils.Toast("getHomePages:"+err)
     })
   }
 }

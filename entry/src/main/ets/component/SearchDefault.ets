@@ -109,7 +109,7 @@ export struct SearchDefaultDetails {
       let temp = this.allData.dealData(response.result)
       this.allData.reloadData(temp)
       this.page++
-    }).catch((err) => {
+    }).catch((err:Error) => {
       Utils.Toast('综合页面:'+err)
     })
   }
@@ -120,7 +120,7 @@ export struct SearchDefaultDetails {
       let temp = this.allData.dealData(response.result)
       this.allData.pushDataAll(temp)
       this.page++
-    }).catch((err) => {
+    }).catch((err:Error) => {
       Utils.Toast('综合页面:'+err)
     })
   }
@@ -145,9 +145,9 @@ export struct SearchDefaultDetails {
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
       }
-    }).catch((err => {
+    }).catch((err:Error) => {
       this.loadingStatus = LoadingStatus.LoadingFailure
-    }))
+    })
   }
   videoLoadMore(){
     Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, this.search, this.page+1,this.orderType)
@@ -156,9 +156,9 @@ export struct SearchDefaultDetails {
           this.page++
           this.videoData.pushDataAll(response.result)
         }
-      }).catch((err => {
+      }).catch((err:Error) => {
       Utils.Toast("视频页面："+err)
-    }))
+    })
   }
 
   @Builder
@@ -197,10 +197,10 @@ export struct SearchDefaultDetails {
             this.page++
             this.loadingStatus = LoadingStatus.LoadingSuccess
           }
-        }).catch((err => {
+        }).catch((err:Error) => {
         Utils.Toast("视频页面："+err)
         this.loadingStatus = LoadingStatus.LoadingFailure
-      }))
+      })
     }else{
       Api.getSearchType<SearchVideoBean>(SearchType.VIDEO, keyword, this.page,order)
         .then((response) => {
@@ -209,10 +209,10 @@ export struct SearchDefaultDetails {
             this.videoData.reloadData(response.result)
             this.loadingStatus = LoadingStatus.LoadingSuccess
           }
-        }).catch((err => {
+        }).catch((err:Error) => {
         Utils.Toast("视频页面："+err)
         this.loadingStatus = LoadingStatus.LoadingFailure
-      }))
+      })
     }
   }
 }

@@ -1,7 +1,9 @@
 import webview from '@ohos.web.webview'
 import router from '@ohos.router'
-import { RouterConstants } from '../../common/PageManager'
+import { MINE_WEB_URL, RouterConstants } from '../../common/PageManager'
 import { WebView } from '../../component/WebView'
+
+
 
 @Entry
 @Component
@@ -10,7 +12,8 @@ struct MineWebPage {
 
   aboutToAppear(){
     if (router.getParams()!=undefined) {
-      this.url = router.getParams()[RouterConstants.MINE_WEB_URL]
+      const params = router.getParams() as MINE_WEB_URL
+      this.url = params.webUrl
     }
   }
 

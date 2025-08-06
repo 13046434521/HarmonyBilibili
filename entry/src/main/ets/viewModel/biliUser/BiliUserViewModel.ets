@@ -13,7 +13,7 @@ import { AccInfo } from '../../bean/biliUser/AccInfo'
 import { UserInfoBean } from '../../bean/biliUser/UserInfoBean'
 
 export class BiliUserViewModel {
-  controller:TabsController
+  controller?:TabsController
 
   constructor(controller?:TabsController) {
     this.controller = controller
@@ -36,29 +36,29 @@ export class BiliUserViewModel {
       let userInfo = value[1]
 
       // 主页的影视和投稿页面中的数据
-      let userVideoBean = value[2]
+      let userVideoBean:UserVideoBean = value[2]
       if (!Utils.isNonNull(userVideoBean)||!Utils.isNonNull(userVideoBean.list)||!Utils.isNonNull(userVideoBean.list.vlist)||(userVideoBean.list.vlist.length===0)) {
-        userVideoBean = undefined//该数据可能为：undefined   投过图文而不是视频的userVideoBean以及userVideoBean中的list不为undefined，但vlist为null
+        userVideoBean = new UserVideoBean()//该数据可能为：undefined   投过图文而不是视频的userVideoBean以及userVideoBean中的list不为undefined，但vlist为null
       }
       // 主页的收藏和收藏页面中的数据
-      let userBookmark = value[3]//该数据可能为：null
+      let userBookmark:UserBookmark = value[3]//该数据可能为：null
       if (!Utils.isNonNull(userBookmark)||!Utils.isNonNull(userBookmark.list)) {
-        userBookmark = undefined
+        userBookmark = new UserBookmark()
       }
       // 主页的追番和追番页面中的数据
-      let userBangumi = value[4]//该数据可能为：undefined
+      let userBangumi:UserBangumi = value[4]//该数据可能为：undefined
       if (!Utils.isNonNull(userBangumi)||!Utils.isNonNull(userBangumi.list)) {
-        userBangumi = undefined
+        userBangumi = new UserBangumi()
       }
       // 主页的最近投币视频
-      let userCoinVideos = value[5]//该数据可能为：null
+      let userCoinVideos:UserCoinVideo[] = value[5]//该数据可能为：null
       if (!Utils.isNonNull(userCoinVideos)||userCoinVideos.length===0) {
-        userCoinVideos = undefined
+        userCoinVideos = new Array<UserCoinVideo>()
       }
       // 主页的最近点赞视频
-      let userUpvote = value[6]//该数据可能为：null
+      let userUpvote:UserUpvote = value[6]//该数据可能为：null
       if (!Utils.isNonNull(userUpvote)||!Utils.isNonNull(userUpvote.list)) {
-        userUpvote = undefined
+        userUpvote = new UserUpvote()
       }
       // 动态页面
       let userDynamic = value[7]
@@ -83,7 +83,7 @@ export class BiliUserViewModel {
     this.getUserCollection(mid)])
   }
   // 获取用户空间详细信息
-  getUserAccInfo(mid: number) {
+  getUserAccInfo(mid: number): Promise<AccInfo> {
     return ApiBiliUser.getUserAccInfo(mid)
   }
 
@@ -106,41 +106,41 @@ export class BiliUserViewModel {
   }
 
   // 获取动态数据
-  getUserDynamicData(mid: number) {
+  getUserDynamicData(mid: number): Promise<UserDynamic> {
     return ApiBiliUser.getBiliUserDynamic<UserDynamic>(mid)
   }
 
   // 获取投稿数据
-  getUserVideoData(mid: number, order: 'pubdate' | 'click' | 'stow' = 'pubdate', pn: number = 1) {
+  getUserVideoData(mid: number, order: 'pubdate' | 'click' | 'stow' = 'pubdate', pn: number = 1): Promise<UserVideoBean> {
     return ApiBiliUser.getBiliUserVideo<UserVideoBean>(mid, order, pn)
   }
 
   // 获取追番数据
-  getUserBangumiData(mid: number, pn: number = 1, ps: number = 10, type: 1 | 2 = 1) {
+  getUserBangumiData(mid: number, pn: number = 1, ps: number = 10, type: 1 | 2 = 1): Promise<UserBangumi> {
     return ApiBiliUser.getBiliUserBangumi<UserBangumi>(mid, pn, ps, type)
   }
 
   // 获取追番数据
-  getUserBookmarksData(mid: number, pn: number = 1, ps: number = 10) {
+  getUserBookmarksData(mid: number, pn: number = 1, ps: number = 10): Promise<UserBookmark> {
     return ApiBiliUser.getBiliUserBookmarks<UserBookmark>(mid, pn, ps)
   }
 
   // 获取投币数据
-  getUserCoinData(mid: number) {
+  getUserCoinData(mid: number): Promise<UserCoinVideo[]> {
     return ApiBiliUser.getBiliUserCoin<UserCoinVideo[]>(mid)
   }
 
   // 获取点赞视频数据
-  getUserLikeData(mid: number) {
+  getUserLikeData(mid: number): Promise<UserUpvote> {
     return ApiBiliUser.getBiliUserUpvote<UserUpvote>(mid)
   }
 
-  getUserCollection(mid: number, pn: number = 1, ps: number = 10) {
+  getUserCollection(mid: number, pn: number = 1, ps: number = 10): Promise<UserCollection> {
     return ApiBiliUser.getBiliUserCollection<UserCollection>(mid, ps, ps)
   }
 
 
   changePage(index:number){
-    this.controller.changeIndex(index)
+    this.controller?.changeIndex(index)
   }
 }

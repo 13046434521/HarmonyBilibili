@@ -10,7 +10,7 @@ export struct BiliUserVideo{
   mid:number = 0
   @State state:string = ''
   @Prop userVideoBean: UserVideoBean
-  biliUserViewModel:BiliUserViewModel
+  biliUserViewModel:BiliUserViewModel = new BiliUserViewModel()
   userVideoData:UserVideoData = new UserVideoData()
   order:'pubdate' | 'click' | 'stow' = 'pubdate'
   page = 1
@@ -29,7 +29,7 @@ export struct BiliUserVideo{
     List(){
       LazyForEach(this.userVideoData,(video: UserVideoItem)=>{
         this.VideoItem(video)
-      },(item,index)=>JSON.stringify(item)+index)
+      },(item:string,index)=>JSON.stringify(item)+index)
     }.lanes(1)
     .cachedCount(Constants.CACHE_COUNT)
     .onReachEnd(()=>{

@@ -22,13 +22,13 @@ export default  class VideoModel {
     ["Referer", "https://www.bilibili.com"]
   ])
   xComponentId = "XID"+ new Date().valueOf()
-  bvid: string
-  cid: number
+  bvid: string = ""
+  cid?: number
   isShowAttachments = true
   videoWidth:number=0 // 视频宽高
   videoHeight: number = 0// 视频宽高
-  xComponentWidth = '100%' //xComponent的宽，根据VIDEO_ASPECT_RATIO的值来确定
-  xComponentHeight = undefined //xComponent的高
+  xComponentWidth :string|undefined= '100%' //xComponent的宽，根据VIDEO_ASPECT_RATIO的值来确定
+  xComponentHeight:string|undefined = undefined //xComponent的高
   videoAspectRatio: number = Constants.VIDEO_ASPECT_RATIO
   defaultAspectRatio:number = Constants.DEFAULT_ASPECT_RATIO
   state: PlayStatus = PlayStatus.INIT
@@ -38,16 +38,16 @@ export default  class VideoModel {
 
   timeTotal: string = '0:00'
   currentTime: string = '0:00'
-  context:object =null
+  context?:object 
   orientation:window.Orientation = window.Orientation.PORTRAIT
   // 各种Listener
-  mOnVideoSizeChangedListener: OnVideoSizeChangedListener = null
-  mOnPreparedListener: OnPreparedListener = null
-  mOnTimedTextListener: OnTimedTextListener = null
-  mOnCompletionListener: OnCompletionListener = null
-  mOnBufferingUpdateListener: OnBufferingUpdateListener = null
-  mOnSeekCompleteListener: OnSeekCompleteListener = null
-  mOnInfoListener: OnInfoListener = null
-  mOnErrorListener: OnErrorListener = null
+  mOnVideoSizeChangedListener?: OnVideoSizeChangedListener
+  mOnPreparedListener?: OnPreparedListener
+  mOnTimedTextListener?: OnTimedTextListener
+  mOnCompletionListener?: OnCompletionListener
+  mOnBufferingUpdateListener?: OnBufferingUpdateListener
+  mOnSeekCompleteListener?: OnSeekCompleteListener
+  mOnInfoListener?: OnInfoListener
+  mOnErrorListener?: OnErrorListener
   updateProgressTimer: number = 0
 }

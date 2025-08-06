@@ -10,12 +10,13 @@ import { VolumeBrightnessProgress, VolumeBrightStatus } from './VolumeBrightness
 import { PageManager } from '../../common/PageManager'
 import { toast } from '../../Utils/ToastUtils'
 import { showDialog } from '../../Utils/DialogUtil'
+import { common } from '@kit.AbilityKit'
 
 @Component
 export struct LivePlay {
-  videoController: VideoController
+  videoController: VideoController = new VideoController()
   @Prop @Watch('initPlay') url: string
-  @State @Watch('initPlay') context: object = undefined
+  @State @Watch('initPlay') context?: object = undefined
 
   aboutToAppear() {
     this.videoController.getVolume().then(volume=>{
@@ -46,7 +47,7 @@ export struct LivePlay {
     VideoPlayer({
       videoModel: this.videoController.videoModel,
       videoController: this.videoController,
-      mOnPlayerCompleteListener: (context: object) => {
+      mOnPlayerCompleteListener: (context: object|undefined) => {
         this.context = context
       }
     }).width('100%')
@@ -61,8 +62,8 @@ struct VideoPlayer {
   @State volumeBrightStatus: VolumeBrightStatus = VolumeBrightStatus.VOLUME
   @State volumeBrightValue: number = 0
   @ObjectLink videoModel: VideoModel
-  videoController: VideoController
-  mOnPlayerCompleteListener: (context: object) => void
+  videoController: VideoController = new VideoController()
+  mOnPlayerCompleteListener: (context:object | undefined) => void = ()=>{}
 
   build() {
     Stack() {
@@ -80,7 +81,8 @@ struct VideoPlayer {
           Row() {
             Image($r('app.media.ic_common_back_white')).onClick(() => {
               if (this.videoModel.orientation === window.Orientation.LANDSCAPE){
-                this.videoController.changeOrientation()
+                let context = getContext(this) as common.UIAbilityContext;
+                this.videoController.changeOrientation(context)
 
               }else{
                 router.back()
@@ -110,20 +112,20 @@ struct VideoPlayer {
               .layoutWeight(1)
               .gesture(GestureGroup(GestureMode.Exclusive,
                 PanGesture({ direction: PanDirection.Vertical })
-                  .onActionStart((event?: GestureEvent) => {
+                  .onActionStart((event: GestureEvent) => {
                     // 向上为负，向下为正，以当前点为起始点
                     this.volumeBrightStatus = VolumeBrightStatus.BRIGHTNESS
                     this.volumeBrightValue = this.videoModel.brightness * 100
                     this.isVolumeBrightShow = true
                     console.log('Gesture:onActionStart:' + event.offsetY)
                   })
-                  .onActionUpdate((event?: GestureEvent) => {
+                  .onActionUpdate((event: GestureEvent) => {
                     // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
                     let temp = this.videoController.videoModel.brightness - event.offsetY / 100
                     this.videoController.adjustBrightness(temp)
                     this.volumeBrightValue = temp * 100
                     console.log('Gesture:onActionUpdate:' + event.offsetY)
-                  }).onActionEnd((event?: GestureEvent) => {
+                  }).onActionEnd((event: GestureEvent) => {
 
                   this.videoController.getBright().then(brightness => {
                     this.videoModel.brightness = brightness
@@ -154,7 +156,7 @@ struct VideoPlayer {
               .layoutWeight(1)
               .gesture(GestureGroup(GestureMode.Exclusive,
                 PanGesture({ direction: PanDirection.Vertical })
-                  .onActionStart((event?: GestureEvent) => {
+                  .onActionStart((event: GestureEvent) => {
                     // 向上为负，向下为正，以当前点为起始点
                     // 向上为负，向下为正，以当前点为起始点
                     this.volumeBrightStatus = VolumeBrightStatus.VOLUME
@@ -162,13 +164,13 @@ struct VideoPlayer {
                     this.isVolumeBrightShow = true
                     console.log('Gesture:onActionStart:' + event.offsetY)
                   })
-                  .onActionUpdate((event?: GestureEvent) => {
+                  .onActionUpdate((event: GestureEvent) => {
                     // 向上为负，向下为正，以onActionUpdate的值为起始点，返回的都是当前点和起始点的差值
                     let temp = this.videoController.videoModel.volume - event.offsetY * 15 / 100
                     this.videoController.adjustVolume(temp)
                     this.volumeBrightValue = temp * 100 / 15
                     console.log('Gesture:onActionUpdate:' + event.offsetY)
-                  }).onActionEnd((event?: GestureEvent) => {
+                  }).onActionEnd((event: GestureEvent) => {
                   this.videoController.getVolume().then(volume => {
                     this.videoModel.volume = volume
                     this.isVolumeBrightShow = false
@@ -188,7 +190,8 @@ struct VideoPlayer {
               .aspectRatio(1)
               .margin({right:4})
               .onClick(() => {
-                this.videoController.changeOrientation()
+                let context = getContext(this) as common.UIAbilityContext;
+                this.videoController.changeOrientation(context)
               })
           }
           .width('100%')
@@ -299,7 +302,8 @@ struct VideoPlayer {
 
   changePortrait(){
     if (this.videoModel.orientation === window.Orientation.LANDSCAPE){
-      this.videoController.changeOrientation()
+      let context = getContext(this) as common.UIAbilityContext;
+      this.videoController.changeOrientation(context)
     }
   }
 }

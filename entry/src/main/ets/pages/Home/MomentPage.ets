@@ -26,7 +26,7 @@ export struct MomentPage {
           })
 
         List({ space: 20, scroller: this.scrollerForList }) {
-          ForEach(this.arr, (item: any, index?: number) => {
+          ForEach(this.arr, (item: number, index?: number) => {
             ListItem() {
               if (index===this.arr.length-1) {
                 Image($r('app.media.test'))
@@ -37,7 +37,7 @@ export struct MomentPage {
               }
 
             }.width("100%").height(100)
-          }, item => item)
+          })
         }
         .width("100%")
         .height("50%")

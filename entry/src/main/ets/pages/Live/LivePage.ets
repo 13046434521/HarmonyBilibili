@@ -1,24 +1,26 @@
 import router from '@ohos.router'
 import { LiveBean, LiveUrlBean } from '../../bean/Live/LiveBean'
 import Constants from '../../common/Constants'
-import { RouterConstants } from '../../common/PageManager'
+import { LIVE_ID, RouterConstants } from '../../common/PageManager'
 import { VideoPlay } from '../../component/play/VideoPlay'
 import  ApiLiving  from '../../net/ApiLiving'
 import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 import window from '@ohos.window'
 import { LivePlay } from '../../component/play/LivePlay'
+import { common } from '@kit.AbilityKit'
 
 @Entry
 @Component
 struct LivePage {
-  roomId:number
+  roomId?:number
   @State liveUrl:LiveUrlBean = new LiveUrlBean()
   videoController:VideoController = new VideoController()
   @State url :string=''
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_DAY
   aboutToAppear(){
     if (router.getParams()!=undefined) {
-      this.roomId = router.getParams()[RouterConstants.LIVE_ID]
+      let params = router.getParams() as LIVE_ID
+      this.roomId = params.liveId
     }
     this.videoController.isShowAttachments = false
 
@@ -36,9 +38,10 @@ struct LivePage {
     .width('100%')
   }
 
-  onBackPress(){
+  onBackPress(): void | boolean{
     if (this.videoController.videoModel.orientation === window.Orientation.LANDSCAPE){
-      this.videoController.changeOrientation()
+      let context = getContext(this) as common.UIAbilityContext;
+      this.videoController.changeOrientation(context)
       return true
     }
   }

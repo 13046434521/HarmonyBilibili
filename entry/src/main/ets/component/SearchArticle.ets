@@ -61,8 +61,8 @@ export struct SearchArticleDetails {
       }else{
         this.refreshController.isLoadMore = false
       }
-    }).catch(err => {
-      this.err = err
+    }).catch((err:Error) => {
+      this.err = err.message
     })
   }
 
@@ -75,8 +75,8 @@ export struct SearchArticleDetails {
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
       }
-    }).catch(err => {
-      this.err = err
+    }).catch((err:Error) => {
+      this.err = err.message
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
   }

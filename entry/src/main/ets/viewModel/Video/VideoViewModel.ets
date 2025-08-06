@@ -28,7 +28,7 @@ export default class VideoViewModel extends BaseViewModel{
    * @param bvid 视频号
    * @returns VideoInfo 返回视频详情
    */
-  loadVideoInfo(bvid:string){
+  loadVideoInfo(bvid:string): Promise<VideoInfo>{
     return ApiVideo.getVideoInfo<VideoInfo>(bvid)
   }
 
@@ -46,7 +46,7 @@ export default class VideoViewModel extends BaseViewModel{
    * @param bvid 视频bvid号
    * @returns 推荐视频信息 VideoRecommend[]
    */
-  videoRecommend(bvid:string){
+  videoRecommend(bvid:string): Promise<VideoRecommend[]>{
     return ApiVideo.getVideoRecommend<VideoRecommend[]>(bvid)
   }
 }

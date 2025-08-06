@@ -4,17 +4,17 @@ import { Utils } from '../../Utils/Utils'
 
 @Component
 export struct MediaFtItem{
-  item:SearchMediaBean
+  item?:SearchMediaBean
 
   build(){
-    this.mediaFtItem(this.item)
+    this.mediaFtItem(this?.item)
   }
 
-  @Builder mediaFtItem(item:SearchMediaBean){
+  @Builder mediaFtItem(item?:SearchMediaBean){
     Column(){
       Row(){
         Stack(){
-          Image(item.cover)
+          Image(item?.cover)
             .alt($r('app.media.ic_placeholder'))
             .height('100%')
             .objectFit(ImageFit.Cover)
@@ -22,7 +22,7 @@ export struct MediaFtItem{
             .borderRadius(5)
             .align(Alignment.BottomEnd)
 
-          Text(item.season_type_name)
+          Text(item?.season_type_name)
             .backgroundColor($r('app.color.bilibili_theme'))
             .fontColor($r('app.color.bilibili_text_white'))
             .badgeStyle()
@@ -34,23 +34,23 @@ export struct MediaFtItem{
 
         Column(){
           Row(){
-            if (item.badges!=undefined) {
-              Text(item.badges[0].text)
-                .backgroundColor(item.badges[0].bg_color)
-                .fontColor(item.badges[0].text_color)
-                .borderColor(item.badges[0].border_color)
+            if (item?.badges!=undefined) {
+              Text(item?.badges[0].text)
+                .backgroundColor(item?.badges[0].bg_color)
+                .fontColor(item?.badges[0].text_color)
+                .borderColor(item?.badges[0].border_color)
                 .badgeStyle()
                 .margin({top:4,bottom:4,right:4})
             }
 
-            Text(Utils.upRichTextClear(item.title))
+            Text(Utils.upRichTextClear(item?.title))
               .contentStyle()
               .margin({top:4,bottom:4})
           }.width('100%')
           .alignItems(VerticalAlign.Center)
           .justifyContent(FlexAlign.Start)
 
-          Text(item.areas+" | "+Utils.timestampToDate(item.pubtime)+"\n"+item.styles)
+          Text(item?.areas+" | "+Utils.timestampToDate(item?.pubtime)+"\n"+item?.styles)
             .fontColor($r('app.color.bilibili_text_grey_bold'))
             .width('100%')
             .contentStyle()
@@ -58,7 +58,7 @@ export struct MediaFtItem{
           Blank().layoutWeight(1)
 
           Row(){
-            Text(item.media_score.score.toString())
+            Text(item?.media_score.score.toString())
               .fontSize(14)
               .fontColor($r('app.color.bilibili_bangumi_score'))
               .fontWeight(FontWeight.Bold)
@@ -68,7 +68,7 @@ export struct MediaFtItem{
               .margin({left:'1%'})
               .fontColor($r('app.color.bilibili_bangumi_score'))
               .textAlign(TextAlign.Center)
-            Text(Utils.Views(item.media_score.user_count)+'人参与')
+            Text(Utils.Views(item?.media_score.user_count)+'人参与')
               .fontSize(12)
               .fontColor($r('app.color.bilibili_text_grey_bold'))
               .margin({left:'2%'})
@@ -83,7 +83,7 @@ export struct MediaFtItem{
         .layoutWeight(1)
 
         Column(){
-          Text(item.button_text)
+          Text(item?.button_text)
             .height("18%")
             .aspectRatio(3)
             .borderWidth(1)
@@ -129,7 +129,7 @@ export struct MediaFtItem{
     }.backgroundColor(Color.White)
     .height('22%')
     .onClick(()=>{
-      PageManager.routerMedia(item.season_id)
+      PageManager.routerMedia(item?.season_id)
     })
   }
 }

@@ -9,6 +9,7 @@ import { Utils } from '../../Utils/Utils'
 import { LoadingData } from '../../component/LoadingData'
 import { AllData } from '../../datasource/AllData'
 import promptAction from '@ohos.promptAction'
+import { SEARCH_PARAMS } from '../../common/PageManager'
 
 @Entry
 @Component
@@ -25,7 +26,8 @@ struct SearchPage {
   @State isNeedSuggest: boolean = false // 是否弹出建议页面
 
   aboutToAppear() {
-    this.search = router.getParams()['keyword']
+    let params = router.getParams() as SEARCH_PARAMS
+    this.search = params.keyword??""
     this.placeholder= this.search
     this.searchPage(this.search)
   }
@@ -41,8 +43,8 @@ struct SearchPage {
 
       this.topList = response.top_tlist
       this.loadingStatus = LoadingStatus.LoadingSuccess
-    }).catch(err => {
-      this.errMessage = err
+    }).catch((err:Error) => {
+      this.errMessage = err.message
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
   }
@@ -56,7 +58,7 @@ struct SearchPage {
         }
         this.search = value
         this.isTitleVisible = true
-      }, clickEvent: (title,placeholder) => {
+      }, clickEvent: (title:string,placeholder:string) => {
         if (this.search === "") {
           this.search =placeholder
         }

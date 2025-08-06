@@ -42,8 +42,11 @@ export struct WebView {
 
 function setCookie(url:string){
   let temp = AppStorage.Get<string>('bilibili_cookie')
-  let arr = temp.split(';')
-  for (let index = 0; index < arr.length; index++) {
-    const element = arr[index];
-    webview.WebCookieManager.setCookie(url, element)
-  }}
+  let arr = temp?.split(';')
+  if (arr) {
+    for (let index = 0; index < arr.length; index++) {
+      const element = arr[index];
+      webview.WebCookieManager.setCookie(url, element)
+    }
+  }
+}

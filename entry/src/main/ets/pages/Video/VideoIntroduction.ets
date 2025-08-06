@@ -1,7 +1,7 @@
 import { UserInfoBean } from '../../bean/biliUser/UserInfoBean'
 import { Online } from '../../bean/Online'
 import { PageListBean } from '../../bean/PageListBean'
-import VideoInfo from '../../bean/video/VideoInfo'
+import VideoInfo, { VideoInfoNext } from '../../bean/video/VideoInfo'
 import { VideoRecommend } from '../../bean/video/VideoRecommend'
 import Constants from '../../common/Constants'
 import { LoadingStatus } from '../../common/LoadingStatus'
@@ -25,25 +25,25 @@ export default struct VideoIntroduction {
   @State loadStatus:LoadingStatus = LoadingStatus.Loading
   @State err:string = ''
   @State videoLists:VideoPageData = new VideoPageData()
-  videoViewModel:VideoViewModel
+  videoViewModel:VideoViewModel = new VideoViewModel()
   @Prop bvid:string
   @Prop cid:number
   @State index :number = 0
   scroll:Scroller = new Scroller()
   aboutToAppear(){
-    this.videoViewModel.loadVideoInfo(this.bvid).then(videoInfo=>{
-      this.videoInfo = videoInfo
-      return this.videoViewModel.upInfo(videoInfo.owner.mid)
-    }).then(userInfo=>{
-        this.userInfo = userInfo
-      return this.videoViewModel.videoRecommend(this.bvid)
+    this.videoViewModel.loadVideoInfo(this.bvid).then((videoInfo): Promise<UserInfoBean> => {
+      this.videoInfo = videoInfo;
+      return this.videoViewModel.upInfo(videoInfo.owner.mid);
+    }).then((userInfo): Promise<VideoRecommend[]> => {
+      this.userInfo = userInfo;
+      return this.videoViewModel.videoRecommend(this.bvid);
     }).then(recommend=>{
       this.videoRecommendData.addDataAll(recommend)
 
       return this.videoViewModel.videoOnline(this.bvid,this.videoInfo.cid)
-    }).then(online=>{
-      this.online = online
-      return this.videoViewModel.getVideoList(this.bvid)
+    }).then((online): Promise<PageListBean[]> => {
+      this.online = online;
+      return this.videoViewModel.getVideoList(this.bvid);
     }).then(lists=>{
       for (let index = 0; index < lists.length; index++) {
         const element = lists[index];
@@ -54,8 +54,8 @@ export default struct VideoIntroduction {
       }
       this.videoLists.pushDataAll(lists)
       this.loadStatus = LoadingStatus.LoadingSuccess
-    }).catch(err=>{
-      this.err = err
+    }).catch((err:Error)=>{
+      this.err = err.message
       this.loadStatus = LoadingStatus.LoadingFailure
     })
   }
@@ -63,7 +63,7 @@ export default struct VideoIntroduction {
     LoadingData({loadingStatus:this.loadStatus,page:this.VideoIntroduction.bind(this),extraFailure:this.err,type:LoadingType.PAGE})
   }
 
-  dialogController: CustomDialogController = new CustomDialogController({
+  dialogController?: CustomDialogController = new CustomDialogController({
       builder: VideoSelectDialog({
       videoLists:this.videoLists,
       cid:this.cid,
@@ -81,11 +81,11 @@ export default struct VideoIntroduction {
   VideoIntroduction(){
     List({scroller:this.scroll}){
       ListItemGroup({header:this.Header(),footer:ListFooter()}){
-        LazyForEach(this.videoRecommendData,videoRecommend=>{
+        LazyForEach(this.videoRecommendData,(videoRecommend:VideoRecommend)=>{
           ListItem(){
             this.VideoItem(videoRecommend)
           }
-        },(item,index)=>JSON.stringify(item)+index)
+        },(item:string,index)=>JSON.stringify(item)+index)
       }
     }
     .lanes(1)
@@ -184,7 +184,7 @@ export default struct VideoIntroduction {
       if (this.videoLists.totalCount()>=2){
         Stack(){
           List({initialIndex:this.index,space:'2%'}){
-            LazyForEach(this.videoLists,video=>{
+            LazyForEach(this.videoLists,(video:VideoInfoNext)=>{
               ListItem(){
                 Text(video.part)
                   .height('100%')
@@ -204,7 +204,7 @@ export default struct VideoIntroduction {
               .onClick(()=>{
                 PageManager.routerVideoDetail(this.bvid,0,video.cid,PageType.REPLACE)
               })
-            },(item,index)=>JSON.stringify(item)+index)
+            },(item:string,index)=>JSON.stringify(item)+index)
 
           }.listDirection(Axis.Horizontal)
           .height('100%')
@@ -217,7 +217,7 @@ export default struct VideoIntroduction {
             .opacity(0.8)
             .backgroundColor(Color.White)
             .onClick(()=>{
-              this.dialogController.open()
+              this.dialogController?.open()
             })
         }.align(Alignment.End)
         .height('10%')
@@ -343,7 +343,7 @@ export default struct VideoIntroduction {
 
   // 在自定义组件即将析构销毁时将dialogControlle置空
   aboutToDisappear() {
-    this.dialogController = null // 将dialogController置空
+    this.dialogController = undefined // 将dialogController置空
   }
 }
 @Component
@@ -420,7 +420,7 @@ struct VideoSelectDialog {
         .backgroundColor($r("app.color.bilibili_divider"))
 
       List({initialIndex:this.index,space:'1%'}){
-        LazyForEach(this.videoLists,video=>{
+        LazyForEach(this.videoLists,(video:VideoInfoNext)=>{
           ListItem(){
             Text(video.part)
               .layoutWeight(1)
@@ -439,7 +439,7 @@ struct VideoSelectDialog {
           .onClick(()=>{
             PageManager.routerVideoDetail(this.bvid,0,video.cid,PageType.REPLACE)
           })
-        },(item,index)=>JSON.stringify(item)+index)
+        },(item:string,index)=>JSON.stringify(item)+index)
       }.listDirection(Axis.Vertical)
       .cachedCount(Constants.CACHE_COUNT)
       .alignListItem(ListItemAlign.Center)

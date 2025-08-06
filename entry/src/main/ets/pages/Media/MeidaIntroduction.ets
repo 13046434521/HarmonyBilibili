@@ -1,5 +1,5 @@
 import { MediaBean, MediaEpisodesBean } from '../../bean/media/MediaBean'
-import { MediaSeason } from '../../bean/media/MediaRelation'
+import { MediaRelation, MediaSeason } from '../../bean/media/MediaRelation'
 import { Online } from '../../bean/Online'
 import Constants from '../../common/Constants'
 import { LoadingStatus } from '../../common/LoadingStatus'
@@ -45,10 +45,10 @@ export struct MediaIntroduction {
         this.mediaEpsData.addDataAll(mediaInfo.episodes)
         console.warn('Media',JSON.stringify(this.mediaInfo.stat))
         return this.mediaViewModel.videoOnline(this.episodes.bvid,this.episodes.cid)
-      }).then(online=>{
-      this.online =online
-      return this.mediaViewModel.getMediaRelation(this.mediaInfo.season_id)
-      })
+      }).then((online): Promise<MediaRelation> => {
+      this.online = online;
+      return this.mediaViewModel.getMediaRelation(this.mediaInfo.season_id);
+    })
       .then(relation => {
         this.mediaSeasonData.addDataAll(relation.season)
         for (const element of relation.season) {
@@ -58,14 +58,13 @@ export struct MediaIntroduction {
         this.loadStatus = this.mediaSeasonData.totalCount() === 0 ? LoadingStatus.LoadingOther : LoadingStatus.LoadingSuccess
 
       })
-      .catch(err => {
+      .catch((err:Error) => {
         this.loadStatus = LoadingStatus.LoadingFailure
-        this.err = err
+        this.err = err.message
       })
   }
 
   aboutToDisappear(){
-    this.dialogController = null
   }
 
   build() {
@@ -81,11 +80,11 @@ export struct MediaIntroduction {
   MediaIntroduction() {
     List() {
       ListItemGroup({header:this.Header()}){
-        LazyForEach(this.mediaSeasonData, mediaSeason => {
+        LazyForEach(this.mediaSeasonData, (mediaSeason:MediaSeason) => {
           ListItem() {
             this.MediaItem(mediaSeason)
           }
-        }, (item, index) => JSON.stringify(item) + index)
+        }, (item:string, index) => JSON.stringify(item) + index)
       }
     }.scrollBar(BarState.Off)
     .lanes(1)
@@ -208,7 +207,7 @@ export struct MediaIntroduction {
               .onClick(()=>{
                 PageManager.routerMedia(this.seasonId,eps.ep_id,PageType.REPLACE)
               })
-            },(item,index)=>JSON.stringify(item)+index)
+            },(item:string,index)=>JSON.stringify(item)+index)
 
           }.listDirection(Axis.Horizontal)
           .height('100%')
@@ -434,7 +433,7 @@ struct MediaSelectDialog {
         .backgroundColor($r("app.color.bilibili_divider"))
 
       List({initialIndex:this.index,space:'1%'}){
-        LazyForEach(this.mediaData,eps=>{
+        LazyForEach(this.mediaData,(eps: MediaEpisodesBean)=>{
           ListItem(){
             Stack({alignContent:Alignment.TopEnd}){
               Text(eps.title+"\n"+eps.long_title)

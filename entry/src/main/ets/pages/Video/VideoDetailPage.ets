@@ -6,13 +6,12 @@ import { PlayVideoBean } from '../../bean/PlayVideoBean'
 import { VideoPlay } from '../../component/play/VideoPlay'
 import { VideoController } from '../../viewModel/videoPlayer/VideoController'
 import window from '@ohos.window'
-import { RouterConstants } from '../../common/PageManager'
+import { BVID_CID_AID, RouterConstants } from '../../common/PageManager'
 import VideoViewModel from '../../viewModel/Video/VideoViewModel'
 import VideoInfo from '../../bean/video/VideoInfo'
 import VideoIntroduction from './VideoIntroduction'
-import VideoComments from './VideoComments'
-import { toast } from '../../Utils/ToastUtils'
 import { BiliComments } from '../BiliComments'
+import { common } from '@kit.AbilityKit'
 
 @Entry
 @Component
@@ -34,9 +33,10 @@ struct VideoDetailPage {
 
   aboutToAppear() {
     if (router.getParams()!=null) {
-      this.bvid = router.getParams()[RouterConstants.BVID]
-      this.cid = router.getParams()[RouterConstants.CID]
-      this.aid = router.getParams()[RouterConstants.AID]
+      let params = router.getParams() as  BVID_CID_AID
+      this.bvid = params.bvid
+      this.cid = params.cid
+      this.aid = params.aid
       new Promise<PlayVideoBean>((resolve,reject)=>{
         if (this.cid === 0) {
           resolve( Api.getPageList(this.bvid).then((item)=>{
@@ -62,7 +62,7 @@ struct VideoDetailPage {
       }).then((aid)=>{
         this.aid = aid
         this.loadingPage = LoadingStatus.LoadingSuccess
-      }).catch(err=>{
+      }).catch((err:Error)=>{
         this.loadingPage = LoadingStatus.LoadingFailure
       })
     }
@@ -133,9 +133,10 @@ struct VideoDetailPage {
     })
   }
 
-  onBackPress(){
+  onBackPress(): void | boolean{
     if (this.videoController.videoModel.orientation === window.Orientation.LANDSCAPE){
-      this.videoController.changeOrientation()
+      let context = getContext(this) as common.UIAbilityContext;
+      this.videoController.changeOrientation(context)
       return true
     }
   }

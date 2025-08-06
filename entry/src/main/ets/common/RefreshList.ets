@@ -1,7 +1,7 @@
 @Component
 export struct RefreshList{
   @BuilderParam listItem:()=>LazyForEachInterface|ForEachInterface
-  @BuilderParam title:()=> void = undefined
+  @BuilderParam title?:()=> void
   @Prop refreshController:RefreshController
 
   aboutToAppear(){
@@ -75,10 +75,10 @@ export struct RefreshList{
 export class RefreshListController implements RefreshController{
   isRefreshing: boolean = false
   isLoadMore: boolean = true
-  onRefreshListener: () => boolean
-  onLoadMoreListener: () => void
-  lanes: number
-  cacheCount: number
+  onRefreshListener?: () => boolean
+  onLoadMoreListener?: () => void
+  lanes: number = 0
+  cacheCount: number = 0
 
   setRefresh(refresh:boolean){
     this.isRefreshing = refresh
@@ -109,8 +109,8 @@ export class RefreshListController implements RefreshController{
 export interface RefreshController{
   isRefreshing: boolean
   isLoadMore:boolean
-  onRefreshListener:()=>boolean
-  onLoadMoreListener:()=>void
+  onRefreshListener?:()=>boolean
+  onLoadMoreListener?:()=>void
   lanes :number
   cacheCount :number
 }

@@ -1,7 +1,7 @@
 import router from '@ohos.router'
 import { SearchHotBeanItem } from '../../bean/search/SearchHotBean'
 import Constants from '../../common/Constants'
-import { PageManager } from '../../common/PageManager'
+import { PageManager, SEARCH_PARAMS } from '../../common/PageManager'
 import { SearchHeader} from '../../component/SearchHeader'
 import { HotSearchData } from '../../datasource/HotSearchData'
 
@@ -16,9 +16,9 @@ struct SearchHotPage {
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   aboutToAppear() {
     // 传搜索栏的值
-    let param = router.getParams()['title']
+    let param = router.getParams() as SEARCH_PARAMS
     if (param) {
-      this.title = param
+      this.title = param.title??""
       this.search = this.title
     }
     // 获取当前热搜数据

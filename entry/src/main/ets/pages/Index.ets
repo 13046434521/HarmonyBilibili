@@ -10,7 +10,6 @@ import Constants from '../common/Constants'
 @Observed
 export class TabIcon {
   text: string
-  index: number
   path: Resource
 
   constructor(text: string, path: Resource) {
@@ -46,7 +45,7 @@ struct Index {
     Column(){
       Tabs({controller:this.controller}){
         TabContent(){
-          HomePage({onLoginClick:this.onLoginClick.bind(this)})
+          HomePage({onLoginClick:this.onLoginClick})
         }.tabBar(this.TabBuilder(0))
         TabContent(){
           MomentPage()

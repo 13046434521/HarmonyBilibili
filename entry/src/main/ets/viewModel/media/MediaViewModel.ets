@@ -11,7 +11,7 @@ export class MediaViewModel extends BaseViewModel{
    * @param seasonId
    * @param qn 清晰度
    */
-  getMediaInfo(seasonId:number,ep_id:string ='',qn:number=Constants.QN){
+  getMediaInfo(seasonId:number,ep_id:string ='',qn:number=Constants.QN): Promise<MediaBean>{
     return ApiMedia.getMediaDetailInfo<MediaBean>(seasonId,ep_id,qn)
   }
 
@@ -30,7 +30,7 @@ export class MediaViewModel extends BaseViewModel{
    * @url https://api.bilibili.com/pgc/season/web/related/recommend?season_id=39431
    * @param season_id 番号/视频 ID
    */
-  getMediaRelation(season_id:number){
+  getMediaRelation(season_id:number): Promise<MediaRelation>{
     return ApiMedia.getMediaRelation<MediaRelation>(season_id)
   }
 }

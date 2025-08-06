@@ -2956,7 +2956,24 @@ import Dimension from '../Dimension'
 import Owner from '../Owner'
 import Stat from '../Stat'
 
-export class VideoRecommend {
+interface VideoRecommendRights {
+  bp: number;
+  elec: number;
+  download: number;
+  movie: number;
+  pay: number;
+  hd5: number;
+  no_reprint: number;
+  autoplay: number;
+  ugc_pay: number;
+  is_cooperation: number;
+  ugc_pay_preview: number;
+  no_background: number;
+  arc_pay: number;
+  pay_free_watch: number;
+}
+
+export interface  VideoRecommend {
   aid: number
   videos: number
   tid: number
@@ -2969,27 +2986,12 @@ export class VideoRecommend {
   desc: string
   state: number
   duration: number
-  rights: {
-    bp: number
-    elec: number
-    download: number
-    movie: number
-    pay: number
-    hd5: number
-    no_reprint: number
-    autoplay: number
-    ugc_pay: number
-    is_cooperation: number
-    ugc_pay_preview: number
-    no_background: number
-    arc_pay: number
-    pay_free_watch: number
-  }
-  owner: Owner = new Owner()
-  stat: Stat = new Stat()
+  rights: VideoRecommendRights
+  owner: Owner
+  stat: Stat
   dynamic: string
   cid: number
-  dimension: Dimension = new Dimension()
+  dimension: Dimension
   short_link_v2: string
   up_from_v2: number
   first_frame: string

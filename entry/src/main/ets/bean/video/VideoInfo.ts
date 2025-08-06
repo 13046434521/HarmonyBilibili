@@ -280,8 +280,8 @@ export default class VideoInfo {
   state: number
   duration: number
   mission_id: number
-  owner: Owner = new Owner()
-  stat: Stat = new Stat()
+  owner: Owner
+  stat: Stat
   argue_info: {
     argue_msg: string
     argue_type: number
@@ -289,7 +289,7 @@ export default class VideoInfo {
   }
   dynamic: string
   cid: number
-  dimension: Dimension = new Dimension()
+  dimension: Dimension
   premiere: null
   teenage_mode: number
   is_chargeable_season: boolean
@@ -311,7 +311,7 @@ export default class VideoInfo {
   is_story_play: number
 }
 
-class VideoInfoNext {
+export interface  VideoInfoNext {
   cid: number
   page: number
   from: string

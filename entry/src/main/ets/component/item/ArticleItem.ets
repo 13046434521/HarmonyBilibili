@@ -4,15 +4,15 @@ import { Utils } from '../../Utils/Utils'
 
 @Component
 export struct ArticleItem{
-  item: SearchArticleBean
+  item?: SearchArticleBean
   build(){
     this.articleItem(this.item)
   }
 
   @Builder
-  articleItem(item: SearchArticleBean) {
+  articleItem(item?: SearchArticleBean) {
     Row() {
-      Image("https:" + item.image_urls[0])
+      Image("https:" + item?.image_urls[0])
         .borderRadius(2)
         .height('90%')
         .aspectRatio(1)
@@ -21,21 +21,21 @@ export struct ArticleItem{
         .margin({ left: '2%', right: '2%' })
         .borderRadius(5)
       Column() {
-        Text(Utils.upRichTextClear(item.title))
+        Text(Utils.upRichTextClear(item?.title))
           .maxLines(1)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .fontSize(16)
           .fontColor($r('app.color.bilibili_text_black'))
           .margin({ bottom: '2%' })
 
-        Text(Utils.upRichTextClear(item.desc))
+        Text(Utils.upRichTextClear(item?.desc))
           .maxLines(2)
           .textOverflow({ overflow: TextOverflow.Ellipsis })
           .fontSize(14)
           .fontColor($r('app.color.bilibili_text_grey_bold'))
           .margin({ bottom: '2%' })
         Row() {
-          Text(item.category_name)
+          Text(item?.category_name)
             .fontColor($r('app.color.bilibili_text_grey_bold'))
             .maxLines(1)
             .fontSize(13)
@@ -51,7 +51,7 @@ export struct ArticleItem{
             .interpolation(ImageInterpolation.High)
             .margin({right:'1%'})
 
-          Text(item.like + " · " + Utils.timestampToDate(item.pub_time))
+          Text(item?.like + " · " + Utils.timestampToDate(item?.pub_time))
             .fontColor($r('app.color.bilibili_text_grey_bold'))
             .maxLines(1)
             .fontSize(13)
@@ -74,7 +74,7 @@ export struct ArticleItem{
     .alignItems(VerticalAlign.Center)
     .justifyContent(FlexAlign.Start)
     .onClick(()=>{
-      PageManager.routerArticle(this.item.id)
+      PageManager.routerArticle(this.item?.id)
     })
   }
 }

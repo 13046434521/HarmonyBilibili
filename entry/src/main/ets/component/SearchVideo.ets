@@ -36,10 +36,10 @@ export struct SearchVideoDetails {
         this.loadingStatus = LoadingStatus.LoadingOther
       }
 
-    }).catch((err => {
+    }).catch(((err:Error) => {
       this.loadingStatus =LoadingStatus.LoadingFailure
       Utils.Toast(err+"")
-      this.errMessage = err
+      this.errMessage = err.message
     }))
   }
 
@@ -70,7 +70,7 @@ export struct SearchVideoDetails {
             this.page++
             this.videoData.pushDataAll(response.result)
           }
-        }).catch((err => {
+        }).catch(((err:Error) => {
           Utils.Toast("视频页面："+err)
         }))
       })
@@ -85,7 +85,7 @@ export struct SearchVideoDetails {
           this.loadingStatus = LoadingStatus.LoadingOther
         }
         this.isRefreshing = false
-      }).catch((err => {
+      }).catch(((err:Error) => {
         this.isRefreshing = false
       }))
     })

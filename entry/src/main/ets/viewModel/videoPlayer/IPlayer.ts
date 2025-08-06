@@ -1,4 +1,5 @@
 import window from '@ohos.window'
+import { common } from '@kit.AbilityKit'
 
 export interface IPlayer{
   init(context:object)
@@ -19,7 +20,7 @@ export interface IPlayer{
 
   reset()
 
-  getOrientation():window.Orientation
+  getOrientation(context:common.UIAbilityContext):window.Orientation
 
-  setOrientation(orientation:window.Orientation)
+  setOrientation(context:common.UIAbilityContext,orientation:window.Orientation)
 }

@@ -57,7 +57,7 @@ export struct SearchBiliUserDetails {
       }else{
         this.loadingStatus = LoadingStatus.LoadingOther
       }
-    }).catch(err => {
+    }).catch((err:Error) => {
       this.loadingStatus = LoadingStatus.LoadingFailure
     })
   }
@@ -70,8 +70,8 @@ export struct SearchBiliUserDetails {
       }else{
         this.refreshController.isLoadMore = false
       }
-    }).catch(err => {
-      Utils.Toast(err)
+    }).catch((err:Error) => {
+      Utils.Toast(err.message)
     })
   }
 }

@@ -6,7 +6,7 @@ import { Utils } from '../Utils/Utils'
 export struct SearchSuggest {
   @Prop @Watch("init") keywords: string
   @State suggestTags: SearchSuggestTagBean[] = []
-  click:(value:string)=>void
+  click:(value:string)=>void = ()=>{}
 
   aboutToAppear() {
     console.log("搜索建议 页面刷新了")
@@ -19,8 +19,8 @@ export struct SearchSuggest {
     Api.getSearchSuggest(this.keywords).then((response: SearchSuggestResultBean) => {
       this.suggestTags = []
       this.suggestTags = this.suggestTags.concat(response.tag)
-    }).catch(err => {
-      Utils.Toast(err)
+    }).catch((err:Error) => {
+      Utils.Toast(err.message)
     })
   }
 

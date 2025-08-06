@@ -4,7 +4,7 @@ export struct Loading {
   @State state :AnimationStatus = AnimationStatus.Initial
   extra:string =''
   type:LoadingType = LoadingType.DATA
-  loadingOption :LoadingOption
+  loadingOption ?:LoadingOption
 
 
   aboutToAppear(){
@@ -20,13 +20,13 @@ export struct Loading {
   }
   build() {
     Column(){
-      ImageAnimator().images(this.loadingOption.value).iterations(-1)
+      ImageAnimator().images(this.loadingOption?.value).iterations(-1)
         .duration(1000)
-        .width(this.loadingOption.width)
-        .aspectRatio(this.loadingOption.aspectRatio)
+        .width(this.loadingOption?.width)
+        .aspectRatio(this.loadingOption?.aspectRatio)
         .state(this.state)
 
-      Text(this.loadingOption.content)
+      Text(this.loadingOption?.content)
         .width('100%')
         .fontSize(20)
         .textAlign(TextAlign.Center)

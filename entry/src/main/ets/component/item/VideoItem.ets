@@ -5,7 +5,7 @@ import deviceInfo from '@ohos.deviceInfo'
 
 @Component
 export struct VideoItem {
-  item: SearchVideoBean
+  item?: SearchVideoBean
   deviceType = 'tablet'
   imgHeight = 150
   aboutToAppear(){
@@ -18,7 +18,7 @@ export struct VideoItem {
     Column() {
       Row() {
         Stack() {
-          Image(`https:${this.item.pic}`)
+          Image(`https:${this.item?.pic}`)
             .width('100%')
             .height('100%')
             .objectFit(ImageFit.Cover)
@@ -26,7 +26,7 @@ export struct VideoItem {
             .alt($r('app.media.ic_placeholder'))
             .interpolation(ImageInterpolation.High)
 
-          Text(Utils.TimeDeal(this.item.duration))
+          Text(Utils.TimeDeal(this.item?.duration))
             .maxLines(1)
             .margin({ bottom: '1%', right:  '2%' })
             .fontSize(12)
@@ -42,7 +42,7 @@ export struct VideoItem {
         .align(Alignment.BottomEnd)
 
         Column() {
-          Text(Utils.upRichTextClear(this.item.title))
+          Text(Utils.upRichTextClear(this.item?.title))
             .maxLines(2)
             .fontColor($r("app.color.bilibili_text_black_light"))
             .fontSize(14)
@@ -57,19 +57,19 @@ export struct VideoItem {
           Row() {
             Image($r('app.media.ic_playlist_up_label'))
               .imageStyle()
-            Text(this.item.author)
+            Text(this.item?.author)
               .textStyle()
           }.margin({bottom:'1%'})
 
           Row() {
             Image($r('app.media.ic_detail_play'))
               .imageStyle()
-            Text(Utils.Views(this.item.play))
+            Text(Utils.Views(this.item?.play))
               .textStyle()
             Image($r("app.media.ic_danmakus_dark"))
               .imageStyle()
               .margin({ left: '2%' })
-            Text(Utils.Views(this.item.danmaku))
+            Text(Utils.Views(this.item?.danmaku))
               .textStyle()
             Blank()
               .layoutWeight(1)
@@ -78,7 +78,7 @@ export struct VideoItem {
               .onClick(() => {
                 AlertDialog.show(
                   {
-                    message: this.item.description,
+                    message: this.item?.description,
                     autoCancel: true,
                     alignment: DialogAlignment.Bottom,
                     gridCount: 50,

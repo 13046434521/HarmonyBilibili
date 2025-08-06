@@ -1,7 +1,7 @@
 import { LoadingStatus } from '../../common/LoadingStatus'
 import webview from '@ohos.web.webview'
 import router from '@ohos.router'
-import { RouterConstants } from '../../common/PageManager'
+import { ARTICLE_ID, RouterConstants } from '../../common/PageManager'
 import { JLog } from '../../common/JLog'
 import { Utils } from '../../Utils/Utils'
 
@@ -16,7 +16,8 @@ struct ArticlePage {
 
   aboutToAppear() {
     if (router.getParams() != null) {
-      this.articleId = router.getParams()[RouterConstants.ARTICLE_ID]
+      let params = router.getParams() as ARTICLE_ID
+      this.articleId = params.articleId
       this.url = `https://www.bilibili.com/read/mobile?id=${this.articleId}`
     }
   }
@@ -37,13 +38,13 @@ struct ArticlePage {
       .height('100%')
       .layoutWeight(1)
       .onUrlLoadIntercept((data) => {
-        let url = data.data as string
-        JLog.warn('url:', data.data as string)
+        let url = data?.data as string
+        JLog.warn('url:', data?.data as string)
         if (url.includes('https://www.bilibili.com/read/mobile?id') || url.includes("https://m.bilibili.com/opus/")) {
-          JLog.warn('JTL', "没有拦截请求：" + data.data as string)
+          JLog.warn('JTL', "没有拦截请求：" + data?.data as string)
           return false
         } else {
-          JLog.warn('JTL', "拦截请求：" + data.data as string)
+          JLog.warn('JTL', "拦截请求：" + data?.data as string)
           return true
         }
       })
