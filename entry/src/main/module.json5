@@ -7,7 +7,8 @@
     "deviceTypes": [
       "default",
       "tablet",
-      "phone"
+      "phone",
+      "2in1"
     ],
     "requestPermissions": [
       {
@@ -15,6 +16,13 @@
       },
       {
         "name": 'ohos.permission.ACCESS_NOTIFICATION_POLICY'
+      },
+      {
+        "name": "ohos.permission.WRITE_IMAGEVIDEO",
+        "reason": "$string:web_searchhot_link1",
+        "usedScene": {
+          "when": "always"
+        }
       }
     ],
     "deliveryWithInstall": true,

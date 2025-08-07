@@ -287,7 +287,7 @@ struct VideoPlayer {
   XComponentPlayer() {
     XComponent({
       id: this.videoController.getXComponentId(),
-      type: 'surface',
+      type: XComponentType.SURFACE,
       libraryname: "ijkplayer_napi",
     }).onLoad((context) => {
       this.mOnPlayerCompleteListener(context)

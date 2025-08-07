@@ -10,8 +10,7 @@
   "main": "",
   "version": "1.0.0",
   "dependencies": {
-    "@ohos/axios": "^2.1.1",
-    "@ohos/ijkplayer": "^2.0.6"
+    "@ohos/axios": "^2.2.6",
   },
   "dynamicDependencies": {}
 }

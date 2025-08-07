@@ -16,9 +16,9 @@ struct SearchHotPage {
   @StorageProp('background_color') backgroundColors :string = Constants.BACKGROUND_HOME_COLOR
   aboutToAppear() {
     // 传搜索栏的值
-    let param = router.getParams() as SEARCH_PARAMS
-    if (param) {
-      this.title = param.title??""
+    let params =  router.getParams() as SEARCH_PARAMS
+    if (params) {
+      this.title = params.title??""
       this.search = this.title
     }
     // 获取当前热搜数据

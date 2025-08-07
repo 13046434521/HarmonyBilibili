@@ -7,11 +7,11 @@
         "material": {
           "certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_HarmonyBilibili_xNi3dIBlFx3OWzRhipwk0qw1UhEmTnAiPhLydZwfAGg=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BA72FC32D143F9F801387B273BFB81506686A2765666B4E0CEB63555222FBAF6E2164109195422C",
+          "keyPassword": "0000001B93E54C2ADF7F703989FF64C71674C70F65CB6CFA52FEDEB7DCA81AA6321286F441C667950C70D4",
           "profile": "C:\\Users\\Administrator\\.ohos\\config\\default_HarmonyBilibili_xNi3dIBlFx3OWzRhipwk0qw1UhEmTnAiPhLydZwfAGg=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_HarmonyBilibili_xNi3dIBlFx3OWzRhipwk0qw1UhEmTnAiPhLydZwfAGg=.p12",
-          "storePassword": "0000001B8735025DABB735F4DF3F35E658E56DFBF0BA5B612929781CFB397D547DF4A4BD7164670CD3AF9D"
+          "storePassword": "0000001B7AE3874CCDAF53E4177AA2C7362E14B7BA6BD3DAE33BF14A109F18F1A00DF86206BAC68CCCE5FA"
         }
       }
     ],
@@ -49,17 +49,17 @@
     //          "name": "ijkplayer",
     //          "srcPath": "./ijkplayer"
     //        },
-//    {
-//      "name": "ijkplayer",
-//      "srcPath": "./ijkplayer",
-//      "targets": [
-//        {
-//          "name": "default",
-//          "applyToProducts": [
-//            "default"
-//          ]
-//        }
-//      ]
-//    }
+    {
+      "name": "ijkplayer",
+      "srcPath": "./ijkplayer",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
   ]
 }

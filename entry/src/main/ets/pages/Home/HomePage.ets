@@ -172,7 +172,7 @@ export struct HomePage {
       Column(){
         this.HomeItem(item)
       }
-      .margin("1.5%")
+      .margin("2.5%")
 
     },(item:HomeBeanItem,index)=>JSON.stringify(item)+index)
   }

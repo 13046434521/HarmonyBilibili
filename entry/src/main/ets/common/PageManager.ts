@@ -74,7 +74,7 @@ export class PageManager {
 
   static routerSearchHot(title: string) {
     let params:SEARCH_PARAMS = {title: title}
-    router.pushUrl({ url: 'pages/Search/SearchHotPage', params: {params}})
+    router.pushUrl({ url: 'pages/Search/SearchHotPage', params: params})
   }
 
   static routerSearchPage(keyword: string) {

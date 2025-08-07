@@ -35,8 +35,8 @@ export default class EntryAbility extends UIAbility {
         return;
       }
       // 2.实现沉浸式效果：设置导航栏、状态栏不显示。
-      // data.setWindowSystemBarEnable(['navigation','status'])
-      data.setWindowSystemBarEnable([])
+      data.setWindowSystemBarEnable(['navigation','status'])
+      // data.setWindowSystemBarEnable([])
     })
     // 导航栏设置颜色
     // try {

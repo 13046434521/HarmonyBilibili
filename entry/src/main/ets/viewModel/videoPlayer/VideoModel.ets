@@ -11,7 +11,6 @@ import {
 import { PlayStatus } from '../../common/PlayStatus'
 import window from '@ohos.window'
 import Constants from '../../common/Constants'
-import systemDateTime from '@ohos.systemDateTime'
 
 
 @Observed
@@ -21,7 +20,7 @@ export default  class VideoModel {
     ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
     ["Referer", "https://www.bilibili.com"]
   ])
-  xComponentId = "XID"+ new Date().valueOf()
+  xComponentId = "XID_"+ new Date().valueOf()
   bvid: string = ""
   cid?: number
   isShowAttachments = true
