@@ -4,12 +4,13 @@ import { IPlayer } from './IPlayer'
 import promptAction from '@ohos.promptAction'
 import VideoModel from './VideoModel'
 import { PlayStatus } from '../../common/PlayStatus'
-import { IjkMediaPlayer } from '@ohos/ijkplayer'
+
 import window from '@ohos.window'
 import Constants from '../../common/Constants'
 import audio from '@ohos.multimedia.audio'
 import { Utils } from '../../Utils/Utils'
 import { common } from '@kit.AbilityKit'
+import { IjkMediaPlayer } from '@ohos/loading'
 
 //VideoPlayer 的 逻辑功能类
 export class VideoController implements IPlayer {

@@ -77,7 +77,7 @@ export class IjkMediaPlayer {
   // }
   setDataSource(url: string, header:Map<string,string>) {
 
-    var builder = '';
+    let builder = '';
     let headers = new Map<string,string>([
     ["User-Agent", 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'],
     ["Referer", "https://www.bilibili.com"]
@@ -85,16 +85,16 @@ export class IjkMediaPlayer {
     promptAction.showToast({message:"headers类型：可以执行的"+headers+"  传递过来的"+header+"  是否一致: "+(headers == header)})
     if (headers) {
       headers.forEach((value, key) => {
-        var parm = key.trim() + ": ";
+        let parm = key.trim() + ": ";
         if (value)
           parm += value.trim();
         parm += "\r\n";
         builder += parm;
       });
-      this.ijkplayer_napi._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", builder);
-      this.ijkplayer_napi._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "async,cache,crypto,file,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
+      this.ijkplayer_napi?._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "headers", builder);
+      this.ijkplayer_napi?._setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "protocol_whitelist", "async,cache,crypto,file,http,https,ijkhttphook,ijkinject,ijklivehook,ijklongurl,ijksegment,ijktcphook,pipe,rtp,tcp,tls,udp,ijkurlhook,data");
     }
-    this.ijkplayer_napi._setDataSource(url);
+    this.ijkplayer_napi?._setDataSource(url);
   }
 
   setDataSourceHeader(headers: Map<string, string>): void {

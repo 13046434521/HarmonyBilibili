@@ -7,7 +7,7 @@ import {
   OnSeekCompleteListener,
   OnTimedTextListener,
   OnVideoSizeChangedListener
-} from '@ohos/ijkplayer'
+} from '@ohos/loading'
 import { PlayStatus } from '../../common/PlayStatus'
 import window from '@ohos.window'
 import Constants from '../../common/Constants'

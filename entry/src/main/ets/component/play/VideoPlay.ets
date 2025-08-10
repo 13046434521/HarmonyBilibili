@@ -290,7 +290,7 @@ struct VideoPlayer {
       id: this.videoController.getXComponentId(),
       type: XComponentType.SURFACE,
       libraryname: "ijkplayer_napi",
-    }).onLoad((context:object | undefined) => {
+    }).onLoad((context:object  ) => {
         this.mOnPlayerCompleteListener(context)
       })
       .onDestroy(() => {
