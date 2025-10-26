@@ -64,7 +64,7 @@ export struct CommentsItem{
               .fontSize(12).margin({ right: '4%' })
           }.width('100%')
           .height('4%')
-          if (this.commentsReply.replies!==undefined&&this.commentsReply.replies.length!==0){
+          if (this.commentsReply.replies!==null && this.commentsReply.replies.length!==0){
             Column(){
               ForEach(this.commentsReply.replies,(reply:CommentsReply)=>{
                 Row(){
